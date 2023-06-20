@@ -35,6 +35,9 @@ android {
 
 dependencies {
 
+    //common-ui
+    implementation project(path: ":common-ui")
+
     //UI
     implementation 'androidx.activity:activity-ktx:1.1.0'
     implementation 'androidx.fragment:fragment-ktx:1.2.5'
