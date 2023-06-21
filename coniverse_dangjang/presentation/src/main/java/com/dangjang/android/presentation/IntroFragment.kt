@@ -5,11 +5,11 @@ import android.view.View
 import androidx.fragment.app.viewModels
 import com.dangjang.android.common_ui.BaseFragment
 import com.dangjang.android.presentation.databinding.FragmentIntroBinding
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class IntroFragment : BaseFragment<FragmentIntroBinding>(R.layout.fragment_intro) {
     private val viewModel by viewModels<IntroViewModel>()
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
