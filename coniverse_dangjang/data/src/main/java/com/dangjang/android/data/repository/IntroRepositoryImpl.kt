@@ -14,15 +14,13 @@ class IntroRepositoryImpl @Inject constructor(
     private val introDataSource: IntroDataSource
 ) : IntroRepository {
 
-    override fun getIntroApi(isError: Int) = flow {
-        val response = introDataSource.getIntroApi(isError)
+    override fun getIntroApi(): Flow<IntroVO> = flow {
+        val response = introDataSource.getIntroApi()
         response.suspendOnSuccess {
-            emit(
-                IntroVO(
-                    data.minVersion,
-                    data.latestVersion
-                )
-            )
+                emit(IntroVO(
+                    data.data.minVersion,
+                    data.data.latestVersion
+                ))
             Log.e("[SUCCESS]","Intro API")
         }.onFailure { Log.e("[ERROR]","Intro API") }
     }

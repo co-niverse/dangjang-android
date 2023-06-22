@@ -12,21 +12,31 @@ import androidx.fragment.app.Fragment
 abstract class BaseFragment<T : ViewDataBinding>(@LayoutRes private val layoutRes: Int) :
     Fragment() {
 
-    private var _binding: T? = null
-    protected val binding: T
-        get() = requireNotNull(_binding) { "${this::class.java.simpleName} error." }
+    lateinit var binding: T
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        _binding = DataBindingUtil.inflate(inflater, layoutRes, container, false)
+    ): View {
+        binding = DataBindingUtil.inflate(inflater, layoutRes, container, false)
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        binding.lifecycleOwner = this@BaseFragment
+        initView()
+        super.onViewCreated(view, savedInstanceState)
+    }
+
+    abstract fun initView()
+
     override fun onDestroyView() {
+        binding.unbind()
         super.onDestroyView()
-        _binding = null
+    }
+
+    protected inline fun bind(block: T.() -> Unit) {
+        binding.apply(block)
     }
 }

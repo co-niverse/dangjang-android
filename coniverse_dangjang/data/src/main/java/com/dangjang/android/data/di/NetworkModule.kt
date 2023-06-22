@@ -1,6 +1,7 @@
 package com.dangjang.android.data.di
 
 import com.dangjang.android.data.datasource.IntroDataSource
+import com.skydoves.sandwich.adapters.ApiResponseCallAdapterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -36,6 +37,7 @@ object NetworkModule {
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
             .client(okHttpClient)
+            .addCallAdapterFactory(ApiResponseCallAdapterFactory.create())
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }

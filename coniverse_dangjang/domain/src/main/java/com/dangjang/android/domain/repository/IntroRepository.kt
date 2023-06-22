@@ -6,5 +6,5 @@ import kotlinx.coroutines.flow.Flow
 interface IntroRepository {
 
     //Intro API
-    fun getIntroApi(isError: Int): Flow<IntroVO>
+    fun getIntroApi(): Flow<IntroVO>
 }
