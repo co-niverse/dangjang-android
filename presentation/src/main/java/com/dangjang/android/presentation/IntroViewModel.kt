@@ -18,9 +18,9 @@ class IntroViewModel @Inject constructor(
     private val getIntroUseCase: GetIntroUseCase
 ) : ViewModel() {
 
-    private val _introDataFlow = MutableStateFlow(
-        IntroVO()
-    )
+    private val _introDataFlow = MutableStateFlow(IntroVO())
+    val introDataFlow = _introDataFlow.asStateFlow()
+
     fun fetchIntroData() {
         viewModelScope.launch {
             getIntroUseCase().collectLatest {
@@ -29,5 +29,4 @@ class IntroViewModel @Inject constructor(
         }
     }
 
-    val introDataFlow = _introDataFlow.asStateFlow()
 }
