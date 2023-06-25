@@ -17,10 +17,9 @@ class IntroRepositoryImpl @Inject constructor(
     override fun getIntroApi(): Flow<IntroVO> = flow {
         val response = introDataSource.getIntroApi()
         response.suspendOnSuccess {
-                emit(IntroVO(
-                    data.data.minVersion,
-                    data.data.latestVersion
-                ))
+                emit(
+                    data.data.toDomain()
+                )
             Log.e("[SUCCESS]","Intro API")
         }.onFailure { Log.e("[ERROR]","Intro API") }
     }
