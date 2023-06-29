@@ -1,5 +1,6 @@
 package com.dangjang.android.presentation
 
+import android.content.ContentValues
 import android.os.Bundle
 import android.util.Log
 import androidx.databinding.DataBindingUtil
@@ -25,11 +26,13 @@ class LoginActivity: FragmentActivity() {
         }
     }
     private fun kakaoLogin() {
+
         val mCallback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
             if (error != null) {
                 Log.e("카카오/로그인 실패", error.toString())
             } else if (token != null) {
                 Log.e("카카오/로그인 성공",token.accessToken)
+                getKakaoNicknameAndEmail()
             }
         }
 
@@ -46,10 +49,29 @@ class LoginActivity: FragmentActivity() {
                 }
                 else if (token != null) {
                     Log.e("카카오/로그인 성공",token.accessToken)
+                    getKakaoNicknameAndEmail()
                 }
             }
         } else {
             UserApiClient.instance.loginWithKakaoAccount(this, callback = mCallback)
+        }
+    }
+
+
+
+    private fun getKakaoNicknameAndEmail() {
+        UserApiClient.instance.me { user, error ->
+            if (error != null) {
+                Log.e(ContentValues.TAG, "카카오/사용자 정보 요청 실패", error)
+            } else if (user != null) {
+                Log.i(
+                    ContentValues.TAG, "카카오/사용자 정보 요청 성공" +
+                            "\n닉네임: ${user.kakaoAccount?.profile?.nickname}" +
+                            "\n이메일: ${user.kakaoAccount?.email}" +
+                            "\n사진: ${user.kakaoAccount?.profile?.profileImageUrl}"
+                )
+                //TODO: 서버 연동
+            }
         }
     }
 }
