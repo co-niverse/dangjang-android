@@ -87,6 +87,12 @@ class LoginActivity: FragmentActivity() {
         val profileCallback = object : NidProfileCallback<NidProfileResponse> {
             override fun onSuccess(result: NidProfileResponse) {
                 Log.e("네이버/로그인 성공", naverToken)
+                Log.i(
+                    ContentValues.TAG, "네이버/사용자 정보 요청 성공" +
+                            "\n닉네임: ${result.profile?.nickname}" +
+                            "\n이메일: ${result.profile?.email}" +
+                            "\n사진: ${result.profile?.profileImage}"
+                )
                 //TODO: 서버 연동
             }
 
