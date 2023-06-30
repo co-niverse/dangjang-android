@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.ViewModelProvider
 import com.dangjang.android.presentation.databinding.ActivityLoginBinding
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.ClientError
@@ -20,12 +21,15 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class LoginActivity: FragmentActivity() {
     private lateinit var binding: ActivityLoginBinding
+    private lateinit var viewModel: LoginViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_login)
+        viewModel = ViewModelProvider(this).get(LoginViewModel::class.java)
+
         binding.btnKakaoLogin.setOnClickListener {
             kakaoLogin()
         }
@@ -58,6 +62,8 @@ class LoginActivity: FragmentActivity() {
                 else if (token != null) {
                     Log.e("카카오/로그인 성공",token.accessToken)
                     getKakaoNicknameAndEmail()
+                    //TODO: 서버 연동
+                    viewModel.fetchLoginData(token.accessToken)
                 }
             }
         } else {
@@ -76,7 +82,6 @@ class LoginActivity: FragmentActivity() {
                             "\n이메일: ${user.kakaoAccount?.email}" +
                             "\n사진: ${user.kakaoAccount?.profile?.profileImageUrl}"
                 )
-                //TODO: 서버 연동
             }
         }
     }
@@ -94,6 +99,7 @@ class LoginActivity: FragmentActivity() {
                             "\n사진: ${result.profile?.profileImage}"
                 )
                 //TODO: 서버 연동
+                viewModel.fetchLoginData(naverToken)
             }
 
             override fun onFailure(httpStatus: Int, message: String) {

@@ -1,6 +1,7 @@
 package com.dangjang.android.data.di
 
 import com.dangjang.android.data.datasource.IntroDataSource
+import com.dangjang.android.data.datasource.LoginDataSource
 import com.skydoves.sandwich.adapters.ApiResponseCallAdapterFactory
 import dagger.Module
 import dagger.Provides
@@ -46,5 +47,11 @@ object NetworkModule {
     @Singleton
     fun provideIntroDataSource(retrofit: Retrofit): IntroDataSource {
         return retrofit.create(IntroDataSource::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideLoginDataSource(retrofit: Retrofit): LoginDataSource {
+        return retrofit.create(LoginDataSource::class.java)
     }
 }
