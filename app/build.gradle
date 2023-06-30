@@ -32,6 +32,8 @@ android {
     buildTypes {
         debug {
             buildConfigField("String", "KAKAO_APP_KEY",""+localProperties['KAKAO_APP_KEY']+"")
+            buildConfigField("String", "NAVER_CLIENT_ID", ""+localProperties['NAVER_CLIENT_ID']+"")
+            buildConfigField("String", "NAVER_CLIENT_SECRET", ""+localProperties['NAVER_CLIENT_SECRET']+"")
         }
         release {
             minifyEnabled false
@@ -69,7 +71,10 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
 
     //Kakao Login
-    implementation "com.kakao.sdk:v2-user:2.14.0" // 카카오 로그인
+    implementation "com.kakao.sdk:v2-user:2.14.0"
+
+    //Naver Login
+    implementation 'com.navercorp.nid:oauth-jdk8:5.6.0'
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'

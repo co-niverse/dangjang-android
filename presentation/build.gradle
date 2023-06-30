@@ -60,6 +60,9 @@ dependencies {
     //Kakao Login
     implementation "com.kakao.sdk:v2-user:2.14.0"
 
+    //Naver Login
+    implementation 'com.navercorp.nid:oauth-jdk8:5.6.0'
+
     implementation 'androidx.core:core-ktx:1.8.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.9.0'
