@@ -19,9 +19,17 @@ class LoginViewModel @Inject constructor(
     private val _loginDataFlow = MutableStateFlow(LoginVO())
     val loginDataFlow = _loginDataFlow.asStateFlow()
 
-    fun fetchLoginData(accessToken: String) {
+    fun getKakaoLoginData(accessToken: String) {
         viewModelScope.launch {
-            getLoginUseCase(accessToken).collectLatest {
+            getLoginUseCase.kakoLogin(accessToken).collect{
+                _loginDataFlow.emit(it)
+            }
+        }
+    }
+
+    fun getNaverLoginData(accessToken: String) {
+        viewModelScope.launch {
+            getLoginUseCase.naverLogin(accessToken).collect{
                 _loginDataFlow.emit(it)
             }
         }

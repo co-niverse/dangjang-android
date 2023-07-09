@@ -45,6 +45,7 @@ class LoginActivity: FragmentActivity() {
             } else if (token != null) {
                 Log.e("카카오/로그인 성공",token.accessToken)
                 getKakaoNicknameAndEmail()
+                viewModel.getKakaoLoginData(token.accessToken)
             }
         }
 
@@ -62,8 +63,7 @@ class LoginActivity: FragmentActivity() {
                 else if (token != null) {
                     Log.e("카카오/로그인 성공",token.accessToken)
                     getKakaoNicknameAndEmail()
-                    //TODO: 서버 연동
-                    viewModel.fetchLoginData(token.accessToken)
+                    viewModel.getKakaoLoginData(token.accessToken)
                 }
             }
         } else {
@@ -98,8 +98,7 @@ class LoginActivity: FragmentActivity() {
                             "\n이메일: ${result.profile?.email}" +
                             "\n사진: ${result.profile?.profileImage}"
                 )
-                //TODO: 서버 연동
-                viewModel.fetchLoginData(naverToken)
+                viewModel.getNaverLoginData(naverToken)
             }
 
             override fun onFailure(httpStatus: Int, message: String) {

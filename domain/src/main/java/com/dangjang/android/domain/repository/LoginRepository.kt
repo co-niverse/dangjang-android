@@ -5,6 +5,8 @@ import kotlinx.coroutines.flow.Flow
 
 interface LoginRepository {
 
-    //Login API
-    fun login(accessToken: String): Flow<LoginVO>
+    //kakaoLogin API
+    fun kakaoLogin(accessToken: String): Flow<LoginVO>
+    //naverLogin API
+    fun naverLogin(accessToken: String): Flow<LoginVO>
 }
