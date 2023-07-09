@@ -17,8 +17,14 @@ class LoginRepositoryImpl @Inject constructor(
         if (response.isSuccessful) {
             if (response.body()!!.success) {
                 emit(response.body()!!.data.content.toDomain())
+                Log.e("[SUCCESS]","kakaoLogin" + response.body().toString())
             }
-            Log.e("[SUCCESS]","kakaoLogin" + response.body().toString())
+            else {
+                if (response.body()!!.errorCode == 404) {
+                    //TODO : 회원가입
+                }
+                Log.e("[FAIL]","kakaoLogin" + response.body().toString())
+            }
         } else {
             Log.e("[FAIL]","kakaoLogin" + response.errorBody()?.string()!!)
         }
@@ -29,8 +35,14 @@ class LoginRepositoryImpl @Inject constructor(
         if (response.isSuccessful) {
             if (response.body()!!.success) {
                 emit(response.body()!!.data.content.toDomain())
+                Log.e("[SUCCESS]","naverLogin" + response.body().toString())
             }
-            Log.e("[SUCCESS]","naverLogin" + response.body().toString())
+            else {
+                if (response.body()!!.errorCode == 404) {
+                    //TODO : 회원가입
+                }
+                Log.e("[FAIL]","naverLogin" + response.body().toString())
+            }
         } else {
             Log.e("[FAIL]","naverLogin" + response.errorBody()?.string()!!)
         }
