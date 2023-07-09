@@ -1,8 +1,9 @@
 package com.dangjang.android.presentation
 
+import android.app.Application
 import android.content.ContentValues
 import android.util.Log
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.dangjang.android.domain.model.LoginVO
 import com.dangjang.android.domain.usecase.GetLoginUseCase
@@ -18,8 +19,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val getLoginUseCase: GetLoginUseCase
-) : ViewModel() {
+    private val getLoginUseCase: GetLoginUseCase,
+    application: Application
+) : AndroidViewModel(application) {
 
     private val _loginDataFlow = MutableStateFlow(LoginVO())
     val loginDataFlow = _loginDataFlow.asStateFlow()
@@ -36,15 +38,15 @@ class LoginViewModel @Inject constructor(
             }
         }
 
-        if (UserApiClient.instance.isKakaoTalkLoginAvailable(context)) {
-            UserApiClient.instance.loginWithKakaoTalk(context) { token, error ->
+        if (UserApiClient.instance.isKakaoTalkLoginAvailable(getApplication<Application>().applicationContext)) {
+            UserApiClient.instance.loginWithKakaoTalk(getApplication<Application>().applicationContext) { token, error ->
                 if (error != null) {
                     Log.e("카카오/로그인 실패", error.toString())
                     if (error is ClientError && error.reason == ClientErrorCause.Cancelled) {
                         return@loginWithKakaoTalk
                     }
                     else {
-                        UserApiClient.instance.loginWithKakaoAccount(context, callback = mCallback)
+                        UserApiClient.instance.loginWithKakaoAccount(getApplication<Application>().applicationContext, callback = mCallback)
                     }
                 }
                 else if (token != null) {
@@ -54,7 +56,7 @@ class LoginViewModel @Inject constructor(
                 }
             }
         } else {
-            UserApiClient.instance.loginWithKakaoAccount(context, callback = mCallback)
+            UserApiClient.instance.loginWithKakaoAccount(getApplication<Application>().applicationContext, callback = mCallback)
         }
     }
 
