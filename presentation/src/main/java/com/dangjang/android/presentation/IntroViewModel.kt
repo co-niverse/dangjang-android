@@ -7,6 +7,7 @@ import com.dangjang.android.domain.usecase.GetIntroUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -19,9 +20,9 @@ class IntroViewModel @Inject constructor(
     private val _introDataFlow = MutableStateFlow(IntroVO())
     val introDataFlow = _introDataFlow.asStateFlow()
 
-    fun fetchIntroData() {
+    fun getIntroData() {
         viewModelScope.launch {
-            getIntroUseCase().collectLatest {
+            getIntroUseCase.getIntro().collect{
                 _introDataFlow.emit(it)
             }
         }

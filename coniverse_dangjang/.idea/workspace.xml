@@ -11,6 +11,9 @@
   <component name="ChangeListManager">
     <list default="true" id="e7afa9d2-7aa6-4ca6-9d5c-3126bd38395c" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data/src/main/java/com/dangjang/android/data/datasource/IntroDataSource.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../data/src/main/java/com/dangjang/android/data/datasource/IntroDataSource.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../domain/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../domain/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../domain/src/main/java/com/dangjang/android/domain/usecase/GetIntroUseCase.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../domain/src/main/java/com/dangjang/android/domain/usecase/GetIntroUseCase.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -129,9 +132,7 @@
       <option name="ACTIVITY_CLASS" value="" />
       <option name="SEARCH_ACTIVITY_IN_GLOBAL_SCOPE" value="false" />
       <option name="SKIP_ACTIVITY_VALIDATION" value="false" />
-      <method v="2">
-        <option name="Android.Gradle.BeforeRunTask" enabled="true" />
-      </method>
+      <method v="2" />
     </configuration>
     <configuration name="common-ui" type="AndroidRunConfigurationType" factoryName="Android App">
       <module name="dangjang.common-ui.main" />
@@ -187,9 +188,7 @@
       <option name="ACTIVITY_CLASS" value="" />
       <option name="SEARCH_ACTIVITY_IN_GLOBAL_SCOPE" value="false" />
       <option name="SKIP_ACTIVITY_VALIDATION" value="false" />
-      <method v="2">
-        <option name="Android.Gradle.BeforeRunTask" enabled="true" />
-      </method>
+      <method v="2" />
     </configuration>
     <configuration name="data" type="AndroidRunConfigurationType" factoryName="Android App">
       <module name="dangjang.data.main" />
@@ -245,9 +244,7 @@
       <option name="ACTIVITY_CLASS" value="" />
       <option name="SEARCH_ACTIVITY_IN_GLOBAL_SCOPE" value="false" />
       <option name="SKIP_ACTIVITY_VALIDATION" value="false" />
-      <method v="2">
-        <option name="Android.Gradle.BeforeRunTask" enabled="true" />
-      </method>
+      <method v="2" />
     </configuration>
     <configuration name="domain" type="AndroidRunConfigurationType" factoryName="Android App">
       <module name="dangjang.domain.main" />
@@ -303,9 +300,7 @@
       <option name="ACTIVITY_CLASS" value="" />
       <option name="SEARCH_ACTIVITY_IN_GLOBAL_SCOPE" value="false" />
       <option name="SKIP_ACTIVITY_VALIDATION" value="false" />
-      <method v="2">
-        <option name="Android.Gradle.BeforeRunTask" enabled="true" />
-      </method>
+      <method v="2" />
     </configuration>
     <configuration name="presentation" type="AndroidRunConfigurationType" factoryName="Android App">
       <module name="dangjang.presentation.main" />
@@ -361,9 +356,7 @@
       <option name="ACTIVITY_CLASS" value="" />
       <option name="SEARCH_ACTIVITY_IN_GLOBAL_SCOPE" value="false" />
       <option name="SKIP_ACTIVITY_VALIDATION" value="false" />
-      <method v="2">
-        <option name="Android.Gradle.BeforeRunTask" enabled="true" />
-      </method>
+      <method v="2" />
     </configuration>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />

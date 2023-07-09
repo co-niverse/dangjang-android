@@ -43,7 +43,6 @@ dependencies {
     implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
     implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
     implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
-    implementation "com.github.skydoves:sandwich:$sandwich_version"
 
     // Hilt
     implementation "com.google.dagger:hilt-android:$hilt_version"
