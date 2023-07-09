@@ -7,10 +7,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
 import com.dangjang.android.presentation.databinding.ActivityLoginBinding
-import com.kakao.sdk.auth.model.OAuthToken
-import com.kakao.sdk.common.model.ClientError
-import com.kakao.sdk.common.model.ClientErrorCause
-import com.kakao.sdk.user.UserApiClient
 import com.navercorp.nid.NaverIdLoginSDK
 import com.navercorp.nid.oauth.NidOAuthLogin
 import com.navercorp.nid.oauth.OAuthLoginCallback
@@ -31,58 +27,10 @@ class LoginActivity: FragmentActivity() {
         viewModel = ViewModelProvider(this).get(LoginViewModel::class.java)
 
         binding.btnKakaoLogin.setOnClickListener {
-            kakaoLogin()
+            viewModel.kakaoLogin()
         }
         binding.btnNaverLogin.setOnClickListener {
             naverLogin()
-        }
-    }
-    private fun kakaoLogin() {
-
-        val mCallback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
-            if (error != null) {
-                Log.e("카카오/로그인 실패", error.toString())
-            } else if (token != null) {
-                Log.e("카카오/로그인 성공",token.accessToken)
-                getKakaoNicknameAndEmail()
-                viewModel.getKakaoLoginData(token.accessToken)
-            }
-        }
-
-        if (UserApiClient.instance.isKakaoTalkLoginAvailable(this)) {
-            UserApiClient.instance.loginWithKakaoTalk(this) { token, error ->
-                if (error != null) {
-                    Log.e("카카오/로그인 실패", error.toString())
-                    if (error is ClientError && error.reason == ClientErrorCause.Cancelled) {
-                        return@loginWithKakaoTalk
-                    }
-                    else {
-                        UserApiClient.instance.loginWithKakaoAccount(this, callback = mCallback)
-                    }
-                }
-                else if (token != null) {
-                    Log.e("카카오/로그인 성공",token.accessToken)
-                    getKakaoNicknameAndEmail()
-                    viewModel.getKakaoLoginData(token.accessToken)
-                }
-            }
-        } else {
-            UserApiClient.instance.loginWithKakaoAccount(this, callback = mCallback)
-        }
-    }
-
-    private fun getKakaoNicknameAndEmail() {
-        UserApiClient.instance.me { user, error ->
-            if (error != null) {
-                Log.e(ContentValues.TAG, "카카오/사용자 정보 요청 실패", error)
-            } else if (user != null) {
-                Log.i(
-                    ContentValues.TAG, "카카오/사용자 정보 요청 성공" +
-                            "\n닉네임: ${user.kakaoAccount?.profile?.nickname}" +
-                            "\n이메일: ${user.kakaoAccount?.email}" +
-                            "\n사진: ${user.kakaoAccount?.profile?.profileImageUrl}"
-                )
-            }
         }
     }
 
