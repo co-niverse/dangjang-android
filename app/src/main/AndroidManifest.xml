@@ -30,6 +30,10 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".presentation.MainActivity"
+            android:exported="true"
+            android:theme="@style/Theme.AppCompat"/>
+        <activity
             android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"
             android:exported="true">
             <intent-filter>

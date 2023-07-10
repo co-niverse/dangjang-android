@@ -13,10 +13,14 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
     <style name="AppTheme.Starting" parent="Theme.SplashScreen">
         <!-- TODO: splash image 변경 -->
         <item name="android:windowBackground">@drawable/blood_image</item>
         <item name="android:windowSplashScreenAnimationDuration">1000</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
 </resources>
