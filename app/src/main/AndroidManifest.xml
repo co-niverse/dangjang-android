@@ -20,6 +20,10 @@
             android:name=".presentation.LoginActivity"
             android:exported="true"
             android:theme="@android:style/Theme.NoTitleBar">
+        </activity>
+        <activity android:name=".presentation.SplashActivity"
+            android:exported="true"
+            android:theme="@style/AppTheme.Starting">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
