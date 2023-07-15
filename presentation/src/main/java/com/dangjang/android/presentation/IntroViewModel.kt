@@ -24,7 +24,10 @@ class IntroViewModel @Inject constructor(
     fun getIntroData() {
         viewModelScope.launch {
             getIntroUseCase.getIntro().collect{
-                _introDataFlow.emit(it)
+                if (it is Exception)
+                    Toast.makeText(getApplication<Application>().applicationContext,it.message,Toast.LENGTH_SHORT).show()
+                if (it is IntroVO)
+                    _introDataFlow.emit(it)
             }
         }
     }
