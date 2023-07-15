@@ -1,7 +1,7 @@
 package com.dangjang.android.data.di
 
 import com.dangjang.android.data.datasource.IntroDataSource
-import com.skydoves.sandwich.adapters.ApiResponseCallAdapterFactory
+import com.dangjang.android.data.datasource.LoginDataSource
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -37,7 +37,6 @@ object NetworkModule {
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
             .client(okHttpClient)
-            .addCallAdapterFactory(ApiResponseCallAdapterFactory.create())
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
@@ -46,5 +45,11 @@ object NetworkModule {
     @Singleton
     fun provideIntroDataSource(retrofit: Retrofit): IntroDataSource {
         return retrofit.create(IntroDataSource::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideLoginDataSource(retrofit: Retrofit): LoginDataSource {
+        return retrofit.create(LoginDataSource::class.java)
     }
 }

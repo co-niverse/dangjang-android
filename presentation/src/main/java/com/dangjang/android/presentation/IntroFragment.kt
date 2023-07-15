@@ -21,7 +21,7 @@ class IntroFragment : BaseFragment<FragmentIntroBinding>(R.layout.fragment_intro
     override fun onStart() {
         super.onStart()
 
-        viewModel.fetchIntroData()
+        viewModel.getIntroData()
     }
 
 }
