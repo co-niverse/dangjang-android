@@ -1,6 +1,6 @@
 package com.dangjang.android.data.di
 
-import com.dangjang.android.data.datasource.IntroDataSourceImpl
+import com.dangjang.android.data.datasource.IntroApiService
 import com.dangjang.android.data.datasource.LoginDataSource
 import dagger.Module
 import dagger.Provides
@@ -43,8 +43,8 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideIntroDataSourceImpl(retrofit: Retrofit): IntroDataSourceImpl {
-        return retrofit.create(IntroDataSourceImpl::class.java)
+    fun provideIntroApiService(retrofit: Retrofit): IntroApiService {
+        return retrofit.create(IntroApiService::class.java)
     }
 
     @Provides
