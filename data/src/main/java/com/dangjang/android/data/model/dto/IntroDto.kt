@@ -4,8 +4,8 @@ import com.dangjang.android.domain.model.IntroVO
 import com.google.gson.annotations.SerializedName
 
 data class IntroDto(
-    @SerializedName("minVersion") val minVersion: Int?,
-    @SerializedName("latestVersion") val latestVersion: Int?
+    @SerializedName("minVersion") val minVersion: String?,
+    @SerializedName("latestVersion") val latestVersion: String?
     ) {
     fun toDomain() = IntroVO(
         minVersion ?: UNKNOWN,
@@ -13,4 +13,4 @@ data class IntroDto(
     )
 }
 
-const val UNKNOWN = -1
+const val UNKNOWN = ""
