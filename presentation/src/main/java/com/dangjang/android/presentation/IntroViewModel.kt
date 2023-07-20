@@ -1,7 +1,9 @@
 package com.dangjang.android.presentation
 
 import android.app.Application
+import android.util.Log
 import android.widget.Toast
+import androidx.health.connect.client.HealthConnectClient
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.dangjang.android.domain.model.IntroVO
@@ -20,6 +22,23 @@ class IntroViewModel @Inject constructor(
 
     private val _introDataFlow = MutableStateFlow(IntroVO())
     val introDataFlow = _introDataFlow.asStateFlow()
+
+
+    fun checkAvailability() {
+        Log.e("vm-sdkStatus", HealthConnectClient.sdkStatus(getApplication<Application>().applicationContext).toString())
+        //설치여부 확인
+        var sdkStatus = HealthConnectClient.sdkStatus(getApplication<Application>().applicationContext)
+        if (sdkStatus == HealthConnectClient.SDK_AVAILABLE) { // 설치 되어 있음
+
+        }
+        if (sdkStatus == HealthConnectClient.SDK_UNAVAILABLE_PROVIDER_UPDATE_REQUIRED) {
+            Log.e("HealthConnect-ERROR","헬스커넥트 업데이트가 필요합니다.")
+        }
+        if (sdkStatus == HealthConnectClient.SDK_UNAVAILABLE) {
+            Log.e("HealthConnect-ERROR","헬스커넥트를 설치할 수 없습니다.")
+        }
+    }
+
 
     fun getIntroData() {
         viewModelScope.launch {
