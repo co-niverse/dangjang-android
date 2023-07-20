@@ -2,19 +2,11 @@ package com.dangjang.android.presentation
 
 import android.app.Application
 import android.os.Build
-import android.os.RemoteException
 import android.util.Log
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.health.connect.client.HealthConnectClient
 import androidx.health.connect.client.permission.HealthPermission
-import androidx.health.connect.client.records.ActiveCaloriesBurnedRecord
-import androidx.health.connect.client.records.BloodGlucoseRecord
-import androidx.health.connect.client.records.BloodPressureRecord
-import androidx.health.connect.client.records.ExerciseSessionRecord
-import androidx.health.connect.client.records.HeartRateRecord
-import androidx.health.connect.client.records.SleepSessionRecord
-import androidx.health.connect.client.records.StepsRecord
 import androidx.health.connect.client.records.WeightRecord
 import androidx.health.connect.client.request.AggregateRequest
 import androidx.health.connect.client.time.TimeRangeFilter
@@ -29,10 +21,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import okio.IOException
 import java.time.Instant
-import java.time.LocalDateTime
-import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.time.temporal.ChronoUnit
 import javax.inject.Inject
@@ -86,7 +75,7 @@ class IntroViewModel @Inject constructor(
         Log.e("94","94")
         permissionsGranted = hasAllPermissions(permissions)
         if (permissionsGranted) {
-            // TODO : 데이터 읽기
+            readWeight()
         } else {
             Log.e("GRANT-ERROR","권한이 허용되지 않았습니다.")
         }
@@ -96,7 +85,24 @@ class IntroViewModel @Inject constructor(
         return healthConnectClient.permissionController.getGrantedPermissions().containsAll(permissions)
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
+    private suspend fun readWeight() {
+        val startOfDay = ZonedDateTime.now().truncatedTo(ChronoUnit.DAYS)
+        val now = Instant.now()
+        val endOfWeek = startOfDay.toInstant().plus(7,ChronoUnit.DAYS)
+        // 헬스 커넥트 체중 읽기
+        computeWeeklyAverage(startOfDay.toInstant(),endOfWeek)
+        Log.e("HC Weight",computeWeeklyAverage(startOfDay.toInstant(),endOfWeek).toString())
+    }
 
+    suspend fun computeWeeklyAverage(start: Instant, end: Instant): Mass? {
+        val request = AggregateRequest(
+            metrics = setOf(WeightRecord.WEIGHT_AVG),
+            timeRangeFilter = TimeRangeFilter.between(start, end)
+        )
+        val response = healthConnectClient.aggregate(request)
+        return response[WeightRecord.WEIGHT_AVG]
+    }
 
     fun getIntroData() {
         viewModelScope.launch {
