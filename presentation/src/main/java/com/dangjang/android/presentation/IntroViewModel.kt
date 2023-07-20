@@ -49,6 +49,8 @@ class IntroViewModel @Inject constructor(
     private val _healthConnectFlow = MutableStateFlow(HealthConnectVO())
     val healthConnectFlow = _healthConnectFlow.asStateFlow()
 
+    private val healthConnectClient by lazy { HealthConnectClient.getOrCreate(getApplication<Application>().applicationContext) }
+
     fun checkAvailability() {
         Log.e("vm-sdkStatus", HealthConnectClient.sdkStatus(getApplication<Application>().applicationContext).toString())
         //설치여부 확인
@@ -64,6 +66,36 @@ class IntroViewModel @Inject constructor(
             Log.e("HealthConnect-ERROR","헬스커넥트를 설치할 수 없습니다.")
         }
     }
+
+    val permissions = setOf(
+        //체중
+        HealthPermission.getReadPermission(WeightRecord::class)
+    )
+
+    var permissionsGranted = false
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun getHealthConnect() {
+        viewModelScope.launch {
+            tryWithPermissionsCheck()
+        }
+    }
+
+    // 권한 체크를 적용하고 에러를 핸들링한다.
+    private suspend fun tryWithPermissionsCheck() {
+        Log.e("94","94")
+        permissionsGranted = hasAllPermissions(permissions)
+        if (permissionsGranted) {
+            // TODO : 데이터 읽기
+        } else {
+            Log.e("GRANT-ERROR","권한이 허용되지 않았습니다.")
+        }
+    }
+
+    suspend fun hasAllPermissions(permissions: Set<String>): Boolean { //허가 받기
+        return healthConnectClient.permissionController.getGrantedPermissions().containsAll(permissions)
+    }
+
 
 
     fun getIntroData() {
