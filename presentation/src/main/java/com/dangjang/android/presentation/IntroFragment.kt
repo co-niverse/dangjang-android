@@ -1,8 +1,10 @@
 package com.dangjang.android.presentation
 
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.viewModels
 import com.dangjang.android.common_ui.BaseFragment
 import com.dangjang.android.presentation.databinding.FragmentIntroBinding
@@ -22,6 +24,13 @@ class IntroFragment : BaseFragment<FragmentIntroBinding>(R.layout.fragment_intro
         super.onStart()
 
         viewModel.getIntroData()
+
+        viewModel.checkAvailability()
+
+        if (viewModel.healthConnectFlow.value.isAvaiable == 1) {
+
+        }
+
     }
 
 }
