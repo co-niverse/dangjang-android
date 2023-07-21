@@ -269,10 +269,10 @@ class IntroViewModel @Inject constructor(
 
         exerciseList = readExerciseSessionInput(startOfDay.toInstant(),endOfWeek)
         for (exerciseRecord in exerciseList) {
-            exerciseRecord.exerciseType
+            val exerciseName = ExerciseSessionRecord.EXERCISE_TYPE_INT_TO_STRING_MAP.get(exerciseRecord.exerciseType)
             val exerciseStartTime = changeInstantToKST(exerciseRecord.startTime)
             val exerciseEndTime = changeInstantToKST(exerciseRecord.endTime)
-            Log.e("HC-Exercise","운동 종류: " + exerciseRecord.exerciseType + " 시간: " + exerciseStartTime + " to " + exerciseEndTime)
+            Log.e("HC-Exercise", "운동 종류: $exerciseName 시간: $exerciseStartTime to $exerciseEndTime")
         }
     }
 
