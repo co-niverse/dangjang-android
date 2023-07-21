@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.health.connect.client.HealthConnectClient
 import androidx.health.connect.client.permission.HealthPermission
+import androidx.health.connect.client.records.BloodGlucoseRecord
 import androidx.health.connect.client.records.WeightRecord
 import androidx.health.connect.client.request.ReadRecordsRequest
 import androidx.health.connect.client.time.TimeRangeFilter
@@ -56,7 +57,8 @@ class IntroViewModel @Inject constructor(
 
     val permissions = setOf(
         //체중
-        HealthPermission.getReadPermission(WeightRecord::class)
+        HealthPermission.getReadPermission(WeightRecord::class),
+        HealthPermission.getReadPermission(BloodGlucoseRecord::class),
     )
 
     var permissionsGranted = false
@@ -73,6 +75,7 @@ class IntroViewModel @Inject constructor(
         permissionsGranted = hasAllPermissions(permissions)
         if (permissionsGranted) {
             readWeight()
+            readBloodGlucose()
         } else {
             Log.e("GRANT-ERROR","권한이 허용되지 않았습니다.")
         }
@@ -82,6 +85,7 @@ class IntroViewModel @Inject constructor(
         return healthConnectClient.permissionController.getGrantedPermissions().containsAll(permissions)
     }
 
+    //체중
     @RequiresApi(Build.VERSION_CODES.O)
     private suspend fun readWeight() {
         val startOfDay = ZonedDateTime.now().truncatedTo(ChronoUnit.DAYS)
@@ -94,6 +98,25 @@ class IntroViewModel @Inject constructor(
     suspend fun readWeightInput(start: Instant, end: Instant): List<WeightRecord> {
         val request = ReadRecordsRequest(
             recordType = WeightRecord::class,
+            timeRangeFilter = TimeRangeFilter.between(start, end)
+        )
+        val response = healthConnectClient.readRecords(request)
+        return response.records
+    }
+
+    //혈당
+    @RequiresApi(Build.VERSION_CODES.O)
+    private suspend fun readBloodGlucose() {
+        val startOfDay = ZonedDateTime.now().truncatedTo(ChronoUnit.DAYS)
+        val endOfWeek = startOfDay.toInstant().plus(7,ChronoUnit.DAYS)
+        // 헬스 커넥트 체중 읽기
+        readBloodGlucoseInput(startOfDay.toInstant(),endOfWeek)
+        Log.e("HC-BloodGlucose",readBloodGlucoseInput(startOfDay.toInstant(),endOfWeek).toString())
+    }
+
+    private suspend fun readBloodGlucoseInput(start: Instant, end: Instant): List<BloodGlucoseRecord> {
+        val request = ReadRecordsRequest(
+            recordType = BloodGlucoseRecord::class,
             timeRangeFilter = TimeRangeFilter.between(start, end)
         )
         val response = healthConnectClient.readRecords(request)
