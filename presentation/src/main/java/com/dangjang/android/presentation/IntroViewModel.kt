@@ -92,15 +92,11 @@ class IntroViewModel @Inject constructor(
     fun checkAvailability() {
         //설치여부 확인
         var sdkStatus = HealthConnectClient.sdkStatus(getApplication<Application>().applicationContext)
-        if (sdkStatus == HealthConnectClient.SDK_AVAILABLE) { // 설치 되어 있음
-            //healthConnectVO를 1로 업데이트
-            _healthConnectFlow.update { HealthConnectVO(1) }
-        }
-        if (sdkStatus == HealthConnectClient.SDK_UNAVAILABLE_PROVIDER_UPDATE_REQUIRED) {
-            Log.e("HealthConnect-ERROR","헬스커넥트 업데이트가 필요합니다.")
-        }
-        if (sdkStatus == HealthConnectClient.SDK_UNAVAILABLE) {
-            Log.e("HealthConnect-ERROR","헬스커넥트를 설치할 수 없습니다.")
+        _healthConnectFlow.update { HealthConnectVO(sdkStatus) }
+        when (sdkStatus) {
+            HealthConnectClient.SDK_AVAILABLE -> Log.e("HealthConnect-status","헬스커넥트가 설치되어 있습니다.")
+            HealthConnectClient.SDK_UNAVAILABLE_PROVIDER_UPDATE_REQUIRED -> Log.e("HealthConnect-ERROR","헬스커넥트 설치나 업데이트가 필요합니다.")
+            HealthConnectClient.SDK_UNAVAILABLE -> Log.e("HealthConnect-ERROR","헬스커넥트를 설치할 수 없습니다.")
         }
     }
 
