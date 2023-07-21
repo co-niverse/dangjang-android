@@ -63,6 +63,7 @@ class IntroViewModel @Inject constructor(
         HealthPermission.getReadPermission(WeightRecord::class),
         HealthPermission.getReadPermission(BloodGlucoseRecord::class),
         HealthPermission.getReadPermission(BloodPressureRecord::class),
+        HealthPermission.getReadPermission(SleepSessionRecord::class),
         HealthPermission.getReadPermission(StepsRecord::class)
         )
 
