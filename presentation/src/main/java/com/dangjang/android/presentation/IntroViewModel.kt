@@ -186,18 +186,18 @@ class IntroViewModel @Inject constructor(
     //수면
     @RequiresApi(Build.VERSION_CODES.O)
     private suspend fun readSleepSession() {
-        //TODO : 시간 범위 수정
         val startOfDay = ZonedDateTime.now().truncatedTo(ChronoUnit.DAYS)
+        val yesterdayNight = startOfDay.toInstant().minus(Duration.ofHours(6)) // 저녁 6시부터로 설정해놓음
         val endOfWeek = startOfDay.toInstant().plus(7,ChronoUnit.DAYS)
 
-        sleepSessionList = readSleepSessionInput(startOfDay.toInstant(),endOfWeek)
+        sleepSessionList = readSleepSessionInput(yesterdayNight,endOfWeek)
         for (sleepSessionRecord in sleepSessionList) {
             val sleepStartTime = changeInstantToKST(sleepSessionRecord.startTime)
             val sleepEndTime = changeInstantToKST(sleepSessionRecord.endTime)
             Log.e("HC-Sleep","시작 시간: $sleepStartTime, 종료 시간: $sleepEndTime")
         }
 
-        sleepDuration = readSleepDuration(startOfDay.toInstant(),endOfWeek)!!
+        sleepDuration = readSleepDuration(yesterdayNight,endOfWeek)!!
         val durationHours: String = sleepDuration.toHours().toString()
         val durationMinutes: String = (sleepDuration.toMinutes() % 60).toString()
         val durationSeconds: String = (sleepDuration.getSeconds() % 60).toString()
