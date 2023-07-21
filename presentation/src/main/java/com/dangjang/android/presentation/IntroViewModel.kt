@@ -9,7 +9,9 @@ import androidx.health.connect.client.HealthConnectClient
 import androidx.health.connect.client.permission.HealthPermission
 import androidx.health.connect.client.records.BloodGlucoseRecord
 import androidx.health.connect.client.records.BloodPressureRecord
+import androidx.health.connect.client.records.SleepSessionRecord
 import androidx.health.connect.client.records.WeightRecord
+import androidx.health.connect.client.request.AggregateRequest
 import androidx.health.connect.client.request.ReadRecordsRequest
 import androidx.health.connect.client.time.TimeRangeFilter
 import androidx.lifecycle.AndroidViewModel
@@ -78,6 +80,7 @@ class IntroViewModel @Inject constructor(
             readWeight()
             readBloodGlucose()
             readBloodPressureRecord()
+            readSleepSession()
         } else {
             Log.e("GRANT-ERROR","권한이 허용되지 않았습니다.")
         }
@@ -142,6 +145,37 @@ class IntroViewModel @Inject constructor(
         )
         val response = healthConnectClient.readRecords(request)
         return response.records
+    }
+
+    //수면
+    @RequiresApi(Build.VERSION_CODES.O)
+    private suspend fun readSleepSession() {
+        //TODO : 시간 범위 수정
+        val startOfDay = ZonedDateTime.now().truncatedTo(ChronoUnit.DAYS)
+        val endOfWeek = startOfDay.toInstant().plus(7,ChronoUnit.DAYS)
+        readSleepSessionInput(startOfDay.toInstant(),endOfWeek)
+        Log.e("HC-Sleep",readSleepSessionInput(startOfDay.toInstant(),endOfWeek).toString())
+        readSleepDuration(startOfDay.toInstant(),endOfWeek)
+        Log.e("HC-SleepDuration",readSleepDuration(startOfDay.toInstant(),endOfWeek).toString())
+    }
+
+    private suspend fun readSleepSessionInput(start: Instant, end: Instant): List<SleepSessionRecord> {
+        val request = ReadRecordsRequest(
+            recordType = SleepSessionRecord::class,
+            timeRangeFilter = TimeRangeFilter.between(start, end)
+        )
+        val response = healthConnectClient.readRecords(request)
+        return response.records
+    }
+
+    //수면 시간
+    private suspend fun readSleepDuration(start: Instant, end: Instant): java.time.Duration? {
+        val request = AggregateRequest(
+            metrics = setOf(SleepSessionRecord.SLEEP_DURATION_TOTAL),
+            timeRangeFilter = TimeRangeFilter.between(start, end)
+        )
+        val response = healthConnectClient.aggregate(request)
+        return response[SleepSessionRecord.SLEEP_DURATION_TOTAL]
     }
 
     fun getIntroData() {
