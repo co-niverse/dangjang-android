@@ -30,7 +30,9 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.time.Duration
 import java.time.Instant
+import java.time.ZoneId
 import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 import javax.inject.Inject
 import kotlin.math.roundToInt
@@ -140,7 +142,8 @@ class IntroViewModel @Inject constructor(
 
         bloodGlucoseList = readBloodGlucoseInput(startOfDay.toInstant(),endOfWeek)
         for (bloodGlucoseRecord in bloodGlucoseList) {
-            Log.e("HC-BloodGlucose",bloodGlucoseRecord.time.toString() + "시: " + bloodGlucoseRecord.level.inMilligramsPerDeciliter.roundToInt() + "mg/dL" )
+            val bgTime = changeInstantToKST(bloodGlucoseRecord.time)
+            Log.e("HC-BloodGlucose",bgTime + "시: " + bloodGlucoseRecord.level.inMilligramsPerDeciliter.roundToInt() + "mg/dL" )
         }
     }
 
@@ -162,7 +165,7 @@ class IntroViewModel @Inject constructor(
         bloodPressureList = readBloodPressureInput(startOfDay.toInstant(),endOfWeek)
         for (bloodPressureRecord in bloodPressureList) {
             //시간
-            val bpTime = bloodPressureRecord.time
+            val bpTime = changeInstantToKST(bloodPressureRecord.time)
             //수축기
             val systolicRecord = bloodPressureRecord.systolic.inMillimetersOfMercury.roundToInt()
             //이완기
@@ -189,8 +192,8 @@ class IntroViewModel @Inject constructor(
 
         sleepSessionList = readSleepSessionInput(startOfDay.toInstant(),endOfWeek)
         for (sleepSessionRecord in sleepSessionList) {
-            val sleepStartTime = sleepSessionRecord.startTime
-            val sleepEndTime = sleepSessionRecord.endTime
+            val sleepStartTime = changeInstantToKST(sleepSessionRecord.startTime)
+            val sleepEndTime = changeInstantToKST(sleepSessionRecord.endTime)
             Log.e("HC-Sleep","시작 시간: $sleepStartTime, 종료 시간: $sleepEndTime")
         }
 
@@ -267,9 +270,9 @@ class IntroViewModel @Inject constructor(
         exerciseList = readExerciseSessionInput(startOfDay.toInstant(),endOfWeek)
         for (exerciseRecord in exerciseList) {
             exerciseRecord.exerciseType
-            exerciseRecord.startTime
-            exerciseRecord.endTime
-            Log.e("HC-Exercise","운동 종류: " + exerciseRecord.exerciseType + " 시간: " + exerciseRecord.startTime + " to " + exerciseRecord.endTime)
+            val exerciseStartTime = changeInstantToKST(exerciseRecord.startTime)
+            val exerciseEndTime = changeInstantToKST(exerciseRecord.endTime)
+            Log.e("HC-Exercise","운동 종류: " + exerciseRecord.exerciseType + " 시간: " + exerciseStartTime + " to " + exerciseEndTime)
         }
     }
 
@@ -280,6 +283,14 @@ class IntroViewModel @Inject constructor(
         )
         val response = healthConnectClient.readRecords(request)
         return response.records
+    }
+
+    private fun changeInstantToKST(instant: Instant): String {
+        val koreaZoneId = ZoneId.of("Asia/Seoul")
+        val koreaTime = instant.atZone(koreaZoneId)
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+        val formattedDateTime = koreaTime.format(formatter)
+        return formattedDateTime
     }
 
     fun getIntroData() {
