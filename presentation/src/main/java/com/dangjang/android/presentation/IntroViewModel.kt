@@ -8,9 +8,8 @@ import androidx.annotation.RequiresApi
 import androidx.health.connect.client.HealthConnectClient
 import androidx.health.connect.client.permission.HealthPermission
 import androidx.health.connect.client.records.WeightRecord
-import androidx.health.connect.client.request.AggregateRequest
+import androidx.health.connect.client.request.ReadRecordsRequest
 import androidx.health.connect.client.time.TimeRangeFilter
-import androidx.health.connect.client.units.Mass
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.dangjang.android.domain.model.HealthConnectVO
@@ -86,20 +85,19 @@ class IntroViewModel @Inject constructor(
     @RequiresApi(Build.VERSION_CODES.O)
     private suspend fun readWeight() {
         val startOfDay = ZonedDateTime.now().truncatedTo(ChronoUnit.DAYS)
-        val now = Instant.now()
         val endOfWeek = startOfDay.toInstant().plus(7,ChronoUnit.DAYS)
         // 헬스 커넥트 체중 읽기
-        computeWeeklyAverage(startOfDay.toInstant(),endOfWeek)
-        Log.e("HC Weight",computeWeeklyAverage(startOfDay.toInstant(),endOfWeek).toString())
+        readWeight(startOfDay.toInstant(),endOfWeek)
+        Log.e("HC-Weight",readWeight(startOfDay.toInstant(),endOfWeek).toString())
     }
 
-    suspend fun computeWeeklyAverage(start: Instant, end: Instant): Mass? {
-        val request = AggregateRequest(
-            metrics = setOf(WeightRecord.WEIGHT_AVG),
+    suspend fun readWeight(start: Instant, end: Instant): List<WeightRecord> {
+        val request = ReadRecordsRequest(
+            recordType = WeightRecord::class,
             timeRangeFilter = TimeRangeFilter.between(start, end)
         )
-        val response = healthConnectClient.aggregate(request)
-        return response[WeightRecord.WEIGHT_AVG]
+        val response = healthConnectClient.readRecords(request)
+        return response.records
     }
 
     fun getIntroData() {
