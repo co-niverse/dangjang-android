@@ -17,6 +17,7 @@ import androidx.health.connect.client.records.WeightRecord
 import androidx.health.connect.client.request.AggregateRequest
 import androidx.health.connect.client.request.ReadRecordsRequest
 import androidx.health.connect.client.time.TimeRangeFilter
+import androidx.health.connect.client.units.Energy
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.dangjang.android.domain.model.HealthConnectVO
@@ -27,10 +28,12 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.time.Duration
 import java.time.Instant
 import java.time.ZonedDateTime
 import java.time.temporal.ChronoUnit
 import javax.inject.Inject
+import kotlin.math.roundToInt
 
 @HiltViewModel
 class IntroViewModel @Inject constructor(
@@ -45,6 +48,14 @@ class IntroViewModel @Inject constructor(
     val healthConnectFlow = _healthConnectFlow.asStateFlow()
 
     private val healthConnectClient by lazy { HealthConnectClient.getOrCreate(getApplication<Application>().applicationContext) }
+
+    lateinit var weightList: List<WeightRecord>
+    lateinit var stepList: List<StepsRecord>
+    lateinit var exerciseList: List<ExerciseSessionRecord>
+    lateinit var sleepDuration: Duration
+    lateinit var sleepSessionList: List<SleepSessionRecord>
+    lateinit var bloodGlucoseList: List<BloodGlucoseRecord>
+    lateinit var bloodPressureList: List<BloodPressureRecord>
 
     fun checkAvailability() {
         //설치여부 확인
@@ -105,9 +116,11 @@ class IntroViewModel @Inject constructor(
     private suspend fun readWeight() {
         val startOfDay = ZonedDateTime.now().truncatedTo(ChronoUnit.DAYS)
         val endOfWeek = startOfDay.toInstant().plus(7,ChronoUnit.DAYS)
-        // 헬스 커넥트 체중 읽기
-        readWeightInput(startOfDay.toInstant(),endOfWeek)
-        Log.e("HC-Weight",readWeightInput(startOfDay.toInstant(),endOfWeek).toString())
+
+        weightList = readWeightInput(startOfDay.toInstant(),endOfWeek)
+        for (weightRecord in weightList) {
+            Log.e("HC-Weight",weightRecord.weight.toString())
+        }
     }
 
     suspend fun readWeightInput(start: Instant, end: Instant): List<WeightRecord> {
@@ -124,9 +137,11 @@ class IntroViewModel @Inject constructor(
     private suspend fun readBloodGlucose() {
         val startOfDay = ZonedDateTime.now().truncatedTo(ChronoUnit.DAYS)
         val endOfWeek = startOfDay.toInstant().plus(7,ChronoUnit.DAYS)
-        // 헬스 커넥트 체중 읽기
-        readBloodGlucoseInput(startOfDay.toInstant(),endOfWeek)
-        Log.e("HC-BloodGlucose",readBloodGlucoseInput(startOfDay.toInstant(),endOfWeek).toString())
+
+        bloodGlucoseList = readBloodGlucoseInput(startOfDay.toInstant(),endOfWeek)
+        for (bloodGlucoseRecord in bloodGlucoseList) {
+            Log.e("HC-BloodGlucose",bloodGlucoseRecord.time.toString() + "시: " + bloodGlucoseRecord.level.inMilligramsPerDeciliter.roundToInt() + "mg/dL" )
+        }
     }
 
     private suspend fun readBloodGlucoseInput(start: Instant, end: Instant): List<BloodGlucoseRecord> {
@@ -143,9 +158,17 @@ class IntroViewModel @Inject constructor(
     private suspend fun readBloodPressureRecord() {
         val startOfDay = ZonedDateTime.now().truncatedTo(ChronoUnit.DAYS)
         val endOfWeek = startOfDay.toInstant().plus(7,ChronoUnit.DAYS)
-        // 헬스 커넥트 체중 읽기
-        readBloodPressureInput(startOfDay.toInstant(),endOfWeek)
-        Log.e("HC-BloodPressure",readBloodPressureInput(startOfDay.toInstant(),endOfWeek).toString())
+
+        bloodPressureList = readBloodPressureInput(startOfDay.toInstant(),endOfWeek)
+        for (bloodPressureRecord in bloodPressureList) {
+            //시간
+            val bpTime = bloodPressureRecord.time
+            //수축기
+            val systolicRecord = bloodPressureRecord.systolic.inMillimetersOfMercury.roundToInt()
+            //이완기
+            val diastolicRecord = bloodPressureRecord.diastolic.inMillimetersOfMercury.roundToInt()
+            Log.e("HC-BloodPressure", "시간: $bpTime, 수축기: $systolicRecord, 이완기: $diastolicRecord")
+        }
     }
 
     private suspend fun readBloodPressureInput(start: Instant, end: Instant): List<BloodPressureRecord> {
@@ -163,10 +186,19 @@ class IntroViewModel @Inject constructor(
         //TODO : 시간 범위 수정
         val startOfDay = ZonedDateTime.now().truncatedTo(ChronoUnit.DAYS)
         val endOfWeek = startOfDay.toInstant().plus(7,ChronoUnit.DAYS)
-        readSleepSessionInput(startOfDay.toInstant(),endOfWeek)
-        Log.e("HC-Sleep",readSleepSessionInput(startOfDay.toInstant(),endOfWeek).toString())
-        readSleepDuration(startOfDay.toInstant(),endOfWeek)
-        Log.e("HC-SleepDuration",readSleepDuration(startOfDay.toInstant(),endOfWeek).toString())
+
+        sleepSessionList = readSleepSessionInput(startOfDay.toInstant(),endOfWeek)
+        for (sleepSessionRecord in sleepSessionList) {
+            val sleepStartTime = sleepSessionRecord.startTime
+            val sleepEndTime = sleepSessionRecord.endTime
+            Log.e("HC-Sleep","시작 시간: $sleepStartTime, 종료 시간: $sleepEndTime")
+        }
+
+        sleepDuration = readSleepDuration(startOfDay.toInstant(),endOfWeek)!!
+        val durationHours: String = sleepDuration.toHours().toString()
+        val durationMinutes: String = (sleepDuration.toMinutes() % 60).toString()
+        val durationSeconds: String = (sleepDuration.getSeconds() % 60).toString()
+        Log.e("HC-SleepDuration",durationHours + "시간 " + durationMinutes+"분 "+durationSeconds+"초")
     }
 
     private suspend fun readSleepSessionInput(start: Instant, end: Instant): List<SleepSessionRecord> {
@@ -179,7 +211,7 @@ class IntroViewModel @Inject constructor(
     }
 
     //수면 시간
-    private suspend fun readSleepDuration(start: Instant, end: Instant): java.time.Duration? {
+    private suspend fun readSleepDuration(start: Instant, end: Instant): Duration? {
         val request = AggregateRequest(
             metrics = setOf(SleepSessionRecord.SLEEP_DURATION_TOTAL),
             timeRangeFilter = TimeRangeFilter.between(start, end)
@@ -193,8 +225,10 @@ class IntroViewModel @Inject constructor(
     private suspend fun readSteps() {
         val startOfDay = ZonedDateTime.now().truncatedTo(ChronoUnit.DAYS)
         val endOfWeek = startOfDay.toInstant().plus(7,ChronoUnit.DAYS)
-        readStepsInput(startOfDay.toInstant(),endOfWeek)
-        Log.e("HC-Steps",readStepsInput(startOfDay.toInstant(),endOfWeek).toString())
+        stepList = readStepsInput(startOfDay.toInstant(),endOfWeek)
+        for (stepsRecord in stepList) {
+            Log.e("HC-Steps",stepsRecord.count.toString()+"보")
+        }
     }
 
     private suspend fun readStepsInput(start: Instant, end: Instant): List<StepsRecord> {
@@ -211,17 +245,17 @@ class IntroViewModel @Inject constructor(
     private suspend fun readActiveCaloriesBurned() {
         val startOfDay = ZonedDateTime.now().truncatedTo(ChronoUnit.DAYS)
         val endOfWeek = startOfDay.toInstant().plus(7,ChronoUnit.DAYS)
-        readStepsInput(startOfDay.toInstant(),endOfWeek)
-        Log.e("HC-Calories",readActiveCaloriesBurnedInput(startOfDay.toInstant(),endOfWeek).toString())
+        val calories = readActiveCaloriesBurnedInput(startOfDay.toInstant(),endOfWeek)
+        Log.e("HC-Calories",calories?.inCalories.toString()+"cal")
     }
 
-    private suspend fun readActiveCaloriesBurnedInput(start: Instant, end: Instant): List<ActiveCaloriesBurnedRecord> {
-        val request = ReadRecordsRequest(
-            recordType = ActiveCaloriesBurnedRecord::class,
+    private suspend fun readActiveCaloriesBurnedInput(start: Instant, end: Instant): Energy? {
+        val request = AggregateRequest(
+            metrics = setOf(ActiveCaloriesBurnedRecord.ACTIVE_CALORIES_TOTAL),
             timeRangeFilter = TimeRangeFilter.between(start, end)
         )
-        val response = healthConnectClient.readRecords(request)
-        return response.records
+        val response = healthConnectClient.aggregate(request)
+        return response[ActiveCaloriesBurnedRecord.ACTIVE_CALORIES_TOTAL]
     }
 
     //운동
@@ -229,8 +263,14 @@ class IntroViewModel @Inject constructor(
     private suspend fun readExerciseSession() {
         val startOfDay = ZonedDateTime.now().truncatedTo(ChronoUnit.DAYS)
         val endOfWeek = startOfDay.toInstant().plus(7,ChronoUnit.DAYS)
-        readExerciseSessionInput(startOfDay.toInstant(),endOfWeek)
-        Log.e("HC-Exercise",readExerciseSessionInput(startOfDay.toInstant(),endOfWeek).toString())
+
+        exerciseList = readExerciseSessionInput(startOfDay.toInstant(),endOfWeek)
+        for (exerciseRecord in exerciseList) {
+            exerciseRecord.exerciseType
+            exerciseRecord.startTime
+            exerciseRecord.endTime
+            Log.e("HC-Exercise","운동 종류: " + exerciseRecord.exerciseType + " 시간: " + exerciseRecord.startTime + " to " + exerciseRecord.endTime)
+        }
     }
 
     private suspend fun readExerciseSessionInput(start: Instant, end: Instant): List<ExerciseSessionRecord> {
