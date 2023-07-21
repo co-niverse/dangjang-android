@@ -10,6 +10,7 @@ import androidx.health.connect.client.permission.HealthPermission
 import androidx.health.connect.client.records.BloodGlucoseRecord
 import androidx.health.connect.client.records.BloodPressureRecord
 import androidx.health.connect.client.records.SleepSessionRecord
+import androidx.health.connect.client.records.StepsRecord
 import androidx.health.connect.client.records.WeightRecord
 import androidx.health.connect.client.request.AggregateRequest
 import androidx.health.connect.client.request.ReadRecordsRequest
@@ -61,8 +62,9 @@ class IntroViewModel @Inject constructor(
     val permissions = setOf(
         HealthPermission.getReadPermission(WeightRecord::class),
         HealthPermission.getReadPermission(BloodGlucoseRecord::class),
-        HealthPermission.getReadPermission(BloodPressureRecord::class)
-    )
+        HealthPermission.getReadPermission(BloodPressureRecord::class),
+        HealthPermission.getReadPermission(StepsRecord::class)
+        )
 
     var permissionsGranted = false
 
@@ -81,6 +83,7 @@ class IntroViewModel @Inject constructor(
             readBloodGlucose()
             readBloodPressureRecord()
             readSleepSession()
+            readSteps()
         } else {
             Log.e("GRANT-ERROR","권한이 허용되지 않았습니다.")
         }
@@ -176,6 +179,24 @@ class IntroViewModel @Inject constructor(
         )
         val response = healthConnectClient.aggregate(request)
         return response[SleepSessionRecord.SLEEP_DURATION_TOTAL]
+    }
+
+    //걸음수
+    @RequiresApi(Build.VERSION_CODES.O)
+    private suspend fun readSteps() {
+        val startOfDay = ZonedDateTime.now().truncatedTo(ChronoUnit.DAYS)
+        val endOfWeek = startOfDay.toInstant().plus(7,ChronoUnit.DAYS)
+        readStepsInput(startOfDay.toInstant(),endOfWeek)
+        Log.e("HC-Steps",readStepsInput(startOfDay.toInstant(),endOfWeek).toString())
+    }
+
+    private suspend fun readStepsInput(start: Instant, end: Instant): List<StepsRecord> {
+        val request = ReadRecordsRequest(
+            recordType = StepsRecord::class,
+            timeRangeFilter = TimeRangeFilter.between(start, end)
+        )
+        val response = healthConnectClient.readRecords(request)
+        return response.records
     }
 
     fun getIntroData() {
