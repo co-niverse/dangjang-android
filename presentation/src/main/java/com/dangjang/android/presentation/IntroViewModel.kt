@@ -8,6 +8,7 @@ import androidx.annotation.RequiresApi
 import androidx.health.connect.client.HealthConnectClient
 import androidx.health.connect.client.permission.HealthPermission
 import androidx.health.connect.client.records.BloodGlucoseRecord
+import androidx.health.connect.client.records.BloodPressureRecord
 import androidx.health.connect.client.records.WeightRecord
 import androidx.health.connect.client.request.ReadRecordsRequest
 import androidx.health.connect.client.time.TimeRangeFilter
@@ -56,9 +57,9 @@ class IntroViewModel @Inject constructor(
     }
 
     val permissions = setOf(
-        //체중
         HealthPermission.getReadPermission(WeightRecord::class),
         HealthPermission.getReadPermission(BloodGlucoseRecord::class),
+        HealthPermission.getReadPermission(BloodPressureRecord::class)
     )
 
     var permissionsGranted = false
@@ -76,6 +77,7 @@ class IntroViewModel @Inject constructor(
         if (permissionsGranted) {
             readWeight()
             readBloodGlucose()
+            readBloodPressureRecord()
         } else {
             Log.e("GRANT-ERROR","권한이 허용되지 않았습니다.")
         }
@@ -117,6 +119,25 @@ class IntroViewModel @Inject constructor(
     private suspend fun readBloodGlucoseInput(start: Instant, end: Instant): List<BloodGlucoseRecord> {
         val request = ReadRecordsRequest(
             recordType = BloodGlucoseRecord::class,
+            timeRangeFilter = TimeRangeFilter.between(start, end)
+        )
+        val response = healthConnectClient.readRecords(request)
+        return response.records
+    }
+
+    //혈압
+    @RequiresApi(Build.VERSION_CODES.O)
+    private suspend fun readBloodPressureRecord() {
+        val startOfDay = ZonedDateTime.now().truncatedTo(ChronoUnit.DAYS)
+        val endOfWeek = startOfDay.toInstant().plus(7,ChronoUnit.DAYS)
+        // 헬스 커넥트 체중 읽기
+        readBloodPressureInput(startOfDay.toInstant(),endOfWeek)
+        Log.e("HC-BloodPressure",readBloodPressureInput(startOfDay.toInstant(),endOfWeek).toString())
+    }
+
+    private suspend fun readBloodPressureInput(start: Instant, end: Instant): List<BloodPressureRecord> {
+        val request = ReadRecordsRequest(
+            recordType = BloodPressureRecord::class,
             timeRangeFilter = TimeRangeFilter.between(start, end)
         )
         val response = healthConnectClient.readRecords(request)
