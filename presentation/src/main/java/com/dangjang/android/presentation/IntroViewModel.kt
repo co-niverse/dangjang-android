@@ -41,7 +41,6 @@ class IntroViewModel @Inject constructor(
     private val healthConnectClient by lazy { HealthConnectClient.getOrCreate(getApplication<Application>().applicationContext) }
 
     fun checkAvailability() {
-        Log.e("vm-sdkStatus", HealthConnectClient.sdkStatus(getApplication<Application>().applicationContext).toString())
         //설치여부 확인
         var sdkStatus = HealthConnectClient.sdkStatus(getApplication<Application>().applicationContext)
         if (sdkStatus == HealthConnectClient.SDK_AVAILABLE) { // 설치 되어 있음
@@ -72,7 +71,6 @@ class IntroViewModel @Inject constructor(
 
     // 권한 체크를 적용하고 에러를 핸들링한다.
     private suspend fun tryWithPermissionsCheck() {
-        Log.e("94","94")
         permissionsGranted = hasAllPermissions(permissions)
         if (permissionsGranted) {
             readWeight()
