@@ -59,6 +59,36 @@ class IntroViewModel @Inject constructor(
     lateinit var bloodGlucoseList: List<BloodGlucoseRecord>
     lateinit var bloodPressureList: List<BloodPressureRecord>
 
+    private val weightPermission = setOf(
+        HealthPermission.getReadPermission(WeightRecord::class)
+    )
+    private val bloodGlucosePermission = setOf(
+        HealthPermission.getReadPermission(BloodGlucoseRecord::class)
+    )
+    private val bloodPressurePermission = setOf(
+        HealthPermission.getReadPermission(BloodPressureRecord::class)
+    )
+    private val sleepSessionPermission = setOf(
+        HealthPermission.getReadPermission(SleepSessionRecord::class)
+    )
+    private val stepsPermission = setOf(
+        HealthPermission.getReadPermission(StepsRecord::class)
+    )
+    private val activeCaloriesBurnedPermission = setOf(
+        HealthPermission.getReadPermission(ActiveCaloriesBurnedRecord::class)
+    )
+    private val exerciseSessionPermission = setOf(
+        HealthPermission.getReadPermission(ExerciseSessionRecord::class)
+    )
+
+    var weightPermissionGranted = false
+    var bloodGlucosePermissionGranted = false
+    var bloodPressurePermissionGranted = false
+    var sleepSessionPermissionGranted = false
+    var stepsPermissionGranted = false
+    var activeCaloriesBurnedPermissionGranted = false
+    var exerciseSessionPermissionGranted = false
+
     fun checkAvailability() {
         //설치여부 확인
         var sdkStatus = HealthConnectClient.sdkStatus(getApplication<Application>().applicationContext)
@@ -74,38 +104,78 @@ class IntroViewModel @Inject constructor(
         }
     }
 
-    val permissions = setOf(
-        HealthPermission.getReadPermission(WeightRecord::class),
-        HealthPermission.getReadPermission(BloodGlucoseRecord::class),
-        HealthPermission.getReadPermission(BloodPressureRecord::class),
-        HealthPermission.getReadPermission(SleepSessionRecord::class),
-        HealthPermission.getReadPermission(StepsRecord::class),
-        HealthPermission.getReadPermission(ActiveCaloriesBurnedRecord::class),
-        HealthPermission.getReadPermission(ExerciseSessionRecord::class)
-        )
-
-    var permissionsGranted = false
-
     @RequiresApi(Build.VERSION_CODES.O)
     fun getHealthConnect() {
         viewModelScope.launch {
-            tryWithPermissionsCheck()
+            tryWithWeightPermissionsCheck()
+            tryWithBloodGlucosePermissionsCheck()
+            tryWithBloodPressurePermissionCheck()
+            tryWithSleepSessionPermissionCheck()
+            tryWithStepsPermissionCheck()
+            tryWithActiveCaloriesBurnedPermissionCheck()
+            tryWithExerciseSessionPermissionCheck()
+        }
+    }
+    private suspend fun tryWithWeightPermissionsCheck() {
+        weightPermissionGranted = hasAllPermissions(weightPermission)
+        if (weightPermissionGranted) {
+            readWeight()
+        } else {
+            Log.e("GRANT-ERROR","체중 권한이 허용되지 않았습니다.")
         }
     }
 
-    // 권한 체크를 적용하고 에러를 핸들링한다.
-    private suspend fun tryWithPermissionsCheck() {
-        permissionsGranted = hasAllPermissions(permissions)
-        if (permissionsGranted) {
-            readWeight()
+    private suspend fun tryWithBloodGlucosePermissionsCheck() {
+        bloodGlucosePermissionGranted = hasAllPermissions(bloodGlucosePermission)
+        if (bloodGlucosePermissionGranted) {
             readBloodGlucose()
+        } else {
+            Log.e("GRANT-ERROR","혈당 권한이 허용되지 않았습니다.")
+        }
+    }
+
+    private suspend fun tryWithBloodPressurePermissionCheck() {
+        bloodPressurePermissionGranted = hasAllPermissions(bloodPressurePermission)
+        if (bloodPressurePermissionGranted) {
             readBloodPressureRecord()
+        } else {
+            Log.e("GRANT-ERROR","혈압 권한이 허용되지 않았습니다.")
+        }
+    }
+
+    private suspend fun tryWithSleepSessionPermissionCheck() {
+        sleepSessionPermissionGranted = hasAllPermissions(sleepSessionPermission)
+        if (sleepSessionPermissionGranted) {
             readSleepSession()
+        } else {
+            Log.e("GRANT-ERROR","수면 권한이 허용되지 않았습니다.")
+        }
+    }
+
+    private suspend fun tryWithStepsPermissionCheck() {
+        stepsPermissionGranted = hasAllPermissions(stepsPermission)
+        if (stepsPermissionGranted) {
             readSteps()
+        } else {
+            Log.e("GRANT-ERROR","걸음수 권한이 허용되지 않았습니다.")
+        }
+    }
+
+    private suspend fun tryWithActiveCaloriesBurnedPermissionCheck() {
+        activeCaloriesBurnedPermissionGranted = hasAllPermissions(activeCaloriesBurnedPermission)
+        if (activeCaloriesBurnedPermissionGranted) {
             readActiveCaloriesBurned()
+        } else {
+            Log.e("GRANT-ERROR","활동 칼로리 소모량 권한이 허용되지 않았습니다.")
+        }
+    }
+
+    private suspend fun tryWithExerciseSessionPermissionCheck() {
+        exerciseSessionPermissionGranted = hasAllPermissions(exerciseSessionPermission)
+        if (exerciseSessionPermissionGranted) {
             readExerciseSession()
         } else {
-            Log.e("GRANT-ERROR","권한이 허용되지 않았습니다.")
+            Log.e("GRANT-ERROR","운동 권한이 허용되지 않았습니다.")
         }
     }
 
