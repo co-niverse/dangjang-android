@@ -10,6 +10,7 @@ import androidx.health.connect.client.permission.HealthPermission
 import androidx.health.connect.client.records.ActiveCaloriesBurnedRecord
 import androidx.health.connect.client.records.BloodGlucoseRecord
 import androidx.health.connect.client.records.BloodPressureRecord
+import androidx.health.connect.client.records.ExerciseSessionRecord
 import androidx.health.connect.client.records.SleepSessionRecord
 import androidx.health.connect.client.records.StepsRecord
 import androidx.health.connect.client.records.WeightRecord
@@ -66,7 +67,8 @@ class IntroViewModel @Inject constructor(
         HealthPermission.getReadPermission(BloodPressureRecord::class),
         HealthPermission.getReadPermission(SleepSessionRecord::class),
         HealthPermission.getReadPermission(StepsRecord::class),
-        HealthPermission.getReadPermission(ActiveCaloriesBurnedRecord::class)
+        HealthPermission.getReadPermission(ActiveCaloriesBurnedRecord::class),
+        HealthPermission.getReadPermission(ExerciseSessionRecord::class)
         )
 
     var permissionsGranted = false
@@ -88,6 +90,7 @@ class IntroViewModel @Inject constructor(
             readSleepSession()
             readSteps()
             readActiveCaloriesBurned()
+            readExerciseSession()
         } else {
             Log.e("GRANT-ERROR","권한이 허용되지 않았습니다.")
         }
@@ -215,6 +218,24 @@ class IntroViewModel @Inject constructor(
     private suspend fun readActiveCaloriesBurnedInput(start: Instant, end: Instant): List<ActiveCaloriesBurnedRecord> {
         val request = ReadRecordsRequest(
             recordType = ActiveCaloriesBurnedRecord::class,
+            timeRangeFilter = TimeRangeFilter.between(start, end)
+        )
+        val response = healthConnectClient.readRecords(request)
+        return response.records
+    }
+
+    //운동
+    @RequiresApi(Build.VERSION_CODES.O)
+    private suspend fun readExerciseSession() {
+        val startOfDay = ZonedDateTime.now().truncatedTo(ChronoUnit.DAYS)
+        val endOfWeek = startOfDay.toInstant().plus(7,ChronoUnit.DAYS)
+        readExerciseSessionInput(startOfDay.toInstant(),endOfWeek)
+        Log.e("HC-Exercise",readExerciseSessionInput(startOfDay.toInstant(),endOfWeek).toString())
+    }
+
+    private suspend fun readExerciseSessionInput(start: Instant, end: Instant): List<ExerciseSessionRecord> {
+        val request = ReadRecordsRequest(
+            recordType = ExerciseSessionRecord::class,
             timeRangeFilter = TimeRangeFilter.between(start, end)
         )
         val response = healthConnectClient.readRecords(request)
