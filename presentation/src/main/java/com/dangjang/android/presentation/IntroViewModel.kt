@@ -87,11 +87,11 @@ class IntroViewModel @Inject constructor(
         val startOfDay = ZonedDateTime.now().truncatedTo(ChronoUnit.DAYS)
         val endOfWeek = startOfDay.toInstant().plus(7,ChronoUnit.DAYS)
         // 헬스 커넥트 체중 읽기
-        readWeight(startOfDay.toInstant(),endOfWeek)
-        Log.e("HC-Weight",readWeight(startOfDay.toInstant(),endOfWeek).toString())
+        readWeightInput(startOfDay.toInstant(),endOfWeek)
+        Log.e("HC-Weight",readWeightInput(startOfDay.toInstant(),endOfWeek).toString())
     }
 
-    suspend fun readWeight(start: Instant, end: Instant): List<WeightRecord> {
+    suspend fun readWeightInput(start: Instant, end: Instant): List<WeightRecord> {
         val request = ReadRecordsRequest(
             recordType = WeightRecord::class,
             timeRangeFilter = TimeRangeFilter.between(start, end)
