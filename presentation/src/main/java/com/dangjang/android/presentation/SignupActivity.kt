@@ -14,6 +14,8 @@ class SignupActivity: FragmentActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_signup)
 
+        val signupNicknameFragment = SignupNicknameFragment()
+        supportFragmentManager.beginTransaction().add(R.id.fragment_signup_view, signupNicknameFragment).commit()
 
     }
 }
