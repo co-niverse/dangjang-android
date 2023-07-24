@@ -9,8 +9,10 @@ import androidx.health.connect.client.HealthConnectClient
 import androidx.health.connect.client.permission.HealthPermission
 import androidx.health.connect.client.records.ActiveCaloriesBurnedRecord
 import androidx.health.connect.client.records.BloodGlucoseRecord
+import androidx.health.connect.client.records.BloodGlucoseRecord.Companion.RELATION_TO_MEAL_INT_TO_STRING_MAP
 import androidx.health.connect.client.records.BloodPressureRecord
 import androidx.health.connect.client.records.ExerciseSessionRecord
+import androidx.health.connect.client.records.MealType.MEAL_TYPE_INT_TO_STRING_MAP
 import androidx.health.connect.client.records.SleepSessionRecord
 import androidx.health.connect.client.records.StepsRecord
 import androidx.health.connect.client.records.WeightRecord
@@ -209,7 +211,9 @@ class IntroViewModel @Inject constructor(
         bloodGlucoseList = readBloodGlucoseRecord(startOfDay.toInstant(),endOfWeek)
         for (bloodGlucoseRecord in bloodGlucoseList) {
             val bgTime = changeInstantToKST(bloodGlucoseRecord.time)
-            Log.e("HC-BloodGlucose",bgTime + "시: " + bloodGlucoseRecord.level.inMilligramsPerDeciliter.roundToInt() + "mg/dL" )
+            val mealType = MEAL_TYPE_INT_TO_STRING_MAP.get(bloodGlucoseRecord.mealType)
+            val relationToMeal = RELATION_TO_MEAL_INT_TO_STRING_MAP.get(bloodGlucoseRecord.relationToMeal)
+            Log.e("HC-BloodGlucose",bgTime + "시: " + "("+ mealType + ", "+relationToMeal + ") " + bloodGlucoseRecord.level.inMilligramsPerDeciliter.roundToInt() + "mg/dL" )
         }
     }
 
