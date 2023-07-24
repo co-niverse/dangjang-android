@@ -1,5 +1,6 @@
 package com.dangjang.android.data.di
 
+import com.dangjang.android.data.BuildConfig
 import com.dangjang.android.data.datasource.IntroApiService
 import com.dangjang.android.data.datasource.LoginDataSource
 import dagger.Module
@@ -16,7 +17,8 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
 
-    private const val BASE_URL = "http://api.dev.dangjangclub.com:8080/"
+    private const val BASE_URL = BuildConfig.BASE_URL
+
     @Provides
     @Singleton
     fun provideRequestHttpLoggingInterceptor() : HttpLoggingInterceptor {
