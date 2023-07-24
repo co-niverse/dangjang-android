@@ -5,10 +5,10 @@ import com.dangjang.android.data.model.response.BaseResponse
 import javax.inject.Inject
 
 class IntroDataSource @Inject constructor(
-    private val introDataSourceImpl: IntroDataSourceImpl
+    private val introApiService: IntroApiService
 ) : BaseNetworkDataSource() {
 
     suspend fun getIntroApi(): BaseResponse<IntroDto> {
-        return checkResponse(introDataSourceImpl.getIntroApi())
+        return checkResponse(introApiService.getIntroApi())
     }
 }
