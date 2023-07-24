@@ -94,9 +94,9 @@ class IntroViewModel @Inject constructor(
         var sdkStatus = HealthConnectClient.sdkStatus(getApplication<Application>().applicationContext)
         _healthConnectFlow.update { HealthConnectVO(sdkStatus) }
         when (sdkStatus) {
-            HealthConnectClient.SDK_AVAILABLE -> Log.e("HealthConnect-status","헬스커넥트가 설치되어 있습니다.")
             HealthConnectClient.SDK_UNAVAILABLE_PROVIDER_UPDATE_REQUIRED -> Log.e("HealthConnect-ERROR","헬스커넥트 설치나 업데이트가 필요합니다.")
             HealthConnectClient.SDK_UNAVAILABLE -> Log.e("HealthConnect-ERROR","헬스커넥트를 설치할 수 없습니다.")
+            HealthConnectClient.SDK_AVAILABLE -> Log.e("HealthConnect-status","헬스커넥트가 설치되어 있습니다.")
         }
     }
 

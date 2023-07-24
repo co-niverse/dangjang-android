@@ -26,7 +26,7 @@ class IntroFragment : BaseFragment<FragmentIntroBinding>(R.layout.fragment_intro
 
         viewModel.checkAvailability()
 
-        if (viewModel.healthConnectFlow.value.isAvaiable == 1) {
+        if (viewModel.healthConnectFlow.value.isAvaiable == 3) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 viewModel.getHealthConnect()
             }
