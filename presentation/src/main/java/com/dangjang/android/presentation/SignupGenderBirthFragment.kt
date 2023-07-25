@@ -154,5 +154,11 @@ class SignupGenderBirthFragment : BaseFragment<FragmentSignupGenderBirthBinding>
         monthSpinner.adapter = monthAdapter
         daySpinner.adapter = dayAdapter
 
+        binding.genderBirthBtn.setOnClickListener {
+            val signupBodyFragment = SignupBodyFragment()
+            parentFragmentManager.beginTransaction().add(R.id.fragment_signup_view, signupBodyFragment).commit()
+
+        }
+
     }
 }
