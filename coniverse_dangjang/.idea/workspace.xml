@@ -10,17 +10,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e7afa9d2-7aa6-4ca6-9d5c-3126bd38395c" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../data/src/main/java/com/dangjang/android/data/datasource/IntroDataSource.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../data/src/main/java/com/dangjang/android/data/datasource/IntroDataSource.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../domain/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../domain/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../domain/src/main/java/com/dangjang/android/domain/usecase/GetIntroUseCase.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../domain/src/main/java/com/dangjang/android/domain/usecase/GetIntroUseCase.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.idea/deploymentTargetDropDown.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../presentation/src/main/java/com/dangjang/android/presentation/SignupNicknameFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../presentation/src/main/java/com/dangjang/android/presentation/SignupNicknameFragment.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../presentation/src/main/res/layout/fragment_signup_nickname.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../presentation/src/main/res/layout/fragment_signup_nickname.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[/Users/adela/.android/avd/New_Device_API_32.avd]" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[R5CR31N832M]" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
@@ -56,18 +55,18 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/adela/Desktop/dangjang/co-niverse-android/coniverse_dangjang&quot;,
-    &quot;memory.settings.postsync.last.time.stamp&quot;: &quot;1687402518859&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settingsdialog.project.gradle&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "cidr.known.project.marker": "true",
+    "last_opened_file_path": "/Users/adela/Desktop/dangjang/co-niverse-android/coniverse_dangjang",
+    "memory.settings.postsync.last.time.stamp": "1687402518859",
+    "settings.editor.selected.configurable": "preferences.pluginManager"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveKotlinTopLevelDeclarationsDialog.RECENTS_KEY">
       <recent name="com.dangjang.android.presentation" />
