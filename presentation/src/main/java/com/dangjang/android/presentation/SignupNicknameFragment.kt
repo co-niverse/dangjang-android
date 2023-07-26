@@ -50,7 +50,7 @@ class SignupNicknameFragment : BaseFragment<FragmentSignupNicknameBinding>(R.lay
 
         binding.nicknameBtn.setOnClickListener {
             val signupGenderBirthFragment = SignupGenderBirthFragment()
-            parentFragmentManager.beginTransaction().add(R.id.fragment_signup_view, signupGenderBirthFragment).commit()
+            parentFragmentManager.beginTransaction().replace(R.id.fragment_signup_view, signupGenderBirthFragment).commit()
         }
 
     }
