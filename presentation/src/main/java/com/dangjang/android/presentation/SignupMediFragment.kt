@@ -69,6 +69,10 @@ class SignupMediFragment : BaseFragment<FragmentSignupMediBinding>(R.layout.frag
             parentFragmentManager.beginTransaction().replace(R.id.fragment_signup_view, signupDiseaseFragment).addToBackStack(null).commit()
         }
 
+        binding.backIv.setOnClickListener {
+            parentFragmentManager.popBackStack()
+        }
+
     }
 
     private fun setMedicineGreen() {

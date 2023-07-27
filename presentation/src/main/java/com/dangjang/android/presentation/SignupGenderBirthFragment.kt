@@ -160,5 +160,9 @@ class SignupGenderBirthFragment : BaseFragment<FragmentSignupGenderBirthBinding>
 
         }
 
+        binding.backIv.setOnClickListener {
+            parentFragmentManager.popBackStack()
+        }
+
     }
 }

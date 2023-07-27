@@ -115,6 +115,10 @@ class SignupDiseaseFragment : BaseFragment<FragmentSignupDiseaseBinding>(R.layou
             parentFragmentManager.beginTransaction().replace(R.id.fragment_signup_view, signupAgreeFragment).addToBackStack(null).commit()
         }
 
+        binding.backIv.setOnClickListener {
+            parentFragmentManager.popBackStack()
+        }
+
     }
 
     private fun setLowBpGreen() {

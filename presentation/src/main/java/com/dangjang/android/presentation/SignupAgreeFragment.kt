@@ -41,6 +41,10 @@ class SignupAgreeFragment : BaseFragment<FragmentSignupAgreeBinding>(R.layout.fr
                 setBtnGreen()
             }
         }
+
+        binding.backIv.setOnClickListener {
+            parentFragmentManager.popBackStack()
+        }
     }
 
     private fun setBtnGreen() {

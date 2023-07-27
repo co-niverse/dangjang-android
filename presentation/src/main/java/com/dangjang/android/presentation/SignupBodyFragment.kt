@@ -60,5 +60,9 @@ class SignupBodyFragment : BaseFragment<FragmentSignupBodyBinding>(R.layout.frag
             parentFragmentManager.beginTransaction().replace(R.id.fragment_signup_view, signupActiveFragment).addToBackStack(null).commit()
         }
 
+        binding.backIv.setOnClickListener {
+            parentFragmentManager.popBackStack()
+        }
+
     }
 }
