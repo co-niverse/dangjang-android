@@ -112,7 +112,7 @@ class SignupDiseaseFragment : BaseFragment<FragmentSignupDiseaseBinding>(R.layou
 
         binding.diseaseBtn.setOnClickListener {
             val signupAgreeFragment = SignupAgreeFragment()
-            parentFragmentManager.beginTransaction().replace(R.id.fragment_signup_view, signupAgreeFragment).commit()
+            parentFragmentManager.beginTransaction().replace(R.id.fragment_signup_view, signupAgreeFragment).addToBackStack(null).commit()
         }
 
     }

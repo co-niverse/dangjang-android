@@ -156,7 +156,7 @@ class SignupGenderBirthFragment : BaseFragment<FragmentSignupGenderBirthBinding>
 
         binding.genderBirthBtn.setOnClickListener {
             val signupBodyFragment = SignupBodyFragment()
-            parentFragmentManager.beginTransaction().replace(R.id.fragment_signup_view, signupBodyFragment).commit()
+            parentFragmentManager.beginTransaction().replace(R.id.fragment_signup_view, signupBodyFragment).addToBackStack(null).commit()
 
         }
 

@@ -72,7 +72,7 @@ class SignupDiagnosisFragment : BaseFragment<FragmentSignupDiagnosisBinding>(R.l
 
         binding.diagnosisBtn.setOnClickListener {
             val signupMediFragment = SignupMediFragment()
-            parentFragmentManager.beginTransaction().replace(R.id.fragment_signup_view, signupMediFragment).commit()
+            parentFragmentManager.beginTransaction().replace(R.id.fragment_signup_view, signupMediFragment).addToBackStack(null).commit()
         }
     }
 

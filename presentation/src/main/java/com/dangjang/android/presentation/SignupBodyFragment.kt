@@ -57,7 +57,7 @@ class SignupBodyFragment : BaseFragment<FragmentSignupBodyBinding>(R.layout.frag
 
         binding.bodyBtn.setOnClickListener {
             val signupActiveFragment = SignupActiveFragment()
-            parentFragmentManager.beginTransaction().replace(R.id.fragment_signup_view, signupActiveFragment).commit()
+            parentFragmentManager.beginTransaction().replace(R.id.fragment_signup_view, signupActiveFragment).addToBackStack(null).commit()
         }
 
     }
