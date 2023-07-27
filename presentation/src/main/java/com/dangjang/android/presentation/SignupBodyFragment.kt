@@ -35,8 +35,7 @@ class SignupBodyFragment : BaseFragment<FragmentSignupBodyBinding>(R.layout.frag
             override fun afterTextChanged(p0: Editable?) {
                 heightFlag = true
                 if (heightFlag && weightFlag) {
-                    binding.bodyBtn.setBackgroundResource(R.drawable.background_green_gradient)
-                    binding.bodyBtn.setOnTouchListener({ v, event -> false })
+                    setBodyGreen()
                 }
             }
 
@@ -52,8 +51,7 @@ class SignupBodyFragment : BaseFragment<FragmentSignupBodyBinding>(R.layout.frag
             override fun afterTextChanged(p0: Editable?) {
                 weightFlag = true
                 if (heightFlag && weightFlag) {
-                    binding.bodyBtn.setBackgroundResource(R.drawable.background_green_gradient)
-                    binding.bodyBtn.setOnTouchListener({ v, event -> false })
+                    setBodyGreen()
                 }
             }
 
@@ -68,5 +66,10 @@ class SignupBodyFragment : BaseFragment<FragmentSignupBodyBinding>(R.layout.frag
             parentFragmentManager.popBackStack()
         }
 
+    }
+
+    private fun setBodyGreen() {
+        binding.bodyBtn.setBackgroundResource(R.drawable.background_green_gradient)
+        binding.bodyBtn.setOnTouchListener({ v, event -> false })
     }
 }
