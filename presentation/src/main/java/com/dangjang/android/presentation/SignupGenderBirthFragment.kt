@@ -19,6 +19,9 @@ class SignupGenderBirthFragment : BaseFragment<FragmentSignupGenderBirthBinding>
 
     private val viewModel by viewModels<SignupViewModel>()
 
+    var manFlag = false
+    var womanFlag = false
+
     override fun initView() {
         bind {
             vm = viewModel
@@ -29,61 +32,80 @@ class SignupGenderBirthFragment : BaseFragment<FragmentSignupGenderBirthBinding>
 
         binding.genderBirthBtn.setOnTouchListener({ v, event -> true })
 
-        var manFlag = false
-        var womanFlag = false
-        var birthFlag = 0
+        setYearSpinner()
+        setMonthSpinner()
+        setDaySpinner()
 
         binding.manBtn.setOnClickListener {
             if (manFlag) {
-                binding.manBtn.setTextColor(Color.parseColor("#878787"))
-                binding.manBtn.setBackgroundResource(R.drawable.background_round_gray)
-                binding.womanBtn.setTextColor(Color.parseColor("#32CC42"))
-                binding.womanBtn.setBackgroundResource(R.drawable.background_round_green)
+                setManBtnGray()
+                setWomanBtnGreen()
             } else {
-                binding.manBtn.setTextColor(Color.parseColor("#32CC42"))
-                binding.manBtn.setBackgroundResource(R.drawable.background_round_green)
-                binding.womanBtn.setTextColor(Color.parseColor("#878787"))
-                binding.womanBtn.setBackgroundResource(R.drawable.background_round_gray)
+                setManBtnGreen()
+                setWomanBtnGray()
             }
             manFlag = !manFlag
             womanFlag = manFlag
+            setBtnGreen()
         }
 
         binding.womanBtn.setOnClickListener {
             if (womanFlag) {
-                binding.womanBtn.setTextColor(Color.parseColor("#878787"))
-                binding.womanBtn.setBackgroundResource(R.drawable.background_round_gray)
-                binding.manBtn.setTextColor(Color.parseColor("#32CC42"))
-                binding.manBtn.setBackgroundResource(R.drawable.background_round_green)
+                setWomanBtnGray()
+                setManBtnGreen()
             } else {
-                binding.womanBtn.setTextColor(Color.parseColor("#32CC42"))
-                binding.womanBtn.setBackgroundResource(R.drawable.background_round_green)
-                binding.manBtn.setTextColor(Color.parseColor("#878787"))
-                binding.manBtn.setBackgroundResource(R.drawable.background_round_gray)
+                setWomanBtnGreen()
+                setManBtnGray()
             }
             manFlag = !manFlag
             womanFlag = manFlag
+            setBtnGreen()
         }
 
+        binding.genderBirthBtn.setOnClickListener {
+            val signupBodyFragment = SignupBodyFragment()
+            parentFragmentManager.beginTransaction().replace(R.id.fragment_signup_view, signupBodyFragment).addToBackStack(null).commit()
+
+        }
+
+        binding.backIv.setOnClickListener {
+            parentFragmentManager.popBackStack()
+        }
+
+    }
+
+    private fun setWomanBtnGreen() {
+        binding.womanBtn.setTextColor(Color.parseColor("#32CC42"))
+        binding.womanBtn.setBackgroundResource(R.drawable.background_round_green)
+    }
+
+    private fun setWomanBtnGray() {
+        binding.womanBtn.setTextColor(Color.parseColor("#878787"))
+        binding.womanBtn.setBackgroundResource(R.drawable.background_round_gray)
+    }
+
+    private fun setManBtnGreen() {
+        binding.manBtn.setTextColor(Color.parseColor("#32CC42"))
+        binding.manBtn.setBackgroundResource(R.drawable.background_round_green)
+    }
+
+    private fun setManBtnGray() {
+        binding.manBtn.setTextColor(Color.parseColor("#878787"))
+        binding.manBtn.setBackgroundResource(R.drawable.background_round_gray)
+    }
+
+    private fun setBtnGreen() {
+        binding.genderBirthBtn.setBackgroundResource(R.drawable.background_green_gradient)
+        binding.genderBirthBtn.setOnTouchListener({ v, event -> false })
+    }
+
+    private fun setYearSpinner() {
         val yearSpinner: Spinner = binding.yearSpinner
-        val monthSpinner: Spinner = binding.monthSpinner
-        val daySpinner: Spinner = binding.daySpinner
 
         val yearList = arrayListOf<String>()
         for (i in 1940..2021) {
             yearList.add(i.toString()+" 년")
         }
-
-        val monthList = arrayListOf<String>()
-        for (i in 1..12) {
-            monthList.add(i.toString()+" 월")
-        }
-
-        val dayList = arrayListOf<String>()
-        for (i in 1..31) {
-            dayList.add(i.toString()+" 일")
-        }
-
 
         val yearAdapter = object : ArrayAdapter<String>(requireContext(), R.layout.custom_spinner_dropdown_item, yearList),
             SpinnerAdapter {
@@ -93,6 +115,19 @@ class SignupGenderBirthFragment : BaseFragment<FragmentSignupGenderBirthBinding>
                 view.setTextColor(Color.BLACK) // 드롭다운 리스트의 항목 텍스트 색상 설정
                 return view
             }
+        }
+
+        yearSpinner.adapter = yearAdapter
+        yearSpinner.setSelection(30)
+
+    }
+
+    private fun setMonthSpinner() {
+        val monthSpinner: Spinner = binding.monthSpinner
+
+        val monthList = arrayListOf<String>()
+        for (i in 1..12) {
+            monthList.add(i.toString()+" 월")
         }
 
         val monthAdapter = object : ArrayAdapter<String>(requireContext(), R.layout.custom_spinner_dropdown_item, monthList),
@@ -105,6 +140,17 @@ class SignupGenderBirthFragment : BaseFragment<FragmentSignupGenderBirthBinding>
             }
         }
 
+        monthSpinner.adapter = monthAdapter
+    }
+
+    private fun setDaySpinner() {
+        val daySpinner: Spinner = binding.daySpinner
+
+        val dayList = arrayListOf<String>()
+        for (i in 1..31) {
+            dayList.add(i.toString()+" 일")
+        }
+
         val dayAdapter = object : ArrayAdapter<String>(requireContext(), R.layout.custom_spinner_dropdown_item, dayList),
             SpinnerAdapter {
             override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
@@ -115,57 +161,6 @@ class SignupGenderBirthFragment : BaseFragment<FragmentSignupGenderBirthBinding>
             }
         }
 
-        yearSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
-            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
-                birthFlag += 1
-                Log.d("birthFlag", birthFlag.toString())
-            }
-
-            override fun onNothingSelected(p0: AdapterView<*>?) {
-            }
-
-        }
-
-        monthSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
-            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
-                birthFlag += 1
-                Log.d("birthFlag", birthFlag.toString())
-            }
-
-            override fun onNothingSelected(p0: AdapterView<*>?) {
-            }
-
-        }
-
-        daySpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
-            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
-                birthFlag += 1
-                Log.d("birthFlag", birthFlag.toString())
-                if ((manFlag || womanFlag) && (birthFlag == 6)) {
-                    binding.genderBirthBtn.setBackgroundResource(R.drawable.background_green_gradient)
-                    binding.genderBirthBtn.setOnTouchListener({ v, event -> false })
-                }
-            }
-
-            override fun onNothingSelected(p0: AdapterView<*>?) {
-            }
-
-        }
-
-        yearSpinner.adapter = yearAdapter
-        yearSpinner.setSelection(30)
-        monthSpinner.adapter = monthAdapter
         daySpinner.adapter = dayAdapter
-
-        binding.genderBirthBtn.setOnClickListener {
-            val signupBodyFragment = SignupBodyFragment()
-            parentFragmentManager.beginTransaction().replace(R.id.fragment_signup_view, signupBodyFragment).addToBackStack(null).commit()
-
-        }
-
-        binding.backIv.setOnClickListener {
-            parentFragmentManager.popBackStack()
-        }
-
     }
 }
