@@ -28,8 +28,29 @@ class SignupDiagnosisFragment : BaseFragment<FragmentSignupDiagnosisBinding>(R.l
 
         binding.diagnosisBtn.setOnTouchListener({ v, event -> true })
 
-        var yesNoFlag = false
+        setYearSpinner()
 
+        binding.yesBtn.setOnClickListener {
+            setYesGreen()
+            setBtnGreen()
+        }
+
+        binding.noBtn.setOnClickListener {
+            setNoGreen()
+            setBtnGreen()
+        }
+
+        binding.diagnosisBtn.setOnClickListener {
+            val signupMediFragment = SignupMediFragment()
+            parentFragmentManager.beginTransaction().replace(R.id.fragment_signup_view, signupMediFragment).addToBackStack(null).commit()
+        }
+
+        binding.backIv.setOnClickListener {
+            parentFragmentManager.popBackStack()
+        }
+    }
+
+    private fun setYearSpinner() {
         val yearSpinner: Spinner = binding.yearSpinner
 
         val yearList = arrayListOf<String>()
@@ -48,38 +69,8 @@ class SignupDiagnosisFragment : BaseFragment<FragmentSignupDiagnosisBinding>(R.l
             }
         }
 
-        yearSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
-            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
-                if (yesNoFlag == true) {
-                    setBtnGreen()
-                }
-            }
-
-            override fun onNothingSelected(p0: AdapterView<*>?) {
-            }
-
-        }
-
         yearSpinner.adapter = yearAdapter
 
-        binding.yesBtn.setOnClickListener {
-            setYesGreen()
-            yesNoFlag = true
-        }
-
-        binding.noBtn.setOnClickListener {
-            setNoGreen()
-            yesNoFlag = true
-        }
-
-        binding.diagnosisBtn.setOnClickListener {
-            val signupMediFragment = SignupMediFragment()
-            parentFragmentManager.beginTransaction().replace(R.id.fragment_signup_view, signupMediFragment).addToBackStack(null).commit()
-        }
-
-        binding.backIv.setOnClickListener {
-            parentFragmentManager.popBackStack()
-        }
     }
 
     private fun setYesGreen() {
