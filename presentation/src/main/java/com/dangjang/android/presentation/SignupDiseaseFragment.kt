@@ -110,6 +110,11 @@ class SignupDiseaseFragment : BaseFragment<FragmentSignupDiseaseBinding>(R.layou
             setBtnGreen()
         }
 
+        binding.diseaseBtn.setOnClickListener {
+            val signupAgreeFragment = SignupAgreeFragment()
+            parentFragmentManager.beginTransaction().replace(R.id.fragment_signup_view, signupAgreeFragment).commit()
+        }
+
     }
 
     private fun setLowBpGreen() {
