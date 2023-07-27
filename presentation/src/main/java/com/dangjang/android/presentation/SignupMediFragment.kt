@@ -19,6 +19,8 @@ class SignupMediFragment : BaseFragment<FragmentSignupMediBinding>(R.layout.frag
     override fun onStart() {
         super.onStart()
 
+        binding.mediBtn.setOnTouchListener({ v, event -> true })
+
         var medicineFlag = false
         var injectionFlag = false
         var noFlag = false
@@ -107,9 +109,11 @@ class SignupMediFragment : BaseFragment<FragmentSignupMediBinding>(R.layout.frag
 
     private fun setBtnGreen() {
         binding.mediBtn.setBackgroundResource(R.drawable.background_green_gradient)
+        binding.mediBtn.setOnTouchListener({ v, event -> false })
     }
 
     private fun setBtnGray() {
         binding.mediBtn.setBackgroundResource(R.drawable.background_round_darkgray)
+        binding.mediBtn.setOnTouchListener({ v, event -> true })
     }
 }

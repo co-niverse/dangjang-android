@@ -19,6 +19,8 @@ class SignupActiveFragment : BaseFragment<FragmentSignupActiveBinding>(R.layout.
     override fun onStart() {
         super.onStart()
 
+        binding.activeBtn.setOnTouchListener({ v, event -> true })
+
         binding.activeSmallCl.setOnClickListener {
             setSmallClGreen()
             setNormalClGray()
@@ -96,6 +98,7 @@ class SignupActiveFragment : BaseFragment<FragmentSignupActiveBinding>(R.layout.
 
     private fun setBtnGreen() {
         binding.activeBtn.setBackgroundResource(R.drawable.background_green_gradient)
+        binding.activeBtn.setOnTouchListener({ v, event -> false })
     }
 
 }

@@ -27,6 +27,8 @@ class SignupGenderBirthFragment : BaseFragment<FragmentSignupGenderBirthBinding>
     override fun onStart() {
         super.onStart()
 
+        binding.genderBirthBtn.setOnTouchListener({ v, event -> true })
+
         var manFlag = false
         var womanFlag = false
         var birthFlag = 0
@@ -141,6 +143,7 @@ class SignupGenderBirthFragment : BaseFragment<FragmentSignupGenderBirthBinding>
                 Log.d("birthFlag", birthFlag.toString())
                 if ((manFlag || womanFlag) && (birthFlag == 6)) {
                     binding.genderBirthBtn.setBackgroundResource(R.drawable.background_green_gradient)
+                    binding.genderBirthBtn.setOnTouchListener({ v, event -> false })
                 }
             }
 

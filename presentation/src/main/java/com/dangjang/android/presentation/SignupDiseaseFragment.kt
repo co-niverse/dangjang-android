@@ -19,6 +19,8 @@ class SignupDiseaseFragment : BaseFragment<FragmentSignupDiseaseBinding>(R.layou
     override fun onStart() {
         super.onStart()
 
+        binding.diseaseBtn.setOnTouchListener({ v, event -> true })
+
         var lowBpFlag = false
         var highBpFlag = false
         var hyperFlag = false
@@ -173,9 +175,11 @@ class SignupDiseaseFragment : BaseFragment<FragmentSignupDiseaseBinding>(R.layou
 
     private fun setBtnGreen() {
         binding.diseaseBtn.setBackgroundResource(R.drawable.background_green_gradient)
+        binding.diseaseBtn.setOnTouchListener({ v, event -> false })
     }
 
     private fun setBtnGray() {
         binding.diseaseBtn.setBackgroundResource(R.drawable.background_round_darkgray)
+        binding.diseaseBtn.setOnTouchListener({ v, event -> true })
     }
 }

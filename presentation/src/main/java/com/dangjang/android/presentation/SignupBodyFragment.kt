@@ -20,6 +20,8 @@ class SignupBodyFragment : BaseFragment<FragmentSignupBodyBinding>(R.layout.frag
     override fun onStart() {
         super.onStart()
 
+        binding.bodyBtn.setOnTouchListener({ v, event -> true })
+
         var heightFlag = false
         var weightFlag = false
 
@@ -34,6 +36,7 @@ class SignupBodyFragment : BaseFragment<FragmentSignupBodyBinding>(R.layout.frag
                 heightFlag = true
                 if (heightFlag && weightFlag) {
                     binding.bodyBtn.setBackgroundResource(R.drawable.background_green_gradient)
+                    binding.bodyBtn.setOnTouchListener({ v, event -> false })
                 }
             }
 
@@ -50,6 +53,7 @@ class SignupBodyFragment : BaseFragment<FragmentSignupBodyBinding>(R.layout.frag
                 weightFlag = true
                 if (heightFlag && weightFlag) {
                     binding.bodyBtn.setBackgroundResource(R.drawable.background_green_gradient)
+                    binding.bodyBtn.setOnTouchListener({ v, event -> false })
                 }
             }
 

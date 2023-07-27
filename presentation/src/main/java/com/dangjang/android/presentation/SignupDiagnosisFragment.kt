@@ -26,6 +26,8 @@ class SignupDiagnosisFragment : BaseFragment<FragmentSignupDiagnosisBinding>(R.l
     override fun onStart() {
         super.onStart()
 
+        binding.diagnosisBtn.setOnTouchListener({ v, event -> true })
+
         var yesNoFlag = false
 
         val yearSpinner: Spinner = binding.yearSpinner
@@ -96,5 +98,6 @@ class SignupDiagnosisFragment : BaseFragment<FragmentSignupDiagnosisBinding>(R.l
 
     private fun setBtnGreen() {
         binding.diagnosisBtn.setBackgroundResource(R.drawable.background_green_gradient)
+        binding.diagnosisBtn.setOnTouchListener({ v, event -> false })
     }
 }

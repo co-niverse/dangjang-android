@@ -8,6 +8,7 @@ import com.dangjang.android.common_ui.BaseFragment
 import com.dangjang.android.presentation.databinding.FragmentSignupNicknameBinding
 import dagger.hilt.android.AndroidEntryPoint
 
+
 @AndroidEntryPoint
 class SignupNicknameFragment : BaseFragment<FragmentSignupNicknameBinding>(R.layout.fragment_signup_nickname) {
 
@@ -21,6 +22,8 @@ class SignupNicknameFragment : BaseFragment<FragmentSignupNicknameBinding>(R.lay
     override fun onStart() {
         super.onStart()
 
+        binding.nicknameBtn.setOnTouchListener({ v, event -> true })
+
         binding.nicknameEt.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
@@ -33,16 +36,19 @@ class SignupNicknameFragment : BaseFragment<FragmentSignupNicknameBinding>(R.lay
                     binding.warnTv.text = "8글자 이내로 작성해주세요"
                     binding.warnTv.setTextColor(Color.RED)
                     binding.nicknameBtn.setBackgroundResource(R.drawable.background_round_darkgray)
+                    binding.nicknameBtn.setOnTouchListener({ v, event -> true })
                 } else if (p0!!.isNotEmpty()) {
                     binding.nicknameTextTv.setTextColor(Color.parseColor("#41E551"))
                     binding.warnTv.text = "사용 가능한 닉네임이에요."
                     binding.warnTv.setTextColor(Color.parseColor("#41E551"))
                     binding.nicknameBtn.setBackgroundResource(R.drawable.background_green_gradient)
+                    binding.nicknameBtn.setOnTouchListener({ v, event -> false })
                 }
                 else if (p0!!.isEmpty()) {
                     binding.warnTv.text = ""
                     binding.warnTv.setTextColor(Color.parseColor("#41E551"))
                     binding.nicknameBtn.setBackgroundResource(R.drawable.background_round_darkgray)
+                    binding.nicknameBtn.setOnTouchListener({ v, event -> true })
                 }
             }
 
@@ -51,6 +57,7 @@ class SignupNicknameFragment : BaseFragment<FragmentSignupNicknameBinding>(R.lay
         binding.nicknameBtn.setOnClickListener {
             val signupGenderBirthFragment = SignupGenderBirthFragment()
             parentFragmentManager.beginTransaction().replace(R.id.fragment_signup_view, signupGenderBirthFragment).addToBackStack(null).commit()
+            binding.nicknameBtn.setOnTouchListener({ v, event -> false })
         }
 
     }

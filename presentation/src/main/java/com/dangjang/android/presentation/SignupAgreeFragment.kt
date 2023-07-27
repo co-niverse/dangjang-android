@@ -19,6 +19,8 @@ class SignupAgreeFragment : BaseFragment<FragmentSignupAgreeBinding>(R.layout.fr
     override fun onStart() {
         super.onStart()
 
+        binding.agreeBtn.setOnTouchListener({ v, event -> true })
+
         var serviceFlag = false
         var personalFlag = false
 
@@ -49,6 +51,7 @@ class SignupAgreeFragment : BaseFragment<FragmentSignupAgreeBinding>(R.layout.fr
 
     private fun setBtnGreen() {
         binding.agreeBtn.setBackgroundResource(R.drawable.background_green_gradient)
+        binding.agreeBtn.setOnTouchListener({ v, event -> false })
     }
 
 }
