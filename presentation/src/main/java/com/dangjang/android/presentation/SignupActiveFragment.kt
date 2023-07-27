@@ -40,6 +40,11 @@ class SignupActiveFragment : BaseFragment<FragmentSignupActiveBinding>(R.layout.
             setBtnGreen()
         }
 
+        binding.activeBtn.setOnClickListener {
+            val signupDiagnosisFragment = SignupDiagnosisFragment()
+            parentFragmentManager.beginTransaction().replace(R.id.fragment_signup_view, signupDiagnosisFragment).commit()
+        }
+
     }
 
     private fun setSmallClGray() {
