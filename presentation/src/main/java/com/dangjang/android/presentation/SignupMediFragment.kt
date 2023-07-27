@@ -64,6 +64,11 @@ class SignupMediFragment : BaseFragment<FragmentSignupMediBinding>(R.layout.frag
 
         }
 
+        binding.mediBtn.setOnClickListener {
+            val signupDiseaseFragment = SignupDiseaseFragment()
+            parentFragmentManager.beginTransaction().replace(R.id.fragment_signup_view, signupDiseaseFragment).commit()
+        }
+
     }
 
     private fun setMedicineGreen() {
