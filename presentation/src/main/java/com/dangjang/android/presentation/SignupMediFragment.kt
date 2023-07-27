@@ -31,6 +31,8 @@ class SignupMediFragment : BaseFragment<FragmentSignupMediBinding>(R.layout.frag
             setInjectionGray()
             setNoGreen()
             noFlag = true
+            medicineFlag = false
+            injectionFlag = false
         }
 
         binding.medicineBtn.setOnClickListener {
