@@ -2,11 +2,13 @@ package com.dangjang.android.presentation
 
 import android.graphics.Color
 import android.text.Editable
+import android.text.InputFilter
 import android.text.TextWatcher
 import androidx.fragment.app.viewModels
 import com.dangjang.android.common_ui.BaseFragment
 import com.dangjang.android.presentation.databinding.FragmentSignupNicknameBinding
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.regex.Pattern
 
 
 @AndroidEntryPoint
@@ -23,6 +25,17 @@ class SignupNicknameFragment : BaseFragment<FragmentSignupNicknameBinding>(R.lay
         super.onStart()
 
         binding.nicknameBtn.setOnTouchListener({ v, event -> true })
+
+        binding.nicknameEt.setFilters(arrayOf(
+            InputFilter { src, start, end, dst, dstart, dend ->
+                val ps = Pattern.compile("^[a-zA-Z0-9ㄱ-ㅎ가-흐ㄱ-ㅣ가-힣ᆢᆞ\\u318d\\u119E\\u11A2\\u2022\\u2025a\\u00B7\\uFE55\\s]+$")
+                if (!ps.matcher(src).matches()) {
+                    return@InputFilter ""
+                } else {
+                    return@InputFilter null
+                }
+            }
+        ))
 
         binding.nicknameEt.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
