@@ -18,6 +18,8 @@ class SignupDiagnosisFragment : BaseFragment<FragmentSignupDiagnosisBinding>(R.l
 
     private val viewModel by viewModels<SignupViewModel>()
 
+    var diagnosisFlag = false
+
     override fun initView() {
         bind {
             vm = viewModel
@@ -29,20 +31,30 @@ class SignupDiagnosisFragment : BaseFragment<FragmentSignupDiagnosisBinding>(R.l
         binding.diagnosisBtn.setOnTouchListener({ v, event -> true })
 
         setYearSpinner()
+        binding.yearCl.visibility = View.INVISIBLE
 
         binding.yesBtn.setOnClickListener {
+            diagnosisFlag = true
             setYesGreen()
             setBtnGreen()
+            binding.yearCl.visibility = View.VISIBLE
         }
 
         binding.noBtn.setOnClickListener {
+            diagnosisFlag = false
             setNoGreen()
             setBtnGreen()
+            binding.yearCl.visibility = View.INVISIBLE
         }
 
         binding.diagnosisBtn.setOnClickListener {
-            val signupMediFragment = SignupMediFragment()
-            parentFragmentManager.beginTransaction().replace(R.id.fragment_signup_view, signupMediFragment).addToBackStack(null).commit()
+            if (diagnosisFlag) {
+                val signupMediFragment = SignupMediFragment()
+                parentFragmentManager.beginTransaction().replace(R.id.fragment_signup_view, signupMediFragment).addToBackStack(null).commit()
+            } else {
+                val signupDiseaseFragment = SignupDiseaseFragment()
+                parentFragmentManager.beginTransaction().replace(R.id.fragment_signup_view, signupDiseaseFragment).addToBackStack(null).commit()
+            }
         }
 
         binding.backIv.setOnClickListener {

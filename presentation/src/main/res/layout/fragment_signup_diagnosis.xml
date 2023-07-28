@@ -70,44 +70,53 @@
 
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/diagnosis_year_title_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="185dp"
-            android:text="몇 년 이내에 진단 받으셨나요?"
-            android:textColor="@color/black"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
-
-        <Spinner
-            android:id="@+id/year_spinner"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/year_cl"
             android:layout_width="match_parent"
-            android:layout_height="58dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="23dp"
-            android:layout_marginEnd="16dp"
-            android:layout_weight="1"
-            android:background="@drawable/background_round_gray"
-            android:textColor="#878787"
-            android:textSize="16sp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="185dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/diagnosis_year_title_tv" />
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:text="년"
-            android:textColor="#878787"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="@id/year_spinner"
-            app:layout_constraintEnd_toEndOf="@+id/year_spinner"
-            app:layout_constraintTop_toTopOf="@id/year_spinner" />
+            <TextView
+                android:id="@+id/diagnosis_year_title_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:text="몇 년 이내에 진단 받으셨나요?"
+                android:textColor="@color/black"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Spinner
+                android:id="@+id/year_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="58dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="23dp"
+                android:layout_marginEnd="16dp"
+                android:layout_weight="1"
+                android:background="@drawable/background_round_gray"
+                android:textColor="#878787"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/diagnosis_year_title_tv" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:text="년"
+                android:textColor="#878787"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="@id/year_spinner"
+                app:layout_constraintEnd_toEndOf="@+id/year_spinner"
+                app:layout_constraintTop_toTopOf="@id/year_spinner" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <Button
             android:id="@+id/diagnosis_btn"
