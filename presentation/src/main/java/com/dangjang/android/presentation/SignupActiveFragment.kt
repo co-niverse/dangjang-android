@@ -62,7 +62,7 @@ class SignupActiveFragment : BaseFragment<FragmentSignupActiveBinding>(R.layout.
 
     private fun setSmallClGreen() {
         binding.activeSmallCl.setBackgroundResource(R.drawable.background_border_green)
-        binding.activeSmallTv.setTextColor(Color.parseColor("#41E551"))
+        binding.activeSmallTv.setTextColor(Color.parseColor("#3B9C44"))
         binding.smallIv1.setImageResource(R.drawable.ic_lightning_green)
     }
 
@@ -75,7 +75,7 @@ class SignupActiveFragment : BaseFragment<FragmentSignupActiveBinding>(R.layout.
 
     private fun setNormalClGreen() {
         binding.activeNormalCl.setBackgroundResource(R.drawable.background_border_green)
-        binding.activeNormalTv.setTextColor(Color.parseColor("#41E551"))
+        binding.activeNormalTv.setTextColor(Color.parseColor("#3B9C44"))
         binding.normalIv1.setImageResource(R.drawable.ic_lightning_green)
         binding.normalIv2.setImageResource(R.drawable.ic_lightning_green)
     }
@@ -90,7 +90,7 @@ class SignupActiveFragment : BaseFragment<FragmentSignupActiveBinding>(R.layout.
 
     private fun setLargeClGreen() {
         binding.activeLargeCl.setBackgroundResource(R.drawable.background_border_green)
-        binding.activeLargeTv.setTextColor(Color.parseColor("#41E551"))
+        binding.activeLargeTv.setTextColor(Color.parseColor("#3B9C44"))
         binding.largeIv1.setImageResource(R.drawable.ic_lightning_green)
         binding.largeIv2.setImageResource(R.drawable.ic_lightning_green)
         binding.largeIv3.setImageResource(R.drawable.ic_lightning_green)
