@@ -57,5 +57,18 @@
             app:layout_constraintTop_toTopOf="@+id/textView2"
             tools:ignore="MissingConstraints" />
 
+        <TextView
+            android:id="@+id/go_health_connect_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="64dp"
+            android:textColor="@color/black"
+            android:textSize="24sp"
+            android:text="헬스커넥트 구글 스토어 연결"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
