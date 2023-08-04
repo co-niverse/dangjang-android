@@ -18,8 +18,6 @@ class SignupDiagnosisFragment : BaseFragment<FragmentSignupDiagnosisBinding>(R.l
 
     private val viewModel by viewModels<SignupViewModel>()
 
-    var diagnosisFlag = false
-
     override fun initView() {
         bind {
             vm = viewModel
@@ -34,21 +32,21 @@ class SignupDiagnosisFragment : BaseFragment<FragmentSignupDiagnosisBinding>(R.l
         binding.yearCl.visibility = View.INVISIBLE
 
         binding.yesBtn.setOnClickListener {
-            diagnosisFlag = true
+            viewModel.setDiagnosisFlag(true)
             setYesGreen()
             setBtnGreen()
             binding.yearCl.visibility = View.VISIBLE
         }
 
         binding.noBtn.setOnClickListener {
-            diagnosisFlag = false
+            viewModel.setDiagnosisFlag(false)
             setNoGreen()
             setBtnGreen()
             binding.yearCl.visibility = View.INVISIBLE
         }
 
         binding.diagnosisBtn.setOnClickListener {
-            if (diagnosisFlag) {
+            if (viewModel.diagnosisFlag.value!!) {
                 val signupMediFragment = SignupMediFragment()
                 parentFragmentManager.beginTransaction().replace(R.id.fragment_signup_view, signupMediFragment).addToBackStack(null).commit()
             } else {

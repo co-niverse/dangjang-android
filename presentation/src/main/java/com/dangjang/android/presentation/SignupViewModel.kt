@@ -3,11 +3,20 @@ package com.dangjang.android.presentation
 import android.graphics.Color
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
 @HiltViewModel
 class SignupViewModel @Inject constructor(
 ) : ViewModel() {
+
+    private val _diagnosisFlag = MutableStateFlow(false)
+    val diagnosisFlag = _diagnosisFlag.asStateFlow()
+
+    fun setDiagnosisFlag(flag: Boolean) {
+        _diagnosisFlag.value = flag
+    }
 
     fun getDiagnosisYearList(): ArrayList<String> {
         val yearList = arrayListOf<String>()
