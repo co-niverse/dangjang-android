@@ -3,10 +3,6 @@ package com.dangjang.android.data.model.dto
 import com.dangjang.android.domain.model.LoginVO
 import com.google.gson.annotations.SerializedName
 
-data class ContentDto(
-    @SerializedName("content") val content: LoginDto
-)
-
 data class LoginDto(
     @SerializedName("nickname") val nickname: String?,
     @SerializedName("accessToken") val accessToken: String?,
