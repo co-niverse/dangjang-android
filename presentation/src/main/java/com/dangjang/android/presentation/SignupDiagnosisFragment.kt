@@ -81,21 +81,21 @@ class SignupDiagnosisFragment : BaseFragment<FragmentSignupDiagnosisBinding>(R.l
     }
 
     private fun setYesGreen() {
-        binding.yesBtn.setTextColor(Color.parseColor("#32CC42"))
-        binding.yesBtn.setBackgroundResource(R.drawable.background_round_green)
-        binding.noBtn.setTextColor(Color.parseColor("#878787"))
-        binding.noBtn.setBackgroundResource(R.drawable.background_round_gray)
+        binding.yesBtn.setTextColor(viewModel.setGreenTextColor())
+        binding.yesBtn.setBackgroundResource(viewModel.setGreenBackgroundResource())
+        binding.noBtn.setTextColor(viewModel.setGrayTextColor())
+        binding.noBtn.setBackgroundResource(viewModel.setGrayBackgroundResource())
     }
 
     private fun setNoGreen() {
-        binding.yesBtn.setTextColor(Color.parseColor("#878787"))
-        binding.yesBtn.setBackgroundResource(R.drawable.background_round_gray)
-        binding.noBtn.setTextColor(Color.parseColor("#32CC42"))
-        binding.noBtn.setBackgroundResource(R.drawable.background_round_green)
+        binding.yesBtn.setTextColor(viewModel.setGrayTextColor())
+        binding.yesBtn.setBackgroundResource(viewModel.setGrayBackgroundResource())
+        binding.noBtn.setTextColor(viewModel.setGreenTextColor())
+        binding.noBtn.setBackgroundResource(viewModel.setGreenBackgroundResource())
     }
 
     private fun setBtnGreen() {
-        binding.diagnosisBtn.setBackgroundResource(R.drawable.background_green_gradient)
+        binding.diagnosisBtn.setBackgroundResource(viewModel.setGreenBtnBackgroundResource())
         binding.diagnosisBtn.setOnTouchListener({ v, event -> false })
     }
 }
