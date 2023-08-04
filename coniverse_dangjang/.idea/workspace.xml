@@ -11,9 +11,6 @@
   <component name="ChangeListManager">
     <list default="true" id="e7afa9d2-7aa6-4ca6-9d5c-3126bd38395c" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../data/src/main/java/com/dangjang/android/data/datasource/IntroDataSource.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../data/src/main/java/com/dangjang/android/data/datasource/IntroDataSource.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../domain/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../domain/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../domain/src/main/java/com/dangjang/android/domain/usecase/GetIntroUseCase.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../domain/src/main/java/com/dangjang/android/domain/usecase/GetIntroUseCase.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -65,7 +62,7 @@
     &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;/Users/adela/Desktop/dangjang/co-niverse-android/coniverse_dangjang&quot;,
     &quot;memory.settings.postsync.last.time.stamp&quot;: &quot;1687402518859&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settingsdialog.project.gradle&quot;
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;
   }
 }</component>
   <component name="RecentsManager">
