@@ -64,12 +64,7 @@ class SignupDiagnosisFragment : BaseFragment<FragmentSignupDiagnosisBinding>(R.l
 
     private fun setYearSpinner() {
         val yearSpinner: Spinner = binding.yearSpinner
-
-        val yearList = arrayListOf<String>()
-        for (i in 1..20) {
-            yearList.add(i.toString())
-        }
-        yearList.add("20년 이상")
+        val yearList = viewModel.getDiagnosisYearList()
 
         val yearAdapter = object : ArrayAdapter<String>(requireContext(), R.layout.custom_spinner_dropdown_item, yearList),
             SpinnerAdapter {
