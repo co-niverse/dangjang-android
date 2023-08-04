@@ -5,7 +5,7 @@ import com.dangjang.android.data.model.response.BaseResponse
 import retrofit2.Response
 import retrofit2.http.GET
 
-interface IntroDataSourceImpl {
+interface IntroApiService {
     //Intro API
     @GET("api/v1/intro")
     suspend fun getIntroApi(

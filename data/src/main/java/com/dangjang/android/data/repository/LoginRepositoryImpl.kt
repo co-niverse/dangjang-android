@@ -2,6 +2,7 @@ package com.dangjang.android.data.repository
 
 import android.util.Log
 import com.dangjang.android.data.datasource.LoginDataSource
+import com.dangjang.android.data.model.request.LoginRequest
 import com.dangjang.android.domain.model.LoginVO
 import com.dangjang.android.domain.repository.LoginRepository
 import kotlinx.coroutines.flow.Flow
@@ -13,10 +14,10 @@ class LoginRepositoryImpl @Inject constructor(
 ) : LoginRepository {
 
     override fun kakaoLogin(accessToken: String): Flow<LoginVO> = flow {
-        val response = loginDataSource.kakaoLogin(accessToken)
+        val response = loginDataSource.kakaoLogin(LoginRequest(accessToken))
         if (response.isSuccessful) {
             if (response.body()!!.success) {
-                emit(response.body()!!.data.content.toDomain())
+                emit(response.body()!!.data.toDomain())
                 Log.e("[SUCCESS]","kakaoLogin" + response.body().toString())
             }
             else {
@@ -31,10 +32,10 @@ class LoginRepositoryImpl @Inject constructor(
     }
 
     override fun naverLogin(accessToken: String): Flow<LoginVO> = flow {
-        val response = loginDataSource.naverLogin(accessToken)
+        val response = loginDataSource.naverLogin(LoginRequest(accessToken))
         if (response.isSuccessful) {
             if (response.body()!!.success) {
-                emit(response.body()!!.data.content.toDomain())
+                emit(response.body()!!.data.toDomain())
                 Log.e("[SUCCESS]","naverLogin" + response.body().toString())
             }
             else {

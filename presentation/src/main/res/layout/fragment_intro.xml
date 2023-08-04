@@ -29,7 +29,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/black"
-            android:text="@{String.valueOf(vm.introDataFlow.minVersion)}"
+            android:text="@{vm.introDataFlow.minVersion}"
             app:layout_constraintBottom_toTopOf="@+id/latestVersion"
             app:layout_constraintEnd_toEndOf="@+id/latestVersion"
             app:layout_constraintTop_toTopOf="@+id/textView" />
@@ -49,7 +49,7 @@
             android:id="@+id/latestVersion"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{String.valueOf(vm.introDataFlow.latestVersion)}"
+            android:text="@{vm.introDataFlow.latestVersion}"
             android:textColor="@color/black"
             app:layout_constraintBottom_toBottomOf="@+id/textView2"
             app:layout_constraintEnd_toEndOf="parent"

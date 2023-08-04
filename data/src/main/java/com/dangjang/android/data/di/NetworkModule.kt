@@ -1,6 +1,7 @@
 package com.dangjang.android.data.di
 
-import com.dangjang.android.data.datasource.IntroDataSourceImpl
+import com.dangjang.android.data.BuildConfig
+import com.dangjang.android.data.datasource.IntroApiService
 import com.dangjang.android.data.datasource.LoginDataSource
 import dagger.Module
 import dagger.Provides
@@ -16,7 +17,8 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
 
-    private const val BASE_URL = "http://150.136.255.218:8080/"
+    private const val BASE_URL = BuildConfig.BASE_URL
+
     @Provides
     @Singleton
     fun provideRequestHttpLoggingInterceptor() : HttpLoggingInterceptor {
@@ -43,8 +45,8 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideIntroDataSourceImpl(retrofit: Retrofit): IntroDataSourceImpl {
-        return retrofit.create(IntroDataSourceImpl::class.java)
+    fun provideIntroApiService(retrofit: Retrofit): IntroApiService {
+        return retrofit.create(IntroApiService::class.java)
     }
 
     @Provides
