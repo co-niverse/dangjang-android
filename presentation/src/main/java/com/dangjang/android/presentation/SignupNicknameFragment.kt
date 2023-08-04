@@ -45,19 +45,29 @@ class SignupNicknameFragment : BaseFragment<FragmentSignupNicknameBinding>(R.lay
             }
 
             override fun afterTextChanged(p0: Editable?) {
-                if (p0!!.length > 8) {
-                    binding.warnTv.text = "8글자 이내로 작성해주세요"
+
+                viewModel.getDuplicateNickname(p0.toString())
+
+                if (viewModel.duplicateNicknameFlow.value.duplicate) {
+                    if (p0!!.length > 8) {
+                        binding.warnTv.text = "8글자 이내로 작성해주세요"
+                        binding.warnTv.setTextColor(Color.RED)
+                        setBtnGray()
+                    } else if (p0!!.isNotEmpty()) {
+                        binding.nicknameTextTv.setTextColor(Color.parseColor("#41E551"))
+                        binding.warnTv.text = "사용 가능한 닉네임이에요."
+                        binding.warnTv.setTextColor(Color.parseColor("#41E551"))
+                        setBtnGreen()
+                    }
+                    else if (p0!!.isEmpty()) {
+                        binding.warnTv.text = ""
+                        binding.warnTv.setTextColor(Color.parseColor("#41E551"))
+                        setBtnGray()
+                    }
+                } else {
+                    binding.nicknameTextTv.setTextColor(Color.RED)
+                    binding.warnTv.text = "이미 사용중인 닉네임이에요."
                     binding.warnTv.setTextColor(Color.RED)
-                    setBtnGray()
-                } else if (p0!!.isNotEmpty()) {
-                    binding.nicknameTextTv.setTextColor(Color.parseColor("#41E551"))
-                    binding.warnTv.text = "사용 가능한 닉네임이에요."
-                    binding.warnTv.setTextColor(Color.parseColor("#41E551"))
-                    setBtnGreen()
-                }
-                else if (p0!!.isEmpty()) {
-                    binding.warnTv.text = ""
-                    binding.warnTv.setTextColor(Color.parseColor("#41E551"))
                     setBtnGray()
                 }
             }
