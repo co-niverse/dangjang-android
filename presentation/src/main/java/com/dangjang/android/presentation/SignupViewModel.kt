@@ -90,6 +90,12 @@ class SignupViewModel @Inject constructor(
         }
     }
 
+    fun setDiabetes(diabetes: Boolean, diabetesYear: Int) {
+        _signupRequest.update {
+            it.copy(diabetes = diabetes, diabetes_year = diabetesYear)
+        }
+    }
+
     private fun <T> Flow<T>.handleErrors(): Flow<T> =
         catch { e -> Toast.makeText(getApplication<Application>().applicationContext,e.message,
             Toast.LENGTH_SHORT).show() }

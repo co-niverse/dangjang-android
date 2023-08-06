@@ -1,6 +1,7 @@
 package com.dangjang.android.presentation
 
 import android.graphics.Color
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
@@ -19,6 +20,7 @@ class SignupDiagnosisFragment : BaseFragment<FragmentSignupDiagnosisBinding>(R.l
     private val viewModel by viewModels<SignupViewModel>()
 
     var diagnosisFlag = false
+    private var diabetesYear = 0
 
     override fun initView() {
         bind {
@@ -42,12 +44,15 @@ class SignupDiagnosisFragment : BaseFragment<FragmentSignupDiagnosisBinding>(R.l
 
         binding.noBtn.setOnClickListener {
             diagnosisFlag = false
+            diabetesYear = 0
             setNoGreen()
             setBtnGreen()
             binding.yearCl.visibility = View.INVISIBLE
         }
 
         binding.diagnosisBtn.setOnClickListener {
+            viewModel.setDiabetes(diagnosisFlag, diabetesYear)
+            
             if (diagnosisFlag) {
                 val signupMediFragment = SignupMediFragment()
                 parentFragmentManager.beginTransaction().replace(R.id.fragment_signup_view, signupMediFragment).addToBackStack(null).commit()
@@ -82,6 +87,16 @@ class SignupDiagnosisFragment : BaseFragment<FragmentSignupDiagnosisBinding>(R.l
         }
 
         yearSpinner.adapter = yearAdapter
+
+        yearSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+            }
+
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                Log.d("로그", "년: ${yearList[position]}")
+                diabetesYear = yearList[position].split(" ")[0].toInt()
+            }
+        }
 
     }
 
