@@ -72,6 +72,12 @@ class SignupViewModel @Inject constructor(
         }
     }
 
+    fun setBirthday(birthday: Date) {
+        _signupRequest.update {
+            it.copy(birthday = birthday)
+        }
+    }
+
     private fun <T> Flow<T>.handleErrors(): Flow<T> =
         catch { e -> Toast.makeText(getApplication<Application>().applicationContext,e.message,
             Toast.LENGTH_SHORT).show() }
