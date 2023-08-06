@@ -44,6 +44,10 @@ class SignupAgreeFragment : BaseFragment<FragmentSignupAgreeBinding>(R.layout.fr
             }
         }
 
+        binding.agreeBtn.setOnClickListener {
+            viewModel.signup(viewModel.signupRequest.value)
+        }
+
         binding.backIv.setOnClickListener {
             parentFragmentManager.popBackStack()
         }
