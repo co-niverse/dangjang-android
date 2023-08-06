@@ -9,7 +9,7 @@ import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.SpinnerAdapter
 import android.widget.TextView
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import com.dangjang.android.common_ui.BaseFragment
 import com.dangjang.android.presentation.databinding.FragmentSignupGenderBirthBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -18,7 +18,7 @@ import java.util.Date
 @AndroidEntryPoint
 class SignupGenderBirthFragment : BaseFragment<FragmentSignupGenderBirthBinding>(R.layout.fragment_signup_gender_birth) {
 
-    private val viewModel by viewModels<SignupViewModel>()
+    private val viewModel : SignupViewModel by activityViewModels()
 
     var manFlag = false
     var womanFlag = false

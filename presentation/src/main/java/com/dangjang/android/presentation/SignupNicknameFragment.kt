@@ -4,7 +4,7 @@ import android.graphics.Color
 import android.text.Editable
 import android.text.InputFilter
 import android.text.TextWatcher
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import com.dangjang.android.common_ui.BaseFragment
 import com.dangjang.android.presentation.databinding.FragmentSignupNicknameBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -14,7 +14,7 @@ import java.util.regex.Pattern
 @AndroidEntryPoint
 class SignupNicknameFragment : BaseFragment<FragmentSignupNicknameBinding>(R.layout.fragment_signup_nickname) {
 
-    private val viewModel by viewModels<SignupViewModel>()
+    private val viewModel : SignupViewModel by activityViewModels()
 
     override fun initView() {
         bind {
@@ -68,7 +68,7 @@ class SignupNicknameFragment : BaseFragment<FragmentSignupNicknameBinding>(R.lay
                     binding.nicknameTextTv.setTextColor(Color.RED)
                     binding.warnTv.text = "이미 사용중인 닉네임이에요."
                     binding.warnTv.setTextColor(Color.RED)
-                    setBtnGray()
+                    setBtnGreen()
                 }
             }
 

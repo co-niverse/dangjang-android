@@ -1,8 +1,7 @@
 package com.dangjang.android.presentation
 
 import android.graphics.Color
-import android.util.Log
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import com.dangjang.android.common_ui.BaseFragment
 import com.dangjang.android.presentation.databinding.FragmentSignupMediBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -10,7 +9,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class SignupMediFragment : BaseFragment<FragmentSignupMediBinding>(R.layout.fragment_signup_medi) {
 
-    private val viewModel by viewModels<SignupViewModel>()
+    private val viewModel : SignupViewModel by activityViewModels()
 
     override fun initView() {
         bind {

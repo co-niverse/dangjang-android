@@ -2,8 +2,7 @@ package com.dangjang.android.presentation
 
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import com.dangjang.android.common_ui.BaseFragment
 import com.dangjang.android.presentation.databinding.FragmentSignupBodyBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -11,7 +10,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class SignupBodyFragment : BaseFragment<FragmentSignupBodyBinding>(R.layout.fragment_signup_body) {
 
-    private val viewModel by viewModels<SignupViewModel>()
+    private val viewModel : SignupViewModel by activityViewModels()
     private var height : Int = 0
     private var weight : Int = 0
 
