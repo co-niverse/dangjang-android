@@ -75,6 +75,9 @@ class SignupNicknameFragment : BaseFragment<FragmentSignupNicknameBinding>(R.lay
         })
 
         binding.nicknameBtn.setOnClickListener {
+
+            viewModel.setNickname(binding.nicknameEt.text.toString())
+
             val signupGenderBirthFragment = SignupGenderBirthFragment()
             parentFragmentManager.beginTransaction().replace(R.id.fragment_signup_view, signupGenderBirthFragment).addToBackStack(null).commit()
         }

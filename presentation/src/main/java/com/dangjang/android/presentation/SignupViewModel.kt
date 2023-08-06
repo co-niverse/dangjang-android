@@ -60,6 +60,17 @@ class SignupViewModel @Inject constructor(
         }
     }
 
+    fun setNickname(nickname: String) {
+        _signupRequest.update {
+            it.copy(nickname = nickname)
+        }
+    }
+
+    fun setGender(gender: Boolean) {
+        _signupRequest.update {
+            it.copy(gender = gender)
+        }
+    }
 
     private fun <T> Flow<T>.handleErrors(): Flow<T> =
         catch { e -> Toast.makeText(getApplication<Application>().applicationContext,e.message,
