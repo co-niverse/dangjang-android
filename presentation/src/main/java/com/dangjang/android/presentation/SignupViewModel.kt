@@ -102,6 +102,12 @@ class SignupViewModel @Inject constructor(
         }
     }
 
+    fun setDiseases(diseases: List<String>) {
+        _signupRequest.update {
+            it.copy(diseases = diseases)
+        }
+    }
+
     private fun <T> Flow<T>.handleErrors(): Flow<T> =
         catch { e -> Toast.makeText(getApplication<Application>().applicationContext,e.message,
             Toast.LENGTH_SHORT).show() }

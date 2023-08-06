@@ -27,6 +27,8 @@ class SignupDiseaseFragment : BaseFragment<FragmentSignupDiseaseBinding>(R.layou
         var obesityFlag = false
         var noFlag = false
 
+        var diseasesList: ArrayList<String> = ArrayList()
+
         binding.lowBpBtn.setOnClickListener {
             if (lowBpFlag) {
                 setLowBpGray()
@@ -113,6 +115,29 @@ class SignupDiseaseFragment : BaseFragment<FragmentSignupDiseaseBinding>(R.layou
         }
 
         binding.diseaseBtn.setOnClickListener {
+            if (lowBpFlag) {
+                diseasesList.apply {
+                    add("저혈압")
+                }
+            }
+            if (highBpFlag) {
+                diseasesList.apply {
+                    add("고혈압")
+                }
+            }
+            if (hyperFlag) {
+                diseasesList.apply {
+                    add("고지혈증")
+                }
+            }
+            if (obesityFlag) {
+                diseasesList.apply {
+                    add("비만")
+                }
+            }
+
+            viewModel.setDiseases(diseasesList)
+
             val signupAgreeFragment = SignupAgreeFragment()
             parentFragmentManager.beginTransaction().replace(R.id.fragment_signup_view, signupAgreeFragment).addToBackStack(null).commit()
         }
