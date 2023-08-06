@@ -1,6 +1,7 @@
 package com.dangjang.android.presentation
 
 import android.graphics.Color
+import android.util.Log
 import androidx.fragment.app.viewModels
 import com.dangjang.android.common_ui.BaseFragment
 import com.dangjang.android.presentation.databinding.FragmentSignupMediBinding
@@ -69,6 +70,8 @@ class SignupMediFragment : BaseFragment<FragmentSignupMediBinding>(R.layout.frag
         }
 
         binding.mediBtn.setOnClickListener {
+            viewModel.setMedi(medicineFlag, injectionFlag)
+
             val signupDiseaseFragment = SignupDiseaseFragment()
             parentFragmentManager.beginTransaction().replace(R.id.fragment_signup_view, signupDiseaseFragment).addToBackStack(null).commit()
         }
