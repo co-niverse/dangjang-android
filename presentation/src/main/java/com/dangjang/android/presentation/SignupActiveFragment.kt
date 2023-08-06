@@ -1,6 +1,7 @@
 package com.dangjang.android.presentation
 
 import android.graphics.Color
+import android.util.Log
 import androidx.fragment.app.viewModels
 import com.dangjang.android.common_ui.BaseFragment
 import com.dangjang.android.presentation.databinding.FragmentSignupActiveBinding
@@ -10,6 +11,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class SignupActiveFragment : BaseFragment<FragmentSignupActiveBinding>(R.layout.fragment_signup_active) {
 
     private val viewModel by viewModels<SignupViewModel>()
+    private var activityAmount: String = ""
 
     override fun initView() {
         bind {
@@ -26,6 +28,7 @@ class SignupActiveFragment : BaseFragment<FragmentSignupActiveBinding>(R.layout.
             setNormalClGray()
             setLargeClGray()
             setBtnGreen()
+            activityAmount = "LOW"
         }
 
         binding.activeNormalCl.setOnClickListener {
@@ -33,6 +36,7 @@ class SignupActiveFragment : BaseFragment<FragmentSignupActiveBinding>(R.layout.
             setNormalClGreen()
             setLargeClGray()
             setBtnGreen()
+            activityAmount = "MEDIUM"
         }
 
         binding.activeLargeCl.setOnClickListener {
@@ -40,9 +44,12 @@ class SignupActiveFragment : BaseFragment<FragmentSignupActiveBinding>(R.layout.
             setNormalClGray()
             setLargeClGreen()
             setBtnGreen()
+            activityAmount = "HIGH"
         }
 
         binding.activeBtn.setOnClickListener {
+            viewModel.setActivityAmount(activityAmount)
+
             val signupDiagnosisFragment = SignupDiagnosisFragment()
             parentFragmentManager.beginTransaction().replace(R.id.fragment_signup_view, signupDiagnosisFragment).addToBackStack(null).commit()
         }
