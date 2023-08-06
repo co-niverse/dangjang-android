@@ -1,7 +1,9 @@
 package com.dangjang.android.domain.usecase
 
 import com.dangjang.android.domain.model.DuplicateNicknameVO
+import com.dangjang.android.domain.model.SignupVO
 import com.dangjang.android.domain.repository.SignupRepository
+import com.dangjang.android.domain.requestVO.SignupRequestVO
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
@@ -14,6 +16,13 @@ class SignupUseCase @Inject constructor(
     suspend fun getDuplicateNickname(nickname: String): Flow<DuplicateNicknameVO> =
         withContext(Dispatchers.IO) {
             signupRepository.getDuplicateNickname(nickname)
+        }
+
+    suspend fun signup(
+        data: SignupRequestVO
+    ): Flow<SignupVO> =
+        withContext(Dispatchers.IO) {
+            signupRepository.signup(data)
         }
 
 }
