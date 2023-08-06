@@ -78,6 +78,12 @@ class SignupViewModel @Inject constructor(
         }
     }
 
+    fun setBody(height: Int, weight: Int) {
+        _signupRequest.update {
+            it.copy(height = height, weight = weight)
+        }
+    }
+
     private fun <T> Flow<T>.handleErrors(): Flow<T> =
         catch { e -> Toast.makeText(getApplication<Application>().applicationContext,e.message,
             Toast.LENGTH_SHORT).show() }
