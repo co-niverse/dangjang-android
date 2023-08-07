@@ -2,7 +2,6 @@ package com.dangjang.android.data.datasource
 
 import com.dangjang.android.data.model.dto.DuplicateNicknameDto
 import com.dangjang.android.data.model.dto.SignupDto
-import com.dangjang.android.data.model.request.DuplicateNicknameRequest
 import com.dangjang.android.data.model.request.SignupRequest
 import com.dangjang.android.data.model.response.BaseResponse
 import retrofit2.Response

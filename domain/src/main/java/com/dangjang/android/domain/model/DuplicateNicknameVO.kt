@@ -1,5 +1,5 @@
 package com.dangjang.android.domain.model
 
 data class DuplicateNicknameVO(
-    val duplicate: Boolean = false
+    val duplicate: Boolean = true
 )
