@@ -16,7 +16,7 @@ interface SignupApiService {
     //Duplicate Nickname API
     @GET("api/duplicateNickname")
     suspend fun getDuplicateNickname(
-        @Query("nickname") nickname: DuplicateNicknameRequest
+        @Query("nickname") nickname: String
     ) : Response<BaseResponse<DuplicateNicknameDto>>
 
     //Signup API

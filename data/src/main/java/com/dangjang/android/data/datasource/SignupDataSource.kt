@@ -12,7 +12,7 @@ class SignupDataSource @Inject constructor(
 ) : BaseNetworkDataSource() {
 
     suspend fun getDuplicateNickname(nickname: String): BaseResponse<DuplicateNicknameDto> {
-        return checkResponse(signupApiService.getDuplicateNickname(DuplicateNicknameRequest(nickname)))
+        return checkResponse(signupApiService.getDuplicateNickname(nickname))
     }
 
     suspend fun signup(
