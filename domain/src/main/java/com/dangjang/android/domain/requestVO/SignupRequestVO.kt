@@ -1,13 +1,11 @@
 package com.dangjang.android.domain.requestVO
 
-import java.util.Date
-
 data class SignupRequestVO(
     val accessToken: String = "",
     val provider: String = "",
     val nickname: String = "",
     val gender: Boolean = false,
-    val birthday: Date = Date(),
+    val birthday: String = "",
     val height: Int = 0,
     val weight: Int = 0,
     val activityAmount: String = "",

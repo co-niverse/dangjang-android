@@ -22,7 +22,10 @@ class SignupGenderBirthFragment : BaseFragment<FragmentSignupGenderBirthBinding>
 
     var manFlag = false
     var womanFlag = false
-    private var birthday : Date = Date()
+    private var birthday = ""
+    private var year = ""
+    private var month = ""
+    private var day = ""
 
     override fun initView() {
         bind {
@@ -74,6 +77,19 @@ class SignupGenderBirthFragment : BaseFragment<FragmentSignupGenderBirthBinding>
             }
             if (womanFlag) {
                 viewModel.setGender(true)
+            }
+
+            birthday = "$year-"
+            if (month.toInt() < 10) {
+                birthday += "0$month-"
+            } else {
+                birthday += "$month-"
+            }
+
+            if (day.toInt() < 10) {
+                birthday += "0$day"
+            } else {
+                birthday += day
             }
 
             viewModel.setBirthday(birthday)
@@ -141,7 +157,7 @@ class SignupGenderBirthFragment : BaseFragment<FragmentSignupGenderBirthBinding>
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 Log.d("로그", "년: ${yearList[position]}")
-                birthday.year = yearList[position].split(" ")[0].toInt()
+                year = yearList[position].split(" ")[0]
             }
         }
     }
@@ -172,7 +188,7 @@ class SignupGenderBirthFragment : BaseFragment<FragmentSignupGenderBirthBinding>
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 Log.d("로그", "월: ${monthList[position]}")
-                birthday.month = monthList[position].split(" ")[0].toInt()
+                month = monthList[position].split(" ")[0]
             }
         }
     }
@@ -203,7 +219,7 @@ class SignupGenderBirthFragment : BaseFragment<FragmentSignupGenderBirthBinding>
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 Log.d("로그", "일: ${dayList[position]}")
-                birthday.date = dayList[position].split(" ")[0].toInt()
+                day = dayList[position].split(" ")[0]
             }
         }
     }

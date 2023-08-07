@@ -72,7 +72,7 @@ class SignupViewModel @Inject constructor(
         }
     }
 
-    fun setBirthday(birthday: Date) {
+    fun setBirthday(birthday: String) {
         _signupRequest.update {
             it.copy(birthday = birthday)
         }

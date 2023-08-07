@@ -8,7 +8,7 @@ data class SignupRequest (
     @SerializedName("provider") val provider: String,
     @SerializedName("nickname") val nickname: String,
     @SerializedName("gender") val gender: Boolean,
-    @SerializedName("birthday") val birthday: Date,
+    @SerializedName("birthday") val birthday: String,
     @SerializedName("height") val height: Int,
     @SerializedName("weight") val weight: Int,
     @SerializedName("activityAmount") val activityAmount: String,
