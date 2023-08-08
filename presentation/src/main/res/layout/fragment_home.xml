@@ -84,7 +84,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="17dp"
-                    android:text="혈당"
+                    android:text="혈당 110 mg/dL"
                     android:textColor="#131F11"
                     android:textSize="18sp"
                     android:textStyle="bold"
@@ -106,12 +106,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:layout_marginTop="15dp"
                     android:layout_marginBottom="17dp"
                     android:src="@drawable/ic_tag_caution"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/glucose_bar" />
+                    app:layout_constraintStart_toStartOf="parent" />
 
                 <TextView
                     android:id="@+id/glucose_status_tv"
@@ -137,6 +135,23 @@
                     app:layout_constraintStart_toEndOf="@id/glucose_status_tv"
                     app:layout_constraintTop_toTopOf="@+id/glucose_tag_iv"
                     tools:layout_editor_absoluteX="67dp" />
+
+                <SeekBar
+                    android:id="@+id/glucose_seekbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:background="@null"
+                    android:max="100"
+                    android:progressDrawable="@drawable/background_glucose_bar"
+                    android:splitTrack="false"
+                    android:thumb="@drawable/ic_thumb"
+                    android:progress="60"
+                    app:layout_constraintBottom_toTopOf="@id/glucose_tag_iv"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/glucose_title_tv" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
