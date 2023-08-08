@@ -1,6 +1,7 @@
 package com.dangjang.android.presentation.home
 
 import android.os.Bundle
+import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
@@ -19,6 +20,14 @@ class GlucoseActivity : FragmentActivity() {
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_glucose)
         viewModel = ViewModelProvider(this).get(GlucoseViewModel::class.java)
+
+        binding.glucoseAddBtn.setOnClickListener {
+            binding.glucoseAddCl.visibility = View.VISIBLE
+        }
+
+        binding.glucoseAddCloseIv.setOnClickListener {
+            binding.glucoseAddCl.visibility = View.GONE
+        }
 
     }
 
