@@ -21,6 +21,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
         super.onStart()
 
         binding.glucoseSeekbar.setOnTouchListener({ v, event -> true })
+        binding.weightSeekbar.setOnTouchListener({ v, event -> true })
     }
 
 }
