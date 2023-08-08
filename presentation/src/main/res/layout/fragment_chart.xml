@@ -2,11 +2,11 @@
 <layout xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    tools:context=".ChartFragment">
+    tools:context=".chart.ChartFragment">
     <data>
         <variable
             name="vm"
-            type="com.dangjang.android.presentation.ChartViewModel" />
+            type="com.dangjang.android.presentation.chart.ChartViewModel" />
 
     </data>
 

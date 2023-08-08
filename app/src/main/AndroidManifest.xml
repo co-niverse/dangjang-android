@@ -50,7 +50,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".presentation.SignupActivity"
+            android:name=".presentation.signup.SignupActivity"
             android:exported="true"
             android:theme="@android:style/Theme.NoTitleBar">
         </activity>

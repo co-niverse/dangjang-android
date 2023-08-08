@@ -1,8 +1,8 @@
-package com.dangjang.android.presentation
+package com.dangjang.android.presentation.home
 
-import android.view.View.OnTouchListener
 import androidx.fragment.app.viewModels
 import com.dangjang.android.common_ui.BaseFragment
+import com.dangjang.android.presentation.R
 import com.dangjang.android.presentation.databinding.FragmentHomeBinding
 import dagger.hilt.android.AndroidEntryPoint
 

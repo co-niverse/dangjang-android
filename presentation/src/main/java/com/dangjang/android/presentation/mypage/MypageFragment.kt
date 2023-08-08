@@ -1,7 +1,8 @@
-package com.dangjang.android.presentation
+package com.dangjang.android.presentation.mypage
 
 import androidx.fragment.app.viewModels
 import com.dangjang.android.common_ui.BaseFragment
+import com.dangjang.android.presentation.R
 import com.dangjang.android.presentation.databinding.FragmentMypageBinding
 import dagger.hilt.android.AndroidEntryPoint
 
