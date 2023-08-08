@@ -181,12 +181,19 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <ImageView
-                    android:id="@+id/weight_bar"
+                <SeekBar
+                    android:id="@+id/weight_seekbar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginEnd="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:background="@null"
+                    android:max="100"
+                    android:progressDrawable="@drawable/background_weight_bar"
+                    android:splitTrack="false"
+                    android:thumb="@drawable/ic_thumb"
+                    android:progress="80"
+                    app:layout_constraintBottom_toTopOf="@id/weight_tag_iv"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/weight_title_tv" />
@@ -196,12 +203,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:layout_marginTop="15dp"
                     android:layout_marginBottom="17dp"
                     android:src="@drawable/ic_tag_caution"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/weight_bar" />
+                    app:layout_constraintStart_toStartOf="parent" />
 
                 <TextView
                     android:id="@+id/weight_status_tv"

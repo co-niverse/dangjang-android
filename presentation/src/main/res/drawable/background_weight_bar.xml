@@ -1,0 +1,61 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="327dp"
+    android:height="25dp"
+    android:viewportWidth="326"
+    android:viewportHeight="17">
+  <path
+      android:pathData="M243,4H322C324.21,4 326,5.79 326,8V10C326,12.21 324.21,14 322,14H243V4Z">
+    <aapt:attr name="android:fillColor">
+      <gradient 
+          android:startX="325.82"
+          android:startY="9"
+          android:endX="243"
+          android:endY="9"
+          android:type="linear">
+        <item android:offset="0" android:color="#FFFF842C"/>
+        <item android:offset="1" android:color="#FFFFCFAC"/>
+      </gradient>
+    </aapt:attr>
+  </path>
+  <path
+      android:pathData="M82,4h161v10h-161z">
+    <aapt:attr name="android:fillColor">
+      <gradient 
+          android:startX="242.65"
+          android:startY="9"
+          android:endX="82"
+          android:endY="9"
+          android:type="linear">
+        <item android:offset="0" android:color="#FF39ED97"/>
+        <item android:offset="1" android:color="#FFCCFDE0"/>
+      </gradient>
+    </aapt:attr>
+  </path>
+  <path
+      android:pathData="M0,8C0,5.79 1.79,4 4,4H82V14H4C1.79,14 0,12.21 0,10V8Z">
+    <aapt:attr name="android:fillColor">
+      <gradient 
+          android:startX="81.82"
+          android:startY="9"
+          android:endX="-0"
+          android:endY="9"
+          android:type="linear">
+        <item android:offset="0" android:color="#FFFFDD2C"/>
+        <item android:offset="1" android:color="#FFFDEFCC"/>
+      </gradient>
+    </aapt:attr>
+  </path>
+  <path
+      android:pathData="M243,3L243,15"
+      android:strokeWidth="2"
+      android:fillColor="#00000000"
+      android:strokeColor="#46EF9D"
+      android:strokeLineCap="round"/>
+  <path
+      android:pathData="M82,3V15"
+      android:strokeWidth="2"
+      android:fillColor="#00000000"
+      android:strokeColor="#FFDE2E"
+      android:strokeLineCap="round"/>
+</vector>
