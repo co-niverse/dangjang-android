@@ -27,5 +27,6 @@ class MainActivity : FragmentActivity() {
         val navController = navHostFragment.navController
 
         binding.bottomNavView.setupWithNavController(navController)
+        binding.bottomNavView.itemIconTintList = null
     }
 }

@@ -1,9 +1,11 @@
 package com.dangjang.android.presentation
 
+import android.view.View.OnTouchListener
 import androidx.fragment.app.viewModels
 import com.dangjang.android.common_ui.BaseFragment
 import com.dangjang.android.presentation.databinding.FragmentHomeBinding
 import dagger.hilt.android.AndroidEntryPoint
+
 
 @AndroidEntryPoint
 class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
@@ -17,6 +19,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
     }
     override fun onStart() {
         super.onStart()
+
+        binding.glucoseSeekbar.setOnTouchListener({ v, event -> true })
     }
 
 }
