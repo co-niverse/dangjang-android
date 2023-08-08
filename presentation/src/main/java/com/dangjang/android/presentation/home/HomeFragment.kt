@@ -1,5 +1,6 @@
 package com.dangjang.android.presentation.home
 
+import android.content.Intent
 import androidx.fragment.app.viewModels
 import com.dangjang.android.common_ui.BaseFragment
 import com.dangjang.android.presentation.R
@@ -22,6 +23,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
 
         binding.glucoseSeekbar.setOnTouchListener({ v, event -> true })
         binding.weightSeekbar.setOnTouchListener({ v, event -> true })
+
+        binding.glucoseCl.setOnClickListener {
+            Intent(activity, GlucoseActivity::class.java).apply {
+                startActivity(this)
+            }
+        }
     }
 
 }

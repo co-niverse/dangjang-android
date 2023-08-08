@@ -17,7 +17,7 @@ class GlucoseActivity : FragmentActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_glucose)
 
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_login)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_glucose)
         viewModel = ViewModelProvider(this).get(GlucoseViewModel::class.java)
 
     }
