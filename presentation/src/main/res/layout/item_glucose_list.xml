@@ -7,6 +7,10 @@
         <variable
             name="vm"
             type="com.dangjang.android.presentation.home.GlucoseViewModel" />
+
+        <variable
+            name="glucoseList"
+            type="com.dangjang.android.domain.model.GlucoseListVO" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -43,7 +47,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:text="공복"
+                android:text="@{glucoseList.time}"
                 android:textColor="#131F11"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="@id/glucose_list_tag_iv"
@@ -82,7 +86,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="16dp"
-                android:text="전반적으로 혈당이 높습니다! 조치가 필요해요"
+                android:text="@{glucoseList.feedbackTitle}"
                 android:textColor="#131F11"
                 android:textSize="16sp"
                 android:textStyle="bold"
