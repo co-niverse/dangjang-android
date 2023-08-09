@@ -38,6 +38,10 @@ class GlucoseActivity : FragmentActivity() {
             binding.glucoseAddCl.visibility = View.GONE
         }
 
+        binding.glucoseInfoIv.setOnClickListener {
+            GlucoseDialogFragment().show(supportFragmentManager, "GlucoseDialogFragment")
+        }
+
         binding.backIv.setOnClickListener {
             finish()
         }
