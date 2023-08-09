@@ -1,6 +1,7 @@
 package com.dangjang.android.presentation.home
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.dangjang.android.domain.model.GlucoseListVO
@@ -38,6 +39,16 @@ class GlucoseListAdapter(
         holder.bind(glucoseList[position])
         holder.itemView.setOnClickListener {
             mItemClickListener.onItemClick(glucoseList[position])
+            glucoseList[position].isExpanded = !glucoseList[position].isExpanded
+
+            if (glucoseList[position].isExpanded) {
+                holder.binding.glucoseFeedbackTitleTv.visibility = View.VISIBLE
+                holder.binding.glucoseFeedbackContentTv.visibility = View.VISIBLE
+                holder.binding.glucoseListUpIv.setImageDrawable(holder.itemView.context.getDrawable(com.dangjang.android.presentation.R.drawable.ic_arrow_up_gray))
+            } else {
+                holder.binding.glucoseFeedbackTitleTv.visibility = View.GONE
+                holder.binding.glucoseFeedbackContentTv.visibility = View.GONE
+                holder.binding.glucoseListUpIv.setImageDrawable(holder.itemView.context.getDrawable(com.dangjang.android.presentation.R.drawable.ic_arrow_down_green)) }
         }
     }
 
