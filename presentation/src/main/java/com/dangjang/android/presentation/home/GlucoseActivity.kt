@@ -50,20 +50,22 @@ class GlucoseActivity : FragmentActivity() {
                 GlucoseListVO(
                     "공복",
                     100,
-                    "test",
-                    "test"))
+                    "전반적으로 혈당이 높습니다! 조치가 필요해요",
+                    "먹은 과일이 혈당을 높였어요\n운동을 하지 않아 혈당이 높아졌어요"))
         glucoseList.add(
                 GlucoseListVO(
-                    "공복",
-                    100,
-                    "test",
-                    "test"))
+                    "아침식전",
+                    80,
+                    "전반적으로 혈당이 높습니다! 조치가 필요해요",
+                    "먹은 과일이 혈당을 높였어요\n" +
+                            "운동을 하지 않아 혈당이 높아졌어요"))
         glucoseList.add(
                 GlucoseListVO(
-                    "공복",
-                    100,
-                    "test",
-                    "test")
+                    "취침전",
+                    120,
+                    "전반적으로 혈당이 높습니다! 조치가 필요해요",
+                    "먹은 과일이 혈당을 높였어요\n" +
+                            "운동을 하지 않아 혈당이 높아졌어요")
         )
         setGlucoseListAdapter()
         setGlucoseTimeSpinner()

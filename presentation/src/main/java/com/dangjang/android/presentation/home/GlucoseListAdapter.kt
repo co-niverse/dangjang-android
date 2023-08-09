@@ -61,6 +61,7 @@ class GlucoseListAdapter(
 
         fun bind(glucoseList: GlucoseListVO) {
             binding.glucoseListTimeTv.text = glucoseList.time
+            binding.glucoseNumberTv.text = glucoseList.glucose.toString()
             binding.glucoseFeedbackTitleTv.text = glucoseList.feedbackTitle
             binding.glucoseFeedbackContentTv.text = glucoseList.feedbackContent
         }
