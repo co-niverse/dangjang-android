@@ -1,15 +1,15 @@
-package com.dangjang.android.presentation
+package com.dangjang.android.presentation.signup
 
 import android.graphics.Color
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.SpinnerAdapter
 import android.widget.TextView
 import androidx.fragment.app.viewModels
 import com.dangjang.android.common_ui.BaseFragment
+import com.dangjang.android.presentation.R
 import com.dangjang.android.presentation.databinding.FragmentSignupDiagnosisBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -71,7 +71,8 @@ class SignupDiagnosisFragment : BaseFragment<FragmentSignupDiagnosisBinding>(R.l
         }
         yearList.add("20년 이상")
 
-        val yearAdapter = object : ArrayAdapter<String>(requireContext(), R.layout.custom_spinner_dropdown_item, yearList),
+        val yearAdapter = object : ArrayAdapter<String>(requireContext(),
+            R.layout.custom_spinner_dropdown_item, yearList),
             SpinnerAdapter {
             override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
                 // 커스텀한 드롭다운 리스트에 표시할 뷰를 정의합니다.

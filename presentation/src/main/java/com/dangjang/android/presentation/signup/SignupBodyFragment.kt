@@ -1,9 +1,10 @@
-package com.dangjang.android.presentation
+package com.dangjang.android.presentation.signup
 
 import android.text.Editable
 import android.text.TextWatcher
 import androidx.fragment.app.viewModels
 import com.dangjang.android.common_ui.BaseFragment
+import com.dangjang.android.presentation.R
 import com.dangjang.android.presentation.databinding.FragmentSignupBodyBinding
 import dagger.hilt.android.AndroidEntryPoint
 

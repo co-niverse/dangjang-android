@@ -1,7 +1,8 @@
-package com.dangjang.android.presentation
+package com.dangjang.android.presentation.signup
 
 import android.os.Bundle
 import androidx.fragment.app.FragmentActivity
+import com.dangjang.android.presentation.R
 import com.dangjang.android.presentation.databinding.ActivitySignupBinding
 import dagger.hilt.android.AndroidEntryPoint
 

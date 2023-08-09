@@ -1,8 +1,9 @@
-package com.dangjang.android.presentation
+package com.dangjang.android.presentation.signup
 
 import android.graphics.Color
 import androidx.fragment.app.viewModels
 import com.dangjang.android.common_ui.BaseFragment
+import com.dangjang.android.presentation.R
 import com.dangjang.android.presentation.databinding.FragmentSignupActiveBinding
 import dagger.hilt.android.AndroidEntryPoint
 

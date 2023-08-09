@@ -5,7 +5,7 @@
     <data>
         <variable
             name="vm"
-            type="com.dangjang.android.presentation.SignupViewModel" />
+            type="com.dangjang.android.presentation.signup.SignupViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
