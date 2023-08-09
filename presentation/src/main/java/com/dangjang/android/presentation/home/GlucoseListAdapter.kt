@@ -39,21 +39,26 @@ class GlucoseListAdapter(
         holder.bind(glucoseList[position])
         holder.itemView.setOnClickListener {
             mItemClickListener.onItemClick(glucoseList[position])
-            glucoseList[position].isExpanded = !glucoseList[position].isExpanded
-
-            if (glucoseList[position].isExpanded) {
-                holder.binding.glucoseFeedbackTitleTv.visibility = View.VISIBLE
-                holder.binding.glucoseFeedbackContentTv.visibility = View.VISIBLE
-                holder.binding.glucoseListUpIv.setImageDrawable(holder.itemView.context.getDrawable(com.dangjang.android.presentation.R.drawable.ic_arrow_up_gray))
-            } else {
-                holder.binding.glucoseFeedbackTitleTv.visibility = View.GONE
-                holder.binding.glucoseFeedbackContentTv.visibility = View.GONE
-                holder.binding.glucoseListUpIv.setImageDrawable(holder.itemView.context.getDrawable(com.dangjang.android.presentation.R.drawable.ic_arrow_down_green)) }
+            holder.setFeedbackContentVisibility()
         }
     }
 
     inner class ViewHolder(val binding: ItemGlucoseListBinding) :
     RecyclerView.ViewHolder(binding.root) {
+        private var isExpanded = false
+
+        fun setFeedbackContentVisibility() {
+            isExpanded = !isExpanded
+            if (isExpanded) {
+                binding.glucoseFeedbackTitleTv.visibility = View.VISIBLE
+                binding.glucoseFeedbackContentTv.visibility = View.VISIBLE
+                binding.glucoseListUpIv.setImageDrawable(itemView.context.getDrawable(com.dangjang.android.presentation.R.drawable.ic_arrow_up_gray))
+            } else {
+                binding.glucoseFeedbackTitleTv.visibility = View.GONE
+                binding.glucoseFeedbackContentTv.visibility = View.GONE
+                binding.glucoseListUpIv.setImageDrawable(itemView.context.getDrawable(com.dangjang.android.presentation.R.drawable.ic_arrow_down_green)) }
+        }
+
         fun bind(glucoseList: GlucoseListVO) {
             binding.glucoseListTimeTv.text = glucoseList.time
             binding.glucoseFeedbackTitleTv.text = glucoseList.feedbackTitle
