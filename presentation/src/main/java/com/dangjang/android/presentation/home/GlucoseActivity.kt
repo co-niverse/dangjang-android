@@ -38,6 +38,10 @@ class GlucoseActivity : FragmentActivity() {
             binding.glucoseAddCl.visibility = View.GONE
         }
 
+        binding.backIv.setOnClickListener {
+            finish()
+        }
+
         glucoseList.add(
                 GlucoseListVO(
                     "공복",
