@@ -7,19 +7,24 @@ import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.SpinnerAdapter
 import android.widget.TextView
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import com.dangjang.android.common_ui.BaseFragment
 import com.dangjang.android.presentation.R
 import com.dangjang.android.presentation.databinding.FragmentSignupGenderBirthBinding
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.Date
 
 @AndroidEntryPoint
 class SignupGenderBirthFragment : BaseFragment<FragmentSignupGenderBirthBinding>(R.layout.fragment_signup_gender_birth) {
 
-    private val viewModel by viewModels<SignupViewModel>()
+    private val viewModel : SignupViewModel by activityViewModels()
 
     var manFlag = false
     var womanFlag = false
+    private var birthday = ""
+    private var year = ""
+    private var month = ""
+    private var day = ""
 
     override fun initView() {
         bind {
@@ -39,12 +44,14 @@ class SignupGenderBirthFragment : BaseFragment<FragmentSignupGenderBirthBinding>
             if (manFlag) {
                 setManBtnGray()
                 setWomanBtnGreen()
+                manFlag = false
+                womanFlag = true
             } else {
                 setManBtnGreen()
                 setWomanBtnGray()
+                manFlag = true
+                womanFlag = false
             }
-            manFlag = !manFlag
-            womanFlag = manFlag
             setBtnGreen()
         }
 
@@ -52,16 +59,40 @@ class SignupGenderBirthFragment : BaseFragment<FragmentSignupGenderBirthBinding>
             if (womanFlag) {
                 setWomanBtnGray()
                 setManBtnGreen()
+                womanFlag = false
+                manFlag = true
             } else {
                 setWomanBtnGreen()
                 setManBtnGray()
+                womanFlag = true
+                manFlag = false
             }
-            manFlag = !manFlag
-            womanFlag = manFlag
             setBtnGreen()
         }
 
         binding.genderBirthBtn.setOnClickListener {
+            if (manFlag) {
+                viewModel.setGender(false)
+            }
+            if (womanFlag) {
+                viewModel.setGender(true)
+            }
+
+            birthday = "$year-"
+            if (month.toInt() < 10) {
+                birthday += "0$month-"
+            } else {
+                birthday += "$month-"
+            }
+
+            if (day.toInt() < 10) {
+                birthday += "0$day"
+            } else {
+                birthday += day
+            }
+
+            viewModel.setBirthday(birthday)
+
             val signupBodyFragment = SignupBodyFragment()
             parentFragmentManager.beginTransaction().replace(R.id.fragment_signup_view, signupBodyFragment).addToBackStack(null).commit()
 
@@ -120,6 +151,15 @@ class SignupGenderBirthFragment : BaseFragment<FragmentSignupGenderBirthBinding>
         yearSpinner.adapter = yearAdapter
         yearSpinner.setSelection(30)
 
+        yearSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+            }
+
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                Log.d("로그", "년: ${yearList[position]}")
+                year = yearList[position].split(" ")[0]
+            }
+        }
     }
 
     private fun setMonthSpinner() {
@@ -142,6 +182,16 @@ class SignupGenderBirthFragment : BaseFragment<FragmentSignupGenderBirthBinding>
         }
 
         monthSpinner.adapter = monthAdapter
+
+        monthSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+            }
+
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                Log.d("로그", "월: ${monthList[position]}")
+                month = monthList[position].split(" ")[0]
+            }
+        }
     }
 
     private fun setDaySpinner() {
@@ -164,5 +214,15 @@ class SignupGenderBirthFragment : BaseFragment<FragmentSignupGenderBirthBinding>
         }
 
         daySpinner.adapter = dayAdapter
+
+        daySpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+            }
+
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                Log.d("로그", "일: ${dayList[position]}")
+                day = dayList[position].split(" ")[0]
+            }
+        }
     }
 }

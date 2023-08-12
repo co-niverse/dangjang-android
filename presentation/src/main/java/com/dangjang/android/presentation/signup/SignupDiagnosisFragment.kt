@@ -1,13 +1,15 @@
 package com.dangjang.android.presentation.signup
 
 import android.graphics.Color
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.SpinnerAdapter
 import android.widget.TextView
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import com.dangjang.android.common_ui.BaseFragment
 import com.dangjang.android.presentation.R
 import com.dangjang.android.presentation.databinding.FragmentSignupDiagnosisBinding
@@ -16,7 +18,9 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class SignupDiagnosisFragment : BaseFragment<FragmentSignupDiagnosisBinding>(R.layout.fragment_signup_diagnosis) {
 
-    private val viewModel by viewModels<SignupViewModel>()
+    private val viewModel : SignupViewModel by activityViewModels()
+
+    private var diabetesYear = 0
 
     override fun initView() {
         bind {
@@ -46,6 +50,7 @@ class SignupDiagnosisFragment : BaseFragment<FragmentSignupDiagnosisBinding>(R.l
         }
 
         binding.diagnosisBtn.setOnClickListener {
+            viewModel.setDiabetes(viewModel.diagnosisFlag.value!!, diabetesYear)
             if (viewModel.diagnosisFlag.value!!) {
                 val signupMediFragment = SignupMediFragment()
                 parentFragmentManager.beginTransaction().replace(R.id.fragment_signup_view, signupMediFragment).addToBackStack(null).commit()
@@ -76,6 +81,16 @@ class SignupDiagnosisFragment : BaseFragment<FragmentSignupDiagnosisBinding>(R.l
         }
 
         yearSpinner.adapter = yearAdapter
+
+        yearSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+            }
+
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                Log.d("로그", "년: ${yearList[position]}")
+                diabetesYear = yearList[position].split(" ")[0].toInt()
+            }
+        }
 
     }
 

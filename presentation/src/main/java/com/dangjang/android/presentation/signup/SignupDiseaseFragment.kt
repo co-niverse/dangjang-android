@@ -1,7 +1,7 @@
 package com.dangjang.android.presentation.signup
 
 import android.graphics.Color
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import com.dangjang.android.common_ui.BaseFragment
 import com.dangjang.android.presentation.R
 import com.dangjang.android.presentation.databinding.FragmentSignupDiseaseBinding
@@ -10,7 +10,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class SignupDiseaseFragment : BaseFragment<FragmentSignupDiseaseBinding>(R.layout.fragment_signup_disease) {
 
-    private val viewModel by viewModels<SignupViewModel>()
+    private val viewModel : SignupViewModel by activityViewModels()
 
     override fun initView() {
         bind {
@@ -27,6 +27,8 @@ class SignupDiseaseFragment : BaseFragment<FragmentSignupDiseaseBinding>(R.layou
         var hyperFlag = false
         var obesityFlag = false
         var noFlag = false
+
+        var diseasesList: ArrayList<String> = ArrayList()
 
         binding.lowBpBtn.setOnClickListener {
             if (lowBpFlag) {
@@ -114,6 +116,29 @@ class SignupDiseaseFragment : BaseFragment<FragmentSignupDiseaseBinding>(R.layou
         }
 
         binding.diseaseBtn.setOnClickListener {
+            if (lowBpFlag) {
+                diseasesList.apply {
+                    add("저혈압")
+                }
+            }
+            if (highBpFlag) {
+                diseasesList.apply {
+                    add("고혈압")
+                }
+            }
+            if (hyperFlag) {
+                diseasesList.apply {
+                    add("고지혈증")
+                }
+            }
+            if (obesityFlag) {
+                diseasesList.apply {
+                    add("비만")
+                }
+            }
+
+            viewModel.setDiseases(diseasesList)
+
             val signupAgreeFragment = SignupAgreeFragment()
             parentFragmentManager.beginTransaction().replace(R.id.fragment_signup_view, signupAgreeFragment).addToBackStack(null).commit()
         }

@@ -2,7 +2,7 @@ package com.dangjang.android.presentation.signup
 
 import android.text.Editable
 import android.text.TextWatcher
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import com.dangjang.android.common_ui.BaseFragment
 import com.dangjang.android.presentation.R
 import com.dangjang.android.presentation.databinding.FragmentSignupBodyBinding
@@ -11,7 +11,9 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class SignupBodyFragment : BaseFragment<FragmentSignupBodyBinding>(R.layout.fragment_signup_body) {
 
-    private val viewModel by viewModels<SignupViewModel>()
+    private val viewModel : SignupViewModel by activityViewModels()
+    private var height : Int = 0
+    private var weight : Int = 0
 
     override fun initView() {
         bind {
@@ -38,6 +40,7 @@ class SignupBodyFragment : BaseFragment<FragmentSignupBodyBinding>(R.layout.frag
                 if (heightFlag && weightFlag) {
                     setBodyGreen()
                 }
+                height = p0.toString().toInt()
             }
 
         })
@@ -54,11 +57,14 @@ class SignupBodyFragment : BaseFragment<FragmentSignupBodyBinding>(R.layout.frag
                 if (heightFlag && weightFlag) {
                     setBodyGreen()
                 }
+                weight = p0.toString().toInt()
             }
 
         })
 
         binding.bodyBtn.setOnClickListener {
+            viewModel.setBody(height, weight)
+
             val signupActiveFragment = SignupActiveFragment()
             parentFragmentManager.beginTransaction().replace(R.id.fragment_signup_view, signupActiveFragment).addToBackStack(null).commit()
         }
