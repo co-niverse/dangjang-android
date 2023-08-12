@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="com.dangjang.android.presentation.home.GlucoseViewModel" />
+
+        <variable
+            name="glucoseList"
+            type="com.dangjang.android.domain.model.GlucoseListVO" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/glucose_list_cl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:paddingBottom="20dp"
+            android:background="@drawable/background_white_gradient"
+            android:elevation="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/glucose_list_tag_iv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="20dp"
+                android:src="@drawable/ic_tag_warning"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/glucose_list_time_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="아침 식전"
+                android:textColor="#131F11"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="@id/glucose_list_tag_iv"
+                app:layout_constraintStart_toEndOf="@id/glucose_list_tag_iv"
+                app:layout_constraintTop_toTopOf="@id/glucose_list_tag_iv" />
+
+            <TextView
+                android:id="@+id/glucose_number_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="6dp"
+                android:text="200"
+                android:textColor="#131F11"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@id/glucose_unit_tv"
+                app:layout_constraintEnd_toStartOf="@id/glucose_unit_tv"
+                app:layout_constraintTop_toTopOf="@id/glucose_unit_tv" />
+
+            <TextView
+                android:id="@+id/glucose_unit_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:text="mg/dL"
+                android:textColor="#696D6B"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="@id/glucose_list_tag_iv"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/glucose_list_tag_iv" />
+
+            <TextView
+                android:id="@+id/glucose_feedback_title_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="16dp"
+                android:text="전반적으로 혈당이 높습니다! 조치가 필요해요"
+                android:textColor="#131F11"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/glucose_list_tag_iv" />
+
+            <TextView
+                android:id="@+id/glucose_feedback_content_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="6dp"
+                android:layout_marginEnd="16dp"
+                android:text="먹은 과일이 혈당을 높였어요\n운동을 하지 않아 혈당이 높아졌어요"
+                android:textColor="#3A433E"
+                android:textSize="16sp"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/glucose_feedback_title_tv" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <ImageView
+            android:id="@+id/glucose_list_up_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:elevation="20dp"
+            android:src="@drawable/ic_arrow_down_green"
+            app:layout_constraintBottom_toBottomOf="@id/glucose_list_cl"
+            app:layout_constraintEnd_toEndOf="@id/glucose_list_cl"
+            app:layout_constraintStart_toStartOf="@id/glucose_list_cl"
+            app:layout_constraintTop_toBottomOf="@id/glucose_list_cl" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
