@@ -13,40 +13,14 @@ class LoginRepositoryImpl @Inject constructor(
     private val loginDataSource: LoginDataSource
 ) : LoginRepository {
 
-    override fun kakaoLogin(accessToken: String): Flow<LoginVO> = flow {
-        val response = loginDataSource.kakaoLogin(LoginRequest(accessToken))
-        if (response.isSuccessful) {
-            if (response.body()!!.success) {
-                emit(response.body()!!.data.toDomain())
-                Log.e("[SUCCESS]","kakaoLogin" + response.body().toString())
-            }
-            else {
-                if (response.body()!!.errorCode == 404) {
-                    //TODO : 회원가입
-                }
-                Log.e("[FAIL]","kakaoLogin" + response.body().toString())
-            }
-        } else {
-            Log.e("[FAIL]","kakaoLogin" + response.errorBody()?.string()!!)
-        }
+    override suspend fun kakaoLogin(accessToken: String): Flow<LoginVO> = flow {
+        val response = loginDataSource.kakaoLogin(accessToken)
+        emit(response.data.toDomain())
     }
 
-    override fun naverLogin(accessToken: String): Flow<LoginVO> = flow {
-        val response = loginDataSource.naverLogin(LoginRequest(accessToken))
-        if (response.isSuccessful) {
-            if (response.body()!!.success) {
-                emit(response.body()!!.data.toDomain())
-                Log.e("[SUCCESS]","naverLogin" + response.body().toString())
-            }
-            else {
-                if (response.body()!!.errorCode == 404) {
-                    //TODO : 회원가입
-                }
-                Log.e("[FAIL]","naverLogin" + response.body().toString())
-            }
-        } else {
-            Log.e("[FAIL]","naverLogin" + response.errorBody()?.string()!!)
-        }
+    override suspend fun naverLogin(accessToken: String): Flow<LoginVO> = flow {
+        val response = loginDataSource.naverLogin(accessToken)
+        emit(response.data.toDomain())
     }
 
 }
