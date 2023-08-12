@@ -3,22 +3,17 @@ package com.dangjang.android.data.datasource
 import com.dangjang.android.data.model.dto.LoginDto
 import com.dangjang.android.data.model.request.LoginRequest
 import com.dangjang.android.data.model.response.BaseResponse
-import retrofit2.Response
-import retrofit2.http.Body
-import retrofit2.http.POST
+import javax.inject.Inject
 
-interface LoginDataSource {
+class LoginDataSource @Inject constructor(
+    private val loginApiService: LoginApiService
+) : BaseNetworkDataSource() {
 
-    //kakao Login API
-    @POST("/api/auth/kakao")
-    suspend fun kakaoLogin(
-        @Body accessToken: LoginRequest
-    ) : Response<BaseResponse<LoginDto>>
+    suspend fun kakaoLogin(accessToken: String): BaseResponse<LoginDto> {
+        return checkResponse(loginApiService.kakaoLogin(LoginRequest(accessToken)))
+    }
 
-    //naver Login API
-    @POST("/api/auth/naver")
-    suspend fun naverLogin(
-        @Body accessToken: LoginRequest
-    ) : Response<BaseResponse<LoginDto>>
-
+    suspend fun naverLogin(accessToken: String): BaseResponse<LoginDto> {
+        return checkResponse(loginApiService.naverLogin(LoginRequest(accessToken)))
+    }
 }
