@@ -25,7 +25,8 @@ class SplashActivity : AppCompatActivity() {
 
         //TODO: Check if user is logged in
         val sp: SharedPreferences = getSharedPreferences("auto", MODE_PRIVATE)
-        val provider = sp.getString("provider", null)
+        val provider = sp.getString("isAuto", "null")
+        Log.e("sp",provider.toString())
 
         if (provider == "kakao") {
             viewModel.kakaoLogin()

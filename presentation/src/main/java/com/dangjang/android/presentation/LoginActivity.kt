@@ -48,18 +48,14 @@ class LoginActivity: FragmentActivity() {
                     startActivity(intent)
                     finish()
                 } else if (it == 200) {
-                    val intent = Intent(applicationContext, MainActivity::class.java)
-                    startActivity(intent)
-                    finish()
-                }
-            }
-
-            viewModel.loginDataFlow.collectLatest {
-                if (it != null) {
                     val auto: SharedPreferences = getSharedPreferences("auto", Activity.MODE_PRIVATE)
                     val autoLoginEdit : SharedPreferences.Editor = auto.edit()
                     autoLoginEdit.putString("isAuto", viewModel.loginToSignup.value.provider)
-                    autoLoginEdit.commit()
+                    autoLoginEdit.apply()
+
+                    val intent = Intent(applicationContext, MainActivity::class.java)
+                    startActivity(intent)
+                    finish()
                 }
             }
         }
