@@ -2,7 +2,7 @@ package com.dangjang.android.data.di
 
 import com.dangjang.android.data.BuildConfig
 import com.dangjang.android.data.datasource.IntroApiService
-import com.dangjang.android.data.datasource.LoginDataSource
+import com.dangjang.android.data.datasource.LoginApiService
 import com.dangjang.android.data.datasource.SignupApiService
 import dagger.Module
 import dagger.Provides
@@ -52,8 +52,8 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideLoginDataSource(retrofit: Retrofit): LoginDataSource {
-        return retrofit.create(LoginDataSource::class.java)
+    fun provideLoginApiSource(retrofit: Retrofit): LoginApiService {
+        return retrofit.create(LoginApiService::class.java)
     }
 
     @Provides

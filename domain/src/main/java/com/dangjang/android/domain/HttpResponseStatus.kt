@@ -1,4 +1,4 @@
-package com.dangjang.android.data.datasource
+package com.dangjang.android.domain
 
 enum class HttpResponseStatus {
     OK,

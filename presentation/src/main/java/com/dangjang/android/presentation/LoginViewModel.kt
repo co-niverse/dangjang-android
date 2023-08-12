@@ -3,23 +3,29 @@ package com.dangjang.android.presentation
 import android.app.Application
 import android.content.ContentValues
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.dangjang.android.domain.HttpResponseException
 import com.dangjang.android.domain.model.LoginVO
-import com.dangjang.android.domain.usecase.GetLoginUseCase
+import com.dangjang.android.domain.usecase.LoginUseCase
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.user.UserApiClient
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val getLoginUseCase: GetLoginUseCase,
+    private val loginUseCase: LoginUseCase,
     application: Application
 ) : AndroidViewModel(application) {
 
@@ -77,18 +83,40 @@ class LoginViewModel @Inject constructor(
 
     private fun getKakaoLoginData(accessToken: String) {
         viewModelScope.launch {
-            getLoginUseCase.kakoLogin(accessToken).collect{
-                _loginDataFlow.emit(it)
-            }
+            loginUseCase.kakoLogin(accessToken)
+                .onEach {
+                    _loginDataFlow.emit(it)
+                }
+                .handleErrors()
+                .collect()
         }
     }
 
     fun getNaverLoginData(accessToken: String) {
         viewModelScope.launch {
-            getLoginUseCase.naverLogin(accessToken).collect{
-                _loginDataFlow.emit(it)
-            }
+            loginUseCase.naverLogin(accessToken)
+                .onEach {
+                    _loginDataFlow.emit(it)
+                }
+                .handleErrors()
+                .collect()
         }
     }
+
+    private fun <T> Flow<T>.handleErrors(): Flow<T> =
+        catch { e ->
+
+            val error: HttpResponseException = e as HttpResponseException
+
+            Toast.makeText(getApplication<Application>().applicationContext,e.message,
+            Toast.LENGTH_SHORT).show()
+
+            Log.e("error", error.httpCode.toString())
+
+            if (e.httpCode == 404) {
+                // TODO: 회원가입
+            }
+        }
+
 
 }

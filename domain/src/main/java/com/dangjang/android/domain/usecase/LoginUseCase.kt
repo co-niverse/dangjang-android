@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class GetLoginUseCase @Inject constructor(
+class LoginUseCase @Inject constructor(
     private val loginRepository: LoginRepository
 ) {
 

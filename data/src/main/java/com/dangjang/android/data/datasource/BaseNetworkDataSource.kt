@@ -1,5 +1,7 @@
 package com.dangjang.android.data.datasource
 
+import com.dangjang.android.domain.HttpResponseException
+import com.dangjang.android.domain.HttpResponseStatus
 import retrofit2.Response
 
 abstract class BaseNetworkDataSource {
