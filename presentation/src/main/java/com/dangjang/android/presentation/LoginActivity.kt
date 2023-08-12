@@ -1,12 +1,15 @@
 package com.dangjang.android.presentation
 
 import android.content.ContentValues
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.dangjang.android.presentation.databinding.ActivityLoginBinding
+import com.dangjang.android.presentation.signup.SignupActivity
 import com.navercorp.nid.NaverIdLoginSDK
 import com.navercorp.nid.oauth.NidOAuthLogin
 import com.navercorp.nid.oauth.OAuthLoginCallback
@@ -32,6 +35,16 @@ class LoginActivity: FragmentActivity() {
         binding.btnNaverLogin.setOnClickListener {
             naverLogin()
         }
+
+        lifecycleScope.launchWhenStarted {
+            viewModel.signupStartActivity.collect {
+                if (it) {
+                    startActivity(Intent(applicationContext, SignupActivity::class.java))
+                    finish()
+                }
+            }
+        }
+
     }
 
     private fun naverLogin() {

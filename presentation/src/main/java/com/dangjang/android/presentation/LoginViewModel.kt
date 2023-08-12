@@ -32,6 +32,9 @@ class LoginViewModel @Inject constructor(
     private val _loginDataFlow = MutableStateFlow(LoginVO())
     val loginDataFlow = _loginDataFlow.asStateFlow()
 
+    private val _signupStartActivity = MutableStateFlow(false)
+    val signupStartActivity = _signupStartActivity.asStateFlow()
+
     fun kakaoLogin() {
 
         val mCallback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
@@ -114,7 +117,7 @@ class LoginViewModel @Inject constructor(
             Log.e("error", error.httpCode.toString())
 
             if (e.httpCode == 404) {
-                // TODO: 회원가입
+                _signupStartActivity.value = true
             }
         }
 
