@@ -1,7 +1,9 @@
 package com.dangjang.android.presentation
 
+import android.app.Activity
 import android.content.ContentValues
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import androidx.databinding.DataBindingUtil
@@ -16,6 +18,7 @@ import com.navercorp.nid.oauth.OAuthLoginCallback
 import com.navercorp.nid.profile.NidProfileCallback
 import com.navercorp.nid.profile.data.NidProfileResponse
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 
 @AndroidEntryPoint
 class LoginActivity: FragmentActivity() {
@@ -48,6 +51,15 @@ class LoginActivity: FragmentActivity() {
                     val intent = Intent(applicationContext, MainActivity::class.java)
                     startActivity(intent)
                     finish()
+                }
+            }
+
+            viewModel.loginDataFlow.collectLatest {
+                if (it != null) {
+                    val auto: SharedPreferences = getSharedPreferences("auto", Activity.MODE_PRIVATE)
+                    val autoLoginEdit : SharedPreferences.Editor = auto.edit()
+                    autoLoginEdit.putString("isAuto", viewModel.loginToSignup.value.provider)
+                    autoLoginEdit.commit()
                 }
             }
         }
