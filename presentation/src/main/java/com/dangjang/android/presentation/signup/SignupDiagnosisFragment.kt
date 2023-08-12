@@ -18,8 +18,6 @@ class SignupDiagnosisFragment : BaseFragment<FragmentSignupDiagnosisBinding>(R.l
 
     private val viewModel by viewModels<SignupViewModel>()
 
-    var diagnosisFlag = false
-
     override fun initView() {
         bind {
             vm = viewModel
@@ -34,21 +32,21 @@ class SignupDiagnosisFragment : BaseFragment<FragmentSignupDiagnosisBinding>(R.l
         binding.yearCl.visibility = View.INVISIBLE
 
         binding.yesBtn.setOnClickListener {
-            diagnosisFlag = true
+            viewModel.setDiagnosisFlag(true)
             setYesGreen()
             setBtnGreen()
             binding.yearCl.visibility = View.VISIBLE
         }
 
         binding.noBtn.setOnClickListener {
-            diagnosisFlag = false
+            viewModel.setDiagnosisFlag(false)
             setNoGreen()
             setBtnGreen()
             binding.yearCl.visibility = View.INVISIBLE
         }
 
         binding.diagnosisBtn.setOnClickListener {
-            if (diagnosisFlag) {
+            if (viewModel.diagnosisFlag.value!!) {
                 val signupMediFragment = SignupMediFragment()
                 parentFragmentManager.beginTransaction().replace(R.id.fragment_signup_view, signupMediFragment).addToBackStack(null).commit()
             } else {
@@ -64,12 +62,7 @@ class SignupDiagnosisFragment : BaseFragment<FragmentSignupDiagnosisBinding>(R.l
 
     private fun setYearSpinner() {
         val yearSpinner: Spinner = binding.yearSpinner
-
-        val yearList = arrayListOf<String>()
-        for (i in 1..20) {
-            yearList.add(i.toString())
-        }
-        yearList.add("20년 이상")
+        val yearList = viewModel.getDiagnosisYearList()
 
         val yearAdapter = object : ArrayAdapter<String>(requireContext(),
             R.layout.custom_spinner_dropdown_item, yearList),
@@ -87,21 +80,21 @@ class SignupDiagnosisFragment : BaseFragment<FragmentSignupDiagnosisBinding>(R.l
     }
 
     private fun setYesGreen() {
-        binding.yesBtn.setTextColor(Color.parseColor("#32CC42"))
-        binding.yesBtn.setBackgroundResource(R.drawable.background_round_green)
-        binding.noBtn.setTextColor(Color.parseColor("#878787"))
-        binding.noBtn.setBackgroundResource(R.drawable.background_round_gray)
+        binding.yesBtn.setTextColor(viewModel.setGreenTextColor())
+        binding.yesBtn.setBackgroundResource(viewModel.setGreenBackgroundResource())
+        binding.noBtn.setTextColor(viewModel.setGrayTextColor())
+        binding.noBtn.setBackgroundResource(viewModel.setGrayBackgroundResource())
     }
 
     private fun setNoGreen() {
-        binding.yesBtn.setTextColor(Color.parseColor("#878787"))
-        binding.yesBtn.setBackgroundResource(R.drawable.background_round_gray)
-        binding.noBtn.setTextColor(Color.parseColor("#32CC42"))
-        binding.noBtn.setBackgroundResource(R.drawable.background_round_green)
+        binding.yesBtn.setTextColor(viewModel.setGrayTextColor())
+        binding.yesBtn.setBackgroundResource(viewModel.setGrayBackgroundResource())
+        binding.noBtn.setTextColor(viewModel.setGreenTextColor())
+        binding.noBtn.setBackgroundResource(viewModel.setGreenBackgroundResource())
     }
 
     private fun setBtnGreen() {
-        binding.diagnosisBtn.setBackgroundResource(R.drawable.background_green_gradient)
+        binding.diagnosisBtn.setBackgroundResource(viewModel.setGreenBtnBackgroundResource())
         binding.diagnosisBtn.setOnTouchListener({ v, event -> false })
     }
 }
