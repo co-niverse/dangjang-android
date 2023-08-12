@@ -38,10 +38,14 @@ class LoginActivity: FragmentActivity() {
 
         lifecycleScope.launchWhenStarted {
             viewModel.signupStartActivity.collect {
-                if (it) {
+                if (it == 404) {
                     val intent = Intent(applicationContext, SignupActivity::class.java)
                     intent.putExtra("provider",viewModel.loginToSignup.value.provider)
                     intent.putExtra("accessToken",viewModel.loginToSignup.value.accessToken)
+                    startActivity(intent)
+                    finish()
+                } else if (it == 200) {
+                    val intent = Intent(applicationContext, MainActivity::class.java)
                     startActivity(intent)
                     finish()
                 }

@@ -34,7 +34,7 @@ class LoginViewModel @Inject constructor(
     private val _loginDataFlow = MutableStateFlow(LoginVO())
     val loginDataFlow = _loginDataFlow.asStateFlow()
 
-    private val _signupStartActivity = MutableStateFlow(false)
+    private val _signupStartActivity = MutableStateFlow(0)
     val signupStartActivity = _signupStartActivity.asStateFlow()
 
     private val _loginToSignup = MutableStateFlow(LoginToSignupVO())
@@ -94,6 +94,7 @@ class LoginViewModel @Inject constructor(
             loginUseCase.kakoLogin(accessToken)
                 .onEach {
                     _loginDataFlow.emit(it)
+                    _signupStartActivity.value = 200
                 }
                 .handleErrors()
                 .collect()
@@ -108,6 +109,7 @@ class LoginViewModel @Inject constructor(
             loginUseCase.naverLogin(accessToken)
                 .onEach {
                     _loginDataFlow.emit(it)
+                    _signupStartActivity.value = 200
                 }
                 .handleErrors()
                 .collect()
@@ -128,7 +130,7 @@ class LoginViewModel @Inject constructor(
             Log.e("error", error.httpCode.toString())
 
             if (e.httpCode == 404) {
-                _signupStartActivity.value = true
+                _signupStartActivity.value = 404
             }
         }
 
