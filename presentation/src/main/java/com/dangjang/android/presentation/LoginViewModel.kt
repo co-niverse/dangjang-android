@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.dangjang.android.domain.HttpResponseException
+import com.dangjang.android.domain.model.LoginToSignupVO
 import com.dangjang.android.domain.model.LoginVO
 import com.dangjang.android.domain.usecase.LoginUseCase
 import com.kakao.sdk.auth.model.OAuthToken
@@ -20,6 +21,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -34,6 +36,9 @@ class LoginViewModel @Inject constructor(
 
     private val _signupStartActivity = MutableStateFlow(false)
     val signupStartActivity = _signupStartActivity.asStateFlow()
+
+    private val _loginToSignup = MutableStateFlow(LoginToSignupVO())
+    val loginToSignup = _loginToSignup.asStateFlow()
 
     fun kakaoLogin() {
 
@@ -93,6 +98,9 @@ class LoginViewModel @Inject constructor(
                 .handleErrors()
                 .collect()
         }
+        _loginToSignup.update {
+            it.copy(accessToken = accessToken,"kakao")
+        }
     }
 
     fun getNaverLoginData(accessToken: String) {
@@ -103,6 +111,9 @@ class LoginViewModel @Inject constructor(
                 }
                 .handleErrors()
                 .collect()
+        }
+        _loginToSignup.update {
+            it.copy(accessToken = accessToken, provider = "naver")
         }
     }
 

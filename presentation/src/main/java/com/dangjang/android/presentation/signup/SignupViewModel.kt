@@ -60,6 +60,18 @@ class SignupViewModel @Inject constructor(
         }
     }
 
+    fun setProvider(provider: String) {
+        _signupRequest.update {
+            it.copy(provider = provider)
+        }
+    }
+
+    fun setAccessToken(accessToken: String) {
+        _signupRequest.update {
+            it.copy(accessToken = accessToken)
+        }
+    }
+
     fun setNickname(nickname: String) {
         _signupRequest.update {
             it.copy(nickname = nickname)

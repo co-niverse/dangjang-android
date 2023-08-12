@@ -39,7 +39,10 @@ class LoginActivity: FragmentActivity() {
         lifecycleScope.launchWhenStarted {
             viewModel.signupStartActivity.collect {
                 if (it) {
-                    startActivity(Intent(applicationContext, SignupActivity::class.java))
+                    val intent = Intent(applicationContext, SignupActivity::class.java)
+                    intent.putExtra("provider",viewModel.loginToSignup.value.provider)
+                    intent.putExtra("accessToken",viewModel.loginToSignup.value.accessToken)
+                    startActivity(intent)
                     finish()
                 }
             }
