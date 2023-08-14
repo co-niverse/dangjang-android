@@ -42,6 +42,10 @@ class WeightActivity : FragmentActivity() {
         binding.backIv.setOnClickListener {
             finish()
         }
+
+        binding.weightInfoIv.setOnClickListener {
+            WeightDialogFragment().show(supportFragmentManager, "WeightDialogFragment")
+        }
     }
 
 }
