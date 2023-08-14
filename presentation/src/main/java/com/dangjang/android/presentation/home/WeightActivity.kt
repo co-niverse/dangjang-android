@@ -39,6 +39,9 @@ class WeightActivity : FragmentActivity() {
             binding.weightOkBtn.visibility = View.GONE
         }
 
+        binding.backIv.setOnClickListener {
+            finish()
+        }
     }
 
 }
