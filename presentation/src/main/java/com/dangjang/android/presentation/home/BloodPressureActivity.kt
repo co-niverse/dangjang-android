@@ -46,6 +46,10 @@ class BloodPressureActivity : FragmentActivity() {
             binding.bloodPressureEditBtn.visibility = View.VISIBLE
             binding.bloodPressureOkBtn.visibility = View.GONE
         }
+
+        binding.backIv.setOnClickListener {
+            finish()
+        }
     }
 
 }
