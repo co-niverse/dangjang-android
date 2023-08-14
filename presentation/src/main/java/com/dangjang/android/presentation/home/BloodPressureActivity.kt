@@ -50,6 +50,10 @@ class BloodPressureActivity : FragmentActivity() {
         binding.backIv.setOnClickListener {
             finish()
         }
+
+        binding.bloodPressureInfoIv.setOnClickListener {
+            BloodPressureDialogFragment().show(supportFragmentManager, "BloodPressureDialogFragment")
+        }
     }
 
 }
