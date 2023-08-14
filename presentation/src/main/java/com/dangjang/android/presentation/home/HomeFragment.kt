@@ -41,6 +41,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
                 startActivity(this)
             }
         }
+
+        binding.exerciseCl.setOnClickListener {
+            Intent(activity, ExerciseActivity::class.java).apply {
+                startActivity(this)
+            }
+        }
     }
 
 }
