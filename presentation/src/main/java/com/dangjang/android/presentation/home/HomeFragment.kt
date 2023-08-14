@@ -30,6 +30,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
             }
         }
 
+        binding.weightCl.setOnClickListener {
+            Intent(activity, WeightActivity::class.java).apply {
+                startActivity(this)
+            }
+        }
+
         binding.bloodPressureCl.setOnClickListener {
             Intent(activity, BloodPressureActivity::class.java).apply {
                 startActivity(this)
