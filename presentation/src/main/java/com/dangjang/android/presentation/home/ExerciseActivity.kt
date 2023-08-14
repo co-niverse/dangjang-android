@@ -43,6 +43,9 @@ class ExerciseActivity : FragmentActivity() {
             finish()
         }
 
+        binding.exerciseInfoIv.setOnClickListener {
+            ExerciseDialogFragment().show(supportFragmentManager, "ExerciseDialogFragment")
+        }
     }
 
 }
