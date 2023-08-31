@@ -58,7 +58,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
-                android:text="쿼카님을 위한\n오늘의 조언"
+                android:text="쿼카님을 위한\n오늘의 가이드"
                 android:textColor="@color/black"
                 android:textSize="24sp"
                 android:textStyle="bold"

@@ -196,7 +196,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="20dp"
-            android:text="오늘의 조언"
+            android:text="오늘의 가이드"
             android:textColor="#131F11"
             android:textSize="16sp"
             android:textStyle="bold"
