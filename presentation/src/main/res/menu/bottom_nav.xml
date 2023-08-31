@@ -9,9 +9,9 @@
         android:title="건강차트"
         android:icon="@drawable/selector_menu_chart" />
     <item
-        android:id="@id/nav_challenge"
-        android:title="도전"
-        android:icon="@drawable/selector_menu_challenge" />
+        android:id="@id/nav_food"
+        android:title="식단"
+        android:icon="@drawable/selector_menu_food" />
     <item
         android:id="@id/nav_mypage"
         android:title="내정보"

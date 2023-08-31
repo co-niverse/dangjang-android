@@ -12,14 +12,14 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class ExerciseActivity : FragmentActivity() {
     private lateinit var binding: ActivityExerciseBinding
-    private lateinit var viewModel: ExerciseViewModel
+    private lateinit var viewModel: HomeViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_exercise)
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_exercise)
-        viewModel = ViewModelProvider(this).get(ExerciseViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
 
         binding.exerciseEditBtn.setOnClickListener {
             binding.exerciseEditView.visibility = View.VISIBLE

@@ -2,12 +2,12 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/nav_challenge"
-    app:startDestination="@id/challengeFragment">
+    android:id="@+id/nav_food"
+    app:startDestination="@id/foodFragment">
 
     <fragment
-        android:id="@+id/challengeFragment"
-        android:name="com.dangjang.android.presentation.challenge.ChallengeFragment"
+        android:id="@+id/foodFragment"
+        android:name="com.dangjang.android.presentation.food.FoodFragment"
         android:label="fragment_challenge"
-        tools:layout="@layout/fragment_challenge" />
+        tools:layout="@layout/fragment_food" />
 </navigation>

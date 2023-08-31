@@ -12,14 +12,14 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class WeightActivity : FragmentActivity() {
     private lateinit var binding: ActivityWeightBinding
-    private lateinit var viewModel: WeightViewModel
+    private lateinit var viewModel: HomeViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_weight)
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_weight)
-        viewModel = ViewModelProvider(this).get(WeightViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
 
         binding.weightEditBtn.setOnClickListener {
             binding.weightEditView.visibility = View.VISIBLE
