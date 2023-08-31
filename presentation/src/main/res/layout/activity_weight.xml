@@ -5,7 +5,7 @@
     <data>
         <variable
             name="vm"
-            type="com.dangjang.android.presentation.home.WeightViewModel" />
+            type="com.dangjang.android.presentation.home.HomeViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

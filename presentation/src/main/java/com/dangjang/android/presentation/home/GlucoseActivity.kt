@@ -19,7 +19,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class GlucoseActivity : FragmentActivity() {
     private lateinit var binding: ActivityGlucoseBinding
-    private lateinit var viewModel: GlucoseViewModel
+    private lateinit var viewModel: HomeViewModel
     private lateinit var glucoseListAdapter: GlucoseListAdapter
     private var glucoseList = arrayListOf<GlucoseListVO>()
 
@@ -28,7 +28,7 @@ class GlucoseActivity : FragmentActivity() {
         setContentView(R.layout.activity_glucose)
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_glucose)
-        viewModel = ViewModelProvider(this).get(GlucoseViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
 
         binding.glucoseAddBtn.setOnClickListener {
             binding.glucoseAddCl.visibility = View.VISIBLE

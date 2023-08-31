@@ -6,7 +6,7 @@
 
         <variable
             name="vm"
-            type="com.dangjang.android.presentation.home.GlucoseViewModel" />
+            type="com.dangjang.android.presentation.home.HomeViewModel" />
 
         <variable
             name="glucoseList"
