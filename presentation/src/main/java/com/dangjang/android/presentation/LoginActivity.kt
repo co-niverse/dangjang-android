@@ -1,18 +1,24 @@
 package com.dangjang.android.presentation
 
+import android.app.Activity
 import android.content.ContentValues
+import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.dangjang.android.presentation.databinding.ActivityLoginBinding
+import com.dangjang.android.presentation.signup.SignupActivity
 import com.navercorp.nid.NaverIdLoginSDK
 import com.navercorp.nid.oauth.NidOAuthLogin
 import com.navercorp.nid.oauth.OAuthLoginCallback
 import com.navercorp.nid.profile.NidProfileCallback
 import com.navercorp.nid.profile.data.NidProfileResponse
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 
 @AndroidEntryPoint
 class LoginActivity: FragmentActivity() {
@@ -32,6 +38,28 @@ class LoginActivity: FragmentActivity() {
         binding.btnNaverLogin.setOnClickListener {
             naverLogin()
         }
+
+        lifecycleScope.launchWhenStarted {
+            viewModel.signupStartActivity.collect {
+                if (it == 404) {
+                    val intent = Intent(applicationContext, SignupActivity::class.java)
+                    intent.putExtra("provider",viewModel.loginToSignup.value.provider)
+                    intent.putExtra("accessToken",viewModel.loginToSignup.value.accessToken)
+                    startActivity(intent)
+                    finish()
+                } else if (it == 200) {
+                    val auto: SharedPreferences = getSharedPreferences("auto", Activity.MODE_PRIVATE)
+                    val autoLoginEdit : SharedPreferences.Editor = auto.edit()
+                    autoLoginEdit.putString("isAuto", viewModel.loginToSignup.value.provider)
+                    autoLoginEdit.apply()
+
+                    val intent = Intent(applicationContext, MainActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                }
+            }
+        }
+
     }
 
     private fun naverLogin() {
