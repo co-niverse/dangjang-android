@@ -14,12 +14,12 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="#FAFAFA">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#FAFAFA">
+            android:layout_height="match_parent">
 
             <ImageView
                 android:id="@+id/tag_iv"
@@ -235,162 +235,24 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <GridLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:columnCount="2"
-                android:orientation="vertical"
-                android:rowCount="2"
-                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@id/weight_cl"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/weight_cl">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/blood_pressure_cl"
-                    android:layout_width="0dp"
-                    android:layout_height="173dp"
-                    android:layout_rowWeight="1"
-                    android:layout_columnWeight="1"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginRight="5dp"
-                    android:background="@drawable/background_white_gradient"
-                    android:elevation="8dp">
-
-                    <TextView
-                        android:id="@+id/blood_pressure_title_tv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="17dp"
-                        android:text="혈압"
-                        android:textColor="#131F11"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/blood_pressure_high_title_tv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="17dp"
-                        android:text="최고"
-                        android:textColor="#696D6B"
-                        android:textSize="14sp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/blood_pressure_title_tv" />
-
-                    <TextView
-                        android:id="@+id/blood_pressure_high_number_tv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="6dp"
-                        android:text="60mmhg"
-                        android:textColor="#131F11"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
-                        app:layout_constraintBottom_toBottomOf="@+id/blood_pressure_high_title_tv"
-                        app:layout_constraintStart_toEndOf="@id/blood_pressure_high_title_tv"
-                        app:layout_constraintTop_toTopOf="@+id/blood_pressure_high_title_tv" />
-
-                    <TextView
-                        android:id="@+id/blood_pressure_low_title_tv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="8dp"
-                        android:text="최저"
-                        android:textColor="#696D6B"
-                        android:textSize="14sp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/blood_pressure_high_title_tv" />
-
-                    <TextView
-                        android:id="@+id/blood_pressure_low_number_tv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="6dp"
-                        android:text="60mmhg"
-                        android:textColor="#131F11"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
-                        app:layout_constraintBottom_toBottomOf="@+id/blood_pressure_low_title_tv"
-                        app:layout_constraintStart_toEndOf="@id/blood_pressure_low_title_tv"
-                        app:layout_constraintTop_toTopOf="@+id/blood_pressure_low_title_tv" />
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="16dp"
-                        android:layout_marginBottom="16dp"
-                        android:src="@drawable/ic_tag_caution"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/sleep_cl"
-                    android:layout_width="0dp"
-                    android:layout_height="173dp"
-                    android:layout_rowWeight="1"
-                    android:layout_columnWeight="1"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginRight="5dp"
-                    android:layout_marginBottom="12dp"
-                    android:background="@drawable/background_white_gradient"
-                    android:elevation="8dp">
-
-                    <TextView
-                        android:id="@+id/sleep_title_tv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="17dp"
-                        android:text="수면"
-                        android:textColor="#131F11"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="12dp"
-                        android:text="일주일간 규칙적으로 \n수면중이시네요!"
-                        android:textColor="#3A433E"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/sleep_title_tv" />
-
-                    <TextView
-                        android:id="@+id/sleep_time_tv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="16dp"
-                        android:layout_marginBottom="21dp"
-                        android:text="8시간"
-                        android:textColor="#131F11"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/exercise_cl"
                     android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_rowWeight="1"
-                    android:layout_columnWeight="1"
-                    android:layout_marginLeft="5dp"
+                    android:layout_height="170dp"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="17dp"
                     android:layout_marginTop="12dp"
                     android:layout_marginRight="16dp"
+                    android:layout_marginBottom="30dp"
                     android:background="@drawable/background_white_gradient"
                     android:elevation="8dp">
 
@@ -460,13 +322,12 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/calory_cl"
                     android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_rowWeight="1"
-                    android:layout_columnWeight="1"
+                    android:layout_height="170dp"
+                    android:layout_weight="1"
                     android:layout_marginLeft="5dp"
                     android:layout_marginTop="10dp"
-                    android:layout_marginRight="16dp"
-                    android:layout_marginBottom="12dp"
+                    android:layout_marginRight="17dp"
+                    android:layout_marginBottom="30dp"
                     android:background="@drawable/background_white_gradient"
                     android:elevation="8dp">
 
@@ -484,8 +345,7 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
-
-            </GridLayout>
+            </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
