@@ -47,6 +47,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
                 startActivity(this)
             }
         }
+
+        binding.sleepCl.setOnClickListener {
+            Intent(activity, SleepActivity::class.java).apply {
+                startActivity(this)
+            }
+        }
     }
 
 }

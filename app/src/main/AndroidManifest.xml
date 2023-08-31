@@ -74,6 +74,11 @@
             android:exported="true"
             android:theme="@android:style/Theme.NoTitleBar">
         </activity>
+        <activity
+            android:name=".presentation.home.SleepActivity"
+            android:exported="true"
+            android:theme="@android:style/Theme.NoTitleBar">
+        </activity>
     </application>
 
 </manifest>
