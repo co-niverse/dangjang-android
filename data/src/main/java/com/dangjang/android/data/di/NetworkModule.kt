@@ -1,6 +1,7 @@
 package com.dangjang.android.data.di
 
 import com.dangjang.android.data.BuildConfig
+import com.dangjang.android.data.datasource.HomeApiService
 import com.dangjang.android.data.datasource.IntroApiService
 import com.dangjang.android.data.datasource.LoginApiService
 import com.dangjang.android.data.datasource.SignupApiService
@@ -60,5 +61,11 @@ object NetworkModule {
     @Singleton
     fun provideSignupApiService(retrofit: Retrofit): SignupApiService{
         return retrofit.create(SignupApiService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideHomeApiService(retrofit: Retrofit): HomeApiService {
+        return retrofit.create(HomeApiService::class.java)
     }
 }
