@@ -38,6 +38,12 @@ class ChartFragment : BaseFragment<FragmentChartBinding>(R.layout.fragment_chart
 
         initLineChart(binding.weightChart)
         setLineChartData(binding.weightChart)
+
+        initLineChart(binding.stepChart)
+        setLineChartData(binding.stepChart)
+
+        initLineChart(binding.exerciseChart)
+        setLineChartData(binding.exerciseChart)
     }
 
     // 바 차트 설정
