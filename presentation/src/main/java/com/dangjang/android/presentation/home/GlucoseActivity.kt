@@ -4,6 +4,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.SpinnerAdapter
@@ -15,6 +16,9 @@ import com.dangjang.android.domain.model.GlucoseListVO
 import com.dangjang.android.presentation.R
 import com.dangjang.android.presentation.databinding.ActivityGlucoseBinding
 import dagger.hilt.android.AndroidEntryPoint
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Date
 
 @AndroidEntryPoint
 class GlucoseActivity : FragmentActivity() {
@@ -22,6 +26,7 @@ class GlucoseActivity : FragmentActivity() {
     private lateinit var viewModel: HomeViewModel
     private lateinit var glucoseListAdapter: GlucoseListAdapter
     private var glucoseList = arrayListOf<GlucoseListVO>()
+    private var glucoseSpinnerType: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,6 +34,19 @@ class GlucoseActivity : FragmentActivity() {
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_glucose)
         viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
+
+        binding.glucoseAddSaveBtn.setOnClickListener {
+            viewModel.setType(glucoseSpinnerType)
+
+            val currentTime: Date = Calendar.getInstance().getTime()
+            val format = SimpleDateFormat("yyyy-MM-dd")
+            val date = format.format(currentTime)
+            viewModel.setCreatedAt(date)
+
+            viewModel.setUnit(binding.glucoseAddEt.text.toString())
+
+            viewModel.addHealthMetric(viewModel.addHealthMetricRequest.value)
+        }
 
         binding.glucoseAddBtn.setOnClickListener {
             binding.glucoseAddCl.visibility = View.VISIBLE
@@ -89,13 +107,13 @@ class GlucoseActivity : FragmentActivity() {
 
         val glucoseTimeList = arrayListOf<String>()
         glucoseTimeList.add("공복")
-        glucoseTimeList.add("아침 식전")
-        glucoseTimeList.add("아침 식후")
-        glucoseTimeList.add("점심 식전")
-        glucoseTimeList.add("점심 식후")
-        glucoseTimeList.add("저녁 식전")
-        glucoseTimeList.add("저녁 식후")
-        glucoseTimeList.add("취침 전")
+        glucoseTimeList.add("아침식전")
+        glucoseTimeList.add("아침식후")
+        glucoseTimeList.add("점심식전")
+        glucoseTimeList.add("점심식후")
+        glucoseTimeList.add("저녁식전")
+        glucoseTimeList.add("저녁식후")
+        glucoseTimeList.add("취침전")
         glucoseTimeList.add("기타")
 
         val glucoseTimeAdapter = object : ArrayAdapter<String>(applicationContext,
@@ -106,6 +124,15 @@ class GlucoseActivity : FragmentActivity() {
                 val view = super.getDropDownView(position, convertView, parent) as TextView
                 view.setTextColor(Color.BLACK) // 드롭다운 리스트의 항목 텍스트 색상 설정
                 return view
+            }
+        }
+
+        glucoseSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+            }
+
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                glucoseSpinnerType = glucoseTimeList[position]
             }
         }
 
