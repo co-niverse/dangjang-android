@@ -15,6 +15,9 @@ class HomeViewModel @Inject constructor(
     private val _glucoseList = MutableStateFlow(ArrayList<GlucoseListVO>())
     val glucoseList = arrayListOf<GlucoseListVO>()
 
+    private val _glucoseTimeList = MutableStateFlow(ArrayList<String>())
+    val glucoseTimeList = arrayListOf<String>()
+
     fun getGlucoseList() {
         viewModelScope.launch {
             glucoseList.add(
@@ -39,6 +42,21 @@ class HomeViewModel @Inject constructor(
                             "운동을 하지 않아 혈당이 높아졌어요")
             )
             _glucoseList.emit(glucoseList)
+        }
+    }
+
+    fun getGlucoseTimeList() {
+        viewModelScope.launch {
+            glucoseTimeList.add("공복")
+            glucoseTimeList.add("아침식전")
+            glucoseTimeList.add("아침식후")
+            glucoseTimeList.add("점심식전")
+            glucoseTimeList.add("점심식후")
+            glucoseTimeList.add("저녁식전")
+            glucoseTimeList.add("저녁식후")
+            glucoseTimeList.add("취침전")
+            glucoseTimeList.add("기타")
+            _glucoseTimeList.emit(glucoseTimeList)
         }
     }
 }
