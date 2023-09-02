@@ -50,12 +50,12 @@ class SignupDiagnosisFragment : BaseFragment<FragmentSignupDiagnosisBinding>(R.l
         }
 
         binding.diagnosisBtn.setOnClickListener {
-            if (viewModel.diagnosisFlag.value!!) {
-                viewModel.setDiabetes(viewModel.diagnosisFlag.value!!, diabetesYear)
+            if (viewModel.diagnosisFlag.value) {
+                viewModel.setDiabetes(viewModel.diagnosisFlag.value, diabetesYear)
                 val signupMediFragment = SignupMediFragment()
                 parentFragmentManager.beginTransaction().replace(R.id.fragment_signup_view, signupMediFragment).addToBackStack(null).commit()
             } else {
-                viewModel.setDiabetes(viewModel.diagnosisFlag.value!!, 0)
+                viewModel.setDiabetes(viewModel.diagnosisFlag.value, 0)
                 val signupDiseaseFragment = SignupDiseaseFragment()
                 parentFragmentManager.beginTransaction().replace(R.id.fragment_signup_view, signupDiseaseFragment).addToBackStack(null).commit()
             }
