@@ -7,6 +7,10 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import com.dangjang.android.domain.constants.AUTO_LOGIN_EDITOR_KEY
+import com.dangjang.android.domain.constants.AUTO_LOGIN_SPF_KEY
+import com.dangjang.android.domain.constants.KAKAO
+import com.dangjang.android.domain.constants.NAVER
 import com.navercorp.nid.NaverIdLoginSDK
 import com.navercorp.nid.oauth.NidOAuthLogin
 import com.navercorp.nid.oauth.OAuthLoginCallback
@@ -24,15 +28,15 @@ class SplashActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this).get(LoginViewModel::class.java)
 
         //TODO: Check if user is logged in
-        val sp: SharedPreferences = getSharedPreferences("auto", MODE_PRIVATE)
-        val provider = sp.getString("isAuto", "null")
+        val sp: SharedPreferences = getSharedPreferences(AUTO_LOGIN_SPF_KEY, MODE_PRIVATE)
+        val provider = sp.getString(AUTO_LOGIN_EDITOR_KEY, "null")
         Log.e("sp",provider.toString())
 
-        if (provider == "kakao") {
+        if (provider == KAKAO) {
             viewModel.kakaoLogin()
             startActivity(Intent(this, MainActivity::class.java))
             finish()
-        } else if (provider == "naver") {
+        } else if (provider == NAVER) {
             naverLogin()
             startActivity(Intent(this, MainActivity::class.java))
             finish()
