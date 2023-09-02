@@ -8,6 +8,8 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.dangjang.android.domain.HttpResponseException
 import com.dangjang.android.domain.HttpResponseStatus
+import com.dangjang.android.domain.constants.KAKAO
+import com.dangjang.android.domain.constants.NAVER
 import com.dangjang.android.domain.model.LoginToSignupVO
 import com.dangjang.android.domain.model.LoginVO
 import com.dangjang.android.domain.usecase.LoginUseCase
@@ -101,7 +103,7 @@ class LoginViewModel @Inject constructor(
                 .collect()
         }
         _loginToSignup.update {
-            it.copy(accessToken = accessToken,"kakao")
+            it.copy(accessToken = accessToken, KAKAO)
         }
     }
 
@@ -116,7 +118,7 @@ class LoginViewModel @Inject constructor(
                 .collect()
         }
         _loginToSignup.update {
-            it.copy(accessToken = accessToken, provider = "naver")
+            it.copy(accessToken = accessToken, provider = NAVER)
         }
     }
 
