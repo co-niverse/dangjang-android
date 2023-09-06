@@ -68,7 +68,7 @@ class ExerciseActivity : FragmentActivity() {
             ExerciseListAdapter.MyItemClickListener {
 
             override fun onItemClick(exerciseList: ExerciseListVO) {
-
+                ExerciseEditDialogFragment().show(supportFragmentManager, "ExerciseEditDialogFragment")
             }
         })
 
