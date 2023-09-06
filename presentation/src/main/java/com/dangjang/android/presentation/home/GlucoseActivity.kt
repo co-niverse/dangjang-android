@@ -34,6 +34,10 @@ class GlucoseActivity : FragmentActivity() {
             binding.glucoseAddCl.visibility = View.VISIBLE
         }
 
+        binding.glucoseAddSaveBtn.setOnClickListener {
+            binding.glucoseAddCl.visibility = View.GONE
+        }
+        
         binding.glucoseAddCloseIv.setOnClickListener {
             binding.glucoseAddCl.visibility = View.GONE
         }
