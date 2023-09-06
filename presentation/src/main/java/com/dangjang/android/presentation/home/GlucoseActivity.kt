@@ -77,7 +77,7 @@ class GlucoseActivity : FragmentActivity() {
         glucoseListAdapter.setMyItemClickListener(object :
             GlucoseListAdapter.MyItemClickListener {
             override fun onItemClick(glucoseList: GlucoseListVO) {
-                // TODO : 클릭했을 때 UI 변경 - selector ?
+                GlucoseEditDialogFragment().show(supportFragmentManager, "GlucoseEditDialogFragment")
             }
         })
 

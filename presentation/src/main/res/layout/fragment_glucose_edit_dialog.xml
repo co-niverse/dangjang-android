@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/glucose_add_cl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/background_white_gradient"
+        android:elevation="8dp">
+
+        <TextView
+            android:id="@+id/glucose_add_title_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:text="혈당"
+            android:textColor="#131F11"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/glucose_add_close_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:src="@drawable/ic_close_green"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Spinner
+            android:id="@+id/glucose_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="58dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="9dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/background_round_gray"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/glucose_add_title_tv" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:src="@drawable/ic_arrow_down_black"
+            app:layout_constraintBottom_toBottomOf="@id/glucose_spinner"
+            app:layout_constraintEnd_toEndOf="@id/glucose_spinner"
+            app:layout_constraintTop_toTopOf="@id/glucose_spinner" />
+
+        <EditText
+            android:id="@+id/glucose_add_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/background_round_gray"
+            android:ems="10"
+            android:hint="혈당을 입력해주세요"
+            android:inputType="number"
+            android:padding="17sp"
+            android:textColorHint="#939393"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/glucose_spinner" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:text="mg/dL"
+            android:textColor="#696D6B"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="@id/glucose_add_et"
+            app:layout_constraintEnd_toEndOf="@id/glucose_add_et"
+            app:layout_constraintTop_toTopOf="@id/glucose_add_et" />
+
+        <Button
+            android:id="@+id/glucose_add_save_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="21dp"
+            android:background="@drawable/background_green_gradient"
+            android:text="저장"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/glucose_add_et" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
