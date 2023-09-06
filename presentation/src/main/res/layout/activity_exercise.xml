@@ -197,7 +197,6 @@
                     android:textColor="@color/white"
                     android:textSize="16sp"
                     android:visibility="gone"
-                    app:layout_constraintBottom_toTopOf="@id/today_feedback_title_tv"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/step_cl" />
@@ -213,13 +212,13 @@
                     android:textSize="16sp"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/step_cl" />
+                    app:layout_constraintTop_toBottomOf="@id/step_ok_btn" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/exercise_rv"
                     android:layout_width="match_parent"
-                    android:layout_height="300dp"
-                    android:layout_marginTop="16dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
                     android:orientation="vertical"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintTop_toBottomOf="@id/today_exercise_title_tv" />
@@ -245,6 +244,7 @@
                     android:layout_marginTop="12dp"
                     android:layout_marginEnd="16dp"
                     android:background="@drawable/background_feedback_border_green"
+                    android:elevation="4dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/today_feedback_title_tv">
@@ -313,6 +313,7 @@
                     android:layout_marginEnd="16dp"
                     android:layout_marginBottom="24dp"
                     android:background="@drawable/background_feedback_border_green"
+                    android:elevation="4dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
