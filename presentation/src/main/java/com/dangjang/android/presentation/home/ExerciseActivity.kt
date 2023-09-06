@@ -21,22 +21,22 @@ class ExerciseActivity : FragmentActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_exercise)
         viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
 
-        binding.exerciseEditBtn.setOnClickListener {
-            binding.exerciseEditView.visibility = View.VISIBLE
-            binding.exerciseTv.visibility = View.GONE
-            binding.exerciseEt.visibility = View.VISIBLE
+        binding.stepEditBtn.setOnClickListener {
+            binding.stepEditView.visibility = View.VISIBLE
+            binding.stepTv.visibility = View.GONE
+            binding.stepEt.visibility = View.VISIBLE
 
-            binding.exerciseEditBtn.visibility = View.GONE
-            binding.exerciseOkBtn.visibility = View.VISIBLE
+            binding.stepEditBtn.visibility = View.GONE
+            binding.stepOkBtn.visibility = View.VISIBLE
         }
 
-        binding.exerciseOkBtn.setOnClickListener {
-            binding.exerciseEditView.visibility = View.GONE
-            binding.exerciseTv.visibility = View.VISIBLE
-            binding.exerciseEt.visibility = View.GONE
+        binding.stepOkBtn.setOnClickListener {
+            binding.stepEditView.visibility = View.GONE
+            binding.stepTv.visibility = View.VISIBLE
+            binding.stepEt.visibility = View.GONE
 
-            binding.exerciseEditBtn.visibility = View.VISIBLE
-            binding.exerciseOkBtn.visibility = View.GONE
+            binding.stepEditBtn.visibility = View.VISIBLE
+            binding.stepOkBtn.visibility = View.GONE
         }
 
         binding.backIv.setOnClickListener {
