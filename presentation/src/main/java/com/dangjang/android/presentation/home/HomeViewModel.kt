@@ -58,10 +58,9 @@ class HomeViewModel @Inject constructor(
     }
 
     fun addHealthMetric(
-        addHealthMetricRequest: AddHealthMetricRequest
     ) {
         viewModelScope.launch {
-            getHomeUseCase.addHealthMetric(addHealthMetricRequest)
+            getHomeUseCase.addHealthMetric(addHealthMetricRequest.value)
                 .onEach {
                     _addHealthMetricFlow.emit(it)
                 }

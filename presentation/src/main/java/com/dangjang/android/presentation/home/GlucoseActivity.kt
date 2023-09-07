@@ -2,6 +2,7 @@ package com.dangjang.android.presentation.home
 
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
@@ -41,18 +42,15 @@ class GlucoseActivity : FragmentActivity() {
             val format = SimpleDateFormat("yyyy-MM-dd")
             val date = format.format(currentTime)
             viewModel.setCreatedAt(date)
-
             viewModel.setUnit(binding.glucoseAddEt.text.toString())
 
-            viewModel.addHealthMetric(viewModel.addHealthMetricRequest.value)
+            viewModel.addHealthMetric()
+
+            binding.glucoseAddCl.visibility = View.GONE
         }
 
         binding.glucoseAddBtn.setOnClickListener {
             binding.glucoseAddCl.visibility = View.VISIBLE
-        }
-
-        binding.glucoseAddSaveBtn.setOnClickListener {
-            binding.glucoseAddCl.visibility = View.GONE
         }
 
         binding.glucoseAddCloseIv.setOnClickListener {
