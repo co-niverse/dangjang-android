@@ -10,6 +10,9 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import com.dangjang.android.domain.HttpResponseStatus
+import com.dangjang.android.domain.constants.AUTO_LOGIN_EDITOR_KEY
+import com.dangjang.android.domain.constants.AUTO_LOGIN_SPF_KEY
 import com.dangjang.android.presentation.databinding.ActivityLoginBinding
 import com.dangjang.android.presentation.signup.SignupActivity
 import com.navercorp.nid.NaverIdLoginSDK
@@ -41,16 +44,16 @@ class LoginActivity: FragmentActivity() {
 
         lifecycleScope.launchWhenStarted {
             viewModel.signupStartActivity.collect {
-                if (it == 404) {
+                if (it == HttpResponseStatus.NOT_FOUND) {
                     val intent = Intent(applicationContext, SignupActivity::class.java)
                     intent.putExtra("provider",viewModel.loginToSignup.value.provider)
                     intent.putExtra("accessToken",viewModel.loginToSignup.value.accessToken)
                     startActivity(intent)
                     finish()
-                } else if (it == 200) {
-                    val auto: SharedPreferences = getSharedPreferences("auto", Activity.MODE_PRIVATE)
+                } else if (it == HttpResponseStatus.OK) {
+                    val auto: SharedPreferences = getSharedPreferences(AUTO_LOGIN_SPF_KEY, Activity.MODE_PRIVATE)
                     val autoLoginEdit : SharedPreferences.Editor = auto.edit()
-                    autoLoginEdit.putString("isAuto", viewModel.loginToSignup.value.provider)
+                    autoLoginEdit.putString(AUTO_LOGIN_EDITOR_KEY, viewModel.loginToSignup.value.provider)
                     autoLoginEdit.apply()
 
                     val intent = Intent(applicationContext, MainActivity::class.java)

@@ -7,6 +7,9 @@ import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.dangjang.android.domain.HttpResponseException
+import com.dangjang.android.domain.HttpResponseStatus
+import com.dangjang.android.domain.constants.KAKAO
+import com.dangjang.android.domain.constants.NAVER
 import com.dangjang.android.domain.model.LoginToSignupVO
 import com.dangjang.android.domain.model.LoginVO
 import com.dangjang.android.domain.usecase.LoginUseCase
@@ -34,7 +37,7 @@ class LoginViewModel @Inject constructor(
     private val _loginDataFlow = MutableStateFlow(LoginVO())
     val loginDataFlow = _loginDataFlow.asStateFlow()
 
-    private val _signupStartActivity = MutableStateFlow(0)
+    private val _signupStartActivity = MutableStateFlow(HttpResponseStatus.NONE)
     val signupStartActivity = _signupStartActivity.asStateFlow()
 
     private val _loginToSignup = MutableStateFlow(LoginToSignupVO())
@@ -94,13 +97,13 @@ class LoginViewModel @Inject constructor(
             loginUseCase.kakoLogin(accessToken)
                 .onEach {
                     _loginDataFlow.emit(it)
-                    _signupStartActivity.value = 200
+                    _signupStartActivity.value = HttpResponseStatus.OK
                 }
                 .handleErrors()
                 .collect()
         }
         _loginToSignup.update {
-            it.copy(accessToken = accessToken,"kakao")
+            it.copy(accessToken = accessToken, KAKAO)
         }
     }
 
@@ -109,13 +112,13 @@ class LoginViewModel @Inject constructor(
             loginUseCase.naverLogin(accessToken)
                 .onEach {
                     _loginDataFlow.emit(it)
-                    _signupStartActivity.value = 200
+                    _signupStartActivity.value = HttpResponseStatus.OK
                 }
                 .handleErrors()
                 .collect()
         }
         _loginToSignup.update {
-            it.copy(accessToken = accessToken, provider = "naver")
+            it.copy(accessToken = accessToken, provider = NAVER)
         }
     }
 
@@ -129,8 +132,8 @@ class LoginViewModel @Inject constructor(
 
             Log.e("error", error.httpCode.toString())
 
-            if (e.httpCode == 404) {
-                _signupStartActivity.value = 404
+            if (e.status == HttpResponseStatus.NOT_FOUND) {
+                _signupStartActivity.value = HttpResponseStatus.NOT_FOUND
             }
         }
 

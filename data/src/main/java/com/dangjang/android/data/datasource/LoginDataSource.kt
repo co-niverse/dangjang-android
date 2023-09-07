@@ -7,7 +7,7 @@ import javax.inject.Inject
 
 class LoginDataSource @Inject constructor(
     private val loginApiService: LoginApiService
-) : BaseNetworkDataSource() {
+) : LoginNetworkDataSource() {
 
     suspend fun kakaoLogin(accessToken: String): BaseResponse<LoginDto> {
         return checkResponse(loginApiService.kakaoLogin(LoginRequest(accessToken)))
