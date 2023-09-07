@@ -1,13 +1,16 @@
 package com.dangjang.android.data.di
 
+import android.content.Context
 import com.dangjang.android.data.BuildConfig
 import com.dangjang.android.data.datasource.HomeApiService
 import com.dangjang.android.data.datasource.IntroApiService
 import com.dangjang.android.data.datasource.LoginApiService
 import com.dangjang.android.data.datasource.SignupApiService
+import com.dangjang.android.data.datasource.TokenInterceptor
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -29,9 +32,10 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideOkHttpClient(interceptor: HttpLoggingInterceptor) : OkHttpClient {
+    fun provideOkHttpClient(interceptor: HttpLoggingInterceptor, @ApplicationContext context: Context) : OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor(interceptor)
+            .addInterceptor(TokenInterceptor(context))
             .build()
     }
 
