@@ -25,7 +25,6 @@ class GlucoseActivity : FragmentActivity() {
     private lateinit var binding: ActivityGlucoseBinding
     private lateinit var viewModel: HomeViewModel
     private lateinit var glucoseListAdapter: GlucoseListAdapter
-    private var glucoseList = arrayListOf<GlucoseListVO>()
     private var glucoseSpinnerType: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -107,7 +106,7 @@ class GlucoseActivity : FragmentActivity() {
             }
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                glucoseSpinnerType = glucoseTimeList[position]
+                glucoseSpinnerType = viewModel.glucoseTimeList[position]
             }
         }
 
