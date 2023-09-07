@@ -21,7 +21,6 @@ class GlucoseActivity : FragmentActivity() {
     private lateinit var binding: ActivityGlucoseBinding
     private lateinit var viewModel: HomeViewModel
     private lateinit var glucoseListAdapter: GlucoseListAdapter
-    private var glucoseList = arrayListOf<GlucoseListVO>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,38 +45,20 @@ class GlucoseActivity : FragmentActivity() {
             finish()
         }
 
-        glucoseList.add(
-                GlucoseListVO(
-                    "공복",
-                    100,
-                    "전반적으로 혈당이 높습니다! 조치가 필요해요",
-                    "먹은 과일이 혈당을 높였어요\n운동을 하지 않아 혈당이 높아졌어요"))
-        glucoseList.add(
-                GlucoseListVO(
-                    "아침식전",
-                    80,
-                    "전반적으로 혈당이 높습니다! 조치가 필요해요",
-                    "먹은 과일이 혈당을 높였어요\n" +
-                            "운동을 하지 않아 혈당이 높아졌어요"))
-        glucoseList.add(
-                GlucoseListVO(
-                    "취침전",
-                    120,
-                    "전반적으로 혈당이 높습니다! 조치가 필요해요",
-                    "먹은 과일이 혈당을 높였어요\n" +
-                            "운동을 하지 않아 혈당이 높아졌어요")
-        )
+        viewModel.getGlucoseList()
+        viewModel.getGlucoseTimeList()
+
         setGlucoseListAdapter()
         setGlucoseTimeSpinner()
     }
 
     private fun setGlucoseListAdapter() {
-        glucoseListAdapter = GlucoseListAdapter(glucoseList)
+        glucoseListAdapter = GlucoseListAdapter(viewModel.glucoseList)
 
         glucoseListAdapter.setMyItemClickListener(object :
             GlucoseListAdapter.MyItemClickListener {
             override fun onItemClick(glucoseList: GlucoseListVO) {
-                // TODO : 클릭했을 때 UI 변경 - selector ?
+
             }
         })
 
@@ -87,19 +68,8 @@ class GlucoseActivity : FragmentActivity() {
     private fun setGlucoseTimeSpinner() {
         val glucoseSpinner: Spinner = binding.glucoseSpinner
 
-        val glucoseTimeList = arrayListOf<String>()
-        glucoseTimeList.add("공복")
-        glucoseTimeList.add("아침 식전")
-        glucoseTimeList.add("아침 식후")
-        glucoseTimeList.add("점심 식전")
-        glucoseTimeList.add("점심 식후")
-        glucoseTimeList.add("저녁 식전")
-        glucoseTimeList.add("저녁 식후")
-        glucoseTimeList.add("취침 전")
-        glucoseTimeList.add("기타")
-
         val glucoseTimeAdapter = object : ArrayAdapter<String>(applicationContext,
-            R.layout.glucose_spinner_dropdown_item, glucoseTimeList),
+            R.layout.glucose_spinner_dropdown_item, viewModel.glucoseTimeList),
             SpinnerAdapter {
             override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
                 // 커스텀한 드롭다운 리스트에 표시할 뷰를 정의합니다.
