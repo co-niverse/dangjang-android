@@ -1,8 +1,10 @@
 package com.dangjang.android.data.di
 
+import com.dangjang.android.data.repository.HomeRepositoryImpl
 import com.dangjang.android.data.repository.IntroRepositoryImpl
 import com.dangjang.android.data.repository.LoginRepositoryImpl
 import com.dangjang.android.data.repository.SignupRepositoryImpl
+import com.dangjang.android.domain.repository.HomeRepository
 import com.dangjang.android.domain.repository.IntroRepository
 import com.dangjang.android.domain.repository.LoginRepository
 import com.dangjang.android.domain.repository.SignupRepository
@@ -29,4 +31,9 @@ interface RepositoryModule {
     fun bindsSignupRepository(
         signupRepositoryImpl: SignupRepositoryImpl
     ) : SignupRepository
+
+    @Binds
+    fun bindsHomeRepository(
+        homeRepositoryImpl: HomeRepositoryImpl
+    ) : HomeRepository
 }
