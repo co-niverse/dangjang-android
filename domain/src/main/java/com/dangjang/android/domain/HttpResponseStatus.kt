@@ -1,6 +1,7 @@
 package com.dangjang.android.domain
 
 enum class HttpResponseStatus {
+    NONE,
     OK,
     BAD_REQUEST,
     UNAUTHORIZED,
@@ -11,6 +12,7 @@ enum class HttpResponseStatus {
     companion object {
         fun create(httpCode: Int): HttpResponseStatus {
             return when (httpCode) {
+                0 -> NONE
                 200 -> OK
                 400 -> BAD_REQUEST
                 401 -> UNAUTHORIZED
