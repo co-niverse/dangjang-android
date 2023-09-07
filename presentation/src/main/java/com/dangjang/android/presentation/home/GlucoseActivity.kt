@@ -52,6 +52,10 @@ class GlucoseActivity : FragmentActivity() {
             binding.glucoseAddCl.visibility = View.VISIBLE
         }
 
+        binding.glucoseAddSaveBtn.setOnClickListener {
+            binding.glucoseAddCl.visibility = View.GONE
+        }
+
         binding.glucoseAddCloseIv.setOnClickListener {
             binding.glucoseAddCl.visibility = View.GONE
         }
@@ -77,7 +81,7 @@ class GlucoseActivity : FragmentActivity() {
         glucoseListAdapter.setMyItemClickListener(object :
             GlucoseListAdapter.MyItemClickListener {
             override fun onItemClick(glucoseList: GlucoseListVO) {
-
+                GlucoseEditDialogFragment().show(supportFragmentManager, "GlucoseEditDialogFragment")
             }
         })
 

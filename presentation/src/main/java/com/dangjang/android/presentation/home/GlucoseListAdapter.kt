@@ -38,8 +38,10 @@ class GlucoseListAdapter(
     override fun onBindViewHolder(holder: GlucoseListAdapter.ViewHolder, position: Int) {
         holder.bind(glucoseList[position])
         holder.itemView.setOnClickListener {
-            mItemClickListener.onItemClick(glucoseList[position])
             holder.setFeedbackContentVisibility()
+        }
+        holder.binding.glucoseEditBtn.setOnClickListener {
+            mItemClickListener.onItemClick(glucoseList[position])
         }
     }
 
@@ -52,10 +54,12 @@ class GlucoseListAdapter(
             if (isExpanded) {
                 binding.glucoseFeedbackTitleTv.visibility = View.VISIBLE
                 binding.glucoseFeedbackContentTv.visibility = View.VISIBLE
+                binding.glucoseEditBtn.visibility = View.VISIBLE
                 binding.glucoseListUpIv.setImageDrawable(itemView.context.getDrawable(com.dangjang.android.presentation.R.drawable.ic_arrow_up_gray))
             } else {
                 binding.glucoseFeedbackTitleTv.visibility = View.GONE
                 binding.glucoseFeedbackContentTv.visibility = View.GONE
+                binding.glucoseEditBtn.visibility = View.GONE
                 binding.glucoseListUpIv.setImageDrawable(itemView.context.getDrawable(com.dangjang.android.presentation.R.drawable.ic_arrow_down_green)) }
         }
 

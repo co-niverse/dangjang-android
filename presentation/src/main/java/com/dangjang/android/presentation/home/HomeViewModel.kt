@@ -28,6 +28,26 @@ class HomeViewModel @Inject constructor(
     private val getHomeUseCase: HomeUseCase,
     application: Application
 ) : AndroidViewModel(application) {
+  
+  fun getHourSpinnerList(): ArrayList<String> {
+        val hourList = arrayListOf<String>()
+
+        for (i in 0..20) {
+            hourList.add(i.toString())
+        }
+
+        return hourList
+    }
+
+    fun getMinuteSpinnerList(): ArrayList<String> {
+        val minuteList = arrayListOf<String>()
+
+        for (i in 0..59) {
+            minuteList.add(i.toString())
+        }
+
+        return minuteList
+    }
 
     private val _addHealthMetricFlow = MutableStateFlow(HealthMetricVO())
     val addHealthMetricFlow = _addHealthMetricFlow.asStateFlow()

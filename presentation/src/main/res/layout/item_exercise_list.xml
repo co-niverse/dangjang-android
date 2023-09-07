@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/background_white_gradient"
+            android:elevation="4dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/exercise_list_title_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:text="걷기"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/exercise_list_hour_tv"
+                android:layout_width="13dp"
+                android:layout_height="33dp"
+                android:layout_marginStart="140dp"
+                android:text="1"
+                android:textColor="@color/black"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/exercise_list_title_tv"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/exercise_list_title_tv" />
+
+            <TextView
+                android:id="@+id/exercise_list_hour_unit_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:text="시간"
+                android:textColor="#696D6B"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="@+id/exercise_list_hour_tv"
+                app:layout_constraintStart_toEndOf="@+id/exercise_list_hour_tv"
+                app:layout_constraintTop_toTopOf="@+id/exercise_list_hour_tv" />
+
+            <TextView
+                android:id="@+id/exercise_list_minute_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:text="30"
+                android:textColor="@color/black"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/exercise_list_hour_unit_tv"
+                app:layout_constraintStart_toEndOf="@id/exercise_list_hour_unit_tv"
+                app:layout_constraintTop_toTopOf="@+id/exercise_list_hour_unit_tv" />
+
+            <TextView
+                android:id="@+id/exercise_list_minute_unit_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:text="분"
+                android:textColor="#696D6B"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="@+id/exercise_list_minute_tv"
+                app:layout_constraintStart_toEndOf="@+id/exercise_list_minute_tv"
+                app:layout_constraintTop_toTopOf="@+id/exercise_list_minute_tv" />
+
+            <ImageView
+                android:id="@+id/exercise_list_edit_iv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:src="@drawable/ic_pencil"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
