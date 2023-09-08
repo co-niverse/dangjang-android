@@ -9,7 +9,7 @@ class HomeDataSource @Inject constructor(
     private val homeApiService: HomeApiService
 ): BaseNetworkDataSource() {
 
-    suspend fun addHealthMetric(addHealthMetricRequest: AddHealthMetricRequest): BaseResponse<HealthMetricDto> {
-        return checkResponse(homeApiService.addHealthMetric(addHealthMetricRequest))
+    suspend fun addHealthMetric(accessToken: String, addHealthMetricRequest: AddHealthMetricRequest): BaseResponse<HealthMetricDto> {
+        return checkResponse(homeApiService.addHealthMetric(accessToken, addHealthMetricRequest))
     }
 }

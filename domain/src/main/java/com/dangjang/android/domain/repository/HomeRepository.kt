@@ -7,5 +7,5 @@ import kotlinx.coroutines.flow.Flow
 interface HomeRepository {
 
     //건강지표 등록
-    fun addHealthMetric(addHealthMetricRequest: AddHealthMetricRequest): Flow<HealthMetricVO>
+    fun addHealthMetric(accessToken: String, addHealthMetricRequest: AddHealthMetricRequest): Flow<HealthMetricVO>
 }

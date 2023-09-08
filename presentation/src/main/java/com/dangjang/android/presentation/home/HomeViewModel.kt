@@ -1,6 +1,7 @@
 package com.dangjang.android.presentation.home
 
 import android.app.Application
+import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
@@ -58,9 +59,10 @@ class HomeViewModel @Inject constructor(
     }
 
     fun addHealthMetric(
+        accessToken: String
     ) {
         viewModelScope.launch {
-            getHomeUseCase.addHealthMetric(addHealthMetricRequest.value)
+            getHomeUseCase.addHealthMetric("Bearer $accessToken", addHealthMetricRequest.value)
                 .onEach {
                     _addHealthMetricFlow.emit(it)
                 }
@@ -71,6 +73,7 @@ class HomeViewModel @Inject constructor(
 
     private fun <T> Flow<T>.handleErrors(): Flow<T> =
         catch { e ->
+            Log.e("error",e.message.toString())
             Toast.makeText(
                 getApplication<Application>().applicationContext, e.message,
                 Toast.LENGTH_SHORT
