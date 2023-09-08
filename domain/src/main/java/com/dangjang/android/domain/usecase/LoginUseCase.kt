@@ -1,6 +1,6 @@
 package com.dangjang.android.domain.usecase
 
-import com.dangjang.android.domain.model.LoginVO
+import com.dangjang.android.domain.model.AuthVO
 import com.dangjang.android.domain.repository.LoginRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -11,12 +11,12 @@ class LoginUseCase @Inject constructor(
     private val loginRepository: LoginRepository
 ) {
 
-    suspend fun kakoLogin(accessToken: String): Flow<LoginVO> =
+    suspend fun kakoLogin(accessToken: String): Flow<AuthVO> =
         withContext(Dispatchers.IO) {
             loginRepository.kakaoLogin(accessToken)
         }
 
-    suspend fun naverLogin(accessToken: String): Flow<LoginVO> =
+    suspend fun naverLogin(accessToken: String): Flow<AuthVO> =
         withContext(Dispatchers.IO) {
             loginRepository.naverLogin(accessToken)
         }

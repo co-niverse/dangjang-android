@@ -10,8 +10,8 @@ import com.dangjang.android.domain.HttpResponseException
 import com.dangjang.android.domain.HttpResponseStatus
 import com.dangjang.android.domain.constants.KAKAO
 import com.dangjang.android.domain.constants.NAVER
+import com.dangjang.android.domain.model.AuthVO
 import com.dangjang.android.domain.model.LoginToSignupVO
-import com.dangjang.android.domain.model.LoginVO
 import com.dangjang.android.domain.usecase.LoginUseCase
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.ClientError
@@ -34,7 +34,7 @@ class LoginViewModel @Inject constructor(
     application: Application
 ) : AndroidViewModel(application) {
 
-    private val _loginDataFlow = MutableStateFlow(LoginVO())
+    private val _loginDataFlow = MutableStateFlow(AuthVO())
     val loginDataFlow = _loginDataFlow.asStateFlow()
 
     private val _signupStartActivity = MutableStateFlow(HttpResponseStatus.NONE)

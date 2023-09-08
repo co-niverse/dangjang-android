@@ -6,7 +6,7 @@ import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.dangjang.android.domain.model.DuplicateNicknameVO
-import com.dangjang.android.domain.model.SignupVO
+import com.dangjang.android.domain.model.AuthVO
 import com.dangjang.android.domain.requestVO.SignupRequestVO
 import com.dangjang.android.domain.usecase.SignupUseCase
 import com.dangjang.android.presentation.R
@@ -30,7 +30,7 @@ class SignupViewModel @Inject constructor(
     private val _duplicateNicknameFlow = MutableStateFlow(DuplicateNicknameVO())
     val duplicateNicknameFlow = _duplicateNicknameFlow.asStateFlow()
 
-    private val _signupFlow = MutableStateFlow(SignupVO())
+    private val _signupFlow = MutableStateFlow(AuthVO())
     val signupFlow = _signupFlow.asStateFlow()
 
     private val _signupRequest = MutableStateFlow(SignupRequestVO())
