@@ -1,4 +1,4 @@
-package com.dangjang.android.presentation
+package com.dangjang.android.presentation.intro
 
 import android.content.Intent
 import android.content.SharedPreferences
@@ -10,6 +10,9 @@ import com.dangjang.android.domain.constants.AUTO_LOGIN_EDITOR_KEY
 import com.dangjang.android.domain.constants.AUTO_LOGIN_SPF_KEY
 import com.dangjang.android.domain.constants.KAKAO
 import com.dangjang.android.domain.constants.NAVER
+import com.dangjang.android.presentation.MainActivity
+import com.dangjang.android.presentation.login.LoginActivity
+import com.dangjang.android.presentation.login.LoginViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

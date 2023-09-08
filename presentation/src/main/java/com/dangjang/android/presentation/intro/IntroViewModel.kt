@@ -1,4 +1,4 @@
-package com.dangjang.android.presentation
+package com.dangjang.android.presentation.intro
 
 import android.app.Application
 import android.os.Build

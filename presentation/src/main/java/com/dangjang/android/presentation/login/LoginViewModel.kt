@@ -1,4 +1,4 @@
-package com.dangjang.android.presentation
+package com.dangjang.android.presentation.login
 
 import android.app.Application
 import android.content.ContentValues

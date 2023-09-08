@@ -17,11 +17,11 @@
         android:usesCleartextTraffic="true"
         android:name=".DangjangApplication">
         <activity
-            android:name=".presentation.LoginActivity"
+            android:name=".presentation.login.LoginActivity"
             android:exported="true"
             android:theme="@android:style/Theme.NoTitleBar">
         </activity>
-        <activity android:name=".presentation.SplashActivity"
+        <activity android:name=".presentation.intro.SplashActivity"
             android:exported="true"
             android:theme="@style/AppTheme.Starting">
             <intent-filter>

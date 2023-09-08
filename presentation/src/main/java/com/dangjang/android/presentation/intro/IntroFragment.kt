@@ -1,4 +1,4 @@
-package com.dangjang.android.presentation
+package com.dangjang.android.presentation.intro
 
 import android.content.Intent
 import android.net.Uri
@@ -6,6 +6,7 @@ import android.os.Build
 import android.view.View.VISIBLE
 import androidx.fragment.app.viewModels
 import com.dangjang.android.common_ui.BaseFragment
+import com.dangjang.android.presentation.R
 import com.dangjang.android.presentation.databinding.FragmentIntroBinding
 import dagger.hilt.android.AndroidEntryPoint
 
