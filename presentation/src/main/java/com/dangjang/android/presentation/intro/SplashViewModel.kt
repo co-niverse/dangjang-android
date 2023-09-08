@@ -44,7 +44,7 @@ import javax.inject.Inject
 import kotlin.math.roundToInt
 
 @HiltViewModel
-class IntroViewModel @Inject constructor(
+class SplashViewModel @Inject constructor(
     private val getIntroUseCase: GetIntroUseCase,
     application: Application
 ) : AndroidViewModel(application) {
