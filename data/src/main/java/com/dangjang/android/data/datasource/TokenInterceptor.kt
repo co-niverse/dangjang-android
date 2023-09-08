@@ -1,6 +1,7 @@
 package com.dangjang.android.data.datasource
 
 import android.content.Context
+import android.util.Log
 import com.dangjang.android.data.storage.InAppStorageHelperImpl
 import com.dangjang.android.domain.constants.ACCESS_TOKEN_KEY
 import okhttp3.Interceptor
@@ -18,7 +19,9 @@ class TokenInterceptor(
         // TODO : 서버 토큰 로직 변경 시 수정
         val headerRefreshToken = response.headers.get("RefreshToken")
 
-        inAppStorageHelper.setAccessToken(ACCESS_TOKEN_KEY, headerAccessToken)
+        headerAccessToken?.let {
+            inAppStorageHelper.setAccessToken(ACCESS_TOKEN_KEY, it)
+        }
 
         return response.newBuilder().body(response.body).build()
     }
