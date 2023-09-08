@@ -33,6 +33,7 @@ import java.time.Instant
 import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
+import java.time.format.DateTimeParseException
 import java.time.temporal.ChronoUnit
 import javax.inject.Inject
 import kotlin.math.roundToInt
@@ -137,6 +138,7 @@ class SplashViewModel @Inject constructor(
     //체중
     @RequiresApi(Build.VERSION_CODES.O)
     private suspend fun readWeight() {
+        //TODO : 로그인 시작 시간 처리 후 getTodayStartTime() -> getStartTime() 함수로 대치
         weightList = readWeightRecord(getTodayStartTime(), getNowTime())
         for (weightRecord in weightList) {
             Log.e("HC-Weight",weightRecord.weight.toString())
@@ -242,4 +244,25 @@ class SplashViewModel @Inject constructor(
         return ZonedDateTime.now().toInstant()
     }
 
+//    private fun getStartTime(): Instant? {
+//        // TODO : Intro API에서 내려주는 최근 로그인 시간으로 처리 (Ex. introDataFlow.value.time)
+//        // null일 때는 첫 연동이니까 오늘 시작 시간으로 처리
+//        if (introDataFlow.value.time == null) {
+//            return getTodayStartTime()
+//        } else {
+//            return return convertDateTimeStirngToInstant("")
+//        }
+//    }
+
+    private fun convertDateTimeStirngToInstant(dateTimeString: String): Instant? {
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")
+
+        return try {
+            val parsedInstant = Instant.from(formatter.parse(dateTimeString))
+            parsedInstant
+        } catch (e: DateTimeParseException) {
+            e.printStackTrace()
+            null
+        }
+    }
 }
