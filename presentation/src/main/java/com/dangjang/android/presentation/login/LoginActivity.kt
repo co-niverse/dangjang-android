@@ -13,6 +13,7 @@ import androidx.lifecycle.lifecycleScope
 import com.dangjang.android.domain.HttpResponseStatus
 import com.dangjang.android.domain.constants.AUTO_LOGIN_EDITOR_KEY
 import com.dangjang.android.domain.constants.AUTO_LOGIN_SPF_KEY
+import com.dangjang.android.domain.constants.HEALTH_CONNECT_TOKEN_KEY
 import com.dangjang.android.presentation.MainActivity
 import com.dangjang.android.presentation.R
 import com.dangjang.android.presentation.databinding.ActivityLoginBinding
@@ -61,6 +62,15 @@ class LoginActivity: FragmentActivity() {
                     startActivity(intent)
                     finish()
                 }
+            }
+        }
+
+        lifecycleScope.launchWhenStarted {
+            viewModel.loginDataFlow.collect {
+                val auto: SharedPreferences = getSharedPreferences(AUTO_LOGIN_SPF_KEY, Activity.MODE_PRIVATE)
+                val autoLoginEdit : SharedPreferences.Editor = auto.edit()
+                autoLoginEdit.putString(HEALTH_CONNECT_TOKEN_KEY, it.healthConnect.toString())
+                autoLoginEdit.apply()
             }
         }
 

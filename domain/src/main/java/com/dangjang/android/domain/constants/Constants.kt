@@ -7,6 +7,7 @@ const val NAVER = "naver"
 const val KAKAO = "kakao"
 const val TOKEN_SPF_KEY = "token"
 const val ACCESS_TOKEN_KEY = "AccessToken"
+const val HEALTH_CONNECT_TOKEN_KEY = "HealthConnect"
 
 // Health Connect
 const val HEALTH_CONNECT_UNAVAILABLE = 1
