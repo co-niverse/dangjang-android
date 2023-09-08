@@ -12,6 +12,7 @@ import com.dangjang.android.domain.constants.AUTO_LOGIN_EDITOR_KEY
 import com.dangjang.android.domain.constants.AUTO_LOGIN_SPF_KEY
 import com.dangjang.android.domain.constants.HEALTH_CONNECT_INSTALLED
 import com.dangjang.android.domain.constants.HEALTH_CONNECT_NOT_INSTALLED
+import com.dangjang.android.domain.constants.HEALTH_CONNECT_TOKEN_KEY
 import com.dangjang.android.domain.constants.KAKAO
 import com.dangjang.android.domain.constants.NAVER
 import com.dangjang.android.presentation.MainActivity
@@ -42,15 +43,19 @@ class SplashActivity : AppCompatActivity() {
 
         viewModel.checkAvailability()
 
-        //TODO : 헬스커넥트 spf false일 때 팝업 띄우기
+        val healthConnect = sp.getString(HEALTH_CONNECT_TOKEN_KEY, "null")
 
-        if (viewModel.healthConnectFlow.value.isAvaiable == HEALTH_CONNECT_INSTALLED) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                viewModel.getHealthConnect()
+        if (healthConnect == "true") {
+            if (viewModel.healthConnectFlow.value.isAvaiable == HEALTH_CONNECT_INSTALLED) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    viewModel.getHealthConnect()
+                }
             }
         }
-        if (viewModel.healthConnectFlow.value.isAvaiable == HEALTH_CONNECT_NOT_INSTALLED) {
-            //TODO : 헬스커넥트 팝업 띄우기
+        else if (healthConnect == "false") {
+            if (viewModel.healthConnectFlow.value.isAvaiable == HEALTH_CONNECT_NOT_INSTALLED) {
+                //TODO : 헬스커넥트 팝업 띄우기
+            }
         }
     }
 
