@@ -8,7 +8,6 @@ data class HealthMetricVO(
 )
 
 data class GuideVO(
-    val createdAt: String = "",
     val type: String = "",
     val alert: String = "",
     val content: String = ""
