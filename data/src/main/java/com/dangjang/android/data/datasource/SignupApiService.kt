@@ -1,7 +1,7 @@
 package com.dangjang.android.data.datasource
 
+import com.dangjang.android.data.model.dto.AuthDto
 import com.dangjang.android.data.model.dto.DuplicateNicknameDto
-import com.dangjang.android.data.model.dto.SignupDto
 import com.dangjang.android.data.model.request.SignupRequest
 import com.dangjang.android.data.model.response.BaseResponse
 import retrofit2.Response
@@ -22,5 +22,5 @@ interface SignupApiService {
     @POST("api/signUp")
     suspend fun signup(
         @Body data: SignupRequest
-    ) : Response<BaseResponse<SignupDto>>
+    ) : Response<BaseResponse<AuthDto>>
 }

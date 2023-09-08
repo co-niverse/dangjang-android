@@ -1,7 +1,7 @@
 package com.dangjang.android.domain.repository
 
 import com.dangjang.android.domain.model.DuplicateNicknameVO
-import com.dangjang.android.domain.model.SignupVO
+import com.dangjang.android.domain.model.AuthVO
 import com.dangjang.android.domain.requestVO.SignupRequestVO
 import kotlinx.coroutines.flow.Flow
 
@@ -11,5 +11,5 @@ interface SignupRepository {
     fun getDuplicateNickname(nickname: String): Flow<DuplicateNicknameVO>
 
     //회원가입
-    fun signup(data: SignupRequestVO): Flow<SignupVO>
+    fun signup(data: SignupRequestVO): Flow<AuthVO>
 }

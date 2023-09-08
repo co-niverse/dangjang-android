@@ -1,4 +1,4 @@
-package com.dangjang.android.presentation
+package com.dangjang.android.presentation.login
 
 import android.app.Activity
 import android.content.ContentValues
@@ -13,6 +13,9 @@ import androidx.lifecycle.lifecycleScope
 import com.dangjang.android.domain.HttpResponseStatus
 import com.dangjang.android.domain.constants.AUTO_LOGIN_EDITOR_KEY
 import com.dangjang.android.domain.constants.AUTO_LOGIN_SPF_KEY
+import com.dangjang.android.domain.constants.HEALTH_CONNECT_TOKEN_KEY
+import com.dangjang.android.presentation.MainActivity
+import com.dangjang.android.presentation.R
 import com.dangjang.android.presentation.databinding.ActivityLoginBinding
 import com.dangjang.android.presentation.signup.SignupActivity
 import com.navercorp.nid.NaverIdLoginSDK
@@ -21,7 +24,6 @@ import com.navercorp.nid.oauth.OAuthLoginCallback
 import com.navercorp.nid.profile.NidProfileCallback
 import com.navercorp.nid.profile.data.NidProfileResponse
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
 
 @AndroidEntryPoint
 class LoginActivity: FragmentActivity() {
@@ -60,6 +62,15 @@ class LoginActivity: FragmentActivity() {
                     startActivity(intent)
                     finish()
                 }
+            }
+        }
+
+        lifecycleScope.launchWhenStarted {
+            viewModel.loginDataFlow.collect {
+                val auto: SharedPreferences = getSharedPreferences(AUTO_LOGIN_SPF_KEY, Activity.MODE_PRIVATE)
+                val autoLoginEdit : SharedPreferences.Editor = auto.edit()
+                autoLoginEdit.putString(HEALTH_CONNECT_TOKEN_KEY, it.healthConnect.toString())
+                autoLoginEdit.apply()
             }
         }
 

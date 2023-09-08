@@ -3,12 +3,11 @@ package com.dangjang.android.data.repository
 import com.dangjang.android.data.datasource.SignupDataSource
 import com.dangjang.android.data.model.request.SignupRequest
 import com.dangjang.android.domain.model.DuplicateNicknameVO
-import com.dangjang.android.domain.model.SignupVO
+import com.dangjang.android.domain.model.AuthVO
 import com.dangjang.android.domain.repository.SignupRepository
 import com.dangjang.android.domain.requestVO.SignupRequestVO
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import java.util.Date
 import javax.inject.Inject
 
 class SignupRepositoryImpl @Inject constructor(
@@ -20,7 +19,7 @@ class SignupRepositoryImpl @Inject constructor(
         emit(response.data.toDomain())
     }
 
-    override fun signup(data: SignupRequestVO): Flow<SignupVO> = flow {
+    override fun signup(data: SignupRequestVO): Flow<AuthVO> = flow {
         val response = signupDataScurce.signup(SignupRequest(
             data.accessToken,
             data.provider,

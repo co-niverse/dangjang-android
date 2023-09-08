@@ -1,4 +1,4 @@
-package com.dangjang.android.presentation
+package com.dangjang.android.presentation.intro
 
 import android.app.Application
 import android.os.Build
@@ -7,19 +7,14 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.health.connect.client.HealthConnectClient
 import androidx.health.connect.client.permission.HealthPermission
-import androidx.health.connect.client.records.ActiveCaloriesBurnedRecord
 import androidx.health.connect.client.records.BloodGlucoseRecord
 import androidx.health.connect.client.records.BloodGlucoseRecord.Companion.RELATION_TO_MEAL_INT_TO_STRING_MAP
-import androidx.health.connect.client.records.BloodPressureRecord
 import androidx.health.connect.client.records.ExerciseSessionRecord
 import androidx.health.connect.client.records.MealType.MEAL_TYPE_INT_TO_STRING_MAP
-import androidx.health.connect.client.records.SleepSessionRecord
 import androidx.health.connect.client.records.StepsRecord
 import androidx.health.connect.client.records.WeightRecord
-import androidx.health.connect.client.request.AggregateRequest
 import androidx.health.connect.client.request.ReadRecordsRequest
 import androidx.health.connect.client.time.TimeRangeFilter
-import androidx.health.connect.client.units.Energy
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.dangjang.android.domain.model.HealthConnectVO
@@ -34,17 +29,17 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import java.time.Duration
 import java.time.Instant
 import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
+import java.time.format.DateTimeParseException
 import java.time.temporal.ChronoUnit
 import javax.inject.Inject
 import kotlin.math.roundToInt
 
 @HiltViewModel
-class IntroViewModel @Inject constructor(
+class SplashViewModel @Inject constructor(
     private val getIntroUseCase: GetIntroUseCase,
     application: Application
 ) : AndroidViewModel(application) {
@@ -60,10 +55,7 @@ class IntroViewModel @Inject constructor(
     lateinit var weightList: List<WeightRecord>
     lateinit var stepList: List<StepsRecord>
     lateinit var exerciseList: List<ExerciseSessionRecord>
-    lateinit var sleepDuration: Duration
-    lateinit var sleepSessionList: List<SleepSessionRecord>
     lateinit var bloodGlucoseList: List<BloodGlucoseRecord>
-    lateinit var bloodPressureList: List<BloodPressureRecord>
 
     private val weightPermission = setOf(
         HealthPermission.getReadPermission(WeightRecord::class)
@@ -71,17 +63,8 @@ class IntroViewModel @Inject constructor(
     private val bloodGlucosePermission = setOf(
         HealthPermission.getReadPermission(BloodGlucoseRecord::class)
     )
-    private val bloodPressurePermission = setOf(
-        HealthPermission.getReadPermission(BloodPressureRecord::class)
-    )
-    private val sleepSessionPermission = setOf(
-        HealthPermission.getReadPermission(SleepSessionRecord::class)
-    )
     private val stepsPermission = setOf(
         HealthPermission.getReadPermission(StepsRecord::class)
-    )
-    private val activeCaloriesBurnedPermission = setOf(
-        HealthPermission.getReadPermission(ActiveCaloriesBurnedRecord::class)
     )
     private val exerciseSessionPermission = setOf(
         HealthPermission.getReadPermission(ExerciseSessionRecord::class)
@@ -89,10 +72,7 @@ class IntroViewModel @Inject constructor(
 
     var weightPermissionGranted = false
     var bloodGlucosePermissionGranted = false
-    var bloodPressurePermissionGranted = false
-    var sleepSessionPermissionGranted = false
     var stepsPermissionGranted = false
-    var activeCaloriesBurnedPermissionGranted = false
     var exerciseSessionPermissionGranted = false
 
     fun checkAvailability() {
@@ -111,10 +91,7 @@ class IntroViewModel @Inject constructor(
         viewModelScope.launch {
             tryWithWeightPermissionsCheck()
             tryWithBloodGlucosePermissionsCheck()
-            tryWithBloodPressurePermissionCheck()
-            tryWithSleepSessionPermissionCheck()
             tryWithStepsPermissionCheck()
-            tryWithActiveCaloriesBurnedPermissionCheck()
             tryWithExerciseSessionPermissionCheck()
         }
     }
@@ -136,39 +113,12 @@ class IntroViewModel @Inject constructor(
         }
     }
 
-    private suspend fun tryWithBloodPressurePermissionCheck() {
-        bloodPressurePermissionGranted = hasAllPermissions(bloodPressurePermission)
-        if (bloodPressurePermissionGranted) {
-            readBloodPressureRecord()
-        } else {
-            Log.e("GRANT-ERROR","혈압 권한이 허용되지 않았습니다.")
-        }
-    }
-
-    private suspend fun tryWithSleepSessionPermissionCheck() {
-        sleepSessionPermissionGranted = hasAllPermissions(sleepSessionPermission)
-        if (sleepSessionPermissionGranted) {
-            readSleepSession()
-        } else {
-            Log.e("GRANT-ERROR","수면 권한이 허용되지 않았습니다.")
-        }
-    }
-
     private suspend fun tryWithStepsPermissionCheck() {
         stepsPermissionGranted = hasAllPermissions(stepsPermission)
         if (stepsPermissionGranted) {
             readSteps()
         } else {
             Log.e("GRANT-ERROR","걸음수 권한이 허용되지 않았습니다.")
-        }
-    }
-
-    private suspend fun tryWithActiveCaloriesBurnedPermissionCheck() {
-        activeCaloriesBurnedPermissionGranted = hasAllPermissions(activeCaloriesBurnedPermission)
-        if (activeCaloriesBurnedPermissionGranted) {
-            readActiveCaloriesBurned()
-        } else {
-            Log.e("GRANT-ERROR","활동 칼로리 소모량 권한이 허용되지 않았습니다.")
         }
     }
 
@@ -188,10 +138,8 @@ class IntroViewModel @Inject constructor(
     //체중
     @RequiresApi(Build.VERSION_CODES.O)
     private suspend fun readWeight() {
-        val startOfDay = ZonedDateTime.now().truncatedTo(ChronoUnit.DAYS)
-        val endOfWeek = startOfDay.toInstant().plus(7,ChronoUnit.DAYS)
-
-        weightList = readWeightRecord(startOfDay.toInstant(),endOfWeek)
+        //TODO : 로그인 시작 시간 처리 후 getTodayStartTime() -> getStartTime() 함수로 대치
+        weightList = readWeightRecord(getTodayStartTime(), getNowTime())
         for (weightRecord in weightList) {
             Log.e("HC-Weight",weightRecord.weight.toString())
         }
@@ -209,10 +157,7 @@ class IntroViewModel @Inject constructor(
     //혈당
     @RequiresApi(Build.VERSION_CODES.O)
     private suspend fun readBloodGlucose() {
-        val startOfDay = ZonedDateTime.now().truncatedTo(ChronoUnit.DAYS)
-        val endOfWeek = startOfDay.toInstant().plus(7,ChronoUnit.DAYS)
-
-        bloodGlucoseList = readBloodGlucoseRecord(startOfDay.toInstant(),endOfWeek)
+        bloodGlucoseList = readBloodGlucoseRecord(getTodayStartTime(), getNowTime())
         for (bloodGlucoseRecord in bloodGlucoseList) {
             val bgTime = changeInstantToKST(bloodGlucoseRecord.time)
             val mealType = MEAL_TYPE_INT_TO_STRING_MAP.get(bloodGlucoseRecord.mealType)
@@ -230,79 +175,10 @@ class IntroViewModel @Inject constructor(
         return response.records
     }
 
-    //혈압
-    @RequiresApi(Build.VERSION_CODES.O)
-    private suspend fun readBloodPressureRecord() {
-        val startOfDay = ZonedDateTime.now().truncatedTo(ChronoUnit.DAYS)
-        val endOfWeek = startOfDay.toInstant().plus(7,ChronoUnit.DAYS)
-
-        bloodPressureList = readBloodPressureRecord(startOfDay.toInstant(),endOfWeek)
-        for (bloodPressureRecord in bloodPressureList) {
-            //시간
-            val bpTime = changeInstantToKST(bloodPressureRecord.time)
-            //수축기
-            val systolicRecord = bloodPressureRecord.systolic.inMillimetersOfMercury.roundToInt()
-            //이완기
-            val diastolicRecord = bloodPressureRecord.diastolic.inMillimetersOfMercury.roundToInt()
-            Log.e("HC-BloodPressure", "시간: $bpTime, 수축기: $systolicRecord, 이완기: $diastolicRecord")
-        }
-    }
-
-    private suspend fun readBloodPressureRecord(start: Instant, end: Instant): List<BloodPressureRecord> {
-        val request = ReadRecordsRequest(
-            recordType = BloodPressureRecord::class,
-            timeRangeFilter = TimeRangeFilter.between(start, end)
-        )
-        val response = healthConnectClient.readRecords(request)
-        return response.records
-    }
-
-    //수면
-    @RequiresApi(Build.VERSION_CODES.O)
-    private suspend fun readSleepSession() {
-        val startOfDay = ZonedDateTime.now().truncatedTo(ChronoUnit.DAYS)
-        val yesterdayNight = startOfDay.toInstant().minus(Duration.ofHours(6)) // 저녁 6시부터로 설정해놓음
-        val endOfWeek = startOfDay.toInstant().plus(7,ChronoUnit.DAYS)
-
-        sleepSessionList = readSleepSessionRecord(yesterdayNight,endOfWeek)
-        for (sleepSessionRecord in sleepSessionList) {
-            val sleepStartTime = changeInstantToKST(sleepSessionRecord.startTime)
-            val sleepEndTime = changeInstantToKST(sleepSessionRecord.endTime)
-            Log.e("HC-Sleep","시작 시간: $sleepStartTime, 종료 시간: $sleepEndTime")
-        }
-
-        sleepDuration = readSleepDurationRecord(yesterdayNight,endOfWeek)!!
-        val durationHours: String = sleepDuration.toHours().toString()
-        val durationMinutes: String = (sleepDuration.toMinutes() % 60).toString()
-        val durationSeconds: String = (sleepDuration.getSeconds() % 60).toString()
-        Log.e("HC-SleepDuration",durationHours + "시간 " + durationMinutes+"분 "+durationSeconds+"초")
-    }
-
-    private suspend fun readSleepSessionRecord(start: Instant, end: Instant): List<SleepSessionRecord> {
-        val request = ReadRecordsRequest(
-            recordType = SleepSessionRecord::class,
-            timeRangeFilter = TimeRangeFilter.between(start, end)
-        )
-        val response = healthConnectClient.readRecords(request)
-        return response.records
-    }
-
-    //수면 시간
-    private suspend fun readSleepDurationRecord(start: Instant, end: Instant): Duration? {
-        val request = AggregateRequest(
-            metrics = setOf(SleepSessionRecord.SLEEP_DURATION_TOTAL),
-            timeRangeFilter = TimeRangeFilter.between(start, end)
-        )
-        val response = healthConnectClient.aggregate(request)
-        return response[SleepSessionRecord.SLEEP_DURATION_TOTAL]
-    }
-
     //걸음수
     @RequiresApi(Build.VERSION_CODES.O)
     private suspend fun readSteps() {
-        val startOfDay = ZonedDateTime.now().truncatedTo(ChronoUnit.DAYS)
-        val endOfWeek = startOfDay.toInstant().plus(7,ChronoUnit.DAYS)
-        stepList = readStepsRecord(startOfDay.toInstant(),endOfWeek)
+        stepList = readStepsRecord(getTodayStartTime(), getNowTime())
         for (stepsRecord in stepList) {
             Log.e("HC-Steps",stepsRecord.count.toString()+"보")
         }
@@ -317,31 +193,10 @@ class IntroViewModel @Inject constructor(
         return response.records
     }
 
-    //소모 칼로리
-    @RequiresApi(Build.VERSION_CODES.O)
-    private suspend fun readActiveCaloriesBurned() {
-        val startOfDay = ZonedDateTime.now().truncatedTo(ChronoUnit.DAYS)
-        val endOfWeek = startOfDay.toInstant().plus(7,ChronoUnit.DAYS)
-        val calories = readActiveCaloriesBurnedRecord(startOfDay.toInstant(),endOfWeek)
-        Log.e("HC-Calories",calories?.inCalories.toString()+"cal")
-    }
-
-    private suspend fun readActiveCaloriesBurnedRecord(start: Instant, end: Instant): Energy? {
-        val request = AggregateRequest(
-            metrics = setOf(ActiveCaloriesBurnedRecord.ACTIVE_CALORIES_TOTAL),
-            timeRangeFilter = TimeRangeFilter.between(start, end)
-        )
-        val response = healthConnectClient.aggregate(request)
-        return response[ActiveCaloriesBurnedRecord.ACTIVE_CALORIES_TOTAL]
-    }
-
     //운동
     @RequiresApi(Build.VERSION_CODES.O)
     private suspend fun readExerciseSession() {
-        val startOfDay = ZonedDateTime.now().truncatedTo(ChronoUnit.DAYS)
-        val endOfWeek = startOfDay.toInstant().plus(7,ChronoUnit.DAYS)
-
-        exerciseList = readExerciseSessionRecord(startOfDay.toInstant(),endOfWeek)
+        exerciseList = readExerciseSessionRecord(getTodayStartTime(),getNowTime())
         for (exerciseRecord in exerciseList) {
             val exerciseName = ExerciseSessionRecord.EXERCISE_TYPE_INT_TO_STRING_MAP.get(exerciseRecord.exerciseType)
             val exerciseStartTime = changeInstantToKST(exerciseRecord.startTime)
@@ -381,4 +236,33 @@ class IntroViewModel @Inject constructor(
     private fun <T> Flow<T>.handleErrors(): Flow<T> =
         catch { e -> Toast.makeText(getApplication<Application>().applicationContext,e.message,Toast.LENGTH_SHORT).show() }
 
+    private fun getTodayStartTime(): Instant {
+        return ZonedDateTime.now().truncatedTo(ChronoUnit.DAYS).toInstant()
+    }
+
+    private fun getNowTime(): Instant {
+        return ZonedDateTime.now().toInstant()
+    }
+
+//    private fun getStartTime(): Instant? {
+//        // TODO : Intro API에서 내려주는 최근 로그인 시간으로 처리 (Ex. introDataFlow.value.time)
+//        // null일 때는 첫 연동이니까 오늘 시작 시간으로 처리
+//        if (introDataFlow.value.time == null) {
+//            return getTodayStartTime()
+//        } else {
+//            return return convertDateTimeStirngToInstant("")
+//        }
+//    }
+
+    private fun convertDateTimeStirngToInstant(dateTimeString: String): Instant? {
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")
+
+        return try {
+            val parsedInstant = Instant.from(formatter.parse(dateTimeString))
+            parsedInstant
+        } catch (e: DateTimeParseException) {
+            e.printStackTrace()
+            null
+        }
+    }
 }

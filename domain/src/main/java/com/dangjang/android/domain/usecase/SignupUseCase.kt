@@ -1,7 +1,7 @@
 package com.dangjang.android.domain.usecase
 
 import com.dangjang.android.domain.model.DuplicateNicknameVO
-import com.dangjang.android.domain.model.SignupVO
+import com.dangjang.android.domain.model.AuthVO
 import com.dangjang.android.domain.repository.SignupRepository
 import com.dangjang.android.domain.requestVO.SignupRequestVO
 import kotlinx.coroutines.Dispatchers
@@ -20,7 +20,7 @@ class SignupUseCase @Inject constructor(
 
     suspend fun signup(
         data: SignupRequestVO
-    ): Flow<SignupVO> =
+    ): Flow<AuthVO> =
         withContext(Dispatchers.IO) {
             signupRepository.signup(data)
         }
