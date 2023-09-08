@@ -137,10 +137,7 @@ class SplashViewModel @Inject constructor(
     //체중
     @RequiresApi(Build.VERSION_CODES.O)
     private suspend fun readWeight() {
-        val startOfDay = ZonedDateTime.now().truncatedTo(ChronoUnit.DAYS)
-        val endOfWeek = startOfDay.toInstant().plus(7,ChronoUnit.DAYS)
-
-        weightList = readWeightRecord(startOfDay.toInstant(),endOfWeek)
+        weightList = readWeightRecord(getTodayStartTime(), getNowTime())
         for (weightRecord in weightList) {
             Log.e("HC-Weight",weightRecord.weight.toString())
         }
@@ -158,10 +155,7 @@ class SplashViewModel @Inject constructor(
     //혈당
     @RequiresApi(Build.VERSION_CODES.O)
     private suspend fun readBloodGlucose() {
-        val startOfDay = ZonedDateTime.now().truncatedTo(ChronoUnit.DAYS)
-        val endOfWeek = startOfDay.toInstant().plus(7,ChronoUnit.DAYS)
-
-        bloodGlucoseList = readBloodGlucoseRecord(startOfDay.toInstant(),endOfWeek)
+        bloodGlucoseList = readBloodGlucoseRecord(getTodayStartTime(), getNowTime())
         for (bloodGlucoseRecord in bloodGlucoseList) {
             val bgTime = changeInstantToKST(bloodGlucoseRecord.time)
             val mealType = MEAL_TYPE_INT_TO_STRING_MAP.get(bloodGlucoseRecord.mealType)
@@ -182,9 +176,7 @@ class SplashViewModel @Inject constructor(
     //걸음수
     @RequiresApi(Build.VERSION_CODES.O)
     private suspend fun readSteps() {
-        val startOfDay = ZonedDateTime.now().truncatedTo(ChronoUnit.DAYS)
-        val endOfWeek = startOfDay.toInstant().plus(7,ChronoUnit.DAYS)
-        stepList = readStepsRecord(startOfDay.toInstant(),endOfWeek)
+        stepList = readStepsRecord(getTodayStartTime(), getNowTime())
         for (stepsRecord in stepList) {
             Log.e("HC-Steps",stepsRecord.count.toString()+"보")
         }
@@ -202,10 +194,7 @@ class SplashViewModel @Inject constructor(
     //운동
     @RequiresApi(Build.VERSION_CODES.O)
     private suspend fun readExerciseSession() {
-        val startOfDay = ZonedDateTime.now().truncatedTo(ChronoUnit.DAYS)
-        val endOfWeek = startOfDay.toInstant().plus(7,ChronoUnit.DAYS)
-
-        exerciseList = readExerciseSessionRecord(startOfDay.toInstant(),endOfWeek)
+        exerciseList = readExerciseSessionRecord(getTodayStartTime(),getNowTime())
         for (exerciseRecord in exerciseList) {
             val exerciseName = ExerciseSessionRecord.EXERCISE_TYPE_INT_TO_STRING_MAP.get(exerciseRecord.exerciseType)
             val exerciseStartTime = changeInstantToKST(exerciseRecord.startTime)
@@ -244,5 +233,13 @@ class SplashViewModel @Inject constructor(
 
     private fun <T> Flow<T>.handleErrors(): Flow<T> =
         catch { e -> Toast.makeText(getApplication<Application>().applicationContext,e.message,Toast.LENGTH_SHORT).show() }
+
+    private fun getTodayStartTime(): Instant {
+        return ZonedDateTime.now().truncatedTo(ChronoUnit.DAYS).toInstant()
+    }
+
+    private fun getNowTime(): Instant {
+        return ZonedDateTime.now().toInstant()
+    }
 
 }
