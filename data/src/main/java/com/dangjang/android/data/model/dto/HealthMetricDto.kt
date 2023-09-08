@@ -19,13 +19,11 @@ data class HealthMetricDto(
 }
 
 data class Guide(
-    @SerializedName("createdAt") val createdAt: String?,
     @SerializedName("type") val type: String?,
     @SerializedName("alert") val alert: String?,
     @SerializedName("content") val content: String?
 ) {
     fun toDomain() = GuideVO(
-        createdAt ?: UNKNOWN,
         type ?: UNKNOWN,
         alert ?: UNKNOWN,
         content ?: UNKNOWN

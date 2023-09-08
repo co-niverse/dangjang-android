@@ -11,8 +11,8 @@ import javax.inject.Inject
 class HomeRepositoryImpl @Inject constructor(
     private val homeDataSource: HomeDataSource
 ) : HomeRepository {
-    override fun addHealthMetric(addHealthMetricRequest: AddHealthMetricRequest): Flow<HealthMetricVO> = flow {
-        val response = homeDataSource.addHealthMetric(addHealthMetricRequest)
+    override fun addHealthMetric(accessToken: String, addHealthMetricRequest: AddHealthMetricRequest): Flow<HealthMetricVO> = flow {
+        val response = homeDataSource.addHealthMetric(accessToken, addHealthMetricRequest)
         emit(response.data.toDomain())
     }
 }

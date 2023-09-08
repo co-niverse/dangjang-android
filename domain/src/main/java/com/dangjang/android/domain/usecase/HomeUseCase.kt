@@ -12,9 +12,10 @@ class HomeUseCase @Inject constructor(
     private val homeRepository: HomeRepository
 ){
     suspend fun addHealthMetric(
+        accessToken: String,
         addHealthMetricRequest: AddHealthMetricRequest
     ): Flow<HealthMetricVO> =
         withContext(Dispatchers.IO) {
-        homeRepository.addHealthMetric(addHealthMetricRequest)
+        homeRepository.addHealthMetric(accessToken, addHealthMetricRequest)
     }
 }

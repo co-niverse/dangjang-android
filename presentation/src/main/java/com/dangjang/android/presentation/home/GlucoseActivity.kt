@@ -1,7 +1,9 @@
 package com.dangjang.android.presentation.home
 
+import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
@@ -12,6 +14,8 @@ import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
+import com.dangjang.android.domain.constants.ACCESS_TOKEN_KEY
+import com.dangjang.android.domain.constants.TOKEN_SPF_KEY
 import com.dangjang.android.domain.model.GlucoseListVO
 import com.dangjang.android.presentation.R
 import com.dangjang.android.presentation.databinding.ActivityGlucoseBinding
@@ -41,18 +45,17 @@ class GlucoseActivity : FragmentActivity() {
             val format = SimpleDateFormat("yyyy-MM-dd")
             val date = format.format(currentTime)
             viewModel.setCreatedAt(date)
-
             viewModel.setUnit(binding.glucoseAddEt.text.toString())
 
-            viewModel.addHealthMetric(viewModel.addHealthMetricRequest.value)
+            getAccessToken()?.let {
+                    accessToken -> viewModel.addHealthMetric(accessToken)
+            }
+
+            binding.glucoseAddCl.visibility = View.GONE
         }
 
         binding.glucoseAddBtn.setOnClickListener {
             binding.glucoseAddCl.visibility = View.VISIBLE
-        }
-
-        binding.glucoseAddSaveBtn.setOnClickListener {
-            binding.glucoseAddCl.visibility = View.GONE
         }
 
         binding.glucoseAddCloseIv.setOnClickListener {
@@ -112,6 +115,12 @@ class GlucoseActivity : FragmentActivity() {
 
         glucoseSpinner.adapter = glucoseTimeAdapter
 
+    }
+
+    private fun getAccessToken(): String? {
+        val sharedPreferences = getSharedPreferences(TOKEN_SPF_KEY, Context.MODE_PRIVATE)
+
+        return sharedPreferences.getString(ACCESS_TOKEN_KEY, null)
     }
 
 
