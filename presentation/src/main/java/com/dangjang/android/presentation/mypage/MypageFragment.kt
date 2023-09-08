@@ -1,5 +1,6 @@
 package com.dangjang.android.presentation.mypage
 
+import android.content.Intent
 import androidx.fragment.app.viewModels
 import com.dangjang.android.common_ui.BaseFragment
 import com.dangjang.android.presentation.R
@@ -18,6 +19,13 @@ class MypageFragment : BaseFragment<FragmentMypageBinding>(R.layout.fragment_myp
     }
     override fun onStart() {
         super.onStart()
+
+        binding.deviceIv.setOnClickListener {
+            startActivity(Intent(context, DeviceActivity::class.java))
+        }
+        binding.deviceTv.setOnClickListener {
+            startActivity(Intent(context, DeviceActivity::class.java))
+        }
     }
 
 }
