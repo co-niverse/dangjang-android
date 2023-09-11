@@ -6,7 +6,9 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentActivity
 import com.dangjang.android.presentation.R
 import com.dangjang.android.presentation.databinding.ActivityDeviceBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class DeviceActivity : FragmentActivity() {
     private lateinit var binding: ActivityDeviceBinding
     private val viewModel by viewModels<MypageViewModel>()
@@ -17,6 +19,13 @@ class DeviceActivity : FragmentActivity() {
 
         binding.backIv.setOnClickListener {
             finish()
+        }
+
+        binding.deviceGoSettingBtn.setOnClickListener {
+            val deviceSettingFragment = DeviceSettingFragment()
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.device_cl, deviceSettingFragment).addToBackStack(null)
+                .commit()
         }
     }
 }
