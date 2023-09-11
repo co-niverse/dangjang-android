@@ -35,7 +35,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="6월 8일 목요일"
+                dateToString="@{vm.getGlucoseFlow.createdAt}"
                 android:textColor="#696D6B"
                 android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="parent"
