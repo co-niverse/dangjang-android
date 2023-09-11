@@ -14,6 +14,7 @@ import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.dangjang.android.domain.constants.ACCESS_TOKEN_KEY
 import com.dangjang.android.domain.constants.TOKEN_SPF_KEY
 import com.dangjang.android.domain.model.GlucoseGuideVO
@@ -21,6 +22,7 @@ import com.dangjang.android.domain.model.GlucoseListVO
 import com.dangjang.android.presentation.R
 import com.dangjang.android.presentation.databinding.ActivityGlucoseBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -40,6 +42,18 @@ class GlucoseActivity : FragmentActivity() {
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_glucose)
         viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
+
+        Log.e("getTodayDate",getTodayDate())
+
+        getAccessToken()?.let {
+                accessToken -> viewModel.getGlucose(accessToken, getTodayDate())
+        }
+
+        lifecycleScope.launchWhenStarted {
+            viewModel.getGlucoseFlow.collectLatest {
+                glucoseGuideAdapter.submitList(viewModel.addBackgroundToTodayGuides(it.todayGuides))
+            }
+        }
 
         binding.glucoseAddSaveBtn.setOnClickListener {
             viewModel.setType(glucoseSpinnerType)
@@ -134,8 +148,14 @@ class GlucoseActivity : FragmentActivity() {
     }
 
     private fun setGlucoseGuideListAdapter() {
-        glucoseGuideAdapter = GlucoseGuideAdapter(glucoseGuideList)
+        glucoseGuideAdapter = GlucoseGuideAdapter(viewModel)
         binding.glucoseGuideRv.adapter = glucoseGuideAdapter
+    }
+
+    private fun getTodayDate(): String {
+        val currentTime: Date = Calendar.getInstance().getTime()
+        val format = SimpleDateFormat("yyyy-MM-dd")
+        return format.format(currentTime)
     }
 
 }
