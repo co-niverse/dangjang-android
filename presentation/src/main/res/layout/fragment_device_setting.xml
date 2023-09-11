@@ -43,7 +43,7 @@
             android:layout_height="0dp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
-            app:layout_constraintBottom_toTopOf="@id/device_setting_go_access_btn"
+            app:layout_constraintBottom_toTopOf="@id/device_setting_go_health_connect_btn"
             app:layout_constraintTop_toBottomOf="@id/device_setting_title_tv">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -298,14 +298,14 @@
         </ScrollView>
 
         <Button
-            android:id="@+id/device_setting_go_access_btn"
+            android:id="@+id/device_setting_go_health_connect_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="32dp"
             android:background="@drawable/background_green_gradient"
-            android:text="헬스 커넥트 권한 요청"
+            android:text="헬스 커넥트 바로가기"
             android:textColor="@color/white"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"

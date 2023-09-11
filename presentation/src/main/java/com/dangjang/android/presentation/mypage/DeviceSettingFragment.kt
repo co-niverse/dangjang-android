@@ -30,6 +30,10 @@ class DeviceSettingFragment : BaseFragment<FragmentDeviceSettingBinding>(R.layou
         binding.deviceSettingInstallHealthConnectBtn.setOnClickListener {
             clickHealthConnectUrl()
         }
+
+        binding.deviceSettingGoHealthConnectBtn.setOnClickListener {
+            clickHealthConnectUrl()
+        }
     }
 
     private fun clickHealthConnectUrl() {
