@@ -1,8 +1,13 @@
 package com.dangjang.android.presentation.home
 
 import android.content.Intent
+import android.content.SharedPreferences
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
 import com.dangjang.android.common_ui.BaseFragment
+import com.dangjang.android.domain.constants.AUTO_LOGIN_EDITOR_KEY
+import com.dangjang.android.domain.constants.AUTO_LOGIN_SPF_KEY
+import com.dangjang.android.domain.constants.HEALTH_CONNECT_TOKEN_KEY
 import com.dangjang.android.presentation.R
 import com.dangjang.android.presentation.databinding.FragmentHomeBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -41,6 +46,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
                 startActivity(this)
             }
         }
-    }
 
+        val sp: SharedPreferences = requireContext().getSharedPreferences(AUTO_LOGIN_SPF_KEY, AppCompatActivity.MODE_PRIVATE)
+        val healthConnect = sp.getString(HEALTH_CONNECT_TOKEN_KEY, "null")
+
+        if (healthConnect == "false") {
+            HealthConnectBottomSheetFragment().show(parentFragmentManager, "HealthConnectBottomSheetFragment")
+        }
+    }
 }
