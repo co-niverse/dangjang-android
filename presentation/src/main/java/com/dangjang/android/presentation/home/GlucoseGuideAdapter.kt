@@ -24,10 +24,23 @@ class GlucoseGuideAdapter(
 
     override fun onBindViewHolder(holder: GlucoseGuideAdapter.ViewHolder, position: Int) {
         holder.bind(glucoseGuideList[position])
+        holder.binding.glucoseGuideListCl.setOnClickListener {
+            mItemClickListener.onItemClick(glucoseGuideList[position])
+        }
     }
 
     override fun getItemCount(): Int {
         return glucoseGuideList.size
+    }
+
+    interface MyItemClickListener {
+        fun onItemClick(glucoseGuideList: GlucoseGuideVO)
+    }
+
+    private lateinit var mItemClickListener: MyItemClickListener
+
+    fun setMyItemClickListener(itemClickListener: GlucoseGuideAdapter.MyItemClickListener) {
+        mItemClickListener = itemClickListener
     }
 
     inner class ViewHolder(val binding: ItemGlucoseGuideListBinding) :
