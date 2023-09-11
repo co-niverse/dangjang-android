@@ -9,6 +9,8 @@ import com.dangjang.android.common_ui.BaseFragment
 import com.dangjang.android.domain.constants.AUTO_LOGIN_EDITOR_KEY
 import com.dangjang.android.domain.constants.AUTO_LOGIN_SPF_KEY
 import com.dangjang.android.domain.constants.HEALTH_CONNECT_TOKEN_KEY
+import com.dangjang.android.domain.model.ExerciseListVO
+import com.dangjang.android.domain.model.GlucoseGuideVO
 import com.dangjang.android.presentation.R
 import com.dangjang.android.presentation.databinding.FragmentHomeBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -18,6 +20,8 @@ import dagger.hilt.android.AndroidEntryPoint
 class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
 
     private val viewModel by viewModels<HomeViewModel>()
+    private lateinit var glucoseGuideAdapter: GlucoseGuideAdapter
+    private var glucoseGuideList = arrayListOf<GlucoseGuideVO>()
 
     override fun initView() {
         bind {
@@ -27,7 +31,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
     override fun onStart() {
         super.onStart()
 
-        binding.glucoseSeekbar.setOnTouchListener({ v, event -> true })
         binding.weightSeekbar.setOnTouchListener({ v, event -> true })
 
         binding.glucoseCl.setOnClickListener {
@@ -57,5 +60,18 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
                 HealthConnectBottomSheetFragment().show(parentFragmentManager, "HealthConnectBottomSheetFragment")
             }
         }
+
+        glucoseGuideList.add(GlucoseGuideVO("저혈당","1번",R.drawable.background_circle_red))
+        glucoseGuideList.add(GlucoseGuideVO("저혈당\n의심","1번",R.drawable.background_circle_orange))
+        glucoseGuideList.add(GlucoseGuideVO("정상","1번",R.drawable.background_circle_green))
+        glucoseGuideList.add(GlucoseGuideVO("주의","1번",R.drawable.background_circle_orange))
+        glucoseGuideList.add(GlucoseGuideVO("경고","1번",R.drawable.background_circle_red))
+
+        setGlucoseGuideListAdapter()
+    }
+
+    private fun setGlucoseGuideListAdapter() {
+        glucoseGuideAdapter = GlucoseGuideAdapter(glucoseGuideList)
+        binding.homeGlucoseRv.adapter = glucoseGuideAdapter
     }
 }
