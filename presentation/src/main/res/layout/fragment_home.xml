@@ -65,6 +65,19 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tag_iv" />
 
+            <Button
+                android:id="@+id/auto_input_btn"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/background_border_green"
+                android:text="자동 입력\n설정하러 가기"
+                android:textColor="@color/green"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@+id/title_tv"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/title_tv" />
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/glucose_cl"
                 android:layout_width="match_parent"
@@ -349,13 +362,13 @@
                         android:layout_width="100dp"
                         android:layout_height="100dp"
                         android:src="@drawable/logo_dangjang"
-                        app:layout_constraintBottom_toTopOf="@+id/textView4"
+                        app:layout_constraintBottom_toTopOf="@+id/calory_content_tv"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/calory_title_tv" />
 
                     <TextView
-                        android:id="@+id/textView4"
+                        android:id="@+id/calory_content_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="8dp"
