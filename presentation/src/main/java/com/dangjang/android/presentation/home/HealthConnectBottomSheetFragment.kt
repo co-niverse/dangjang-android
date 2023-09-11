@@ -1,5 +1,6 @@
 package com.dangjang.android.presentation.home
 
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -7,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.dangjang.android.presentation.databinding.FragmentHealthconnectBottomSheetBinding
+import com.dangjang.android.presentation.mypage.DeviceActivity
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class HealthConnectBottomSheetFragment: BottomSheetDialogFragment() {
@@ -35,6 +37,13 @@ class HealthConnectBottomSheetFragment: BottomSheetDialogFragment() {
 
         binding.dismissBtn.setOnClickListener {
             dismiss()
+        }
+
+        binding.goToHealthConnectFragmentButton.setOnClickListener {
+            dismiss()
+            Intent(context, DeviceActivity::class.java).apply {
+                startActivity(this)
+            }
         }
     }
 }
