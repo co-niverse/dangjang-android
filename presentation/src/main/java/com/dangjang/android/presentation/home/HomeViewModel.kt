@@ -5,6 +5,8 @@ import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.dangjang.android.domain.model.GetGlucoseVO
+import com.dangjang.android.domain.model.GlucoseGuideVO
 import com.dangjang.android.domain.model.HealthMetricVO
 import com.dangjang.android.domain.request.AddHealthMetricRequest
 import com.dangjang.android.domain.usecase.HomeUseCase
@@ -17,6 +19,8 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import com.dangjang.android.domain.model.GlucoseListVO
+import com.dangjang.android.domain.model.TodayGuidesVO
+import com.dangjang.android.presentation.R
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -37,6 +41,9 @@ class HomeViewModel @Inject constructor(
 
     private val _glucoseTimeList = MutableStateFlow(ArrayList<String>())
     val glucoseTimeList = arrayListOf<String>()
+
+    private val _getGlucoseFlow = MutableStateFlow(GetGlucoseVO())
+    val getGlucoseFlow = _getGlucoseFlow.asStateFlow()
 
     fun getHourSpinnerList(): ArrayList<String> {
         val hourList = arrayListOf<String>()
@@ -65,6 +72,19 @@ class HomeViewModel @Inject constructor(
             getHomeUseCase.addHealthMetric("Bearer $accessToken", addHealthMetricRequest.value)
                 .onEach {
                     _addHealthMetricFlow.emit(it)
+                }
+                .handleErrors()
+                .collect()
+        }
+    }
+
+    fun getGlucose(
+        accessToken: String, date: String
+    ) {
+        viewModelScope.launch {
+            getHomeUseCase.getGlucose("Bearer $accessToken", date)
+                .onEach {
+                    _getGlucoseFlow.emit(it)
                 }
                 .handleErrors()
                 .collect()
@@ -143,5 +163,31 @@ class HomeViewModel @Inject constructor(
             glucoseTimeList.add("기타")
             _glucoseTimeList.emit(glucoseTimeList)
         }
+    }
+
+    fun addBackgroundToTodayGuides(todayGuidesVO: List<TodayGuidesVO>): List<GlucoseGuideVO> {
+        var glucoseGuides : List<GlucoseGuideVO> = listOf()
+        todayGuidesVO.map {
+            var name = it.alert
+            var background = when(name) {
+                "저혈당","경고" -> {
+                    R.drawable.background_circle_red
+                }
+                "저혈당 의심","주의" -> {
+                    R.drawable.background_circle_orange
+                }
+                "정상" -> {
+                    R.drawable.background_circle_green
+                }
+                else -> {
+                    R.drawable.background_circle_green
+                }
+            }
+            if (name == "저혈당 의심") {
+                name = "저혈당\n의심"
+            }
+            glucoseGuides.plus(GlucoseGuideVO(name,it.count.toString() + "번", background))
+        }
+        return glucoseGuides
     }
 }
