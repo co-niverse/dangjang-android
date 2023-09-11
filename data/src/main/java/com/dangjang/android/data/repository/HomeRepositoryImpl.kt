@@ -1,6 +1,7 @@
 package com.dangjang.android.data.repository
 
 import com.dangjang.android.data.datasource.HomeDataSource
+import com.dangjang.android.domain.model.GetGlucoseVO
 import com.dangjang.android.domain.model.HealthMetricVO
 import com.dangjang.android.domain.repository.HomeRepository
 import com.dangjang.android.domain.request.AddHealthMetricRequest
@@ -13,6 +14,11 @@ class HomeRepositoryImpl @Inject constructor(
 ) : HomeRepository {
     override fun addHealthMetric(accessToken: String, addHealthMetricRequest: AddHealthMetricRequest): Flow<HealthMetricVO> = flow {
         val response = homeDataSource.addHealthMetric(accessToken, addHealthMetricRequest)
+        emit(response.data.toDomain())
+    }
+
+    override fun getGlucose(accessToken: String, date: String): Flow<GetGlucoseVO> = flow {
+        val response = homeDataSource.getGlucose(accessToken, date)
         emit(response.data.toDomain())
     }
 }
