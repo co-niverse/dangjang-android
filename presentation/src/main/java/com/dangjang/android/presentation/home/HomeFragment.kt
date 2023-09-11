@@ -6,10 +6,8 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
 import com.dangjang.android.common_ui.BaseFragment
-import com.dangjang.android.domain.constants.AUTO_LOGIN_EDITOR_KEY
 import com.dangjang.android.domain.constants.AUTO_LOGIN_SPF_KEY
 import com.dangjang.android.domain.constants.HEALTH_CONNECT_TOKEN_KEY
-import com.dangjang.android.domain.model.ExerciseListVO
 import com.dangjang.android.domain.model.GlucoseGuideVO
 import com.dangjang.android.presentation.R
 import com.dangjang.android.presentation.databinding.FragmentHomeBinding
@@ -72,6 +70,17 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
 
     private fun setGlucoseGuideListAdapter() {
         glucoseGuideAdapter = GlucoseGuideAdapter(glucoseGuideList)
+
+        glucoseGuideAdapter.setMyItemClickListener(object :
+            GlucoseGuideAdapter.MyItemClickListener {
+            override fun onItemClick(glucoseGuideList: GlucoseGuideVO) {
+                Intent(activity, GlucoseActivity::class.java).apply {
+                    startActivity(this)
+                }
+            }
+
+        })
+
         binding.homeGlucoseRv.adapter = glucoseGuideAdapter
     }
 }
