@@ -97,74 +97,26 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="17dp"
-                    android:text="혈당 110 mg/dL"
+                    android:text="혈당"
                     android:textColor="#131F11"
                     android:textSize="18sp"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <ImageView
-                    android:id="@+id/glucose_bar"
-                    android:layout_width="match_parent"
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/home_glucose_rv"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginEnd="16dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/glucose_title_tv" />
-
-                <ImageView
-                    android:id="@+id/glucose_tag_iv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginBottom="17dp"
-                    android:src="@drawable/ic_tag_caution"
+                    android:orientation="horizontal"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" />
-
-                <TextView
-                    android:id="@+id/glucose_status_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="6dp"
-                    android:text="혈당이 조금 높아요! "
-                    android:textColor="#3A433E"
-                    android:textSize="16sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/glucose_tag_iv"
-                    app:layout_constraintStart_toEndOf="@+id/glucose_tag_iv"
-                    app:layout_constraintTop_toTopOf="@+id/glucose_tag_iv" />
-
-                <TextView
-                    android:id="@+id/glucose_number_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="-10만큼 낮춰야해요"
-                    android:textColor="#3A433E"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="@+id/glucose_tag_iv"
-                    app:layout_constraintStart_toEndOf="@id/glucose_status_tv"
-                    app:layout_constraintTop_toTopOf="@+id/glucose_tag_iv"
-                    tools:layout_editor_absoluteX="67dp" />
-
-                <SeekBar
-                    android:id="@+id/glucose_seekbar"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginBottom="16dp"
-                    android:background="@null"
-                    android:max="100"
-                    android:progress="60"
-                    android:progressDrawable="@drawable/background_glucose_bar"
-                    android:splitTrack="false"
-                    android:thumb="@drawable/ic_thumb"
-                    app:layout_constraintBottom_toTopOf="@id/glucose_tag_iv"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/glucose_title_tv" />
+                    app:layout_constraintTop_toBottomOf="@id/glucose_title_tv"
+                    tools:listitem="@layout/item_glucose_guide_list" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
