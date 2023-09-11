@@ -2,13 +2,17 @@ package com.dangjang.android.presentation.home
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.dangjang.android.domain.model.GetGlucoseVO
 import com.dangjang.android.domain.model.GlucoseGuideVO
 import com.dangjang.android.presentation.databinding.ItemGlucoseGuideListBinding
 
 class GlucoseGuideAdapter(
-    private val glucoseGuideList: ArrayList<GlucoseGuideVO>
-) : RecyclerView.Adapter<GlucoseGuideAdapter.ViewHolder>() {
+    private val viewModel: HomeViewModel
+    //private val glucoseGuideList: ArrayList<GlucoseGuideVO>
+) : ListAdapter<GlucoseGuideVO, RecyclerView.ViewHolder>(diffUtil) {
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -22,15 +26,11 @@ class GlucoseGuideAdapter(
         return ViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: GlucoseGuideAdapter.ViewHolder, position: Int) {
-        holder.bind(glucoseGuideList[position])
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        (holder as ViewHolder).bind(getItem(position))
         holder.binding.glucoseGuideListCl.setOnClickListener {
-            mItemClickListener.onItemClick(glucoseGuideList[position])
+            mItemClickListener.onItemClick(getItem(position))
         }
-    }
-
-    override fun getItemCount(): Int {
-        return glucoseGuideList.size
     }
 
     interface MyItemClickListener {
@@ -39,16 +39,30 @@ class GlucoseGuideAdapter(
 
     private lateinit var mItemClickListener: MyItemClickListener
 
-    fun setMyItemClickListener(itemClickListener: GlucoseGuideAdapter.MyItemClickListener) {
+    fun setMyItemClickListener(itemClickListener: MyItemClickListener) {
         mItemClickListener = itemClickListener
     }
 
     inner class ViewHolder(val binding: ItemGlucoseGuideListBinding) :
-            RecyclerView.ViewHolder(binding.root) {
-                fun bind(glucoseGuideList: GlucoseGuideVO) {
-                    binding.glucoseGuideListTitleTv.text = glucoseGuideList.guideName
-                    binding.glucoseGuideListCountTv.text = glucoseGuideList.guideCount
-                    binding.glucoseGuideListCl.background = itemView.context.getDrawable(glucoseGuideList.guideBackground)
-                }
-            }
+        RecyclerView.ViewHolder(binding.root) {
+        fun bind(glucoseGuideList: GlucoseGuideVO) {
+            binding.vm = viewModel
+            binding.glucoseGuideList = glucoseGuideList
+
+//            binding.glucoseGuideListTitleTv.text = glucoseGuideList.guideName
+//            binding.glucoseGuideListCountTv.text = glucoseGuideList.guideCount
+//            binding.glucoseGuideListCl.background =
+//                itemView.context.getDrawable(glucoseGuideList.guideBackground)
+        }
+    }
+
+    companion object {
+        val diffUtil = object : DiffUtil.ItemCallback<GlucoseGuideVO>() {
+            override fun areContentsTheSame(oldItem: GlucoseGuideVO, newItem: GlucoseGuideVO) =
+                oldItem == newItem
+
+            override fun areItemsTheSame(oldItem: GlucoseGuideVO, newItem: GlucoseGuideVO) =
+                oldItem.guideName == newItem.guideName
+        }
+    }
 }

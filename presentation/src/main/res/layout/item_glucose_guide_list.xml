@@ -7,6 +7,10 @@
         <variable
             name="vm"
             type="com.dangjang.android.presentation.home.HomeViewModel" />
+
+        <variable
+            name="glucoseGuideList"
+            type="com.dangjang.android.domain.model.GlucoseGuideVO" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -19,7 +23,7 @@
             android:layout_height="62dp"
             android:layout_margin="3dp"
             android:layout_marginBottom="32dp"
-            android:background="@drawable/background_circle_green"
+            android:background="@{glucoseGuideList.guideBackground}"
             android:elevation="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -32,7 +36,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:gravity="center"
-                android:text="정상"
+                android:text="@{glucoseGuideList.guideName}"
                 android:textColor="@color/black"
                 android:textSize="12sp"
                 android:textStyle="bold"
@@ -44,7 +48,7 @@
                 android:id="@+id/glucose_guide_list_count_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="1번"
+                android:text="@{glucoseGuideList.guideCount}"
                 android:textColor="@color/black"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="parent"
