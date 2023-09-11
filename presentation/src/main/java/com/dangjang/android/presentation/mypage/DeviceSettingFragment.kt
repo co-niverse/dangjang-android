@@ -1,5 +1,7 @@
 package com.dangjang.android.presentation.mypage
 
+import android.content.Intent
+import android.net.Uri
 import androidx.fragment.app.activityViewModels
 import com.dangjang.android.common_ui.BaseFragment
 import com.dangjang.android.presentation.R
@@ -24,6 +26,15 @@ class DeviceSettingFragment : BaseFragment<FragmentDeviceSettingBinding>(R.layou
         binding.backIv.setOnClickListener {
             parentFragmentManager.popBackStack()
         }
+
+        binding.deviceSettingInstallHealthConnectBtn.setOnClickListener {
+            clickHealthConnectUrl()
+        }
+    }
+
+    private fun clickHealthConnectUrl() {
+        val intentUrl = Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.google.android.apps.healthdata"))
+        startActivity(intentUrl)
     }
 
 }

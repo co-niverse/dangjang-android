@@ -58,9 +58,4 @@ class SplashActivity : AppCompatActivity() {
             }
         }
     }
-
-    private fun clickHealthConnectUrl() {
-        val intentUrl = Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.google.android.apps.healthdata"))
-        startActivity(intentUrl)
-    }
 }
