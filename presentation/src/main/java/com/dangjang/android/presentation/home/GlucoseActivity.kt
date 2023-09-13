@@ -52,6 +52,7 @@ class GlucoseActivity : FragmentActivity() {
         lifecycleScope.launchWhenStarted {
             viewModel.getGlucoseFlow.collectLatest {
                 glucoseGuideAdapter.submitList(viewModel.addBackgroundToTodayGuides(it.todayGuides))
+                glucoseListAdapter.submitList(viewModel.addIconToGuides(it.guides))
             }
         }
 
@@ -87,7 +88,6 @@ class GlucoseActivity : FragmentActivity() {
             finish()
         }
 
-        viewModel.getGlucoseList()
         viewModel.getGlucoseTimeList()
 
         glucoseGuideList.add(GlucoseGuideVO("저혈당","1번",R.drawable.background_circle_red))
@@ -102,7 +102,7 @@ class GlucoseActivity : FragmentActivity() {
     }
 
     private fun setGlucoseListAdapter() {
-        glucoseListAdapter = GlucoseListAdapter(viewModel.glucoseList)
+        glucoseListAdapter = GlucoseListAdapter(viewModel)
 
         glucoseListAdapter.setMyItemClickListener(object :
             GlucoseListAdapter.MyItemClickListener {
