@@ -7,7 +7,6 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.dangjang.android.domain.model.GetGlucoseVO
 import com.dangjang.android.domain.model.GlucoseGuideVO
-import com.dangjang.android.domain.model.HealthMetricVO
 import com.dangjang.android.domain.request.AddHealthMetricRequest
 import com.dangjang.android.domain.usecase.HomeUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,6 +19,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import com.dangjang.android.domain.model.GlucoseListVO
 import com.dangjang.android.domain.model.GuidesVO
+import com.dangjang.android.domain.model.PostPatchGlucoseVO
 import com.dangjang.android.domain.model.TodayGuidesVO
 import com.dangjang.android.presentation.R
 import kotlinx.coroutines.launch
@@ -31,7 +31,7 @@ class HomeViewModel @Inject constructor(
     application: Application
 ) : AndroidViewModel(application) {
 
-    private val _addHealthMetricFlow = MutableStateFlow(HealthMetricVO())
+    private val _addHealthMetricFlow = MutableStateFlow(PostPatchGlucoseVO())
     val addHealthMetricFlow = _addHealthMetricFlow.asStateFlow()
 
     private val _addHealthMetricRequest = MutableStateFlow(AddHealthMetricRequest())
