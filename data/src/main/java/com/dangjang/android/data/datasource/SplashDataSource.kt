@@ -4,11 +4,11 @@ import com.dangjang.android.data.model.dto.IntroDto
 import com.dangjang.android.data.model.response.BaseResponse
 import javax.inject.Inject
 
-class IntroDataSource @Inject constructor(
-    private val introApiService: IntroApiService
+class SplashDataSource @Inject constructor(
+    private val splashApiService: SplashApiService
 ) : BaseNetworkDataSource() {
 
     suspend fun getIntroApi(): BaseResponse<IntroDto> {
-        return checkResponse(introApiService.getIntroApi())
+        return checkResponse(splashApiService.getIntroApi())
     }
 }

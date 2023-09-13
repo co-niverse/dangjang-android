@@ -19,7 +19,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.dangjang.android.domain.model.HealthConnectVO
 import com.dangjang.android.domain.model.IntroVO
-import com.dangjang.android.domain.usecase.GetIntroUseCase
+import com.dangjang.android.domain.usecase.SplashUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -40,7 +40,7 @@ import kotlin.math.roundToInt
 
 @HiltViewModel
 class SplashViewModel @Inject constructor(
-    private val getIntroUseCase: GetIntroUseCase,
+    private val splashUseCase: SplashUseCase,
     application: Application
 ) : AndroidViewModel(application) {
 
@@ -224,7 +224,7 @@ class SplashViewModel @Inject constructor(
 
     fun getIntroData() {
         viewModelScope.launch {
-            getIntroUseCase.getIntro()
+            splashUseCase.getIntro()
                 .onEach {
                     _introDataFlow.emit(it)
                 }
