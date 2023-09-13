@@ -112,7 +112,9 @@ class HomeViewModel @Inject constructor(
                         _postPatchGlucoseFlow.emit(it)
                     }
                     .handleErrors()
-                    .collect()
+                    .collect{
+                        getGlucose(accessToken)
+                    }
             }
         }
     }
