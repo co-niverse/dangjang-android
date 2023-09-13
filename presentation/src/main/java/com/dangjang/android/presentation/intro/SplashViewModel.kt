@@ -19,6 +19,8 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.dangjang.android.domain.model.HealthConnectVO
 import com.dangjang.android.domain.model.IntroVO
+import com.dangjang.android.domain.request.AddHealthMetricRequest
+import com.dangjang.android.domain.request.PostHealthConnectRequest
 import com.dangjang.android.domain.usecase.SplashUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
@@ -228,6 +230,14 @@ class SplashViewModel @Inject constructor(
                 .onEach {
                     _introDataFlow.emit(it)
                 }
+                .handleErrors()
+                .collect()
+        }
+    }
+
+    fun postHealthConnectData(accessToken: String, postHealthConnectRequest: PostHealthConnectRequest) {
+        viewModelScope.launch {
+            splashUseCase.postHealthConnect(accessToken, postHealthConnectRequest)
                 .handleErrors()
                 .collect()
         }
