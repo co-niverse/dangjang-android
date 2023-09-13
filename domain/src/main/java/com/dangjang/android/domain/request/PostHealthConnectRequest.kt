@@ -1,7 +1,5 @@
-package com.dangjang.android.data.model.request
-
-import com.google.gson.annotations.SerializedName
+package com.dangjang.android.domain.request
 
 data class PostHealthConnectRequest (
-    @SerializedName("data") val data: List<HealthConnectRequest>
+    val data: List<HealthConnectRequest>
     )

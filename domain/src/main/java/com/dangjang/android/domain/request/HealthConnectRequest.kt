@@ -1,9 +1,7 @@
-package com.dangjang.android.data.model.request
-
-import com.google.gson.annotations.SerializedName
+package com.dangjang.android.domain.request
 
 data class HealthConnectRequest (
-    @SerializedName("createdAt") val createdAt: String,
-    @SerializedName("type") val type: String,
-    @SerializedName("unit") val unit: String
+    val createdAt: String,
+    val type: String,
+    val unit: String
     )
