@@ -166,7 +166,7 @@ class HomeViewModel @Inject constructor(
     }
 
     fun addBackgroundToTodayGuides(todayGuidesVO: List<TodayGuidesVO>): List<GlucoseGuideVO> {
-        var glucoseGuides : List<GlucoseGuideVO> = listOf()
+        var glucoseGuides : MutableList<GlucoseGuideVO> = mutableListOf()
         todayGuidesVO.map {
             var name = it.alert
             var background = when(name) {
@@ -186,7 +186,7 @@ class HomeViewModel @Inject constructor(
             if (name == "저혈당 의심") {
                 name = "저혈당\n의심"
             }
-            glucoseGuides.plus(GlucoseGuideVO(name,it.count.toString() + "번", background))
+            glucoseGuides.add(GlucoseGuideVO(name,it.count.toString() + "번", background))
         }
         return glucoseGuides
     }
