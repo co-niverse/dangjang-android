@@ -258,7 +258,7 @@ class HomeViewModel @Inject constructor(
         return glucoseGuides
     }
 
-    private fun getTodayDate(): String {
+    fun getTodayDate(): String {
         val currentTime: Date = Calendar.getInstance().getTime()
         val format = SimpleDateFormat("yyyy-MM-dd")
         return format.format(currentTime)
