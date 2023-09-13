@@ -48,6 +48,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
                 if (it.todayGuides.isNullOrEmpty()) {
                     binding.glucoseGuideNoneTv.visibility = View.VISIBLE
                 }
+                else {
+                    binding.glucoseGuideNoneTv.visibility = View.GONE
+                }
                 glucoseGuideAdapter.submitList(viewModel.addBackgroundToTodayGuides(it.todayGuides))
             }
         }
