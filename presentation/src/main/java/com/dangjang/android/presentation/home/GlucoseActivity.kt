@@ -39,6 +39,9 @@ class GlucoseActivity : FragmentActivity() {
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_glucose)
         viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
+        binding.vm = viewModel
+
+        binding.lifecycleOwner = this
 
         Log.e("getTodayDate",getTodayDate())
 
