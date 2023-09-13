@@ -3,13 +3,15 @@ package com.dangjang.android.presentation.home
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.dangjang.android.domain.model.GlucoseListVO
 import com.dangjang.android.presentation.databinding.ItemGlucoseListBinding
 
 class GlucoseListAdapter(
-    private val glucoseList: ArrayList<GlucoseListVO>
-) : RecyclerView.Adapter<GlucoseListAdapter.ViewHolder>(){
+    private val viewModel: HomeViewModel
+) : ListAdapter<GlucoseListVO, RecyclerView.ViewHolder>(diffUtil){
 
     interface MyItemClickListener {
         fun onItemClick(glucoseList: GlucoseListVO)
@@ -31,17 +33,13 @@ class GlucoseListAdapter(
         return ViewHolder(binding)
     }
 
-    override fun getItemCount(): Int {
-        return glucoseList.size
-    }
-
-    override fun onBindViewHolder(holder: GlucoseListAdapter.ViewHolder, position: Int) {
-        holder.bind(glucoseList[position])
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        (holder as ViewHolder).bind(getItem(position))
         holder.itemView.setOnClickListener {
             holder.setFeedbackContentVisibility()
         }
         holder.binding.glucoseEditBtn.setOnClickListener {
-            mItemClickListener.onItemClick(glucoseList[position])
+            mItemClickListener.onItemClick(getItem(position))
         }
     }
 
@@ -64,10 +62,20 @@ class GlucoseListAdapter(
         }
 
         fun bind(glucoseList: GlucoseListVO) {
-            binding.glucoseListTimeTv.text = glucoseList.time
-            binding.glucoseNumberTv.text = glucoseList.glucose.toString()
-            binding.glucoseFeedbackTitleTv.text = glucoseList.feedbackTitle
-            binding.glucoseFeedbackContentTv.text = glucoseList.feedbackContent
+            binding.vm = viewModel
+            binding.glucoseList = glucoseList
+            //TODO : 태그 설정
+            binding.glucoseListTagIv.setImageDrawable(itemView.context.getDrawable(glucoseList.alertIcon))
+        }
+    }
+
+    companion object {
+        val diffUtil = object : DiffUtil.ItemCallback<GlucoseListVO>() {
+            override fun areContentsTheSame(oldItem: GlucoseListVO, newItem: GlucoseListVO) =
+                oldItem == newItem
+
+            override fun areItemsTheSame(oldItem: GlucoseListVO, newItem: GlucoseListVO) =
+                oldItem.glucose == newItem.glucose
         }
     }
 

@@ -19,7 +19,7 @@ interface SignupApiService {
     ) : Response<BaseResponse<DuplicateNicknameDto>>
 
     //Signup API
-    @POST("api/signUp")
+    @POST("api/signup")
     suspend fun signup(
         @Body data: SignupRequest
     ) : Response<BaseResponse<AuthDto>>
