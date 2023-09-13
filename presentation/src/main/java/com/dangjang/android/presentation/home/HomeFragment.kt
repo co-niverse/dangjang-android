@@ -38,7 +38,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
         binding.weightSeekbar.setOnTouchListener({ v, event -> true })
 
         getAccessToken()?.let {
-                accessToken -> viewModel.getGlucose(accessToken, getTodayDate())
+                accessToken -> viewModel.getGlucose(accessToken)
         }
 
         lifecycleScope.launchWhenStarted {
@@ -107,9 +107,4 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
         return sharedPreferences.getString(ACCESS_TOKEN_KEY, null)
     }
 
-    private fun getTodayDate(): String {
-        val currentTime: Date = Calendar.getInstance().getTime()
-        val format = SimpleDateFormat("yyyy-MM-dd")
-        return format.format(currentTime)
-    }
 }

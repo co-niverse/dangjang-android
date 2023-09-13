@@ -25,6 +25,9 @@ import com.dangjang.android.domain.request.EditHealthMetricRequest
 import com.dangjang.android.domain.request.EditSameHealthMetricRequest
 import com.dangjang.android.presentation.R
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Date
 import javax.inject.Inject
 
 @HiltViewModel
@@ -80,7 +83,9 @@ class HomeViewModel @Inject constructor(
                     _postPatchGlucoseFlow.emit(it)
                 }
                 .handleErrors()
-                .collect()
+                .collect{
+                    getGlucose(accessToken)
+                }
         }
     }
 
@@ -98,7 +103,9 @@ class HomeViewModel @Inject constructor(
                         _postPatchGlucoseFlow.emit(it)
                     }
                     .handleErrors()
-                    .collect()
+                    .collect{
+                        getGlucose(accessToken)
+                    }
             } else {
                 getHomeUseCase.editGlucose("Bearer $accessToken", editHealthMetricRequest.value)
                     .onEach {
@@ -135,10 +142,10 @@ class HomeViewModel @Inject constructor(
     }
 
     fun getGlucose(
-        accessToken: String, date: String
+        accessToken: String
     ) {
         viewModelScope.launch {
-            getHomeUseCase.getGlucose("Bearer $accessToken", date)
+            getHomeUseCase.getGlucose("Bearer $accessToken", getTodayDate())
                 .onEach {
                     _getGlucoseFlow.emit(it)
                 }
@@ -247,5 +254,11 @@ class HomeViewModel @Inject constructor(
             glucoseGuides.add(GlucoseListVO(it.type, it.unit, tag, it.title, it.content))
         }
         return glucoseGuides
+    }
+
+    private fun getTodayDate(): String {
+        val currentTime: Date = Calendar.getInstance().getTime()
+        val format = SimpleDateFormat("yyyy-MM-dd")
+        return format.format(currentTime)
     }
 }

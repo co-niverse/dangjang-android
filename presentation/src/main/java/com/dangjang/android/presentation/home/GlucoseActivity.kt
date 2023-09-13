@@ -46,7 +46,7 @@ class GlucoseActivity : FragmentActivity() {
         Log.e("getTodayDate",getTodayDate())
 
         getAccessToken()?.let {
-                accessToken -> viewModel.getGlucose(accessToken, getTodayDate())
+                accessToken -> viewModel.getGlucose(accessToken)
         }
 
         lifecycleScope.launchWhenStarted {
