@@ -10,6 +10,7 @@ import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface HomeApiService {
 
@@ -21,10 +22,10 @@ interface HomeApiService {
     ) : Response<BaseResponse<HealthMetricDto>>
 
     //건강지표 조회 API
-    @GET("/api/guide/blood-sugar/{date}")
+    @GET("/api/guide/blood-sugar")
     suspend fun getGlucose(
         @Header("Authorization") accessToken: String,
-        @Path("date") date: String
+        @Query("date") date: String
     ) : Response<BaseResponse<GetGlucoseDto>>
 
 }
