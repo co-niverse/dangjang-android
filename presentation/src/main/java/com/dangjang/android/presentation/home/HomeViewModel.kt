@@ -21,6 +21,7 @@ import com.dangjang.android.domain.model.GlucoseListVO
 import com.dangjang.android.domain.model.GuidesVO
 import com.dangjang.android.domain.model.PostPatchGlucoseVO
 import com.dangjang.android.domain.model.TodayGuidesVO
+import com.dangjang.android.domain.request.EditHealthMetricRequest
 import com.dangjang.android.presentation.R
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -31,8 +32,11 @@ class HomeViewModel @Inject constructor(
     application: Application
 ) : AndroidViewModel(application) {
 
-    private val _addHealthMetricFlow = MutableStateFlow(PostPatchGlucoseVO())
-    val addHealthMetricFlow = _addHealthMetricFlow.asStateFlow()
+    private val _postPatchGlucoseFlow = MutableStateFlow(PostPatchGlucoseVO())
+    val postPatchGlucoseFlow = _postPatchGlucoseFlow.asStateFlow()
+
+    private val _editHealthMetricRequest = MutableStateFlow(EditHealthMetricRequest())
+    val editHealthMetricRequest = _editHealthMetricRequest.asStateFlow()
 
     private val _addHealthMetricRequest = MutableStateFlow(AddHealthMetricRequest())
     val addHealthMetricRequest = _addHealthMetricRequest.asStateFlow()
@@ -72,7 +76,20 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             getHomeUseCase.addHealthMetric("Bearer $accessToken", addHealthMetricRequest.value)
                 .onEach {
-                    _addHealthMetricFlow.emit(it)
+                    _postPatchGlucoseFlow.emit(it)
+                }
+                .handleErrors()
+                .collect()
+        }
+    }
+
+    fun editGlucose(
+        accessToken: String
+    ) {
+        viewModelScope.launch {
+            getHomeUseCase.editGlucose("Bearer $accessToken", editHealthMetricRequest.value)
+                .onEach {
+                    _postPatchGlucoseFlow.emit(it)
                 }
                 .handleErrors()
                 .collect()
