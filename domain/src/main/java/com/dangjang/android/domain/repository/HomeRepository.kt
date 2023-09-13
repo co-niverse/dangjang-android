@@ -4,6 +4,7 @@ import com.dangjang.android.domain.model.GetGlucoseVO
 import com.dangjang.android.domain.model.PostPatchGlucoseVO
 import com.dangjang.android.domain.request.AddHealthMetricRequest
 import com.dangjang.android.domain.request.EditHealthMetricRequest
+import com.dangjang.android.domain.request.EditSameHealthMetricRequest
 import kotlinx.coroutines.flow.Flow
 
 interface HomeRepository {
@@ -16,4 +17,7 @@ interface HomeRepository {
 
     //혈당 수정
     fun editGlucose(accessToken: String, editHealthMetricRequest: EditHealthMetricRequest): Flow<PostPatchGlucoseVO>
+
+    //혈당 수정 (같은 시간 tyep일 경우)
+    fun editSameGlucose(accessToken: String, editSameHealthMetricRequest: EditSameHealthMetricRequest): Flow<PostPatchGlucoseVO>
 }

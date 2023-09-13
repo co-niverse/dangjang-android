@@ -5,6 +5,7 @@ import com.dangjang.android.data.model.dto.PostPatchGlucoseDto
 import com.dangjang.android.domain.request.AddHealthMetricRequest
 import com.dangjang.android.data.model.response.BaseResponse
 import com.dangjang.android.domain.request.EditHealthMetricRequest
+import com.dangjang.android.domain.request.EditSameHealthMetricRequest
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -34,5 +35,12 @@ interface HomeApiService {
     suspend fun editHealthMetric(
         @Header("Authorization") accessToken: String,
         @Body editHealthMetricRequest: EditHealthMetricRequest
+    ) : Response<BaseResponse<PostPatchGlucoseDto>>
+
+    //혈당 수정 API (같은 시간 type일 경우)
+    @PATCH("api/health-metric")
+    suspend fun editSameGlucose(
+        @Header("Authorization") accessToken: String,
+        @Body editSameHealthMetricRequest: EditSameHealthMetricRequest
     ) : Response<BaseResponse<PostPatchGlucoseDto>>
 }

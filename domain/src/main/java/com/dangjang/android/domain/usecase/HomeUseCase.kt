@@ -5,6 +5,7 @@ import com.dangjang.android.domain.model.PostPatchGlucoseVO
 import com.dangjang.android.domain.repository.HomeRepository
 import com.dangjang.android.domain.request.AddHealthMetricRequest
 import com.dangjang.android.domain.request.EditHealthMetricRequest
+import com.dangjang.android.domain.request.EditSameHealthMetricRequest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
@@ -35,5 +36,13 @@ class HomeUseCase @Inject constructor(
     ): Flow<PostPatchGlucoseVO> =
         withContext(Dispatchers.IO) {
             homeRepository.editGlucose(accessToken, editHealthMetricRequest)
+        }
+
+    suspend fun editSameGlucose(
+        accessToken: String,
+        editSameHealthMetricRequest: EditSameHealthMetricRequest
+    ): Flow<PostPatchGlucoseVO> =
+        withContext(Dispatchers.IO) {
+            homeRepository.editSameGlucose(accessToken, editSameHealthMetricRequest)
         }
 }

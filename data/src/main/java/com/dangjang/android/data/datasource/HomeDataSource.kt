@@ -5,6 +5,7 @@ import com.dangjang.android.data.model.dto.PostPatchGlucoseDto
 import com.dangjang.android.domain.request.AddHealthMetricRequest
 import com.dangjang.android.data.model.response.BaseResponse
 import com.dangjang.android.domain.request.EditHealthMetricRequest
+import com.dangjang.android.domain.request.EditSameHealthMetricRequest
 import javax.inject.Inject
 
 class HomeDataSource @Inject constructor(
@@ -21,5 +22,9 @@ class HomeDataSource @Inject constructor(
 
     suspend fun editGlucose(accessToken: String, editHealthMetricRequest: EditHealthMetricRequest): BaseResponse<PostPatchGlucoseDto> {
         return checkResponse(homeApiService.editHealthMetric(accessToken, editHealthMetricRequest))
+    }
+
+    suspend fun editSameGlucose(accessToken: String, editSameHealthMetricRequest: EditSameHealthMetricRequest): BaseResponse<PostPatchGlucoseDto> {
+        return checkResponse(homeApiService.editSameGlucose(accessToken, editSameHealthMetricRequest))
     }
 }

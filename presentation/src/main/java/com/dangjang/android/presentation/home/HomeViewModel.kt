@@ -22,6 +22,7 @@ import com.dangjang.android.domain.model.GuidesVO
 import com.dangjang.android.domain.model.PostPatchGlucoseVO
 import com.dangjang.android.domain.model.TodayGuidesVO
 import com.dangjang.android.domain.request.EditHealthMetricRequest
+import com.dangjang.android.domain.request.EditSameHealthMetricRequest
 import com.dangjang.android.presentation.R
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -87,12 +88,25 @@ class HomeViewModel @Inject constructor(
         accessToken: String
     ) {
         viewModelScope.launch {
-            getHomeUseCase.editGlucose("Bearer $accessToken", editHealthMetricRequest.value)
-                .onEach {
-                    _postPatchGlucoseFlow.emit(it)
-                }
-                .handleErrors()
-                .collect()
+            if (editHealthMetricRequest.value.type == editHealthMetricRequest.value.newType) {
+                getHomeUseCase.editSameGlucose("Bearer $accessToken", EditSameHealthMetricRequest(
+                    editHealthMetricRequest.value.type,
+                    editHealthMetricRequest.value.createdAt,
+                    editHealthMetricRequest.value.unit
+                ))
+                    .onEach {
+                        _postPatchGlucoseFlow.emit(it)
+                    }
+                    .handleErrors()
+                    .collect()
+            } else {
+                getHomeUseCase.editGlucose("Bearer $accessToken", editHealthMetricRequest.value)
+                    .onEach {
+                        _postPatchGlucoseFlow.emit(it)
+                    }
+                    .handleErrors()
+                    .collect()
+            }
         }
     }
 
