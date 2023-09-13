@@ -19,6 +19,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import com.dangjang.android.domain.model.GlucoseListVO
+import com.dangjang.android.domain.model.GuidesVO
 import com.dangjang.android.domain.model.TodayGuidesVO
 import com.dangjang.android.presentation.R
 import kotlinx.coroutines.launch
@@ -118,38 +119,6 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun getGlucoseList() {
-        viewModelScope.launch {
-            glucoseList.add(
-                GlucoseListVO(
-                    "공복",
-                    100,
-                    "전반적으로 혈당이 높습니다! 조치가 필요해요",
-                    "먹은 과일이 혈당을 높였어요\n운동을 하지 않아 혈당이 높아졌어요"
-                )
-            )
-            glucoseList.add(
-                GlucoseListVO(
-                    "아침식전",
-                    80,
-                    "전반적으로 혈당이 높습니다! 조치가 필요해요",
-                    "먹은 과일이 혈당을 높였어요\n" +
-                            "운동을 하지 않아 혈당이 높아졌어요"
-                )
-            )
-            glucoseList.add(
-                GlucoseListVO(
-                    "취침전",
-                    120,
-                    "전반적으로 혈당이 높습니다! 조치가 필요해요",
-                    "먹은 과일이 혈당을 높였어요\n" +
-                            "운동을 하지 않아 혈당이 높아졌어요"
-                )
-            )
-            _glucoseList.emit(glucoseList)
-        }
-    }
-
     fun getGlucoseTimeList() {
         viewModelScope.launch {
             glucoseTimeList.add("공복")
@@ -192,6 +161,35 @@ class HomeViewModel @Inject constructor(
                 name = "저혈당\n의심"
             }
             glucoseGuides.add(GlucoseGuideVO(name,it.count.toString() + "번", background))
+        }
+        return glucoseGuides
+    }
+
+    fun addIconToGuides(guidesVO: List<GuidesVO>): List<GlucoseListVO> {
+        var glucoseGuides : MutableList<GlucoseListVO> = mutableListOf()
+        guidesVO.map {
+            var name = it.alert
+            var tag = when(name) {
+                "저혈당" -> {
+                    R.drawable.ic_tag_low
+                }
+                "저혈당 의심" -> {
+                    R.drawable.ic_tag_lower
+                }
+                "정상" -> {
+                    R.drawable.ic_tag_normal
+                }
+                "주의" -> {
+                    R.drawable.ic_tag_caution
+                }
+                "경고" -> {
+                    R.drawable.ic_tag_warning
+                }
+                else -> {
+                    R.drawable.ic_tag_normal
+                }
+            }
+            glucoseGuides.add(GlucoseListVO(it.type, it.unit, tag, it.title, it.content))
         }
         return glucoseGuides
     }
