@@ -13,6 +13,7 @@ import com.dangjang.android.domain.constants.AUTO_LOGIN_SPF_KEY
 import com.dangjang.android.domain.constants.HEALTH_CONNECT_TOKEN_KEY
 import com.dangjang.android.domain.constants.TOKEN_SPF_KEY
 import com.dangjang.android.domain.model.GlucoseGuideVO
+import com.dangjang.android.domain.model.TodayGuidesVO
 import com.dangjang.android.presentation.R
 import com.dangjang.android.presentation.databinding.FragmentHomeBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -51,7 +52,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
                 else {
                     binding.glucoseGuideNoneTv.visibility = View.GONE
                 }
-                glucoseGuideAdapter.submitList(viewModel.addBackgroundToTodayGuides(it.todayGuides))
+                val todayGuidesList = viewModel.addBackgroundToTodayGuides(it.todayGuides)
+                glucoseGuideAdapter.submitList(deleteZeroCount(todayGuidesList))
             }
         }
 
@@ -118,5 +120,15 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
         val currentTime: Date = Calendar.getInstance().getTime()
         val format = SimpleDateFormat("yyyy-MM-dd")
         return format.format(currentTime)
+    }
+
+    private fun deleteZeroCount(todayGuidesList: List<GlucoseGuideVO>): MutableList<GlucoseGuideVO> {
+        var todayGuidesCountedList = mutableListOf<GlucoseGuideVO>()
+        todayGuidesList.map {
+            if (it.guideCount != "0번") {
+                todayGuidesCountedList.add(it)
+            }
+        }
+        return todayGuidesCountedList
     }
 }
