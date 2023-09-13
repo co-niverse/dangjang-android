@@ -96,6 +96,30 @@ class HomeViewModel @Inject constructor(
         }
     }
 
+    fun setEditGlucoseCreatedAt(createdAt: String) {
+        _editHealthMetricRequest.update {
+            it.copy(createdAt = createdAt)
+        }
+    }
+
+    fun setEditGlucoseType(type: String) {
+        _editHealthMetricRequest.update {
+            it.copy(type = type)
+        }
+    }
+
+    fun setEditGlucoseNewType(newType: String) {
+        _editHealthMetricRequest.update {
+            it.copy(newType = newType)
+        }
+    }
+
+    fun setEditGlucoseValue(value: String) {
+        _editHealthMetricRequest.update {
+            it.copy(unit = value)
+        }
+    }
+
     fun getGlucose(
         accessToken: String, date: String
     ) {
