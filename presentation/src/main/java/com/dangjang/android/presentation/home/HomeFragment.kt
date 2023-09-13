@@ -27,8 +27,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
 
     private val viewModel by viewModels<HomeViewModel>()
     private lateinit var glucoseGuideAdapter: GlucoseGuideAdapter
-    private var glucoseGuideList = arrayListOf<GlucoseGuideVO>()
-
     override fun initView() {
         bind {
             vm = viewModel
@@ -83,12 +81,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
                 HealthConnectBottomSheetFragment().show(parentFragmentManager, "HealthConnectBottomSheetFragment")
             }
         }
-
-        glucoseGuideList.add(GlucoseGuideVO("저혈당","1번",R.drawable.background_circle_red))
-        glucoseGuideList.add(GlucoseGuideVO("저혈당\n의심","1번",R.drawable.background_circle_orange))
-        glucoseGuideList.add(GlucoseGuideVO("정상","1번",R.drawable.background_circle_green))
-        glucoseGuideList.add(GlucoseGuideVO("주의","1번",R.drawable.background_circle_orange))
-        glucoseGuideList.add(GlucoseGuideVO("경고","1번",R.drawable.background_circle_red))
 
         setGlucoseGuideListAdapter()
     }

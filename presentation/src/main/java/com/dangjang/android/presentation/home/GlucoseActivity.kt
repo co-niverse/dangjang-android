@@ -17,7 +17,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.dangjang.android.domain.constants.ACCESS_TOKEN_KEY
 import com.dangjang.android.domain.constants.TOKEN_SPF_KEY
-import com.dangjang.android.domain.model.GlucoseGuideVO
 import com.dangjang.android.domain.model.GlucoseListVO
 import com.dangjang.android.presentation.R
 import com.dangjang.android.presentation.databinding.ActivityGlucoseBinding
@@ -34,8 +33,6 @@ class GlucoseActivity : FragmentActivity() {
     private lateinit var glucoseListAdapter: GlucoseListAdapter
     private var glucoseSpinnerType: String = ""
     private lateinit var glucoseGuideAdapter: GlucoseGuideAdapter
-    private var glucoseGuideList = arrayListOf<GlucoseGuideVO>()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_glucose)
@@ -89,12 +86,6 @@ class GlucoseActivity : FragmentActivity() {
         }
 
         viewModel.getGlucoseTimeList()
-
-        glucoseGuideList.add(GlucoseGuideVO("저혈당","1번",R.drawable.background_circle_red))
-        glucoseGuideList.add(GlucoseGuideVO("저혈당\n의심","1번",R.drawable.background_circle_orange))
-        glucoseGuideList.add(GlucoseGuideVO("정상","1번",R.drawable.background_circle_green))
-        glucoseGuideList.add(GlucoseGuideVO("주의","1번",R.drawable.background_circle_orange))
-        glucoseGuideList.add(GlucoseGuideVO("경고","1번",R.drawable.background_circle_red))
 
         setGlucoseListAdapter()
         setGlucoseTimeSpinner()
