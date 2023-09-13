@@ -101,10 +101,14 @@ class GlucoseActivity : FragmentActivity() {
         glucoseListAdapter.setMyItemClickListener(object :
             GlucoseListAdapter.MyItemClickListener {
             override fun onItemClick(glucoseList: GlucoseListVO) {
-                GlucoseEditDialogFragment().show(supportFragmentManager, "GlucoseEditDialogFragment")
-            }
-        })
+                var glucoseEditDialogFragment = GlucoseEditDialogFragment()
+                var bundle = Bundle()
+                bundle.putString("time", glucoseList.time)
+                bundle.putString("glucose", glucoseList.glucose)
+                glucoseEditDialogFragment.arguments = bundle
 
+                glucoseEditDialogFragment.show(supportFragmentManager, "GlucoseEditDialogFragment")
+            }})
         binding.glucoseRv.adapter = glucoseListAdapter
     }
 
