@@ -1,5 +1,6 @@
 package com.dangjang.android.domain.usecase
 
+import com.dangjang.android.domain.model.GetGlucoseVO
 import com.dangjang.android.domain.model.HealthMetricVO
 import com.dangjang.android.domain.repository.HomeRepository
 import com.dangjang.android.domain.request.AddHealthMetricRequest
@@ -18,4 +19,12 @@ class HomeUseCase @Inject constructor(
         withContext(Dispatchers.IO) {
         homeRepository.addHealthMetric(accessToken, addHealthMetricRequest)
     }
+
+    suspend fun getGlucose(
+        accessToken: String,
+        date: String
+    ): Flow<GetGlucoseVO> =
+        withContext(Dispatchers.IO) {
+            homeRepository.getGlucose(accessToken, date)
+        }
 }
