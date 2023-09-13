@@ -53,7 +53,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
                     binding.glucoseGuideNoneTv.visibility = View.GONE
                 }
                 val todayGuidesList = viewModel.addBackgroundToTodayGuides(it.todayGuides)
-                glucoseGuideAdapter.submitList(deleteZeroCount(todayGuidesList))
+                glucoseGuideAdapter.submitList(todayGuidesList)
             }
         }
 

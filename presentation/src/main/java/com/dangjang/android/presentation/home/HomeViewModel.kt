@@ -183,6 +183,11 @@ class HomeViewModel @Inject constructor(
                     R.drawable.background_circle_green
                 }
             }
+            background = if (it.count == 0) {
+                R.drawable.background_circle_gray
+            } else {
+                background
+            }
             if (name == "저혈당 의심") {
                 name = "저혈당\n의심"
             }
