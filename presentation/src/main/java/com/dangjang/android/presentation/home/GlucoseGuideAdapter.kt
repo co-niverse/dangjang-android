@@ -48,11 +48,8 @@ class GlucoseGuideAdapter(
         fun bind(glucoseGuideList: GlucoseGuideVO) {
             binding.vm = viewModel
             binding.glucoseGuideList = glucoseGuideList
-
-//            binding.glucoseGuideListTitleTv.text = glucoseGuideList.guideName
-//            binding.glucoseGuideListCountTv.text = glucoseGuideList.guideCount
-//            binding.glucoseGuideListCl.background =
-//                itemView.context.getDrawable(glucoseGuideList.guideBackground)
+            binding.glucoseGuideListCl.background =
+                itemView.context.getDrawable(glucoseGuideList.guideBackground)
         }
     }
 

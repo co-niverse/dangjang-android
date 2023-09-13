@@ -23,7 +23,6 @@
             android:layout_height="62dp"
             android:layout_margin="3dp"
             android:layout_marginBottom="32dp"
-            android:background="@{glucoseGuideList.guideBackground}"
             android:elevation="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
