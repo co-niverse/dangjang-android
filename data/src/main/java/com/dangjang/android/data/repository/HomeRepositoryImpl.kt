@@ -2,7 +2,7 @@ package com.dangjang.android.data.repository
 
 import com.dangjang.android.data.datasource.HomeDataSource
 import com.dangjang.android.domain.model.GetGlucoseVO
-import com.dangjang.android.domain.model.PostPatchGlucoseVO
+import com.dangjang.android.domain.model.EditHealthMetricVO
 import com.dangjang.android.domain.model.PostWeightVO
 import com.dangjang.android.domain.repository.HomeRepository
 import com.dangjang.android.domain.request.AddHealthMetricRequest
@@ -15,7 +15,7 @@ import javax.inject.Inject
 class HomeRepositoryImpl @Inject constructor(
     private val homeDataSource: HomeDataSource
 ) : HomeRepository {
-    override fun addHealthMetric(accessToken: String, addHealthMetricRequest: AddHealthMetricRequest): Flow<PostPatchGlucoseVO> = flow {
+    override fun addHealthMetric(accessToken: String, addHealthMetricRequest: AddHealthMetricRequest): Flow<EditHealthMetricVO> = flow {
         val response = homeDataSource.addHealthMetric(accessToken, addHealthMetricRequest)
         emit(response.data.toDomain())
     }
@@ -28,7 +28,7 @@ class HomeRepositoryImpl @Inject constructor(
     override fun editGlucose(
         accessToken: String,
         editHealthMetricRequest: EditHealthMetricRequest
-    ): Flow<PostPatchGlucoseVO> = flow {
+    ): Flow<EditHealthMetricVO> = flow {
         val response = homeDataSource.editGlucose(accessToken, editHealthMetricRequest)
         emit(response.data.toDomain())
     }
@@ -36,7 +36,7 @@ class HomeRepositoryImpl @Inject constructor(
     override fun editSameGlucose(
         accessToken: String,
         editSameHealthMetricRequest: EditSameHealthMetricRequest
-    ): Flow<PostPatchGlucoseVO> = flow {
+    ): Flow<EditHealthMetricVO> = flow {
         val response = homeDataSource.editSameGlucose(accessToken, editSameHealthMetricRequest)
         emit(response.data.toDomain())
     }

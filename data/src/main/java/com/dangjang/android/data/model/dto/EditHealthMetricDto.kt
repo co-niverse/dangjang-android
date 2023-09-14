@@ -2,16 +2,16 @@ package com.dangjang.android.data.model.dto
 
 import com.dangjang.android.domain.constants.UNKNOWN_STRING
 import com.dangjang.android.domain.model.GuideVO
-import com.dangjang.android.domain.model.PostPatchGlucoseVO
+import com.dangjang.android.domain.model.EditHealthMetricVO
 import com.google.gson.annotations.SerializedName
 
-data class PostPatchGlucoseDto(
+data class EditHealthMetricDto(
     @SerializedName("type") val type: String?,
     @SerializedName("createdAt") val createdAt: String?,
     @SerializedName("unit") val unit: String?,
     @SerializedName("guide") val guide: Guide?
 ) {
-    fun toDomain() = PostPatchGlucoseVO(
+    fun toDomain() = EditHealthMetricVO(
         type ?: UNKNOWN_STRING,
         createdAt ?: UNKNOWN_STRING,
         unit ?: UNKNOWN_STRING,

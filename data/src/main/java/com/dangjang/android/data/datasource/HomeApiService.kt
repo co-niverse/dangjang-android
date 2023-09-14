@@ -1,7 +1,7 @@
 package com.dangjang.android.data.datasource
 
 import com.dangjang.android.data.model.dto.GetGlucoseDto
-import com.dangjang.android.data.model.dto.PostPatchGlucoseDto
+import com.dangjang.android.data.model.dto.EditHealthMetricDto
 import com.dangjang.android.data.model.dto.PostWeightDto
 import com.dangjang.android.domain.request.AddHealthMetricRequest
 import com.dangjang.android.data.model.response.BaseResponse
@@ -22,7 +22,7 @@ interface HomeApiService {
     suspend fun addHealthMetric(
         @Header("Authorization") accessToken: String,
         @Body addHealthMetricRequest: AddHealthMetricRequest
-    ) : Response<BaseResponse<PostPatchGlucoseDto>>
+    ) : Response<BaseResponse<EditHealthMetricDto>>
 
     //혈당 전체 조회 API
     @GET("/api/guide/blood-sugar")
@@ -36,14 +36,14 @@ interface HomeApiService {
     suspend fun editHealthMetric(
         @Header("Authorization") accessToken: String,
         @Body editHealthMetricRequest: EditHealthMetricRequest
-    ) : Response<BaseResponse<PostPatchGlucoseDto>>
+    ) : Response<BaseResponse<EditHealthMetricDto>>
 
     //혈당 수정 API (같은 시간 type일 경우)
     @PATCH("api/health-metric")
     suspend fun editSameGlucose(
         @Header("Authorization") accessToken: String,
         @Body editSameHealthMetricRequest: EditSameHealthMetricRequest
-    ) : Response<BaseResponse<PostPatchGlucoseDto>>
+    ) : Response<BaseResponse<EditHealthMetricDto>>
 
     // 체중 추가 API
     @POST("/api/health-metric")

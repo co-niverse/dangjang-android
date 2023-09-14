@@ -1,7 +1,7 @@
 package com.dangjang.android.domain.usecase
 
 import com.dangjang.android.domain.model.GetGlucoseVO
-import com.dangjang.android.domain.model.PostPatchGlucoseVO
+import com.dangjang.android.domain.model.EditHealthMetricVO
 import com.dangjang.android.domain.model.PostWeightVO
 import com.dangjang.android.domain.repository.HomeRepository
 import com.dangjang.android.domain.request.AddHealthMetricRequest
@@ -18,7 +18,7 @@ class HomeUseCase @Inject constructor(
     suspend fun addHealthMetric(
         accessToken: String,
         addHealthMetricRequest: AddHealthMetricRequest
-    ): Flow<PostPatchGlucoseVO> =
+    ): Flow<EditHealthMetricVO> =
         withContext(Dispatchers.IO) {
         homeRepository.addHealthMetric(accessToken, addHealthMetricRequest)
     }
@@ -34,7 +34,7 @@ class HomeUseCase @Inject constructor(
     suspend fun editGlucose(
         accessToken: String,
         editHealthMetricRequest: EditHealthMetricRequest
-    ): Flow<PostPatchGlucoseVO> =
+    ): Flow<EditHealthMetricVO> =
         withContext(Dispatchers.IO) {
             homeRepository.editGlucose(accessToken, editHealthMetricRequest)
         }
@@ -42,7 +42,7 @@ class HomeUseCase @Inject constructor(
     suspend fun editSameGlucose(
         accessToken: String,
         editSameHealthMetricRequest: EditSameHealthMetricRequest
-    ): Flow<PostPatchGlucoseVO> =
+    ): Flow<EditHealthMetricVO> =
         withContext(Dispatchers.IO) {
             homeRepository.editSameGlucose(accessToken, editSameHealthMetricRequest)
         }

@@ -1,6 +1,6 @@
 package com.dangjang.android.domain.model
 
-data class PostPatchGlucoseVO(
+data class EditHealthMetricVO(
     val type: String = "",
     val createdAt: String = "",
     val unit: String = "",

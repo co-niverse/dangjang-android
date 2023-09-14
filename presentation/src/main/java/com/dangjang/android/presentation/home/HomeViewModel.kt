@@ -19,7 +19,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import com.dangjang.android.domain.model.GlucoseListVO
 import com.dangjang.android.domain.model.GuidesVO
-import com.dangjang.android.domain.model.PostPatchGlucoseVO
+import com.dangjang.android.domain.model.EditHealthMetricVO
 import com.dangjang.android.domain.model.PostWeightVO
 import com.dangjang.android.domain.model.TodayGuidesVO
 import com.dangjang.android.domain.request.EditHealthMetricRequest
@@ -38,7 +38,7 @@ class HomeViewModel @Inject constructor(
 ) : AndroidViewModel(application) {
 
     //혈당
-    private val _postPatchGlucoseFlow = MutableStateFlow(PostPatchGlucoseVO())
+    private val _postPatchGlucoseFlow = MutableStateFlow(EditHealthMetricVO())
     val postPatchGlucoseFlow = _postPatchGlucoseFlow.asStateFlow()
 
     private val _editHealthMetricRequest = MutableStateFlow(EditHealthMetricRequest())
