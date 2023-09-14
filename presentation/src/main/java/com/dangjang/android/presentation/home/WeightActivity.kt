@@ -6,11 +6,13 @@ import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.dangjang.android.domain.constants.ACCESS_TOKEN_KEY
 import com.dangjang.android.domain.constants.TOKEN_SPF_KEY
 import com.dangjang.android.presentation.R
 import com.dangjang.android.presentation.databinding.ActivityWeightBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 
 @AndroidEntryPoint
 class WeightActivity : FragmentActivity() {
@@ -24,6 +26,9 @@ class WeightActivity : FragmentActivity() {
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_weight)
         viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
+        binding.vm = viewModel
+
+        binding.lifecycleOwner = this
 
         getAccessToken()?.let { viewModel.getWeight(it) }
 
