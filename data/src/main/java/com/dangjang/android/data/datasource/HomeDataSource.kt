@@ -2,6 +2,7 @@ package com.dangjang.android.data.datasource
 
 import com.dangjang.android.data.model.dto.GetGlucoseDto
 import com.dangjang.android.data.model.dto.EditHealthMetricDto
+import com.dangjang.android.data.model.dto.GetWeightDto
 import com.dangjang.android.data.model.dto.PostPatchExerciseDto
 import com.dangjang.android.data.model.dto.PostPatchWeightDto
 import com.dangjang.android.domain.request.AddHealthMetricRequest
@@ -28,6 +29,10 @@ class HomeDataSource @Inject constructor(
 
     suspend fun editSameGlucose(accessToken: String, editSameHealthMetricRequest: EditSameHealthMetricRequest): BaseResponse<EditHealthMetricDto> {
         return checkResponse(homeApiService.editSameGlucose(accessToken, editSameHealthMetricRequest))
+    }
+
+    suspend fun getWeight(accessToken: String, date: String): BaseResponse<GetWeightDto> {
+        return checkResponse(homeApiService.getWeight(accessToken, date))
     }
 
     suspend fun addWeight(accessToken: String, addHealthMetricRequest: AddHealthMetricRequest): BaseResponse<PostPatchWeightDto> {
