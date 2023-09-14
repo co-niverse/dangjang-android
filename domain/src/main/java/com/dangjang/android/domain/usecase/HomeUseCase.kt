@@ -71,4 +71,13 @@ class HomeUseCase @Inject constructor(
         withContext(Dispatchers.IO) {
             homeRepository.addExercise(accessToken, addHealthMetricRequest)
         }
+
+    suspend fun editExercise(
+        accessToken: String,
+        editSameHealthMetricRequest: EditSameHealthMetricRequest
+    ): Flow<PostPatchExerciseVO> =
+        withContext(Dispatchers.IO) {
+            homeRepository.editExercise(accessToken, editSameHealthMetricRequest)
+        }
+    
 }

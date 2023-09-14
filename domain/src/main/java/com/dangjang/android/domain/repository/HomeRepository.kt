@@ -31,4 +31,7 @@ interface HomeRepository {
 
     //운동 추가
     fun addExercise(accessToken: String, addHealthMetricRequest: AddHealthMetricRequest): Flow<PostPatchExerciseVO>
+
+    //운동 수정
+    fun editExercise(accessToken: String, editSameHealthMetricRequest: EditSameHealthMetricRequest): Flow<PostPatchExerciseVO>
 }
