@@ -1,10 +1,13 @@
 package com.dangjang.android.presentation.home
 
+import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
+import com.dangjang.android.domain.constants.ACCESS_TOKEN_KEY
+import com.dangjang.android.domain.constants.TOKEN_SPF_KEY
 import com.dangjang.android.domain.model.ExerciseListVO
 import com.dangjang.android.presentation.R
 import com.dangjang.android.presentation.databinding.ActivityExerciseBinding
@@ -16,6 +19,7 @@ class ExerciseActivity : FragmentActivity() {
     private lateinit var viewModel: HomeViewModel
     private lateinit var exerciseListAdapter: ExerciseListAdapter
     private var exerciseList = arrayListOf<ExerciseListVO>()
+    private var originStep: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,6 +44,19 @@ class ExerciseActivity : FragmentActivity() {
 
             binding.stepEditBtn.visibility = View.VISIBLE
             binding.stepOkBtn.visibility = View.GONE
+
+            originStep = binding.stepTv.text.toString().toInt()
+
+            if (originStep == 0) {
+                viewModel.setExerciseTypeAndCreatedAt("걸음수")
+                viewModel.setExerciseUnit(binding.stepEt.text.toString())
+                getAccessToken()?.let { viewModel.addExercise(it) }
+            } else {
+                viewModel.setEditExerciseTypeAndCreatedAt("걸음수")
+                viewModel.setEditExerciseUnit(binding.stepEt.text.toString())
+                getAccessToken()?.let { viewModel.editExercise(it) }
+            }
+
         }
 
         binding.backIv.setOnClickListener {
@@ -50,12 +67,12 @@ class ExerciseActivity : FragmentActivity() {
             ExerciseDialogFragment().show(supportFragmentManager, "ExerciseDialogFragment")
         }
 
-        exerciseList.add(ExerciseListVO("걷기","1","30"))
-        exerciseList.add(ExerciseListVO("달리기","2","10"))
-        exerciseList.add(ExerciseListVO("등산","1","10"))
-        exerciseList.add(ExerciseListVO("자전거","0","30"))
-        exerciseList.add(ExerciseListVO("수영","1","15"))
-        exerciseList.add(ExerciseListVO("헬스","0","20"))
+        exerciseList.add(ExerciseListVO("걷기","0","0"))
+        exerciseList.add(ExerciseListVO("달리기","0","0"))
+        exerciseList.add(ExerciseListVO("하이킹","0","0"))
+        exerciseList.add(ExerciseListVO("자전거","0","0"))
+        exerciseList.add(ExerciseListVO("수영","0","0"))
+        exerciseList.add(ExerciseListVO("헬스","0","0"))
 
         setExerciseListAdapter()
 
@@ -68,10 +85,22 @@ class ExerciseActivity : FragmentActivity() {
             ExerciseListAdapter.MyItemClickListener {
 
             override fun onItemClick(exerciseList: ExerciseListVO) {
-                ExerciseEditDialogFragment().show(supportFragmentManager, "ExerciseEditDialogFragment")
+                var exerciseEditDialogFragment = ExerciseEditDialogFragment()
+                var bundle = Bundle()
+                bundle.putString("type", exerciseList.exerciseName)
+                bundle.putString("hour", exerciseList.exerciseHour)
+                bundle.putString("minute", exerciseList.exerciseMinute)
+                exerciseEditDialogFragment.arguments = bundle
+                exerciseEditDialogFragment.show(supportFragmentManager, "ExerciseEditDialogFragment")
             }
         })
 
         binding.exerciseRv.adapter = exerciseListAdapter
+    }
+
+    private fun getAccessToken(): String? {
+        val sharedPreferences = getSharedPreferences(TOKEN_SPF_KEY, Context.MODE_PRIVATE)
+
+        return sharedPreferences.getString(ACCESS_TOKEN_KEY, null)
     }
 }
