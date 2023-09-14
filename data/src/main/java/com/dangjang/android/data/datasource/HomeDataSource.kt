@@ -41,4 +41,8 @@ class HomeDataSource @Inject constructor(
     suspend fun addExercise(accessToken: String, addHealthMetricRequest: AddHealthMetricRequest): BaseResponse<PostPatchExerciseDto> {
         return checkResponse(homeApiService.addExercise(accessToken, addHealthMetricRequest))
     }
+
+    suspend fun editExercise(accessToken: String, editSameHealthMetricRequest: EditSameHealthMetricRequest): BaseResponse<PostPatchExerciseDto> {
+        return checkResponse(homeApiService.editExercise(accessToken, editSameHealthMetricRequest))
+    }
 }

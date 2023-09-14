@@ -56,4 +56,9 @@ class HomeRepositoryImpl @Inject constructor(
         val response = homeDataSource.addExercise(accessToken, addHealthMetricRequest)
         emit(response.data.toDomain())
     }
+
+    override fun editExercise(accessToken: String, editSameHealthMetricRequest: EditSameHealthMetricRequest): Flow<PostPatchExerciseVO> = flow {
+        val response = homeDataSource.editExercise(accessToken, editSameHealthMetricRequest)
+        emit(response.data.toDomain())
+    }
 }

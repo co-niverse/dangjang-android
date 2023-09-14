@@ -67,4 +67,11 @@ interface HomeApiService {
         @Header("Authorization") accessToken: String,
         @Body addHealthMetricRequest: AddHealthMetricRequest
     ) : Response<BaseResponse<PostPatchExerciseDto>>
+
+    //운동 수정 API
+    @PATCH("/api/health-metric")
+    suspend fun editExercise(
+        @Header("Authorization") accessToken: String,
+        @Body editSameHealthMetricRequest: EditSameHealthMetricRequest
+    ) : Response<BaseResponse<PostPatchExerciseDto>>
 }
