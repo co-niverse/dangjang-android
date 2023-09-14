@@ -74,6 +74,9 @@ class HomeViewModel @Inject constructor(
     private val _exerciseFlow = MutableStateFlow(PostPatchExerciseVO())
     val exerciseFlow = _exerciseFlow.asStateFlow()
 
+    private val _editExerciseRequest = MutableStateFlow(EditSameHealthMetricRequest())
+    val editExerciseRequest = _editExerciseRequest.asStateFlow()
+
     //체중
     fun addWeight(accessToken: String) {
         setWeightTypeAndCreatedAt()
@@ -149,6 +152,31 @@ class HomeViewModel @Inject constructor(
 
     fun setExerciseUnit(unit: String) {
         _addExerciseRequest.update {
+            it.copy(unit = unit)
+        }
+    }
+
+    fun editExercise(accessToken: String) {
+        viewModelScope.launch {
+            getHomeUseCase.editExercise("Bearer $accessToken", editExerciseRequest.value)
+                .onEach {
+                    _exerciseFlow.emit(it)
+                }
+                .handleErrors()
+                .collect{
+                    //TODO : get Exercise
+                }
+        }
+    }
+
+    fun setEditExerciseTypeAndCreatedAt(type: String) {
+        _editExerciseRequest.update {
+            it.copy(type = type, createdAt = getTodayDate())
+        }
+    }
+
+    fun setEditExerciseUnit(unit: String) {
+        _editExerciseRequest.update {
             it.copy(unit = unit)
         }
     }
