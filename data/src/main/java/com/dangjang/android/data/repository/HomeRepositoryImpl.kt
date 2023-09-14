@@ -47,7 +47,7 @@ class HomeRepositoryImpl @Inject constructor(
         val response = homeDataSource.getWeight(accessToken, date)
         emit(response.data.toDomain())
     }
-    
+
     override fun addWeight(accessToken: String, addHealthMetricRequest: AddHealthMetricRequest): Flow<PostPatchWeightVO> = flow {
         val response = homeDataSource.addWeight(accessToken, addHealthMetricRequest)
         emit(response.data.toDomain())
