@@ -20,6 +20,7 @@ import kotlinx.coroutines.flow.update
 import com.dangjang.android.domain.model.GlucoseListVO
 import com.dangjang.android.domain.model.GuidesVO
 import com.dangjang.android.domain.model.PostPatchGlucoseVO
+import com.dangjang.android.domain.model.PostWeightVO
 import com.dangjang.android.domain.model.TodayGuidesVO
 import com.dangjang.android.domain.request.EditHealthMetricRequest
 import com.dangjang.android.domain.request.EditSameHealthMetricRequest
@@ -36,6 +37,7 @@ class HomeViewModel @Inject constructor(
     application: Application
 ) : AndroidViewModel(application) {
 
+    //혈당
     private val _postPatchGlucoseFlow = MutableStateFlow(PostPatchGlucoseVO())
     val postPatchGlucoseFlow = _postPatchGlucoseFlow.asStateFlow()
 
@@ -54,6 +56,28 @@ class HomeViewModel @Inject constructor(
     private val _getGlucoseFlow = MutableStateFlow(GetGlucoseVO())
     val getGlucoseFlow = _getGlucoseFlow.asStateFlow()
 
+    //체중
+    private val _addWeightRequest = MutableStateFlow(AddHealthMetricRequest())
+    val addWeightRequest = _addWeightRequest.asStateFlow()
+
+    private val _addWeightFlow = MutableStateFlow(PostWeightVO())
+    val addWeightFlow = _addWeightFlow.asStateFlow()
+
+    //체중
+    fun addWeight(accessToken: String) {
+        viewModelScope.launch {
+            getHomeUseCase.addWeight("Bearer $accessToken", addWeightRequest.value)
+                .onEach {
+                    _addWeightFlow.emit(it)
+                }
+                .handleErrors()
+                .collect{
+                    //TODO : get Weight
+                }
+        }
+    }
+
+    //혈당
     fun getHourSpinnerList(): ArrayList<String> {
         val hourList = arrayListOf<String>()
 
