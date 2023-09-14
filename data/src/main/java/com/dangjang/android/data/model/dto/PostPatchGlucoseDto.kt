@@ -1,5 +1,6 @@
 package com.dangjang.android.data.model.dto
 
+import com.dangjang.android.domain.constants.UNKNOWN_STRING
 import com.dangjang.android.domain.model.GuideVO
 import com.dangjang.android.domain.model.PostPatchGlucoseVO
 import com.google.gson.annotations.SerializedName
@@ -11,9 +12,9 @@ data class PostPatchGlucoseDto(
     @SerializedName("guide") val guide: Guide?
 ) {
     fun toDomain() = PostPatchGlucoseVO(
-        type ?: UNKNOWN,
-        createdAt ?: UNKNOWN,
-        unit ?: UNKNOWN,
+        type ?: UNKNOWN_STRING,
+        createdAt ?: UNKNOWN_STRING,
+        unit ?: UNKNOWN_STRING,
         guide?.toDomain() ?: GuideVO()
     )
 }
@@ -26,10 +27,10 @@ data class Guide(
     @SerializedName("todayGuides") val todayGuides: List<TodayGuidesDto>?,
 ) {
     fun toDomain() = GuideVO(
-        type ?: UNKNOWN,
-        alert ?: UNKNOWN,
-        title ?: UNKNOWN,
-        content ?: UNKNOWN,
+        type ?: UNKNOWN_STRING,
+        alert ?: UNKNOWN_STRING,
+        title ?: UNKNOWN_STRING,
+        content ?: UNKNOWN_STRING,
         todayGuides?.map { it.toDomain() } ?: listOf()
     )
 }

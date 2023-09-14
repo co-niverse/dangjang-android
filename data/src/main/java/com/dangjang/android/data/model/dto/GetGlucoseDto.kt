@@ -1,5 +1,7 @@
 package com.dangjang.android.data.model.dto
 
+import com.dangjang.android.domain.constants.UNKNOWN_INT
+import com.dangjang.android.domain.constants.UNKNOWN_STRING
 import com.dangjang.android.domain.model.GetGlucoseVO
 import com.dangjang.android.domain.model.GuidesVO
 import com.dangjang.android.domain.model.TodayGuidesVO
@@ -11,7 +13,7 @@ data class GetGlucoseDto(
     @SerializedName("guides") val guides: List<GuidesDto>?
 ) {
     fun toDomain() = GetGlucoseVO(
-        createdAt ?: UNKNOWN,
+        createdAt ?: UNKNOWN_STRING,
         todayGuides?.map { it.toDomain() } ?: listOf(),
         guides?.map { it.toDomain() } ?: listOf()
     )
@@ -22,8 +24,8 @@ data class TodayGuidesDto(
     @SerializedName("count") val count: Int
 ) {
     fun toDomain() = TodayGuidesVO(
-        alert ?: UNKNOWN,
-        count ?: UNKNOWN_COUNT
+        alert ?: UNKNOWN_STRING,
+        count ?: UNKNOWN_INT
     )
 }
 
@@ -35,12 +37,10 @@ data class GuidesDto(
     @SerializedName("content") val content: String
 ) {
     fun toDomain() = GuidesVO(
-        type ?: UNKNOWN,
-        unit ?: UNKNOWN,
-        alert ?: UNKNOWN,
-        title ?: UNKNOWN,
-        content ?: UNKNOWN
+        type ?: UNKNOWN_STRING,
+        unit ?: UNKNOWN_STRING,
+        alert ?: UNKNOWN_STRING,
+        title ?: UNKNOWN_STRING,
+        content ?: UNKNOWN_STRING
     )
 }
-
-const val UNKNOWN_COUNT = 0
