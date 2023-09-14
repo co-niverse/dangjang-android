@@ -37,6 +37,10 @@ class ExerciseEditDialogFragment : DialogFragment() {
         setHourSpinner()
         setMinuteSpinner()
 
+        var exerciseName = arguments?.getString("type")
+        var exerciseHour = arguments?.getString("hour")
+        var exerciseMinute = arguments?.getString("minute")
+
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
         return binding.root
