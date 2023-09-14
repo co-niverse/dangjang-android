@@ -25,6 +25,8 @@ class WeightActivity : FragmentActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_weight)
         viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
 
+        getAccessToken()?.let { viewModel.getWeight(it) }
+
         binding.weightEditBtn.setOnClickListener {
             originWeight = binding.weightTv.text.toString().toInt()
 
