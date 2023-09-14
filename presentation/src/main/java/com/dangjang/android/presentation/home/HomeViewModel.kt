@@ -63,7 +63,7 @@ class HomeViewModel @Inject constructor(
     private val _addWeightFlow = MutableStateFlow(PostPatchWeightVO())
     val addWeightFlow = _addWeightFlow.asStateFlow()
 
-    private val _editWeightRequest = MutableStateFlow(PostPatchWeightVO())
+    private val _editWeightRequest = MutableStateFlow(EditSameHealthMetricRequest())
     val editWeightRequest = _editWeightRequest.asStateFlow()
 
     //체중
@@ -89,6 +89,32 @@ class HomeViewModel @Inject constructor(
 
     fun setWeightUnit(weight: String) {
         _addWeightRequest.update {
+            it.copy(unit = weight)
+        }
+    }
+
+    fun editWeight(accessToken: String) {
+        setEditWeightTypeAndCreatedAt()
+        viewModelScope.launch {
+            getHomeUseCase.editWeight("Bearer $accessToken", editWeightRequest.value)
+                .onEach {
+                    _addWeightFlow.emit(it)
+                }
+                .handleErrors()
+                .collect{
+                    //TODO : get Weight
+                }
+        }
+    }
+
+    private fun setEditWeightTypeAndCreatedAt() {
+        _editWeightRequest.update {
+            it.copy(type = "체중", createdAt = getTodayDate())
+        }
+    }
+
+    fun setEditWeightUnit(weight: String) {
+        _editWeightRequest.update {
             it.copy(unit = weight)
         }
     }

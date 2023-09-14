@@ -48,7 +48,8 @@ class WeightActivity : FragmentActivity() {
                 viewModel.setWeightUnit(binding.weightEt.text.toString())
                 getAccessToken()?.let { viewModel.addWeight(it) }
             } else {
-                //TODO : 수정하기
+                viewModel.setEditWeightUnit(binding.weightEt.text.toString())
+                getAccessToken()?.let {  viewModel.editWeight(it) }
             }
 
         }
