@@ -45,12 +45,16 @@ class ExerciseActivity : FragmentActivity() {
             binding.stepEditBtn.visibility = View.VISIBLE
             binding.stepOkBtn.visibility = View.GONE
 
+            originStep = binding.stepTv.text.toString().toInt()
+
             if (originStep == 0) {
                 viewModel.setExerciseTypeAndCreatedAt("걸음수")
                 viewModel.setExerciseUnit(binding.stepEt.text.toString())
-                getAccessToken()?.let { it1 -> viewModel.addExercise(it1) }
+                getAccessToken()?.let { viewModel.addExercise(it) }
             } else {
-                // TODO : 걸음수 수정
+                viewModel.setEditExerciseTypeAndCreatedAt("걸음수")
+                viewModel.setEditExerciseUnit(binding.stepEt.text.toString())
+                getAccessToken()?.let { viewModel.editExercise(it) }
             }
 
         }
