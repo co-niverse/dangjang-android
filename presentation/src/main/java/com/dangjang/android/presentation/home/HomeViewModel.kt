@@ -80,8 +80,7 @@ class HomeViewModel @Inject constructor(
 
     private fun setWeightTypeAndCreatedAt() {
         _addWeightRequest.update {
-            it.copy(type = "체중")
-            it.copy(createdAt = getTodayDate())
+            it.copy(type = "체중", createdAt = getTodayDate())
         }
     }
 
