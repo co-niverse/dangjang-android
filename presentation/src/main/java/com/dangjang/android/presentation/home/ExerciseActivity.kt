@@ -65,12 +65,12 @@ class ExerciseActivity : FragmentActivity() {
             ExerciseDialogFragment().show(supportFragmentManager, "ExerciseDialogFragment")
         }
 
-        exerciseList.add(ExerciseListVO("걷기","1","30"))
-        exerciseList.add(ExerciseListVO("달리기","2","10"))
-        exerciseList.add(ExerciseListVO("등산","1","10"))
-        exerciseList.add(ExerciseListVO("자전거","0","30"))
-        exerciseList.add(ExerciseListVO("수영","1","15"))
-        exerciseList.add(ExerciseListVO("헬스","0","20"))
+        exerciseList.add(ExerciseListVO("걷기","0","0"))
+        exerciseList.add(ExerciseListVO("달리기","0","0"))
+        exerciseList.add(ExerciseListVO("하이킹","0","0"))
+        exerciseList.add(ExerciseListVO("자전거","0","0"))
+        exerciseList.add(ExerciseListVO("수영","0","0"))
+        exerciseList.add(ExerciseListVO("헬스","0","0"))
 
         setExerciseListAdapter()
 
