@@ -3,6 +3,7 @@ package com.dangjang.android.data.repository
 import com.dangjang.android.data.datasource.HomeDataSource
 import com.dangjang.android.domain.model.GetGlucoseVO
 import com.dangjang.android.domain.model.PostPatchGlucoseVO
+import com.dangjang.android.domain.model.PostWeightVO
 import com.dangjang.android.domain.repository.HomeRepository
 import com.dangjang.android.domain.request.AddHealthMetricRequest
 import com.dangjang.android.domain.request.EditHealthMetricRequest
@@ -37,6 +38,11 @@ class HomeRepositoryImpl @Inject constructor(
         editSameHealthMetricRequest: EditSameHealthMetricRequest
     ): Flow<PostPatchGlucoseVO> = flow {
         val response = homeDataSource.editSameGlucose(accessToken, editSameHealthMetricRequest)
+        emit(response.data.toDomain())
+    }
+
+    override fun addWeight(accessToken: String, addHealthMetricRequest: AddHealthMetricRequest): Flow<PostWeightVO> = flow {
+        val response = homeDataSource.addWeight(accessToken, addHealthMetricRequest)
         emit(response.data.toDomain())
     }
 }
