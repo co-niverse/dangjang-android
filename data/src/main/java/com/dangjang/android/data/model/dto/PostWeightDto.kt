@@ -4,7 +4,7 @@ import com.dangjang.android.domain.constants.UNKNOWN_DOUBLE
 import com.dangjang.android.domain.constants.UNKNOWN_INT
 import com.dangjang.android.domain.constants.UNKNOWN_STRING
 import com.dangjang.android.domain.model.GuideVO
-import com.dangjang.android.domain.model.PostPatchGlucoseVO
+import com.dangjang.android.domain.model.PostWeightVO
 import com.dangjang.android.domain.model.WeightGuideVO
 import com.google.gson.annotations.SerializedName
 
@@ -14,7 +14,7 @@ data class PostWeightDto(
     @SerializedName("unit") val unit: String?,
     @SerializedName("guide") val guide: Guide?
 ) {
-    fun toDomain() = PostPatchGlucoseVO(
+    fun toDomain() = PostWeightVO(
         type ?: UNKNOWN_STRING,
         createdAt ?: UNKNOWN_STRING,
         unit ?: UNKNOWN_STRING,
