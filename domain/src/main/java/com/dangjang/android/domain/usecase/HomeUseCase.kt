@@ -1,7 +1,8 @@
 package com.dangjang.android.domain.usecase
 
 import com.dangjang.android.domain.model.GetGlucoseVO
-import com.dangjang.android.domain.model.PostPatchGlucoseVO
+import com.dangjang.android.domain.model.EditHealthMetricVO
+import com.dangjang.android.domain.model.PostPatchWeightVO
 import com.dangjang.android.domain.repository.HomeRepository
 import com.dangjang.android.domain.request.AddHealthMetricRequest
 import com.dangjang.android.domain.request.EditHealthMetricRequest
@@ -17,7 +18,7 @@ class HomeUseCase @Inject constructor(
     suspend fun addHealthMetric(
         accessToken: String,
         addHealthMetricRequest: AddHealthMetricRequest
-    ): Flow<PostPatchGlucoseVO> =
+    ): Flow<EditHealthMetricVO> =
         withContext(Dispatchers.IO) {
         homeRepository.addHealthMetric(accessToken, addHealthMetricRequest)
     }
@@ -33,7 +34,7 @@ class HomeUseCase @Inject constructor(
     suspend fun editGlucose(
         accessToken: String,
         editHealthMetricRequest: EditHealthMetricRequest
-    ): Flow<PostPatchGlucoseVO> =
+    ): Flow<EditHealthMetricVO> =
         withContext(Dispatchers.IO) {
             homeRepository.editGlucose(accessToken, editHealthMetricRequest)
         }
@@ -41,8 +42,24 @@ class HomeUseCase @Inject constructor(
     suspend fun editSameGlucose(
         accessToken: String,
         editSameHealthMetricRequest: EditSameHealthMetricRequest
-    ): Flow<PostPatchGlucoseVO> =
+    ): Flow<EditHealthMetricVO> =
         withContext(Dispatchers.IO) {
             homeRepository.editSameGlucose(accessToken, editSameHealthMetricRequest)
+        }
+
+    suspend fun addWeight(
+        accessToken: String,
+        addHealthMetricRequest: AddHealthMetricRequest
+    ): Flow<PostPatchWeightVO> =
+        withContext(Dispatchers.IO) {
+            homeRepository.addWeight(accessToken, addHealthMetricRequest)
+        }
+
+    suspend fun editWeight(
+        accessToken: String,
+        editSameHealthMetricRequest: EditSameHealthMetricRequest
+    ): Flow<PostPatchWeightVO> =
+        withContext(Dispatchers.IO) {
+            homeRepository.editWeight(accessToken, editSameHealthMetricRequest)
         }
 }

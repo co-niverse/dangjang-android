@@ -19,7 +19,8 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import com.dangjang.android.domain.model.GlucoseListVO
 import com.dangjang.android.domain.model.GuidesVO
-import com.dangjang.android.domain.model.PostPatchGlucoseVO
+import com.dangjang.android.domain.model.EditHealthMetricVO
+import com.dangjang.android.domain.model.PostPatchWeightVO
 import com.dangjang.android.domain.model.TodayGuidesVO
 import com.dangjang.android.domain.request.EditHealthMetricRequest
 import com.dangjang.android.domain.request.EditSameHealthMetricRequest
@@ -36,7 +37,8 @@ class HomeViewModel @Inject constructor(
     application: Application
 ) : AndroidViewModel(application) {
 
-    private val _postPatchGlucoseFlow = MutableStateFlow(PostPatchGlucoseVO())
+    //혈당
+    private val _postPatchGlucoseFlow = MutableStateFlow(EditHealthMetricVO())
     val postPatchGlucoseFlow = _postPatchGlucoseFlow.asStateFlow()
 
     private val _editHealthMetricRequest = MutableStateFlow(EditHealthMetricRequest())
@@ -54,6 +56,70 @@ class HomeViewModel @Inject constructor(
     private val _getGlucoseFlow = MutableStateFlow(GetGlucoseVO())
     val getGlucoseFlow = _getGlucoseFlow.asStateFlow()
 
+    //체중
+    private val _addWeightRequest = MutableStateFlow(AddHealthMetricRequest())
+    val addWeightRequest = _addWeightRequest.asStateFlow()
+
+    private val _addWeightFlow = MutableStateFlow(PostPatchWeightVO())
+    val addWeightFlow = _addWeightFlow.asStateFlow()
+
+    private val _editWeightRequest = MutableStateFlow(EditSameHealthMetricRequest())
+    val editWeightRequest = _editWeightRequest.asStateFlow()
+
+    //체중
+    fun addWeight(accessToken: String) {
+        setWeightTypeAndCreatedAt()
+        viewModelScope.launch {
+            getHomeUseCase.addWeight("Bearer $accessToken", addWeightRequest.value)
+                .onEach {
+                    _addWeightFlow.emit(it)
+                }
+                .handleErrors()
+                .collect{
+                    //TODO : get Weight
+                }
+        }
+    }
+
+    private fun setWeightTypeAndCreatedAt() {
+        _addWeightRequest.update {
+            it.copy(type = "체중", createdAt = getTodayDate())
+        }
+    }
+
+    fun setWeightUnit(weight: String) {
+        _addWeightRequest.update {
+            it.copy(unit = weight)
+        }
+    }
+
+    fun editWeight(accessToken: String) {
+        setEditWeightTypeAndCreatedAt()
+        viewModelScope.launch {
+            getHomeUseCase.editWeight("Bearer $accessToken", editWeightRequest.value)
+                .onEach {
+                    _addWeightFlow.emit(it)
+                }
+                .handleErrors()
+                .collect{
+                    //TODO : get Weight
+                }
+        }
+    }
+
+    private fun setEditWeightTypeAndCreatedAt() {
+        _editWeightRequest.update {
+            it.copy(type = "체중", createdAt = getTodayDate())
+        }
+    }
+
+    fun setEditWeightUnit(weight: String) {
+        _editWeightRequest.update {
+            it.copy(unit = weight)
+        }
+    }
+
+    //혈당
     fun getHourSpinnerList(): ArrayList<String> {
         val hourList = arrayListOf<String>()
 
