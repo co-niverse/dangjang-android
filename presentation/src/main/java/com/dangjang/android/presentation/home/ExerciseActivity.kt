@@ -60,8 +60,6 @@ class ExerciseActivity : FragmentActivity() {
         }
 
         binding.exerciseInfoIv.setOnClickListener {
-            //TODO : dialogfragment에 운동명 전송하기
-
             ExerciseDialogFragment().show(supportFragmentManager, "ExerciseDialogFragment")
         }
 
@@ -83,7 +81,13 @@ class ExerciseActivity : FragmentActivity() {
             ExerciseListAdapter.MyItemClickListener {
 
             override fun onItemClick(exerciseList: ExerciseListVO) {
-                ExerciseEditDialogFragment().show(supportFragmentManager, "ExerciseEditDialogFragment")
+                var exerciseEditDialogFragment = ExerciseEditDialogFragment()
+                var bundle = Bundle()
+                bundle.putString("type", exerciseList.exerciseName)
+                bundle.putString("hour", exerciseList.exerciseHour)
+                bundle.putString("minute", exerciseList.exerciseMinute)
+                exerciseEditDialogFragment.arguments = bundle
+                exerciseEditDialogFragment.show(supportFragmentManager, "ExerciseEditDialogFragment")
             }
         })
 
