@@ -1,5 +1,6 @@
 package com.dangjang.android.presentation.home
 
+import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -13,12 +14,17 @@ import android.widget.SpinnerAdapter
 import android.widget.TextView
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
+import com.dangjang.android.domain.constants.ACCESS_TOKEN_KEY
+import com.dangjang.android.domain.constants.TOKEN_SPF_KEY
 import com.dangjang.android.presentation.R
 import com.dangjang.android.presentation.databinding.FragmentExerciseEditDialogBinding
 
 class ExerciseEditDialogFragment : DialogFragment() {
 
     private val viewModel by activityViewModels<HomeViewModel>()
+    private var exerciseName: String = ""
+    private var exerciseHour: String = ""
+    private var exerciseMinute: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,9 +43,9 @@ class ExerciseEditDialogFragment : DialogFragment() {
         setHourSpinner()
         setMinuteSpinner()
 
-        var exerciseName = arguments?.getString("type")
-        var exerciseHour = arguments?.getString("hour")
-        var exerciseMinute = arguments?.getString("minute")
+        exerciseName = arguments?.getString("type").toString()
+        exerciseHour = arguments?.getString("hour").toString()
+        exerciseMinute = arguments?.getString("minute").toString()
 
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
@@ -53,6 +59,9 @@ class ExerciseEditDialogFragment : DialogFragment() {
             dismiss()
         }
         binding.exerciseEditSaveBtn.setOnClickListener {
+            viewModel.setExerciseTypeAndCreatedAt(exerciseName)
+            viewModel.setExerciseUnit(getExerciseTime(exerciseHour, exerciseMinute))
+            getAccessToken()?.let { viewModel.addExercise(it) }
             dismiss()
         }
     }
@@ -89,6 +98,7 @@ class ExerciseEditDialogFragment : DialogFragment() {
                 position: Int,
                 id: Long
             ) {
+                exerciseHour = hourList[position]
             }
         }
 
@@ -126,8 +136,20 @@ class ExerciseEditDialogFragment : DialogFragment() {
                 position: Int,
                 id: Long
             ) {
+                exerciseMinute = minuteList[position]
             }
         }
 
+    }
+
+    private fun getAccessToken(): String? {
+        val sharedPreferences = requireContext().getSharedPreferences(TOKEN_SPF_KEY, Context.MODE_PRIVATE)
+
+        return sharedPreferences.getString(ACCESS_TOKEN_KEY, null)
+    }
+
+    private fun getExerciseTime(hour: String, minute: String): String {
+        var exerciseTime = hour.toInt() * 60 + minute.toInt()
+        return exerciseTime.toString()
     }
 }
