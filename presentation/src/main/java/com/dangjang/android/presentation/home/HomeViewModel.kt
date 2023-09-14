@@ -20,7 +20,7 @@ import kotlinx.coroutines.flow.update
 import com.dangjang.android.domain.model.GlucoseListVO
 import com.dangjang.android.domain.model.GuidesVO
 import com.dangjang.android.domain.model.EditHealthMetricVO
-import com.dangjang.android.domain.model.PostWeightVO
+import com.dangjang.android.domain.model.PostPatchWeightVO
 import com.dangjang.android.domain.model.TodayGuidesVO
 import com.dangjang.android.domain.request.EditHealthMetricRequest
 import com.dangjang.android.domain.request.EditSameHealthMetricRequest
@@ -60,8 +60,11 @@ class HomeViewModel @Inject constructor(
     private val _addWeightRequest = MutableStateFlow(AddHealthMetricRequest())
     val addWeightRequest = _addWeightRequest.asStateFlow()
 
-    private val _addWeightFlow = MutableStateFlow(PostWeightVO())
+    private val _addWeightFlow = MutableStateFlow(PostPatchWeightVO())
     val addWeightFlow = _addWeightFlow.asStateFlow()
+
+    private val _editWeightRequest = MutableStateFlow(EditSameHealthMetricRequest())
+    val editWeightRequest = _editWeightRequest.asStateFlow()
 
     //체중
     fun addWeight(accessToken: String) {

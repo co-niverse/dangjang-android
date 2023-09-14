@@ -3,7 +3,7 @@ package com.dangjang.android.data.datasource
 import com.dangjang.android.data.model.dto.GetGlucoseDto
 import com.dangjang.android.data.model.dto.EditHealthMetricDto
 import com.dangjang.android.data.model.dto.EditWeightExerciseDto
-import com.dangjang.android.data.model.dto.PostWeightDto
+import com.dangjang.android.data.model.dto.PostPatchWeightDto
 import com.dangjang.android.domain.request.AddHealthMetricRequest
 import com.dangjang.android.data.model.response.BaseResponse
 import com.dangjang.android.domain.request.EditHealthMetricRequest
@@ -51,7 +51,7 @@ interface HomeApiService {
     suspend fun addWeight(
         @Header("Authorization") accessToken: String,
         @Body addHealthMetricRequest: AddHealthMetricRequest
-    ) : Response<BaseResponse<PostWeightDto>>
+    ) : Response<BaseResponse<PostPatchWeightDto>>
 
     //체중 수정 API
     @PATCH("api/health-metric")

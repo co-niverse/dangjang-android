@@ -3,22 +3,21 @@ package com.dangjang.android.data.model.dto
 import com.dangjang.android.domain.constants.UNKNOWN_DOUBLE
 import com.dangjang.android.domain.constants.UNKNOWN_INT
 import com.dangjang.android.domain.constants.UNKNOWN_STRING
-import com.dangjang.android.domain.model.GuideVO
-import com.dangjang.android.domain.model.PostWeightVO
+import com.dangjang.android.domain.model.PostPatchWeightVO
 import com.dangjang.android.domain.model.WeightGuideVO
 import com.google.gson.annotations.SerializedName
 
-data class PostWeightDto(
+data class PostPatchWeightDto(
     @SerializedName("type") val type: String?,
     @SerializedName("createdAt") val createdAt: String?,
     @SerializedName("unit") val unit: String?,
-    @SerializedName("guide") val guide: Guide?
+    @SerializedName("guide") val guide: WeightGuideDto?
 ) {
-    fun toDomain() = PostWeightVO(
+    fun toDomain() = PostPatchWeightVO(
         type ?: UNKNOWN_STRING,
         createdAt ?: UNKNOWN_STRING,
         unit ?: UNKNOWN_STRING,
-        guide?.toDomain() ?: GuideVO()
+        guide?.toDomain() ?: WeightGuideVO()
     )
 }
 
