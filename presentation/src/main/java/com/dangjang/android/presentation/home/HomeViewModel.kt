@@ -102,7 +102,7 @@ class HomeViewModel @Inject constructor(
                 }
                 .handleErrors()
                 .collect{
-                    //TODO : get Weight
+                    getWeight(accessToken)
                 }
         }
     }
@@ -128,7 +128,7 @@ class HomeViewModel @Inject constructor(
                 }
                 .handleErrors()
                 .collect{
-                    //TODO : get Weight
+                    getWeight(accessToken)
                 }
         }
     }
