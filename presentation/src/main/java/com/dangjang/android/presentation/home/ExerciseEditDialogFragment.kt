@@ -59,10 +59,17 @@ class ExerciseEditDialogFragment : DialogFragment() {
             dismiss()
         }
         binding.exerciseEditSaveBtn.setOnClickListener {
-            viewModel.setExerciseTypeAndCreatedAt(exerciseName)
-            viewModel.setExerciseUnit(getExerciseTime(exerciseHour, exerciseMinute))
-            getAccessToken()?.let { viewModel.addExercise(it) }
-            dismiss()
+            if (exerciseHour == "0" && exerciseMinute == "0") {
+                viewModel.setExerciseTypeAndCreatedAt(exerciseName)
+                viewModel.setExerciseUnit(getExerciseTime(exerciseHour, exerciseMinute))
+                getAccessToken()?.let { viewModel.addExercise(it) }
+                dismiss()
+            } else {
+                viewModel.setEditExerciseTypeAndCreatedAt(exerciseName)
+                viewModel.setEditExerciseUnit(getExerciseTime(exerciseHour, exerciseMinute))
+                getAccessToken()?.let { viewModel.editExercise(it) }
+                dismiss()
+            }
         }
     }
 
