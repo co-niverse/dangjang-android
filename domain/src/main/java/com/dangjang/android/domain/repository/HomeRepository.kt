@@ -2,6 +2,7 @@ package com.dangjang.android.domain.repository
 
 import com.dangjang.android.domain.model.GetGlucoseVO
 import com.dangjang.android.domain.model.PostPatchGlucoseVO
+import com.dangjang.android.domain.model.PostWeightVO
 import com.dangjang.android.domain.request.AddHealthMetricRequest
 import com.dangjang.android.domain.request.EditHealthMetricRequest
 import com.dangjang.android.domain.request.EditSameHealthMetricRequest
@@ -20,4 +21,7 @@ interface HomeRepository {
 
     //혈당 수정 (같은 시간 tyep일 경우)
     fun editSameGlucose(accessToken: String, editSameHealthMetricRequest: EditSameHealthMetricRequest): Flow<PostPatchGlucoseVO>
+
+    //체중 추가
+    fun addWeight(accessToken: String, addHealthMetricRequest: AddHealthMetricRequest): Flow<PostWeightVO>
 }
