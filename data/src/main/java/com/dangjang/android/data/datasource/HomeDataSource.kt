@@ -34,7 +34,7 @@ class HomeDataSource @Inject constructor(
         return checkResponse(homeApiService.addWeight(accessToken, addHealthMetricRequest))
     }
 
-    suspend fun editWeight(accessToken: String, editSameHealthMetricRequest: EditSameHealthMetricRequest): BaseResponse<EditWeightExerciseDto> {
+    suspend fun editWeight(accessToken: String, editSameHealthMetricRequest: EditSameHealthMetricRequest): BaseResponse<PostPatchWeightDto> {
         return checkResponse(homeApiService.editWeight(accessToken, editSameHealthMetricRequest))
     }
 }

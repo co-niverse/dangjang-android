@@ -58,6 +58,6 @@ interface HomeApiService {
     suspend fun editWeight(
         @Header("Authorization") accessToken: String,
         @Body editSameHealthMetricRequest: EditSameHealthMetricRequest
-    ) : Response<BaseResponse<EditWeightExerciseDto>>
+    ) : Response<BaseResponse<PostPatchWeightDto>>
 
 }

@@ -63,7 +63,7 @@ class HomeViewModel @Inject constructor(
     private val _addWeightFlow = MutableStateFlow(PostPatchWeightVO())
     val addWeightFlow = _addWeightFlow.asStateFlow()
 
-    private val _editWeightRequest = MutableStateFlow(EditSameHealthMetricRequest())
+    private val _editWeightRequest = MutableStateFlow(PostPatchWeightVO())
     val editWeightRequest = _editWeightRequest.asStateFlow()
 
     //체중
