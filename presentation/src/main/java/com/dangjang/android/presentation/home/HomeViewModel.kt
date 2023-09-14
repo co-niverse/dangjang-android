@@ -65,6 +65,7 @@ class HomeViewModel @Inject constructor(
 
     //체중
     fun addWeight(accessToken: String) {
+        setWeightTypeAndCreatedAt()
         viewModelScope.launch {
             getHomeUseCase.addWeight("Bearer $accessToken", addWeightRequest.value)
                 .onEach {
@@ -74,6 +75,19 @@ class HomeViewModel @Inject constructor(
                 .collect{
                     //TODO : get Weight
                 }
+        }
+    }
+
+    private fun setWeightTypeAndCreatedAt() {
+        _addWeightRequest.update {
+            it.copy(type = "체중")
+            it.copy(createdAt = getTodayDate())
+        }
+    }
+
+    fun setWeightUnit(weight: String) {
+        _addWeightRequest.update {
+            it.copy(unit = weight)
         }
     }
 
