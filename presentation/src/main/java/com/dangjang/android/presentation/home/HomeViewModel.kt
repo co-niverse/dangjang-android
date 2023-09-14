@@ -20,6 +20,7 @@ import kotlinx.coroutines.flow.update
 import com.dangjang.android.domain.model.GlucoseListVO
 import com.dangjang.android.domain.model.GuidesVO
 import com.dangjang.android.domain.model.EditHealthMetricVO
+import com.dangjang.android.domain.model.GetWeightVO
 import com.dangjang.android.domain.model.PostPatchExerciseVO
 import com.dangjang.android.domain.model.PostPatchWeightVO
 import com.dangjang.android.domain.model.TodayGuidesVO
@@ -58,6 +59,9 @@ class HomeViewModel @Inject constructor(
     val getGlucoseFlow = _getGlucoseFlow.asStateFlow()
 
     //체중
+    private val _getWeightFlow = MutableStateFlow(GetWeightVO())
+    val getWeightFlow = _getWeightFlow.asStateFlow()
+
     private val _addWeightRequest = MutableStateFlow(AddHealthMetricRequest())
     val addWeightRequest = _addWeightRequest.asStateFlow()
 
@@ -78,6 +82,17 @@ class HomeViewModel @Inject constructor(
     val editExerciseRequest = _editExerciseRequest.asStateFlow()
 
     //체중
+    fun getWeight(accessToken: String) {
+        viewModelScope.launch {
+            getHomeUseCase.getWeight("Bearer $accessToken", getTodayDate())
+                .onEach {
+                    _getWeightFlow.emit(it)
+                }
+                .handleErrors()
+                .collect()
+        }
+    }
+
     fun addWeight(accessToken: String) {
         setWeightTypeAndCreatedAt()
         viewModelScope.launch {
