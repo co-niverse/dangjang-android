@@ -20,6 +20,7 @@ import kotlinx.coroutines.flow.update
 import com.dangjang.android.domain.model.GlucoseListVO
 import com.dangjang.android.domain.model.GuidesVO
 import com.dangjang.android.domain.model.EditHealthMetricVO
+import com.dangjang.android.domain.model.GetExerciseVO
 import com.dangjang.android.domain.model.GetWeightVO
 import com.dangjang.android.domain.model.PostPatchExerciseVO
 import com.dangjang.android.domain.model.PostPatchWeightVO
@@ -72,6 +73,9 @@ class HomeViewModel @Inject constructor(
     val editWeightRequest = _editWeightRequest.asStateFlow()
 
     //운동
+    private val _getExerciseFlow = MutableStateFlow(GetExerciseVO())
+    val getExerciseFlow = _getExerciseFlow.asStateFlow()
+
     private val _addExerciseRequest = MutableStateFlow(AddHealthMetricRequest())
     val addExerciseRequest = _addExerciseRequest.asStateFlow()
 
@@ -146,6 +150,17 @@ class HomeViewModel @Inject constructor(
     }
 
     //운동
+    fun getExercise(accessToken: String) {
+        viewModelScope.launch {
+            getHomeUseCase.getExercise("Bearer $accessToken", getTodayDate())
+                .onEach {
+                    _getExerciseFlow.emit(it)
+                }
+                .handleErrors()
+                .collect()
+        }
+    }
+
     fun addExercise(accessToken: String) {
         viewModelScope.launch {
             getHomeUseCase.addExercise("Bearer $accessToken", addExerciseRequest.value)

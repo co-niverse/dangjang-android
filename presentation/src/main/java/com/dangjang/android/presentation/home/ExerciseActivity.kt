@@ -27,7 +27,12 @@ class ExerciseActivity : FragmentActivity() {
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_exercise)
         viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
+        binding.vm = viewModel
 
+        binding.lifecycleOwner = this
+
+        getAccessToken()?.let { viewModel.getExercise(it) }
+        
         binding.stepEditBtn.setOnClickListener {
             binding.stepEditView.visibility = View.VISIBLE
             binding.stepTv.visibility = View.GONE
