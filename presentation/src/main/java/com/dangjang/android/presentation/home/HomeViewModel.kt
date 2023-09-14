@@ -141,7 +141,7 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun setExerciseTypeAndCreatedAt(type: String) {
+    fun setExerciseTypeAndCreatedAt(type: String) {
         _addExerciseRequest.update {
             it.copy(type = type, createdAt = getTodayDate())
         }

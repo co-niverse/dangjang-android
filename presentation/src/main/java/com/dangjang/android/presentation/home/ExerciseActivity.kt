@@ -1,10 +1,13 @@
 package com.dangjang.android.presentation.home
 
+import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
+import com.dangjang.android.domain.constants.ACCESS_TOKEN_KEY
+import com.dangjang.android.domain.constants.TOKEN_SPF_KEY
 import com.dangjang.android.domain.model.ExerciseListVO
 import com.dangjang.android.presentation.R
 import com.dangjang.android.presentation.databinding.ActivityExerciseBinding
@@ -16,6 +19,7 @@ class ExerciseActivity : FragmentActivity() {
     private lateinit var viewModel: HomeViewModel
     private lateinit var exerciseListAdapter: ExerciseListAdapter
     private var exerciseList = arrayListOf<ExerciseListVO>()
+    private var originStep: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,6 +44,15 @@ class ExerciseActivity : FragmentActivity() {
 
             binding.stepEditBtn.visibility = View.VISIBLE
             binding.stepOkBtn.visibility = View.GONE
+
+            if (originStep == 0) {
+                viewModel.setExerciseTypeAndCreatedAt("걸음수")
+                viewModel.setExerciseUnit(binding.stepEt.text.toString())
+                getAccessToken()?.let { it1 -> viewModel.addExercise(it1) }
+            } else {
+                // TODO : 걸음수 수정
+            }
+
         }
 
         binding.backIv.setOnClickListener {
@@ -47,6 +60,8 @@ class ExerciseActivity : FragmentActivity() {
         }
 
         binding.exerciseInfoIv.setOnClickListener {
+            //TODO : dialogfragment에 운동명 전송하기
+
             ExerciseDialogFragment().show(supportFragmentManager, "ExerciseDialogFragment")
         }
 
@@ -73,5 +88,11 @@ class ExerciseActivity : FragmentActivity() {
         })
 
         binding.exerciseRv.adapter = exerciseListAdapter
+    }
+
+    private fun getAccessToken(): String? {
+        val sharedPreferences = getSharedPreferences(TOKEN_SPF_KEY, Context.MODE_PRIVATE)
+
+        return sharedPreferences.getString(ACCESS_TOKEN_KEY, null)
     }
 }
