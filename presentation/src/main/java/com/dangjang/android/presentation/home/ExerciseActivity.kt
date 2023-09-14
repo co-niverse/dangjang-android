@@ -32,7 +32,7 @@ class ExerciseActivity : FragmentActivity() {
         binding.lifecycleOwner = this
 
         getAccessToken()?.let { viewModel.getExercise(it) }
-        
+
         binding.stepEditBtn.setOnClickListener {
             binding.stepEditView.visibility = View.VISIBLE
             binding.stepTv.visibility = View.GONE
