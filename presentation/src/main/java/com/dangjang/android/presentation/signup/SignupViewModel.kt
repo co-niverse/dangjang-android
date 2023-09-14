@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.dangjang.android.domain.HttpResponseStatus
 import com.dangjang.android.domain.model.DuplicateNicknameVO
 import com.dangjang.android.domain.model.AuthVO
 import com.dangjang.android.domain.requestVO.SignupRequestVO
@@ -36,6 +37,9 @@ class SignupViewModel @Inject constructor(
     private val _signupRequest = MutableStateFlow(SignupRequestVO())
     val signupRequest = _signupRequest.asStateFlow()
 
+    private val _startMainActivity = MutableStateFlow(HttpResponseStatus.NONE)
+    val startMainActivity = _startMainActivity.asStateFlow()
+
     fun getDuplicateNickname(nickname: String) {
         viewModelScope.launch {
             getSignupUseCase.getDuplicateNickname(nickname)
@@ -54,6 +58,7 @@ class SignupViewModel @Inject constructor(
             getSignupUseCase.signup(data)
                 .onEach {
                     _signupFlow.emit(it)
+                    _startMainActivity.emit(HttpResponseStatus.OK)
                 }
                 .handleErrors()
                 .collect()

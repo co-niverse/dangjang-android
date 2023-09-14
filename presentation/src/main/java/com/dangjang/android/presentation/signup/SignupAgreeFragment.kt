@@ -1,9 +1,13 @@
 package com.dangjang.android.presentation.signup
 
+import android.content.Intent
 import android.graphics.Color
 import android.util.Log
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import com.dangjang.android.common_ui.BaseFragment
+import com.dangjang.android.domain.HttpResponseStatus
+import com.dangjang.android.presentation.MainActivity
 import com.dangjang.android.presentation.R
 import com.dangjang.android.presentation.databinding.FragmentSignupAgreeBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -49,6 +53,14 @@ class SignupAgreeFragment : BaseFragment<FragmentSignupAgreeBinding>(R.layout.fr
         binding.agreeBtn.setOnClickListener {
             Log.e("viewmodel",viewModel.signupRequest.value.toString())
             viewModel.signup(viewModel.signupRequest.value)
+            lifecycleScope.launchWhenStarted {
+                viewModel.startMainActivity.collect{
+                    if(it == HttpResponseStatus.OK){
+                        startActivity(Intent(context, MainActivity::class.java))
+                        activity?.finish()
+                    }
+                }
+            }
         }
 
         binding.backIv.setOnClickListener {

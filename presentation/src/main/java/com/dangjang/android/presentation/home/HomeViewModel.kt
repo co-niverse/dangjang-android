@@ -7,7 +7,6 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.dangjang.android.domain.model.GetGlucoseVO
 import com.dangjang.android.domain.model.GlucoseGuideVO
-import com.dangjang.android.domain.model.HealthMetricVO
 import com.dangjang.android.domain.request.AddHealthMetricRequest
 import com.dangjang.android.domain.usecase.HomeUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,9 +19,15 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import com.dangjang.android.domain.model.GlucoseListVO
 import com.dangjang.android.domain.model.GuidesVO
+import com.dangjang.android.domain.model.PostPatchGlucoseVO
 import com.dangjang.android.domain.model.TodayGuidesVO
+import com.dangjang.android.domain.request.EditHealthMetricRequest
+import com.dangjang.android.domain.request.EditSameHealthMetricRequest
 import com.dangjang.android.presentation.R
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Date
 import javax.inject.Inject
 
 @HiltViewModel
@@ -31,8 +36,11 @@ class HomeViewModel @Inject constructor(
     application: Application
 ) : AndroidViewModel(application) {
 
-    private val _addHealthMetricFlow = MutableStateFlow(HealthMetricVO())
-    val addHealthMetricFlow = _addHealthMetricFlow.asStateFlow()
+    private val _postPatchGlucoseFlow = MutableStateFlow(PostPatchGlucoseVO())
+    val postPatchGlucoseFlow = _postPatchGlucoseFlow.asStateFlow()
+
+    private val _editHealthMetricRequest = MutableStateFlow(EditHealthMetricRequest())
+    val editHealthMetricRequest = _editHealthMetricRequest.asStateFlow()
 
     private val _addHealthMetricRequest = MutableStateFlow(AddHealthMetricRequest())
     val addHealthMetricRequest = _addHealthMetricRequest.asStateFlow()
@@ -72,18 +80,74 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             getHomeUseCase.addHealthMetric("Bearer $accessToken", addHealthMetricRequest.value)
                 .onEach {
-                    _addHealthMetricFlow.emit(it)
+                    _postPatchGlucoseFlow.emit(it)
                 }
                 .handleErrors()
-                .collect()
+                .collect{
+                    getGlucose(accessToken)
+                }
+        }
+    }
+
+    fun editGlucose(
+        accessToken: String
+    ) {
+        viewModelScope.launch {
+            if (editHealthMetricRequest.value.type == editHealthMetricRequest.value.newType) {
+                getHomeUseCase.editSameGlucose("Bearer $accessToken", EditSameHealthMetricRequest(
+                    editHealthMetricRequest.value.type,
+                    editHealthMetricRequest.value.createdAt,
+                    editHealthMetricRequest.value.unit
+                ))
+                    .onEach {
+                        _postPatchGlucoseFlow.emit(it)
+                    }
+                    .handleErrors()
+                    .collect{
+                        getGlucose(accessToken)
+                    }
+            } else {
+                getHomeUseCase.editGlucose("Bearer $accessToken", editHealthMetricRequest.value)
+                    .onEach {
+                        _postPatchGlucoseFlow.emit(it)
+                    }
+                    .handleErrors()
+                    .collect{
+                        getGlucose(accessToken)
+                    }
+            }
+        }
+    }
+
+    fun setEditGlucoseCreatedAt(createdAt: String) {
+        _editHealthMetricRequest.update {
+            it.copy(createdAt = createdAt)
+        }
+    }
+
+    fun setEditGlucoseType(type: String) {
+        _editHealthMetricRequest.update {
+            it.copy(type = type)
+        }
+    }
+
+    fun setEditGlucoseNewType(newType: String) {
+        _editHealthMetricRequest.update {
+            it.copy(newType = newType)
+        }
+    }
+
+    fun setEditGlucoseValue(value: String) {
+        _editHealthMetricRequest.update {
+            it.copy(unit = value)
         }
     }
 
     fun getGlucose(
-        accessToken: String, date: String
+        accessToken: String
     ) {
         viewModelScope.launch {
-            getHomeUseCase.getGlucose("Bearer $accessToken", date)
+            getHomeUseCase.getGlucose("Bearer $accessToken", getTodayDate())
                 .onEach {
                     _getGlucoseFlow.emit(it)
                 }
@@ -192,5 +256,11 @@ class HomeViewModel @Inject constructor(
             glucoseGuides.add(GlucoseListVO(it.type, it.unit, tag, it.title, it.content))
         }
         return glucoseGuides
+    }
+
+    fun getTodayDate(): String {
+        val currentTime: Date = Calendar.getInstance().getTime()
+        val format = SimpleDateFormat("yyyy-MM-dd")
+        return format.format(currentTime)
     }
 }

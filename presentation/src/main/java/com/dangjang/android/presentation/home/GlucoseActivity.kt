@@ -3,7 +3,6 @@ package com.dangjang.android.presentation.home
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
@@ -22,9 +21,6 @@ import com.dangjang.android.presentation.R
 import com.dangjang.android.presentation.databinding.ActivityGlucoseBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
-import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.Date
 
 @AndroidEntryPoint
 class GlucoseActivity : FragmentActivity() {
@@ -43,10 +39,8 @@ class GlucoseActivity : FragmentActivity() {
 
         binding.lifecycleOwner = this
 
-        Log.e("getTodayDate",getTodayDate())
-
         getAccessToken()?.let {
-                accessToken -> viewModel.getGlucose(accessToken, getTodayDate())
+                accessToken -> viewModel.getGlucose(accessToken)
         }
 
         lifecycleScope.launchWhenStarted {
@@ -59,10 +53,7 @@ class GlucoseActivity : FragmentActivity() {
         binding.glucoseAddSaveBtn.setOnClickListener {
             viewModel.setType(glucoseSpinnerType)
 
-            val currentTime: Date = Calendar.getInstance().getTime()
-            val format = SimpleDateFormat("yyyy-MM-dd")
-            val date = format.format(currentTime)
-            viewModel.setCreatedAt(date)
+            viewModel.setCreatedAt(viewModel.getTodayDate())
             viewModel.setUnit(binding.glucoseAddEt.text.toString())
 
             getAccessToken()?.let {
@@ -101,10 +92,14 @@ class GlucoseActivity : FragmentActivity() {
         glucoseListAdapter.setMyItemClickListener(object :
             GlucoseListAdapter.MyItemClickListener {
             override fun onItemClick(glucoseList: GlucoseListVO) {
-                GlucoseEditDialogFragment().show(supportFragmentManager, "GlucoseEditDialogFragment")
-            }
-        })
+                var glucoseEditDialogFragment = GlucoseEditDialogFragment()
+                var bundle = Bundle()
+                bundle.putString("time", glucoseList.time)
+                bundle.putString("glucose", glucoseList.glucose)
+                glucoseEditDialogFragment.arguments = bundle
 
+                glucoseEditDialogFragment.show(supportFragmentManager, "GlucoseEditDialogFragment")
+            }})
         binding.glucoseRv.adapter = glucoseListAdapter
     }
 
@@ -145,11 +140,4 @@ class GlucoseActivity : FragmentActivity() {
         glucoseGuideAdapter = GlucoseGuideAdapter(viewModel)
         binding.glucoseGuideRv.adapter = glucoseGuideAdapter
     }
-
-    private fun getTodayDate(): String {
-        val currentTime: Date = Calendar.getInstance().getTime()
-        val format = SimpleDateFormat("yyyy-MM-dd")
-        return format.format(currentTime)
-    }
-
 }
