@@ -101,7 +101,7 @@ class HomeViewModel @Inject constructor(
                 "RUN" -> "달리기"
                 "BIKE" -> "자전거"
                 "SWIM" -> "수영"
-                "HIKING" -> "하이킹"
+                "HIKING" -> "등산"
                 else -> "걷기"
             }
             exerciseCaloriesNameList.add(ExerciseListVO(exerciseName, exerciseHour, exerciseMinute))
@@ -401,7 +401,7 @@ class HomeViewModel @Inject constructor(
 
         exerciseList.add(ExerciseListVO("걷기","0","0"))
         exerciseList.add(ExerciseListVO("달리기","0","0"))
-        exerciseList.add(ExerciseListVO("하이킹","0","0"))
+        exerciseList.add(ExerciseListVO("등산","0","0"))
         exerciseList.add(ExerciseListVO("자전거","0","0"))
         exerciseList.add(ExerciseListVO("수영","0","0"))
         exerciseList.add(ExerciseListVO("헬스","0","0"))

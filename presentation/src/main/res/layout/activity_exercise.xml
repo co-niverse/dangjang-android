@@ -412,7 +412,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
-                        android:text="하이킹 98kcal"
+                        android:text="등산 98kcal"
                         android:textColor="@color/black"
                         android:textSize="16sp"
                         android:visibility="gone"

@@ -52,7 +52,7 @@ class ExerciseActivity : FragmentActivity() {
                         }
                         "HIKE" -> {
                             binding.exerciseHikingKcalTv.visibility = View.VISIBLE
-                            binding.exerciseHikingKcalTv.text = "하이킹 ${it.calorie}kcal"
+                            binding.exerciseHikingKcalTv.text = "등산 ${it.calorie}kcal"
                         }
                         "BIKE" -> {
                             binding.exerciseBikeKcalTv.visibility = View.VISIBLE
