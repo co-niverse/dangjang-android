@@ -31,6 +31,7 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import java.time.Duration
 import java.time.Instant
 import java.time.ZoneId
 import java.time.ZonedDateTime
@@ -267,6 +268,9 @@ class SplashViewModel @Inject constructor(
             var exerciseName = ExerciseSessionRecord.EXERCISE_TYPE_INT_TO_STRING_MAP.get(exerciseRecord.exerciseType)
             val exerciseStartTime = changeInstantToKST(exerciseRecord.startTime)
             val exerciseEndTime = changeInstantToKST(exerciseRecord.endTime)
+
+            val duration = Duration.between(exerciseRecord.startTime, exerciseRecord.endTime).toMinutes()
+
             Log.e("HC-Exercise", "운동 종류: $exerciseName 시간: $exerciseStartTime to $exerciseEndTime")
 
             exerciseName = when (exerciseName) {
@@ -299,7 +303,7 @@ class SplashViewModel @Inject constructor(
                     HealthConnectRequest(
                         changeInstantToKSTDate(exerciseRecord.startTime),
                         exerciseName,
-                        "exerciseRecord.endTime - exerciseRecord.startTime"
+                        duration.toString()
                     )
                 )
             }
