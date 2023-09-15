@@ -229,13 +229,45 @@ class SplashViewModel @Inject constructor(
     private suspend fun readExerciseSession() {
         exerciseList = readExerciseSessionRecord(getTodayStartTime(),getNowTime())
         for (exerciseRecord in exerciseList) {
-            val exerciseName = ExerciseSessionRecord.EXERCISE_TYPE_INT_TO_STRING_MAP.get(exerciseRecord.exerciseType)
+            var exerciseName = ExerciseSessionRecord.EXERCISE_TYPE_INT_TO_STRING_MAP.get(exerciseRecord.exerciseType)
             val exerciseStartTime = changeInstantToKST(exerciseRecord.startTime)
             val exerciseEndTime = changeInstantToKST(exerciseRecord.endTime)
             Log.e("HC-Exercise", "운동 종류: $exerciseName 시간: $exerciseStartTime to $exerciseEndTime")
 
-            //TODO : 날짜 처리 & 운동명 처리 & 운동시간 처리
-            healthConnectList.add(HealthConnectRequest(changeInstantToKSTDate(exerciseRecord.startTime),"exerciseRecord.title","exerciseRecord.endTime - exerciseRecord.startTime"))
+            exerciseName = when (exerciseName) {
+                "walking"-> "걷기"
+                "running" -> "달리기"
+                "hiking" -> "하이킹"
+                "biking" -> "자전거"
+                "swimming_open_water" -> "수영"
+                "swimming_pool" -> "수영"
+                "workout" -> "헬스"
+                "barbell_shoulder_press" -> "헬스"
+                "bench_press" -> "헬스"
+                "bench_sit_up" -> "헬스"
+                "deadlift" -> "헬스"
+                "lunge" -> "헬스"
+                "plank" -> "헬스"
+                "dumbbell_curl_left_arm" -> "헬스"
+                "dumbbell_curl_right_arm" -> "헬스"
+                "dumbbell_front_raise" -> "헬스"
+                "dumbbell_lateral_raise" -> "헬스"
+                "dumbbell_triceps_extension_left_arm" -> "헬스"
+                "dumbbell_triceps_extension_right_arm" -> "헬스"
+                "dumbbell_triceps_extension_two_arm" -> "헬스"
+                 else -> "제외"
+            }
+
+            if (exerciseName != "제외") {
+                //TODO : 날짜 처리 & 운동명 처리 & 운동시간 처리
+                healthConnectList.add(
+                    HealthConnectRequest(
+                        changeInstantToKSTDate(exerciseRecord.startTime),
+                        exerciseName,
+                        "exerciseRecord.endTime - exerciseRecord.startTime"
+                    )
+                )
+            }
         }
     }
 
