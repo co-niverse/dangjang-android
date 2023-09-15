@@ -12,7 +12,7 @@ data class GetExerciseDto(
     @SerializedName("needStepByLastWeek") val needStepByLastWeek: Int?,
     @SerializedName("comparedToLastWeek") val comparedToLastWeek: String?,
     @SerializedName("content") val content: String?,
-    @SerializedName("stepCount") val stepCount: Int?,
+    @SerializedName("stepsCount") val stepsCount: Int?,
     @SerializedName("exerciseCalories") val exerciseCalories: List<GetExerciseCaloriesDto>?
 ) {
     fun toDomain() = GetExerciseVO(
@@ -21,7 +21,7 @@ data class GetExerciseDto(
         needStepByLastWeek ?: UNKNOWN_INT,
         comparedToLastWeek ?: UNKNOWN_STRING,
         content ?: UNKNOWN_STRING,
-        stepCount ?: UNKNOWN_INT,
+        stepsCount ?: UNKNOWN_INT,
         exerciseCalories?.map { it.toDomain() } ?: listOf()
     )
 }

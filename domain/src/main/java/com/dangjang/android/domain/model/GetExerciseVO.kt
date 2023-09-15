@@ -6,7 +6,7 @@ data class GetExerciseVO(
     val needStepByLastWeek: Int = 0,
     val comparedToLastWeek: String = "",
     val content: String = "",
-    val stepCount: Int = 0,
+    val stepsCount: Int = 0,
     val exerciseCalories: List<GetExerciseCaloriesVO> = listOf()
 )
 
