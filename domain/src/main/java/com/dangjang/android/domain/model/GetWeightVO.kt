@@ -7,5 +7,5 @@ data class GetWeightVO(
     val title: String = "",
     val content: String = "",
     val bmi: Double = 0.0,
-    val unit: String = ""
+    val unit: String = "0"
 )
