@@ -274,11 +274,12 @@
 
                     <TextView
                         android:id="@+id/step_feedback_average_tv"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="32dp"
                         android:layout_marginTop="16dp"
                         android:layout_marginEnd="32dp"
+                        android:gravity="center"
                         android:text="@{vm.getExerciseFlow.comparedToLastWeek}"
                         android:textColor="@color/black"
                         android:textSize="16sp"
@@ -288,12 +289,13 @@
 
                     <TextView
                         android:id="@+id/step_feedback_count_tv"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="32dp"
                         android:layout_marginTop="8dp"
                         android:layout_marginEnd="32dp"
                         android:layout_marginBottom="32dp"
+                        android:gravity="center"
                         android:text="@{vm.getExerciseFlow.content}"
                         android:textColor="@color/black"
                         android:textSize="16sp"
@@ -312,6 +314,7 @@
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="16dp"
                     android:layout_marginBottom="24dp"
+                    android:paddingBottom="32dp"
                     android:background="@drawable/background_feedback_border_green"
                     android:elevation="4dp"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -348,12 +351,10 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="60dp"
                         android:layout_marginTop="16dp"
-                        android:layout_marginBottom="16dp"
                         android:text=" 오늘 "
                         android:textColor="@color/black"
                         android:textSize="18sp"
                         android:textStyle="bold"
-                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/exercise_feedback_title_tv" />
 
