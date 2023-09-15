@@ -1,13 +1,14 @@
 package com.dangjang.android.presentation.intro
 
+import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import com.dangjang.android.domain.constants.ACCESS_TOKEN_KEY
 import com.dangjang.android.domain.constants.AUTO_LOGIN_EDITOR_KEY
 import com.dangjang.android.domain.constants.AUTO_LOGIN_SPF_KEY
 import com.dangjang.android.domain.constants.HEALTH_CONNECT_INSTALLED
@@ -15,6 +16,7 @@ import com.dangjang.android.domain.constants.HEALTH_CONNECT_NOT_INSTALLED
 import com.dangjang.android.domain.constants.HEALTH_CONNECT_TOKEN_KEY
 import com.dangjang.android.domain.constants.KAKAO
 import com.dangjang.android.domain.constants.NAVER
+import com.dangjang.android.domain.constants.TOKEN_SPF_KEY
 import com.dangjang.android.presentation.MainActivity
 import com.dangjang.android.presentation.login.LoginActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -48,7 +50,7 @@ class SplashActivity : AppCompatActivity() {
         if (healthConnect == "true") {
             if (viewModel.healthConnectFlow.value.isAvaiable == HEALTH_CONNECT_INSTALLED) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    viewModel.getHealthConnect()
+                    getAccessToken()?.let { viewModel.getHealthConnect(it) }
                 }
             }
         }
@@ -57,5 +59,10 @@ class SplashActivity : AppCompatActivity() {
                 //TODO : 헬스커넥트 팝업 띄우기
             }
         }
+    }
+
+    private fun getAccessToken(): String? {
+        val sharedPreferences = getSharedPreferences(TOKEN_SPF_KEY, Context.MODE_PRIVATE)
+        return sharedPreferences.getString(ACCESS_TOKEN_KEY, null)
     }
 }

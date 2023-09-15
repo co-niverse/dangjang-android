@@ -19,7 +19,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.dangjang.android.domain.model.HealthConnectVO
 import com.dangjang.android.domain.model.IntroVO
-import com.dangjang.android.domain.request.AddHealthMetricRequest
+import com.dangjang.android.domain.request.HealthConnectRequest
 import com.dangjang.android.domain.request.PostHealthConnectRequest
 import com.dangjang.android.domain.usecase.SplashUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -53,6 +53,8 @@ class SplashViewModel @Inject constructor(
     val healthConnectFlow = _healthConnectFlow.asStateFlow()
 
     private val healthConnectClient by lazy { HealthConnectClient.getOrCreate(getApplication<Application>().applicationContext) }
+
+    private val healthConnectList = mutableListOf<HealthConnectRequest>()
 
     lateinit var weightList: List<WeightRecord>
     lateinit var stepList: List<StepsRecord>
@@ -89,12 +91,14 @@ class SplashViewModel @Inject constructor(
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun getHealthConnect() {
+    fun getHealthConnect(accessToken: String) {
         viewModelScope.launch {
             tryWithWeightPermissionsCheck()
             tryWithBloodGlucosePermissionsCheck()
             tryWithStepsPermissionCheck()
             tryWithExerciseSessionPermissionCheck()
+            //TODO : 받아온 값 서버에 전송
+            postHealthConnectData(accessToken, PostHealthConnectRequest(healthConnectList))
         }
     }
     private suspend fun tryWithWeightPermissionsCheck() {
@@ -144,6 +148,8 @@ class SplashViewModel @Inject constructor(
         weightList = readWeightRecord(getTodayStartTime(), getNowTime())
         for (weightRecord in weightList) {
             Log.e("HC-Weight",weightRecord.weight.toString())
+            //TODO : 날짜 처리
+            healthConnectList.add(HealthConnectRequest("weightRecord.time","체중",weightRecord.weight.toString()))
         }
     }
 
@@ -165,6 +171,8 @@ class SplashViewModel @Inject constructor(
             val mealType = MEAL_TYPE_INT_TO_STRING_MAP.get(bloodGlucoseRecord.mealType)
             val relationToMeal = RELATION_TO_MEAL_INT_TO_STRING_MAP.get(bloodGlucoseRecord.relationToMeal)
             Log.e("HC-BloodGlucose",bgTime + "시: " + "("+ mealType + ", "+relationToMeal + ") " + bloodGlucoseRecord.level.inMilligramsPerDeciliter.roundToInt() + "mg/dL" )
+            //TODO : 날짜 처리 & 식사 타입 처리
+            healthConnectList.add(HealthConnectRequest("bloodGlucoseRecord.time", "bloodGlucoseRecord.mealType", bloodGlucoseRecord.level.inMilligramsPerDeciliter.roundToInt().toString()  ))
         }
     }
 
@@ -183,6 +191,8 @@ class SplashViewModel @Inject constructor(
         stepList = readStepsRecord(getTodayStartTime(), getNowTime())
         for (stepsRecord in stepList) {
             Log.e("HC-Steps",stepsRecord.count.toString()+"보")
+            //TODO : 날짜 처리
+            healthConnectList.add(HealthConnectRequest("stepsRecord.startTime","걸음수",stepsRecord.count.toString()))
         }
     }
 
@@ -204,6 +214,9 @@ class SplashViewModel @Inject constructor(
             val exerciseStartTime = changeInstantToKST(exerciseRecord.startTime)
             val exerciseEndTime = changeInstantToKST(exerciseRecord.endTime)
             Log.e("HC-Exercise", "운동 종류: $exerciseName 시간: $exerciseStartTime to $exerciseEndTime")
+
+            //TODO : 날짜 처리 & 운동명 처리 & 운동시간 처리
+            healthConnectList.add(HealthConnectRequest("exerciseRecord.startTime","exerciseRecord.title","exerciseRecord.endTime - exerciseRecord.startTime"))
         }
     }
 
