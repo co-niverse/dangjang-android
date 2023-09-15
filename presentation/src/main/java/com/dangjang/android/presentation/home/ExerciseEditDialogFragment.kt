@@ -23,6 +23,8 @@ class ExerciseEditDialogFragment : DialogFragment() {
 
     private val viewModel by activityViewModels<HomeViewModel>()
     private var exerciseName: String = ""
+    private var originExerciseHour: String = ""
+    private var originExerciseMinute: String = ""
     private var exerciseHour: String = ""
     private var exerciseMinute: String = ""
 
@@ -40,12 +42,12 @@ class ExerciseEditDialogFragment : DialogFragment() {
     ): View? {
         binding = FragmentExerciseEditDialogBinding.inflate(inflater, container, false)
 
+        exerciseName = arguments?.getString("type").toString()
+        originExerciseHour = arguments?.getString("hour").toString()
+        originExerciseMinute = arguments?.getString("minute").toString()
+
         setHourSpinner()
         setMinuteSpinner()
-
-        exerciseName = arguments?.getString("type").toString()
-        exerciseHour = arguments?.getString("hour").toString()
-        exerciseMinute = arguments?.getString("minute").toString()
 
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
@@ -59,7 +61,7 @@ class ExerciseEditDialogFragment : DialogFragment() {
             dismiss()
         }
         binding.exerciseEditSaveBtn.setOnClickListener {
-            if (exerciseHour == "0" && exerciseMinute == "0") {
+            if (originExerciseHour == "0" && originExerciseMinute == "0") {
                 viewModel.setExerciseTypeAndCreatedAt(exerciseName)
                 viewModel.setExerciseUnit(getExerciseTime(exerciseHour, exerciseMinute))
                 getAccessToken()?.let { viewModel.addExercise(it) }
@@ -94,6 +96,7 @@ class ExerciseEditDialogFragment : DialogFragment() {
         }
 
         hourSpinner.adapter = hourAdapter
+        hourSpinner.setSelection(hourList.indexOf(originExerciseHour))
 
         hourSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -132,6 +135,7 @@ class ExerciseEditDialogFragment : DialogFragment() {
         }
 
         minuteSpinner.adapter = minuteAdapter
+        minuteSpinner.setSelection(minuteList.indexOf(originExerciseMinute))
 
         minuteSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {

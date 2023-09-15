@@ -29,7 +29,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="6월 8일 목요일"
+            dateToString="@{vm.getExerciseFlow.createdAt}"
             android:textColor="#696D6B"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -131,7 +131,7 @@
                         android:layout_marginEnd="8dp"
                         android:layout_marginBottom="8dp"
                         android:gravity="end|center_vertical"
-                        android:text="11200"
+                        android:text="@{String.valueOf(vm.getExerciseFlow.stepsCount)}"
                         android:textColor="@color/black"
                         android:textSize="24sp"
                         android:textStyle="bold"
@@ -161,7 +161,7 @@
                         android:focusedByDefault="true"
                         android:gravity="end|center_vertical"
                         android:inputType="number"
-                        android:text="11200"
+                        android:text="@{String.valueOf(vm.getExerciseFlow.stepsCount)}"
                         android:textColor="@color/black"
                         android:textSize="24sp"
                         android:textStyle="bold"
@@ -264,7 +264,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
-                        android:text="걸음 수"
+                        android:text="걸음수"
                         android:textColor="@color/black"
                         android:textSize="18sp"
                         android:textStyle="bold"
@@ -274,12 +274,13 @@
 
                     <TextView
                         android:id="@+id/step_feedback_average_tv"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="32dp"
                         android:layout_marginTop="16dp"
                         android:layout_marginEnd="32dp"
-                        android:text="이번주에 평균 8000보를 걸으셨군요."
+                        android:gravity="center"
+                        android:text="@{vm.getExerciseFlow.comparedToLastWeek}"
                         android:textColor="@color/black"
                         android:textSize="16sp"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -288,13 +289,14 @@
 
                     <TextView
                         android:id="@+id/step_feedback_count_tv"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="32dp"
                         android:layout_marginTop="8dp"
                         android:layout_marginEnd="32dp"
                         android:layout_marginBottom="32dp"
-                        android:text="오늘은 +3200보 더 걸으셨군요!"
+                        android:gravity="center"
+                        android:text="@{vm.getExerciseFlow.content}"
                         android:textColor="@color/black"
                         android:textSize="16sp"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -312,6 +314,7 @@
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="16dp"
                     android:layout_marginBottom="24dp"
+                    android:paddingBottom="32dp"
                     android:background="@drawable/background_feedback_border_green"
                     android:elevation="4dp"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -387,6 +390,7 @@
                         android:text="걷기 110kcal"
                         android:textColor="@color/black"
                         android:textSize="16sp"
+                        android:visibility="gone"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/exercise_feedback_content_front_tv" />
@@ -396,14 +400,68 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
-                        android:layout_marginBottom="32dp"
                         android:text="달리기 98kcal"
                         android:textColor="@color/black"
                         android:textSize="16sp"
-                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:visibility="gone"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/exercise_step_kcal_tv" />
+
+                    <TextView
+                        android:id="@+id/exercise_hiking_kcal_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="등산 98kcal"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:visibility="gone"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/exercise_running_kcal_tv" />
+
+                    <TextView
+                        android:id="@+id/exercise_bike_kcal_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="자전거 98kcal"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:visibility="gone"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/exercise_hiking_kcal_tv" />
+
+                    <TextView
+                        android:id="@+id/exercise_swim_kcal_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="수영 98kcal"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:visibility="gone"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/exercise_bike_kcal_tv" />
+
+                    <TextView
+                        android:id="@+id/exercise_health_kcal_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginBottom="16dp"
+                        android:text="헬스 98kcal"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:visibility="gone"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/exercise_swim_kcal_tv" />
+
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
