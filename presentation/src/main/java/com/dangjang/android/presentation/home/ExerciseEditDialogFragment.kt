@@ -40,12 +40,12 @@ class ExerciseEditDialogFragment : DialogFragment() {
     ): View? {
         binding = FragmentExerciseEditDialogBinding.inflate(inflater, container, false)
 
-        setHourSpinner()
-        setMinuteSpinner()
-
         exerciseName = arguments?.getString("type").toString()
         exerciseHour = arguments?.getString("hour").toString()
         exerciseMinute = arguments?.getString("minute").toString()
+
+        setHourSpinner()
+        setMinuteSpinner()
 
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
@@ -94,6 +94,7 @@ class ExerciseEditDialogFragment : DialogFragment() {
         }
 
         hourSpinner.adapter = hourAdapter
+        hourSpinner.setSelection(hourList.indexOf(exerciseHour))
 
         hourSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -132,6 +133,7 @@ class ExerciseEditDialogFragment : DialogFragment() {
         }
 
         minuteSpinner.adapter = minuteAdapter
+        minuteSpinner.setSelection(minuteList.indexOf(exerciseMinute))
 
         minuteSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
