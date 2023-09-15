@@ -188,10 +188,45 @@ class SplashViewModel @Inject constructor(
         for (bloodGlucoseRecord in bloodGlucoseList) {
             val bgTime = changeInstantToKST(bloodGlucoseRecord.time)
             val mealType = MEAL_TYPE_INT_TO_STRING_MAP.get(bloodGlucoseRecord.mealType)
-            val relationToMeal = RELATION_TO_MEAL_INT_TO_STRING_MAP.get(bloodGlucoseRecord.relationToMeal)
+            var relationToMeal = RELATION_TO_MEAL_INT_TO_STRING_MAP.get(bloodGlucoseRecord.relationToMeal)
             Log.e("HC-BloodGlucose",bgTime + "시: " + "("+ mealType + ", "+relationToMeal + ") " + bloodGlucoseRecord.level.inMilligramsPerDeciliter.roundToInt() + "mg/dL" )
-            //TODO : 날짜 처리 & 식사 타입 처리
-            healthConnectList.add(HealthConnectRequest(changeInstantToKSTDate(bloodGlucoseRecord.time), "bloodGlucoseRecord.mealType", bloodGlucoseRecord.level.inMilligramsPerDeciliter.roundToInt().toString()  ))
+
+            when(relationToMeal) {
+                "general" -> {
+                    relationToMeal = "기타"
+                }
+                "fasting" -> {
+                    relationToMeal = "공복"
+                }
+                "before_meal" -> {
+                    when (bgTime.substring(0,2).toInt()) {
+                        in 0..10 -> {
+                            relationToMeal = "아침식전"
+                        }
+                        in 11..15 -> {
+                            relationToMeal = "점심식전"
+                        }
+                        in 16..23 -> {
+                            relationToMeal = "저녁식전"
+                        }
+                    }
+                }
+                "after_meal" -> {
+                    when (bgTime.substring(0,2).toInt()) {
+                        in 0..10 -> {
+                            relationToMeal = "아침식후"
+                        }
+                        in 11..15 -> {
+                            relationToMeal = "점심식후"
+                        }
+                        in 16..23 -> {
+                            relationToMeal = "저녁식후"
+                        }
+                    }
+                }
+            }
+
+            healthConnectList.add(HealthConnectRequest(changeInstantToKSTDate(bloodGlucoseRecord.time), relationToMeal ?: "기타", bloodGlucoseRecord.level.inMilligramsPerDeciliter.roundToInt().toString()))
         }
     }
 
