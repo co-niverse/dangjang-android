@@ -6,19 +6,20 @@ import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.dangjang.android.domain.constants.ACCESS_TOKEN_KEY
 import com.dangjang.android.domain.constants.TOKEN_SPF_KEY
 import com.dangjang.android.domain.model.ExerciseListVO
 import com.dangjang.android.presentation.R
 import com.dangjang.android.presentation.databinding.ActivityExerciseBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 
 @AndroidEntryPoint
 class ExerciseActivity : FragmentActivity() {
     private lateinit var binding: ActivityExerciseBinding
     private lateinit var viewModel: HomeViewModel
     private lateinit var exerciseListAdapter: ExerciseListAdapter
-    private var exerciseList = arrayListOf<ExerciseListVO>()
     private var originStep: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,6 +33,12 @@ class ExerciseActivity : FragmentActivity() {
         binding.lifecycleOwner = this
 
         getAccessToken()?.let { viewModel.getExercise(it) }
+
+        lifecycleScope.launchWhenStarted {
+            viewModel.getExerciseFlow.collectLatest {
+                exerciseListAdapter.submitList(viewModel.changeExerciseCaloriesToExerciseList(it.exerciseCalories))
+            }
+        }
 
         binding.stepEditBtn.setOnClickListener {
             binding.stepEditView.visibility = View.VISIBLE
@@ -72,19 +79,12 @@ class ExerciseActivity : FragmentActivity() {
             ExerciseDialogFragment().show(supportFragmentManager, "ExerciseDialogFragment")
         }
 
-        exerciseList.add(ExerciseListVO("걷기","0","0"))
-        exerciseList.add(ExerciseListVO("달리기","0","0"))
-        exerciseList.add(ExerciseListVO("하이킹","0","0"))
-        exerciseList.add(ExerciseListVO("자전거","0","0"))
-        exerciseList.add(ExerciseListVO("수영","0","0"))
-        exerciseList.add(ExerciseListVO("헬스","0","0"))
-
         setExerciseListAdapter()
 
     }
 
     private fun setExerciseListAdapter() {
-        exerciseListAdapter = ExerciseListAdapter(exerciseList)
+        exerciseListAdapter = ExerciseListAdapter(viewModel)
 
         exerciseListAdapter.setMyItemClickListener(object :
             ExerciseListAdapter.MyItemClickListener {

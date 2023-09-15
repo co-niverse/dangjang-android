@@ -20,6 +20,8 @@ import kotlinx.coroutines.flow.update
 import com.dangjang.android.domain.model.GlucoseListVO
 import com.dangjang.android.domain.model.GuidesVO
 import com.dangjang.android.domain.model.EditHealthMetricVO
+import com.dangjang.android.domain.model.ExerciseListVO
+import com.dangjang.android.domain.model.GetExerciseCaloriesVO
 import com.dangjang.android.domain.model.GetExerciseVO
 import com.dangjang.android.domain.model.GetWeightVO
 import com.dangjang.android.domain.model.PostPatchExerciseVO
@@ -84,6 +86,44 @@ class HomeViewModel @Inject constructor(
 
     private val _editExerciseRequest = MutableStateFlow(EditSameHealthMetricRequest())
     val editExerciseRequest = _editExerciseRequest.asStateFlow()
+
+    fun changeExerciseCaloriesToExerciseList(exerciseCalories: List<GetExerciseCaloriesVO>) : List<ExerciseListVO> {
+        var originExerciseList = getExerciseList()
+        var exerciseCaloriesNameList = mutableListOf<ExerciseListVO>()
+        var newExerciseList = mutableListOf<ExerciseListVO>()
+
+        exerciseCalories.forEach {
+            val exerciseHour = (it.exerciseTime / 60).toString()
+            val exerciseMinute = (it.exerciseTime % 60).toString()
+            var exerciseName = when (it.type) {
+                "HEALTH" -> "헬스"
+                "WALK" -> "걷기"
+                "RUN" -> "달리기"
+                "BIKE" -> "자전거"
+                "SWIM" -> "수영"
+                "HIKING" -> "하이킹"
+                else -> "걷기"
+            }
+            exerciseCaloriesNameList.add(ExerciseListVO(exerciseName, exerciseHour, exerciseMinute))
+        }
+
+        originExerciseList.forEach { originExerciseItem ->
+            var newName = originExerciseItem.exerciseName
+            var newHour = originExerciseItem.exerciseHour
+            var newMinute = originExerciseItem.exerciseMinute
+
+            exerciseCaloriesNameList.forEach { exerciseCaloriesItem ->
+                if (originExerciseItem.exerciseName == exerciseCaloriesItem.exerciseName) {
+                    newHour = exerciseCaloriesItem.exerciseHour
+                    newMinute = exerciseCaloriesItem.exerciseMinute
+                }
+            }
+
+            newExerciseList.add(ExerciseListVO(newName, newHour, newMinute))
+        }
+
+        return newExerciseList
+    }
 
     //체중
     fun getWeight(accessToken: String) {
@@ -354,6 +394,19 @@ class HomeViewModel @Inject constructor(
             glucoseTimeList.add("기타")
             _glucoseTimeList.emit(glucoseTimeList)
         }
+    }
+
+    private fun getExerciseList(): MutableList<ExerciseListVO> {
+        var exerciseList = mutableListOf<ExerciseListVO>()
+
+        exerciseList.add(ExerciseListVO("걷기","0","0"))
+        exerciseList.add(ExerciseListVO("달리기","0","0"))
+        exerciseList.add(ExerciseListVO("하이킹","0","0"))
+        exerciseList.add(ExerciseListVO("자전거","0","0"))
+        exerciseList.add(ExerciseListVO("수영","0","0"))
+        exerciseList.add(ExerciseListVO("헬스","0","0"))
+
+        return exerciseList
     }
 
     fun addBackgroundToTodayGuides(todayGuidesVO: List<TodayGuidesVO>): List<GlucoseGuideVO> {
