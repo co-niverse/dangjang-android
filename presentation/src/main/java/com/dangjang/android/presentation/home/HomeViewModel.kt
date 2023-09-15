@@ -209,7 +209,7 @@ class HomeViewModel @Inject constructor(
                 }
                 .handleErrors()
                 .collect{
-                    //TODO : get Exercise
+                    getExercise(accessToken)
                 }
         }
     }
@@ -234,7 +234,7 @@ class HomeViewModel @Inject constructor(
                 }
                 .handleErrors()
                 .collect{
-                    //TODO : get Exercise
+                    getExercise(accessToken)
                 }
         }
     }
