@@ -348,10 +348,12 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="60dp"
                         android:layout_marginTop="16dp"
+                        android:layout_marginBottom="16dp"
                         android:text=" 오늘 "
                         android:textColor="@color/black"
                         android:textSize="18sp"
                         android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/exercise_feedback_title_tv" />
 
@@ -387,6 +389,7 @@
                         android:text="걷기 110kcal"
                         android:textColor="@color/black"
                         android:textSize="16sp"
+                        android:visibility="gone"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/exercise_feedback_content_front_tv" />
@@ -396,14 +399,68 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
-                        android:layout_marginBottom="32dp"
                         android:text="달리기 98kcal"
                         android:textColor="@color/black"
                         android:textSize="16sp"
-                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:visibility="gone"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/exercise_step_kcal_tv" />
+
+                    <TextView
+                        android:id="@+id/exercise_hiking_kcal_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="하이킹 98kcal"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:visibility="gone"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/exercise_running_kcal_tv" />
+
+                    <TextView
+                        android:id="@+id/exercise_bike_kcal_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="자전거 98kcal"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:visibility="gone"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/exercise_hiking_kcal_tv" />
+
+                    <TextView
+                        android:id="@+id/exercise_swim_kcal_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="수영 98kcal"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:visibility="gone"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/exercise_bike_kcal_tv" />
+
+                    <TextView
+                        android:id="@+id/exercise_health_kcal_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginBottom="16dp"
+                        android:text="헬스 98kcal"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:visibility="gone"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/exercise_swim_kcal_tv" />
+
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 

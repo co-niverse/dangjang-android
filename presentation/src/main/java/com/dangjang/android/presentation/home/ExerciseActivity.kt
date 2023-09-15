@@ -37,6 +37,40 @@ class ExerciseActivity : FragmentActivity() {
         lifecycleScope.launchWhenStarted {
             viewModel.getExerciseFlow.collectLatest {
                 exerciseListAdapter.submitList(viewModel.changeExerciseCaloriesToExerciseList(it.exerciseCalories))
+
+                var totalCalorie = 0
+
+                it.exerciseCalories.forEach {
+                    when (it.type) {
+                        "WALK" -> {
+                            binding.exerciseStepKcalTv.visibility = View.VISIBLE
+                            binding.exerciseStepKcalTv.text = "걷기 ${it.calorie}kcal"
+                        }
+                        "RUN" -> {
+                            binding.exerciseRunningKcalTv.visibility = View.VISIBLE
+                            binding.exerciseRunningKcalTv.text = "달리기 ${it.calorie}kcal"
+                        }
+                        "HIKE" -> {
+                            binding.exerciseHikingKcalTv.visibility = View.VISIBLE
+                            binding.exerciseHikingKcalTv.text = "하이킹 ${it.calorie}kcal"
+                        }
+                        "BIKE" -> {
+                            binding.exerciseBikeKcalTv.visibility = View.VISIBLE
+                            binding.exerciseBikeKcalTv.text = "자전거 ${it.calorie}kcal"
+                        }
+                        "SWIM" -> {
+                            binding.exerciseSwimKcalTv.visibility = View.VISIBLE
+                            binding.exerciseSwimKcalTv.text = "수영 ${it.calorie}kcal"
+                        }
+                        "HEALTH" -> {
+                            binding.exerciseHealthKcalTv.visibility = View.VISIBLE
+                            binding.exerciseHealthKcalTv.text = "헬스 ${it.calorie}kcal"
+                        }
+                    }
+                    totalCalorie += it.calorie
+                }
+
+                binding.exerciseFeedbackKcalTv.text = "총 ${totalCalorie}kcal"
             }
         }
 
