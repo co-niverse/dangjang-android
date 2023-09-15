@@ -54,7 +54,7 @@ class SplashViewModel @Inject constructor(
 
     private val healthConnectClient by lazy { HealthConnectClient.getOrCreate(getApplication<Application>().applicationContext) }
 
-    private val healthConnectList = mutableListOf<HealthConnectRequest>()
+    private var healthConnectList = mutableListOf<HealthConnectRequest>()
 
     lateinit var weightList: List<WeightRecord>
     lateinit var stepList: List<StepsRecord>
@@ -91,16 +91,34 @@ class SplashViewModel @Inject constructor(
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun getHealthConnect(accessToken: String) {
+    fun getWeightHealthConnect() {
         viewModelScope.launch {
+            //TODO: 여기가 문제임. 이 함수들이 전부 다 실행되지 않는다.
             tryWithWeightPermissionsCheck()
-            tryWithBloodGlucosePermissionsCheck()
-            tryWithStepsPermissionCheck()
-            tryWithExerciseSessionPermissionCheck()
-            //TODO : 받아온 값 서버에 전송
-            postHealthConnectData(accessToken, PostHealthConnectRequest(healthConnectList))
         }
     }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun getGlucoseHealthConnect() {
+        viewModelScope.launch {
+            tryWithBloodGlucosePermissionsCheck()
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun getStepsHealthConnect() {
+        viewModelScope.launch {
+            tryWithStepsPermissionCheck()
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun getExerciseHealthConnect() {
+        viewModelScope.launch {
+            tryWithExerciseSessionPermissionCheck()
+        }
+    }
+
     private suspend fun tryWithWeightPermissionsCheck() {
         weightPermissionGranted = hasAllPermissions(weightPermission)
         if (weightPermissionGranted) {
@@ -123,6 +141,7 @@ class SplashViewModel @Inject constructor(
         stepsPermissionGranted = hasAllPermissions(stepsPermission)
         if (stepsPermissionGranted) {
             readSteps()
+            Log.e("실행 되는지","실행 되는가 ??")
         } else {
             Log.e("GRANT-ERROR","걸음수 권한이 허용되지 않았습니다.")
         }
@@ -149,7 +168,7 @@ class SplashViewModel @Inject constructor(
         for (weightRecord in weightList) {
             Log.e("HC-Weight",weightRecord.weight.toString())
             //TODO : 날짜 처리
-            healthConnectList.add(HealthConnectRequest("weightRecord.time","체중",weightRecord.weight.toString()))
+            healthConnectList.add(HealthConnectRequest(changeInstantToKSTDate(weightRecord.time),"체중",weightRecord.weight.toString()))
         }
     }
 
@@ -172,7 +191,7 @@ class SplashViewModel @Inject constructor(
             val relationToMeal = RELATION_TO_MEAL_INT_TO_STRING_MAP.get(bloodGlucoseRecord.relationToMeal)
             Log.e("HC-BloodGlucose",bgTime + "시: " + "("+ mealType + ", "+relationToMeal + ") " + bloodGlucoseRecord.level.inMilligramsPerDeciliter.roundToInt() + "mg/dL" )
             //TODO : 날짜 처리 & 식사 타입 처리
-            healthConnectList.add(HealthConnectRequest("bloodGlucoseRecord.time", "bloodGlucoseRecord.mealType", bloodGlucoseRecord.level.inMilligramsPerDeciliter.roundToInt().toString()  ))
+            healthConnectList.add(HealthConnectRequest(changeInstantToKSTDate(bloodGlucoseRecord.time), "bloodGlucoseRecord.mealType", bloodGlucoseRecord.level.inMilligramsPerDeciliter.roundToInt().toString()  ))
         }
     }
 
@@ -192,7 +211,7 @@ class SplashViewModel @Inject constructor(
         for (stepsRecord in stepList) {
             Log.e("HC-Steps",stepsRecord.count.toString()+"보")
             //TODO : 날짜 처리
-            healthConnectList.add(HealthConnectRequest("stepsRecord.startTime","걸음수",stepsRecord.count.toString()))
+            healthConnectList.add(HealthConnectRequest(changeInstantToKSTDate(stepsRecord.startTime),"걸음수",stepsRecord.count.toString()))
         }
     }
 
@@ -216,7 +235,7 @@ class SplashViewModel @Inject constructor(
             Log.e("HC-Exercise", "운동 종류: $exerciseName 시간: $exerciseStartTime to $exerciseEndTime")
 
             //TODO : 날짜 처리 & 운동명 처리 & 운동시간 처리
-            healthConnectList.add(HealthConnectRequest("exerciseRecord.startTime","exerciseRecord.title","exerciseRecord.endTime - exerciseRecord.startTime"))
+            healthConnectList.add(HealthConnectRequest(changeInstantToKSTDate(exerciseRecord.startTime),"exerciseRecord.title","exerciseRecord.endTime - exerciseRecord.startTime"))
         }
     }
 
@@ -248,9 +267,9 @@ class SplashViewModel @Inject constructor(
         }
     }
 
-    fun postHealthConnectData(accessToken: String, postHealthConnectRequest: PostHealthConnectRequest) {
+    fun postHealthConnectData(accessToken: String) {
         viewModelScope.launch {
-            splashUseCase.postHealthConnect(accessToken, postHealthConnectRequest)
+            splashUseCase.postHealthConnect(accessToken, PostHealthConnectRequest(healthConnectList))
                 .handleErrors()
                 .collect()
         }
@@ -260,11 +279,17 @@ class SplashViewModel @Inject constructor(
         catch { e -> Toast.makeText(getApplication<Application>().applicationContext,e.message,Toast.LENGTH_SHORT).show() }
 
     private fun getTodayStartTime(): Instant {
-        return ZonedDateTime.now().truncatedTo(ChronoUnit.DAYS).toInstant()
+        val koreaZoneId = ZoneId.of("Asia/Seoul")
+        val koreaTime = ZonedDateTime.now().truncatedTo(ChronoUnit.DAYS).toInstant().atZone(koreaZoneId)
+
+        return koreaTime.toInstant()
     }
 
     private fun getNowTime(): Instant {
-        return ZonedDateTime.now().toInstant()
+        val koreaZoneId = ZoneId.of("Asia/Seoul")
+        val koreaTime = ZonedDateTime.now().toInstant().atZone(koreaZoneId)
+
+        return koreaTime.toInstant()
     }
 
 //    private fun getStartTime(): Instant? {
@@ -287,5 +312,14 @@ class SplashViewModel @Inject constructor(
             e.printStackTrace()
             null
         }
+    }
+
+    private fun changeInstantToKSTDate(instant: Instant): String {
+        val koreaZoneId = ZoneId.of("Asia/Seoul")
+        val koreaTime = instant.atZone(koreaZoneId)
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+        val formattedDateTime = koreaTime.format(formatter)
+
+        return formattedDateTime
     }
 }

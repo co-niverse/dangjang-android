@@ -31,7 +31,7 @@ class SplashActivity : AppCompatActivity() {
         Log.e("sp",provider.toString())
 
         if (provider == KAKAO) {
-            startActivity(Intent(this, MainActivity::class.java))
+            startActivity(Intent(this, LoginActivity::class.java))
             finish()
         } else if (provider == NAVER) {
             startActivity(Intent(this, MainActivity::class.java))
@@ -50,7 +50,11 @@ class SplashActivity : AppCompatActivity() {
         if (healthConnect == "true") {
             if (viewModel.healthConnectFlow.value.isAvaiable == HEALTH_CONNECT_INSTALLED) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    getAccessToken()?.let { viewModel.getHealthConnect(it) }
+                    viewModel.getWeightHealthConnect()
+                    viewModel.getGlucoseHealthConnect()
+                    viewModel.getStepsHealthConnect()
+                    viewModel.getExerciseHealthConnect()
+                    getAccessToken()?.let { viewModel.postHealthConnectData(it) }
                 }
             }
         }
