@@ -38,32 +38,34 @@ class ChartViewModel @Inject constructor(
     private val _endDate = MutableStateFlow(String())
     val endDate = _endDate.asStateFlow()
 
-    fun getGlucoseMinList(): ArrayList<BarEntry> {
-        var glucoseMinList = ArrayList<BarEntry>()
-        var index = 0f
-        getChartFlow.value.bloodSugars.forEach {
-            var date = getAmountDate(startDate.value, (index).toInt())
-            if (it.date == date) {
-                glucoseMinList.add(BarEntry(index, it.minUnit.toFloat()))
-            } else {
-                glucoseMinList.add(BarEntry(index, 0f))
+    fun getGlucoseMinList(): MutableList<BarEntry> {
+        var glucoseMinList = mutableListOf<BarEntry>()
+
+        for (i in 0..6) {
+            var date = getAmountDate(startDate.value, i)
+            getChartFlow.value.bloodSugars.forEach {
+                if (it.date == date) {
+                    glucoseMinList.add(BarEntry(i.toFloat(), it.minUnit.toFloat()))
+                } else {
+                    glucoseMinList.add(BarEntry(i.toFloat(), 0f))
+                }
             }
-            index++
         }
         return glucoseMinList
     }
 
-    fun getGlucoseMaxList(): ArrayList<BarEntry> {
-        var glucoseMaxList = ArrayList<BarEntry>()
-        var index = 0f
-        getChartFlow.value.bloodSugars.forEach {
-            var date = getAmountDate(startDate.value, (index).toInt())
-            if (it.date == date) {
-                glucoseMaxList.add(BarEntry(index, it.maxUnit.toFloat()))
-            } else {
-                glucoseMaxList.add(BarEntry(index, 0f))
+    fun getGlucoseMaxList(): MutableList<BarEntry> {
+        var glucoseMaxList = mutableListOf<BarEntry>()
+
+        for (i in 0..6) {
+            var date = getAmountDate(startDate.value, i)
+            getChartFlow.value.bloodSugars.forEach {
+                if (it.date == date) {
+                    glucoseMaxList.add(BarEntry(i.toFloat(), it.maxUnit.toFloat()))
+                } else {
+                    glucoseMaxList.add(BarEntry(i.toFloat(), 0f))
+                }
             }
-            index++
         }
         return glucoseMaxList
     }
@@ -122,6 +124,7 @@ class ChartViewModel @Inject constructor(
             index++
             date = getAmountDate(startDate.value, index)
         }
+        dateList.add(date.substring(8,10)+"일")
         return dateList
     }
 
