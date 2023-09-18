@@ -7,6 +7,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.dangjang.android.domain.model.GetChartVO
 import com.dangjang.android.domain.usecase.ChartUseCase
+import com.github.mikephil.charting.data.BarEntry
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -35,6 +36,36 @@ class ChartViewModel @Inject constructor(
 
     private val _endDate = MutableStateFlow(String())
     val endDate = _endDate.asStateFlow()
+
+    fun getGlucoseMinList(): ArrayList<BarEntry> {
+        var glucoseMinList = ArrayList<BarEntry>()
+        var index = 0f
+        getChartFlow.value.bloodSugars.forEach {
+            var date = getAmountDate(startDate.value, (index).toInt())
+            if (it.date == date) {
+                glucoseMinList.add(BarEntry(index, it.minUnit.toFloat()))
+            } else {
+                glucoseMinList.add(BarEntry(index, 0f))
+            }
+            index++
+        }
+        return glucoseMinList
+    }
+
+    fun getGlucoseMaxList(): ArrayList<BarEntry> {
+        var glucoseMaxList = ArrayList<BarEntry>()
+        var index = 0f
+        getChartFlow.value.bloodSugars.forEach {
+            var date = getAmountDate(startDate.value, (index).toInt())
+            if (it.date == date) {
+                glucoseMaxList.add(BarEntry(index, it.maxUnit.toFloat()))
+            } else {
+                glucoseMaxList.add(BarEntry(index, 0f))
+            }
+            index++
+        }
+        return glucoseMaxList
+    }
 
     fun getChart(accessToken: String) {
         viewModelScope.launch {
@@ -83,9 +114,9 @@ class ChartViewModel @Inject constructor(
         return format.format(currentTime)
     }
 
-    private fun getAmountDate(endDate: String, amount: Int) : String {
+    private fun getAmountDate(originDate: String, amount: Int) : String {
         val format = SimpleDateFormat("yyyy-MM-dd")
-        val date = format.parse(endDate)
+        val date = format.parse(originDate)
         val calendar = Calendar.getInstance()
         calendar.time = date
         calendar.add(Calendar.DATE, amount)
