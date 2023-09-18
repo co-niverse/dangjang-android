@@ -67,6 +67,18 @@ class ChartViewModel @Inject constructor(
         return glucoseMaxList
     }
 
+    fun getDateList(): ArrayList<String> {
+        var dateList = ArrayList<String>()
+        var index = 0
+        var date = getAmountDate(startDate.value, index)
+        while (date != endDate.value) {
+            dateList.add(date.substring(8,10)+"일")
+            index++
+            date = getAmountDate(startDate.value, index)
+        }
+        return dateList
+    }
+
     fun getChart(accessToken: String) {
         viewModelScope.launch {
             getChartUseCase.getChart("Bearer $accessToken", startDate.value, endDate.value)

@@ -92,7 +92,7 @@ class ChartFragment : BaseFragment<FragmentChartBinding>(R.layout.fragment_chart
         xAxis.textColor = Color.BLACK
         xAxis.setDrawAxisLine(false)
         xAxis.setDrawGridLines(false)
-        xAxis.valueFormatter = LabelCustomFormatter()
+        xAxis.valueFormatter = LabelCustomFormatter(viewModel.getDateList())
 
         val leftAxis: YAxis = barChart.axisLeft
         leftAxis.setDrawAxisLine(false)
@@ -131,21 +131,12 @@ class ChartFragment : BaseFragment<FragmentChartBinding>(R.layout.fragment_chart
         barChart.invalidate()
     }
 
-    class LabelCustomFormatter : ValueFormatter() {
+    class LabelCustomFormatter(glucoseDateList: ArrayList<String>) : ValueFormatter() {
         private var index = 0
-
+        private var glucoseDateList = glucoseDateList
         override fun getFormattedValue(value: Float): String {
             index = value.toInt()
-            return when (index) {
-                0 -> "월"
-                1 -> "화"
-                2 -> "수"
-                3 -> "목"
-                4 -> "금"
-                5 -> "토"
-                6 -> "일"
-                else -> ""
-            }
+            return glucoseDateList[index]
         }
 
         override fun getBarStackedLabel(value: Float, stackedEntry: BarEntry?): String {
