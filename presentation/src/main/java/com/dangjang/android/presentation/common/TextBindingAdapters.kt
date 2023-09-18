@@ -11,3 +11,12 @@ fun dateToString(view: TextView, date: String?) {
         }
     }
 }
+
+@BindingAdapter("dateToMonthDay")
+fun dateToMonthDay(view: TextView, date: String?) {
+    if (date != null) {
+        if (date.isNotEmpty()) {
+            view.text = date.substring(5, 7) + "/" + date.substring(8, 10)
+        }
+    }
+}
