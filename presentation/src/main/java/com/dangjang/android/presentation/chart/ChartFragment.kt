@@ -51,10 +51,12 @@ class ChartFragment : BaseFragment<FragmentChartBinding>(R.layout.fragment_chart
 
         binding.chartAddIv.setOnClickListener {
             viewModel.addStartAndEndDate()
+            getAccessToken()?.let { viewModel.getChart(it) }
         }
 
         binding.chartSubtractIv.setOnClickListener {
             viewModel.subtractStartAndEndDate()
+            getAccessToken()?.let { viewModel.getChart(it) }
         }
 
         initBarChart(binding.glucoseChart)
