@@ -340,7 +340,7 @@ class SplashViewModel @Inject constructor(
 
     fun postHealthConnectData(accessToken: String) {
         viewModelScope.launch {
-            splashUseCase.postHealthConnect(accessToken, PostHealthConnectRequest(healthConnectList))
+            splashUseCase.postHealthConnect("Bearer $accessToken", PostHealthConnectRequest(healthConnectList))
                 .handleErrors()
                 .collect()
         }
