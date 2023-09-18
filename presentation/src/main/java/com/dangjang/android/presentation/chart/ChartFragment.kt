@@ -1,9 +1,14 @@
 package com.dangjang.android.presentation.chart
 
+import android.content.Context
 import android.graphics.Color
+import android.util.Log
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.dangjang.android.common_ui.BaseFragment
+import com.dangjang.android.domain.constants.ACCESS_TOKEN_KEY
+import com.dangjang.android.domain.constants.TOKEN_SPF_KEY
 import com.dangjang.android.presentation.R
 import com.dangjang.android.presentation.databinding.FragmentChartBinding
 import com.github.mikephil.charting.charts.BarChart
@@ -19,6 +24,7 @@ import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.ValueFormatter
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 
 @AndroidEntryPoint
 class ChartFragment : BaseFragment<FragmentChartBinding>(R.layout.fragment_chart) {
@@ -32,6 +38,14 @@ class ChartFragment : BaseFragment<FragmentChartBinding>(R.layout.fragment_chart
     }
     override fun onStart() {
         super.onStart()
+
+        getAccessToken()?.let { viewModel.getChart(it, "2021-08-01", "2021-08-31") }
+
+        lifecycleScope.launchWhenStarted {
+            viewModel.getChartFlow.collectLatest {
+                Log.e("건강차트 조회 test", it.toString())
+            }
+        }
 
         initBarChart(binding.glucoseChart)
         setData(binding.glucoseChart)
@@ -246,5 +260,10 @@ class ChartFragment : BaseFragment<FragmentChartBinding>(R.layout.fragment_chart
 
         lineChart.data = lineData
         lineChart.invalidate()
+    }
+
+    private fun getAccessToken(): String? {
+        val sharedPreferences = requireContext().getSharedPreferences(TOKEN_SPF_KEY, Context.MODE_PRIVATE)
+        return sharedPreferences.getString(ACCESS_TOKEN_KEY, null)
     }
 }
