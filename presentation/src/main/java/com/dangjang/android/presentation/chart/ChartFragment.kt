@@ -41,8 +41,9 @@ class ChartFragment : BaseFragment<FragmentChartBinding>(R.layout.fragment_chart
 
         viewModel.setStartAndEndDate()
 
+        getAccessToken()?.let { viewModel.getChart(it) }
+
         lifecycleScope.launchWhenStarted {
-            getAccessToken()?.let { viewModel.getChart(it) }
             viewModel.getChartFlow.collectLatest {
                 initBarChart(binding.glucoseChart)
                 setGlucoseChartData(binding.glucoseChart)
