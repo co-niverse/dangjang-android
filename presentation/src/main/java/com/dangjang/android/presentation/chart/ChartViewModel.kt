@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.dangjang.android.domain.model.GetChartVO
 import com.dangjang.android.domain.usecase.ChartUseCase
 import com.github.mikephil.charting.data.BarEntry
+import com.github.mikephil.charting.data.Entry
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -65,6 +66,21 @@ class ChartViewModel @Inject constructor(
             index++
         }
         return glucoseMaxList
+    }
+
+    fun getWeightList(): ArrayList<Entry> {
+        var weightList = ArrayList<Entry>()
+        var index = 0f
+        getChartFlow.value.weights.forEach {
+            var date = getAmountDate(startDate.value, (index).toInt())
+            if (it.date == date) {
+                weightList.add(Entry(index, it.unit.toFloat()))
+            } else {
+                weightList.add(Entry(index, 0f))
+            }
+            index++
+        }
+        return weightList
     }
 
     fun getDateList(): ArrayList<String> {
