@@ -38,6 +38,7 @@ class ChartFragment : BaseFragment<FragmentChartBinding>(R.layout.fragment_chart
     }
     override fun onStart() {
         super.onStart()
+        binding.lifecycleOwner = this
 
         getAccessToken()?.let { viewModel.getChart(it, "2021-08-01", "2021-08-31") }
 
@@ -45,6 +46,16 @@ class ChartFragment : BaseFragment<FragmentChartBinding>(R.layout.fragment_chart
             viewModel.getChartFlow.collectLatest {
                 Log.e("건강차트 조회 test", it.toString())
             }
+        }
+
+        viewModel.setStartAndEndDate()
+
+        binding.chartAddIv.setOnClickListener {
+            viewModel.addStartAndEndDate()
+        }
+
+        binding.chartSubtractIv.setOnClickListener {
+            viewModel.subtractStartAndEndDate()
         }
 
         initBarChart(binding.glucoseChart)
