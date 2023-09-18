@@ -39,6 +39,7 @@ interface RepositoryModule {
         homeRepositoryImpl: HomeRepositoryImpl
     ) : HomeRepository
 
+    @Binds
     fun bindsChartRepository(
         chartRepositoryImpl: ChartRepositoryImpl
     ) : ChartRepository
