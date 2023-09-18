@@ -1,9 +1,14 @@
 package com.dangjang.android.presentation.chart
 
+import android.content.Context
 import android.graphics.Color
+import android.util.Log
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.dangjang.android.common_ui.BaseFragment
+import com.dangjang.android.domain.constants.ACCESS_TOKEN_KEY
+import com.dangjang.android.domain.constants.TOKEN_SPF_KEY
 import com.dangjang.android.presentation.R
 import com.dangjang.android.presentation.databinding.FragmentChartBinding
 import com.github.mikephil.charting.charts.BarChart
@@ -14,11 +19,11 @@ import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
-import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.ValueFormatter
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 
 @AndroidEntryPoint
 class ChartFragment : BaseFragment<FragmentChartBinding>(R.layout.fragment_chart) {
@@ -32,127 +37,106 @@ class ChartFragment : BaseFragment<FragmentChartBinding>(R.layout.fragment_chart
     }
     override fun onStart() {
         super.onStart()
+        binding.lifecycleOwner = this
 
-        initBarChart(binding.glucoseChart)
-        setData(binding.glucoseChart)
+        viewModel.setStartAndEndDate()
 
-        initLineChart(binding.weightChart)
-        setLineChartData(binding.weightChart)
+        getAccessToken()?.let { viewModel.getChart(it) }
 
-        initLineChart(binding.stepChart)
-        setLineChartData(binding.stepChart)
+        lifecycleScope.launchWhenStarted {
+            viewModel.getChartFlow.collectLatest {
+                initBarChart(binding.glucoseChart)
+                setGlucoseChartData(binding.glucoseChart)
 
-        initLineChart(binding.exerciseChart)
-        setLineChartData(binding.exerciseChart)
+                initLineChart(binding.weightChart)
+                setWeightChartData(binding.weightChart)
+
+                initLineChart(binding.stepChart)
+                setStepChartData(binding.stepChart)
+
+                initLineChart(binding.exerciseChart)
+                setExerciseChartData(binding.exerciseChart)
+            }
+        }
+
+        binding.chartAddIv.setOnClickListener {
+            viewModel.addStartAndEndDate()
+            getAccessToken()?.let { viewModel.getChart(it) }
+        }
+
+        binding.chartSubtractIv.setOnClickListener {
+            viewModel.subtractStartAndEndDate()
+            getAccessToken()?.let { viewModel.getChart(it) }
+        }
+
     }
 
-    // 바 차트 설정
     private fun initBarChart(barChart: BarChart) {
-        // 차트 회색 배경 설정 (default = false)
         barChart.setDrawGridBackground(false)
-        // 막대 그림자 설정 (default = false)
         barChart.setDrawBarShadow(false)
-        // 차트 테두리 설정 (default = false)
         barChart.setDrawBorders(false)
 
         val description = Description()
-        // 오른쪽 하단 모서리 설명 레이블 텍스트 표시 (default = false)
         description.isEnabled = false
         barChart.description = description
 
-        // 터치 유무
         barChart.setTouchEnabled(false)
-
-        // 차트 범례
         barChart.legend.isEnabled = false
 
-        // X, Y 바의 애니메이션 효과
         barChart.animateY(1000)
         barChart.animateX(1000)
 
-        // 바텀 좌표 값
         val xAxis: XAxis = barChart.xAxis
-        // x축 위치 설정
         xAxis.position = XAxis.XAxisPosition.BOTTOM
-        // 그리드 선 수평 거리 설정
         xAxis.granularity = 1f
-        // x축 텍스트 컬러 설정
         xAxis.textColor = Color.BLACK
-        // x축 선 설정 (default = true)
         xAxis.setDrawAxisLine(false)
-        // 격자선 설정 (default = true)
         xAxis.setDrawGridLines(false)
-        // 라벨 포맷 설정
-        xAxis.valueFormatter = LabelCustomFormatter()
+        xAxis.valueFormatter = LabelCustomFormatter(viewModel.getDateList())
 
         val leftAxis: YAxis = barChart.axisLeft
-        // 좌측 선 설정 (default = true)
         leftAxis.setDrawAxisLine(false)
         leftAxis.setDrawGridLines(false)
-        // 좌측 텍스트 컬러 설정
         leftAxis.textColor = Color.BLACK
 
         val rightAxis: YAxis = barChart.axisRight
-        // 우측 선 설정 (default = true)
         rightAxis.setDrawAxisLine(false)
         rightAxis.setDrawGridLines(false)
         rightAxis.setDrawLabels(false)
-
     }
 
     // 차트 데이터 설정
-    private fun setData(barChart: BarChart) {
-        // Zoom In / Out 가능 여부 설정
+    private fun setGlucoseChartData(barChart: BarChart) {
         barChart.setScaleEnabled(false)
-
-        val valueList = ArrayList<BarEntry>()
         val title = "혈당"
-        // 임의 데이터
-        for (i in 0 until 7) {
-            valueList.add(BarEntry(i.toFloat(), i * 100f + 10f))
-        }
 
-        val barDataSet = BarDataSet(valueList, title)
-        // 바 색상 설정 (ColorTemplate.LIBERTY_COLORS)
-        barDataSet.setColors(
+        //최소값
+        val minGlucoseDataSet = BarDataSet(viewModel.getGlucoseMinList(), title)
+        minGlucoseDataSet.barBorderWidth = 2f
+        minGlucoseDataSet.barBorderColor = Color.WHITE
+        minGlucoseDataSet.color = Color.WHITE
+
+        //최대값
+        val maxGlucoseDataSet = BarDataSet(viewModel.getGlucoseMaxList(), title)
+        maxGlucoseDataSet.setColors(
             ContextCompat.getColor(requireContext(), R.color.green)
         )
 
-        val valueList2 = ArrayList<BarEntry>()
-        // 임의 데이터
-        for (i in 0 until 7) {
-            valueList2.add(BarEntry(i.toFloat(), i * 50f + 20f))
-        }
-
-        val barDataSet2 = BarDataSet(valueList2, title)
-        barDataSet2.barBorderWidth = 2f
-        barDataSet2.barBorderColor = Color.WHITE
-        barDataSet2.color = Color.WHITE
-
+        // 차트에 적용
         val barData = BarData()
-        barData.addDataSet(barDataSet)
-        barData.addDataSet(barDataSet2)
+        barData.addDataSet(maxGlucoseDataSet)
+        barData.addDataSet(minGlucoseDataSet)
         barData.barWidth = 0.5f
-
         barChart.data = barData
         barChart.invalidate()
     }
 
-    class LabelCustomFormatter : ValueFormatter() {
+    class LabelCustomFormatter(glucoseDateList: ArrayList<String>) : ValueFormatter() {
         private var index = 0
-
+        private var glucoseDateList = glucoseDateList
         override fun getFormattedValue(value: Float): String {
             index = value.toInt()
-            return when (index) {
-                0 -> "월"
-                1 -> "화"
-                2 -> "수"
-                3 -> "목"
-                4 -> "금"
-                5 -> "토"
-                6 -> "일"
-                else -> ""
-            }
+            return glucoseDateList[index]
         }
 
         override fun getBarStackedLabel(value: Float, stackedEntry: BarEntry?): String {
@@ -162,89 +146,106 @@ class ChartFragment : BaseFragment<FragmentChartBinding>(R.layout.fragment_chart
 
     // line 차트 설정
     private fun initLineChart(lineChart: LineChart) {
-        // 차트 회색 배경 설정 (default = false)
         lineChart.setDrawGridBackground(false)
-        // 차트 테두리 설정 (default = false)
         lineChart.setDrawBorders(false)
 
         val description = Description()
-        // 오른쪽 하단 모서리 설명 레이블 텍스트 표시 (default = false)
         description.isEnabled = false
         lineChart.description = description
 
-        // 터치 유무
         lineChart.setTouchEnabled(false)
-
-        // 차트 범례
         lineChart.legend.isEnabled = false
 
-        // X, Y 바의 애니메이션 효과
-        lineChart.animateY(1000)
-        lineChart.animateX(1000)
-
-        // 바텀 좌표 값
         val xAxis: XAxis = lineChart.xAxis
-        // x축 위치 설정
         xAxis.position = XAxis.XAxisPosition.BOTTOM
-        // 그리드 선 수평 거리 설정
         xAxis.granularity = 1f
-        // x축 텍스트 컬러 설정
         xAxis.textColor = Color.BLACK
-        // x축 선 설정 (default = true)
         xAxis.setDrawAxisLine(false)
-        // 격자선 설정 (default = true)
         xAxis.setDrawGridLines(false)
-        // 라벨 포맷 설정
-        xAxis.valueFormatter = LabelCustomFormatter()
+        xAxis.valueFormatter = LabelCustomFormatter(viewModel.getDateList())
 
         val leftAxis: YAxis = lineChart.axisLeft
-        // 좌측 선 설정 (default = true)
         leftAxis.setDrawAxisLine(false)
         leftAxis.setDrawGridLines(false)
         leftAxis.spaceTop = 30f
         leftAxis.spaceBottom = 30f
-        // 좌측 텍스트 컬러 설정
         leftAxis.textColor = Color.BLACK
 
         val rightAxis: YAxis = lineChart.axisRight
-        // 우측 선 설정 (default = true)
         rightAxis.setDrawAxisLine(false)
         rightAxis.setDrawGridLines(false)
         rightAxis.setDrawLabels(false)
     }
 
     // line 차트 데이터 설정
-    private fun setLineChartData(lineChart: LineChart) {
-        // Zoom In / Out 가능 여부 설정
-        lineChart.setScaleEnabled(false)
-
-        val valueList = ArrayList<Entry>()
+    private fun setWeightChartData(weightChart: LineChart) {
         val title = "체중"
-        // 임의 데이터
-            valueList.add(Entry(0f, 61.5f))
-            valueList.add(Entry(1f, 60f))
-            valueList.add(Entry(2f, 60.5f))
-            valueList.add(Entry(3f, 60f))
-            valueList.add(Entry(4f, 61f))
-            valueList.add(Entry(5f, 61.2f))
-            valueList.add(Entry(6f, 61.5f))
+        weightChart.setScaleEnabled(false)
+        val weightDataSet = LineDataSet(viewModel.getWeightList(), title)
 
-        val lineDataSet = LineDataSet(valueList, title)
-        // 바 색상 설정 (ColorTemplate.LIBERTY_COLORS)
-        lineDataSet.setColors(
+        weightDataSet.setColors(
             ContextCompat.getColor(requireContext(), R.color.green)
         )
-        lineDataSet.lineWidth = 3f
-        lineDataSet.circleColors = listOf(
+        weightDataSet.lineWidth = 3f
+        weightDataSet.circleColors = listOf(
             ContextCompat.getColor(requireContext(), R.color.green)
         )
-        lineDataSet.mode = LineDataSet.Mode.CUBIC_BEZIER
-        lineDataSet.cubicIntensity = 0.2f
+        weightDataSet.mode = LineDataSet.Mode.CUBIC_BEZIER
+        weightDataSet.cubicIntensity = 0.2f
 
-        val lineData = LineData()
-        lineData.addDataSet(lineDataSet)
+        val weightData = LineData()
+        weightData.addDataSet(weightDataSet)
 
-        lineChart.data = lineData
-        lineChart.invalidate()
+        weightChart.data = weightData
+        weightChart.invalidate()
+    }
+
+    private fun setStepChartData(stepChart: LineChart) {
+        val title = "걸음수"
+        stepChart.setScaleEnabled(false)
+        val stepDataSet = LineDataSet(viewModel.getStepList(), title)
+
+        stepDataSet.setColors(
+            ContextCompat.getColor(requireContext(), R.color.green)
+        )
+        stepDataSet.lineWidth = 3f
+        stepDataSet.circleColors = listOf(
+            ContextCompat.getColor(requireContext(), R.color.green)
+        )
+        stepDataSet.mode = LineDataSet.Mode.CUBIC_BEZIER
+        stepDataSet.cubicIntensity = 0.2f
+
+        val stepData = LineData()
+        stepData.addDataSet(stepDataSet)
+
+        stepChart.data = stepData
+        stepChart.invalidate()
+    }
+
+    private fun setExerciseChartData(exerciseChart: LineChart) {
+        val title = "운동 소모 칼로리"
+        exerciseChart.setScaleEnabled(false)
+        val exerciseDataSet = LineDataSet(viewModel.getExerciseList(), title)
+
+        exerciseDataSet.setColors(
+            ContextCompat.getColor(requireContext(), R.color.green)
+        )
+        exerciseDataSet.lineWidth = 3f
+        exerciseDataSet.circleColors = listOf(
+            ContextCompat.getColor(requireContext(), R.color.green)
+        )
+        exerciseDataSet.mode = LineDataSet.Mode.CUBIC_BEZIER
+        exerciseDataSet.cubicIntensity = 0.2f
+
+        val exerciseData = LineData()
+        exerciseData.addDataSet(exerciseDataSet)
+
+        exerciseChart.data = exerciseData
+        exerciseChart.invalidate()
+    }
+
+    private fun getAccessToken(): String? {
+        val sharedPreferences = requireContext().getSharedPreferences(TOKEN_SPF_KEY, Context.MODE_PRIVATE)
+        return sharedPreferences.getString(ACCESS_TOKEN_KEY, null)
     }
 }

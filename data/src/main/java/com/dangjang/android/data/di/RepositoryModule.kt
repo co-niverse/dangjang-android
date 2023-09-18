@@ -1,9 +1,11 @@
 package com.dangjang.android.data.di
 
+import com.dangjang.android.data.repository.ChartRepositoryImpl
 import com.dangjang.android.data.repository.HomeRepositoryImpl
 import com.dangjang.android.data.repository.IntroRepositoryImpl
 import com.dangjang.android.data.repository.LoginRepositoryImpl
 import com.dangjang.android.data.repository.SignupRepositoryImpl
+import com.dangjang.android.domain.repository.ChartRepository
 import com.dangjang.android.domain.repository.HomeRepository
 import com.dangjang.android.domain.repository.IntroRepository
 import com.dangjang.android.domain.repository.LoginRepository
@@ -36,4 +38,10 @@ interface RepositoryModule {
     fun bindsHomeRepository(
         homeRepositoryImpl: HomeRepositoryImpl
     ) : HomeRepository
+
+    @Binds
+    fun bindsChartRepository(
+        chartRepositoryImpl: ChartRepositoryImpl
+    ) : ChartRepository
+
 }

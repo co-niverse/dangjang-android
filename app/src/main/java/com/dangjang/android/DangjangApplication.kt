@@ -12,5 +12,8 @@ class DangjangApplication : Application() {
 
         KakaoSdk.init(this, BuildConfig.KAKAO_APP_KEY)
         NaverIdLoginSDK.initialize(this, BuildConfig.NAVER_CLIENT_ID, BuildConfig.NAVER_CLIENT_SECRET, "dangjang")
+
+        //TODO : 앱 꺼짐 방지 에러 핸들링 -> 홈 화면 이동
+        Thread.setDefaultUncaughtExceptionHandler { t, e ->  }
     }
 }
