@@ -79,7 +79,8 @@ class ChartViewModel @Inject constructor(
                 if (it.date == date) {
                     weightList.add(Entry(i.toFloat(), it.unit.toFloat()))
                 } else {
-                    weightList.add(Entry(i.toFloat(), 0f))
+                    //TODO : 추후 UI 상 더 좋은 것 선택
+                    //weightList.add(Entry(i.toFloat(), Float.NaN))
                 }
             }
         }
@@ -95,7 +96,8 @@ class ChartViewModel @Inject constructor(
                 if (it.date == date) {
                     stepList.add(Entry(i.toFloat(), it.unit.toFloat()))
                 } else {
-                    stepList.add(Entry(i.toFloat(), 0f))
+                    //TODO : 추후 UI 상 더 좋은 것 선택
+                    //stepList.add(Entry(i.toFloat(), Float.NaN))
                 }
             }
         }
@@ -111,7 +113,8 @@ class ChartViewModel @Inject constructor(
                 if (it.date == date) {
                     exerciseList.add(Entry(i.toFloat(), it.unit.toFloat()))
                 } else {
-                    exerciseList.add(Entry(i.toFloat(), 0f))
+                    //TODO : 추후 UI 상 더 좋은 것 선택
+                    //exerciseList.add(Entry(i.toFloat(), Float.NaN))
                 }
             }
         }
