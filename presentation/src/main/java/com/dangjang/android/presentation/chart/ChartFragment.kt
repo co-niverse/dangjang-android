@@ -64,7 +64,7 @@ class ChartFragment : BaseFragment<FragmentChartBinding>(R.layout.fragment_chart
         setWeightChartData(binding.weightChart)
 
         initLineChart(binding.stepChart)
-        setLineChartData(binding.stepChart)
+        setStepChartData(binding.stepChart)
 
         initLineChart(binding.exerciseChart)
         setLineChartData(binding.exerciseChart)
@@ -199,6 +199,28 @@ class ChartFragment : BaseFragment<FragmentChartBinding>(R.layout.fragment_chart
         weightChart.invalidate()
     }
 
+    private fun setStepChartData(stepChart: LineChart) {
+        val title = "걸음수"
+        stepChart.setScaleEnabled(false)
+        val stepDataSet = LineDataSet(viewModel.getStepList(), title)
+
+        stepDataSet.setColors(
+            ContextCompat.getColor(requireContext(), R.color.green)
+        )
+        stepDataSet.lineWidth = 3f
+        stepDataSet.circleColors = listOf(
+            ContextCompat.getColor(requireContext(), R.color.green)
+        )
+        stepDataSet.mode = LineDataSet.Mode.CUBIC_BEZIER
+        stepDataSet.cubicIntensity = 0.2f
+
+        val stepData = LineData()
+        stepData.addDataSet(stepDataSet)
+
+        stepChart.data = stepData
+        stepChart.invalidate()
+    }
+    
     private fun getAccessToken(): String? {
         val sharedPreferences = requireContext().getSharedPreferences(TOKEN_SPF_KEY, Context.MODE_PRIVATE)
         return sharedPreferences.getString(ACCESS_TOKEN_KEY, null)

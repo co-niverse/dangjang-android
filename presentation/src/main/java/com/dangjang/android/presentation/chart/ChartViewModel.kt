@@ -83,6 +83,21 @@ class ChartViewModel @Inject constructor(
         return weightList
     }
 
+    fun getStepList(): ArrayList<Entry> {
+        var stepList = ArrayList<Entry>()
+        var index = 0f
+        getChartFlow.value.stepCounts.forEach {
+            var date = getAmountDate(startDate.value, (index).toInt())
+            if (it.date == date) {
+                stepList.add(Entry(index, it.unit.toFloat()))
+            } else {
+                stepList.add(Entry(index, 0f))
+            }
+            index++
+        }
+        return stepList
+    }
+
     fun getDateList(): ArrayList<String> {
         var dateList = ArrayList<String>()
         var index = 0
