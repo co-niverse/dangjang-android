@@ -39,15 +39,24 @@ class ChartFragment : BaseFragment<FragmentChartBinding>(R.layout.fragment_chart
         super.onStart()
         binding.lifecycleOwner = this
 
-        getAccessToken()?.let { viewModel.getChart(it) }
+        viewModel.setStartAndEndDate()
 
         lifecycleScope.launchWhenStarted {
+            getAccessToken()?.let { viewModel.getChart(it) }
             viewModel.getChartFlow.collectLatest {
-                Log.e("건강차트 조회 test", it.toString())
+                initBarChart(binding.glucoseChart)
+                setGlucoseChartData(binding.glucoseChart)
+
+                initLineChart(binding.weightChart)
+                setWeightChartData(binding.weightChart)
+
+                initLineChart(binding.stepChart)
+                setStepChartData(binding.stepChart)
+
+                initLineChart(binding.exerciseChart)
+                setExerciseChartData(binding.exerciseChart)
             }
         }
-
-        viewModel.setStartAndEndDate()
 
         binding.chartAddIv.setOnClickListener {
             viewModel.addStartAndEndDate()
@@ -59,17 +68,6 @@ class ChartFragment : BaseFragment<FragmentChartBinding>(R.layout.fragment_chart
             getAccessToken()?.let { viewModel.getChart(it) }
         }
 
-        initBarChart(binding.glucoseChart)
-        setGlucoseChartData(binding.glucoseChart)
-
-        initLineChart(binding.weightChart)
-        setWeightChartData(binding.weightChart)
-
-        initLineChart(binding.stepChart)
-        setStepChartData(binding.stepChart)
-
-        initLineChart(binding.exerciseChart)
-        setExerciseChartData(binding.exerciseChart)
     }
 
     private fun initBarChart(barChart: BarChart) {
@@ -126,7 +124,6 @@ class ChartFragment : BaseFragment<FragmentChartBinding>(R.layout.fragment_chart
         // 차트에 적용
         val barData = BarData()
         barData.addDataSet(minGlucoseDataSet)
-        barData.addDataSet(maxGlucoseDataSet)
         barData.barWidth = 0.5f
         barChart.data = barData
         barChart.invalidate()
