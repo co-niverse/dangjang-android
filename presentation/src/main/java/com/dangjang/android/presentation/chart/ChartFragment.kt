@@ -40,7 +40,7 @@ class ChartFragment : BaseFragment<FragmentChartBinding>(R.layout.fragment_chart
         super.onStart()
         binding.lifecycleOwner = this
 
-        getAccessToken()?.let { viewModel.getChart(it, "2021-08-01", "2021-08-31") }
+        getAccessToken()?.let { viewModel.getChart(it) }
 
         lifecycleScope.launchWhenStarted {
             viewModel.getChartFlow.collectLatest {

@@ -36,9 +36,9 @@ class ChartViewModel @Inject constructor(
     private val _endDate = MutableStateFlow(String())
     val endDate = _endDate.asStateFlow()
 
-    fun getChart(accessToken: String, startDate: String, endDate: String) {
+    fun getChart(accessToken: String) {
         viewModelScope.launch {
-            getChartUseCase.getChart("Bearer $accessToken", startDate, endDate)
+            getChartUseCase.getChart("Bearer $accessToken", startDate.value, endDate.value)
                 .onEach {
                     _getChartFlow.emit(it)
                 }
