@@ -98,6 +98,21 @@ class ChartViewModel @Inject constructor(
         return stepList
     }
 
+    fun getExerciseList(): ArrayList<Entry> {
+        var exerciseList = ArrayList<Entry>()
+        var index = 0f
+        getChartFlow.value.exerciseCalories.forEach {
+            var date = getAmountDate(startDate.value, (index).toInt())
+            if (it.date == date) {
+                exerciseList.add(Entry(index, it.unit.toFloat()))
+            } else {
+                exerciseList.add(Entry(index, 0f))
+            }
+            index++
+        }
+        return exerciseList
+    }
+
     fun getDateList(): ArrayList<String> {
         var dateList = ArrayList<String>()
         var index = 0
