@@ -70,47 +70,50 @@ class ChartViewModel @Inject constructor(
         return glucoseMaxList
     }
 
-    fun getWeightList(): ArrayList<Entry> {
-        var weightList = ArrayList<Entry>()
-        var index = 0f
-        getChartFlow.value.weights.forEach {
-            var date = getAmountDate(startDate.value, (index).toInt())
-            if (it.date == date) {
-                weightList.add(Entry(index, it.unit.toFloat()))
-            } else {
-                weightList.add(Entry(index, 0f))
+    fun getWeightList(): MutableList<Entry> {
+        var weightList = mutableListOf<Entry>()
+
+        for (i in 0..6) {
+            var date = getAmountDate(startDate.value, i)
+            getChartFlow.value.weights.forEach {
+                if (it.date == date) {
+                    weightList.add(Entry(i.toFloat(), it.unit.toFloat()))
+                } else {
+                    weightList.add(Entry(i.toFloat(), 0f))
+                }
             }
-            index++
         }
         return weightList
     }
 
-    fun getStepList(): ArrayList<Entry> {
-        var stepList = ArrayList<Entry>()
-        var index = 0f
-        getChartFlow.value.stepCounts.forEach {
-            var date = getAmountDate(startDate.value, (index).toInt())
-            if (it.date == date) {
-                stepList.add(Entry(index, it.unit.toFloat()))
-            } else {
-                stepList.add(Entry(index, 0f))
+    fun getStepList(): MutableList<Entry> {
+        var stepList = mutableListOf<Entry>()
+
+        for (i in 0..6) {
+            var date = getAmountDate(startDate.value, i)
+            getChartFlow.value.stepCounts.forEach {
+                if (it.date == date) {
+                    stepList.add(Entry(i.toFloat(), it.unit.toFloat()))
+                } else {
+                    stepList.add(Entry(i.toFloat(), 0f))
+                }
             }
-            index++
         }
         return stepList
     }
 
-    fun getExerciseList(): ArrayList<Entry> {
-        var exerciseList = ArrayList<Entry>()
-        var index = 0f
-        getChartFlow.value.exerciseCalories.forEach {
-            var date = getAmountDate(startDate.value, (index).toInt())
-            if (it.date == date) {
-                exerciseList.add(Entry(index, it.unit.toFloat()))
-            } else {
-                exerciseList.add(Entry(index, 0f))
+    fun getExerciseList(): MutableList<Entry> {
+        var exerciseList = mutableListOf<Entry>()
+
+        for (i in 0..6) {
+            var date = getAmountDate(startDate.value, i)
+            getChartFlow.value.exerciseCalories.forEach {
+                if (it.date == date) {
+                    exerciseList.add(Entry(i.toFloat(), it.unit.toFloat()))
+                } else {
+                    exerciseList.add(Entry(i.toFloat(), 0f))
+                }
             }
-            index++
         }
         return exerciseList
     }
