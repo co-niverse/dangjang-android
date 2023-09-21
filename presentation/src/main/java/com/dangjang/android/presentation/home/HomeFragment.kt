@@ -1,8 +1,10 @@
 package com.dangjang.android.presentation.home
 
+import android.app.DatePickerDialog
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
@@ -17,6 +19,8 @@ import com.dangjang.android.presentation.R
 import com.dangjang.android.presentation.databinding.FragmentHomeBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
+import java.util.Calendar
+import java.util.Locale
 
 @AndroidEntryPoint
 class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
@@ -37,6 +41,17 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
         getAccessToken()?.let { viewModel.getHome(it, viewModel.getTodayDate()) }
 
         binding.weightSeekbar.setOnTouchListener({ v, event -> true })
+
+        binding.calendarIv.setOnClickListener {
+            Locale.setDefault(Locale.KOREA)
+
+            val cal = Calendar.getInstance()
+            val data = DatePickerDialog.OnDateSetListener { view, year, month, day ->
+                Log.e("date", "$year, $month, $day")
+            }
+            val datePickerDialog = DatePickerDialog(requireContext(),data,cal.get(Calendar.YEAR),cal.get(Calendar.MONTH),cal.get(Calendar.DAY_OF_MONTH))
+            datePickerDialog.show()
+        }
 
         lifecycleScope.launchWhenStarted {
             viewModel.getHomeFlow.collectLatest {
