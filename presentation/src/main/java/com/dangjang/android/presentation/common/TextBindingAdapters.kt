@@ -20,3 +20,17 @@ fun dateToMonthDay(view: TextView, date: String?) {
         }
     }
 }
+
+@BindingAdapter("addKcalText")
+fun addKcalText(view: TextView, calorie: Int?) {
+    if (calorie != null) {
+        view.text = calorie.toString() + "kcal"
+    }
+}
+
+@BindingAdapter("addStepUnit")
+fun addStepUnit(view: TextView, stepCount: Int?) {
+    if (stepCount != null) {
+        view.text = stepCount.toString() + "보"
+    }
+}
