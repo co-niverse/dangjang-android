@@ -155,12 +155,25 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="17dp"
-                    android:text="체중 55KG"
+                    android:text="체중 "
                     android:textColor="#131F11"
                     android:textSize="18sp"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/weight_unit_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    addWeightUnit = "@{vm.getHomeFlow.weight.unit}"
+                    android:textColor="#131F11"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toEndOf="@id/weight_title_tv"
+                    app:layout_constraintTop_toTopOf="@id/weight_title_tv"
+                    app:layout_constraintBottom_toBottomOf="@id/weight_title_tv"
+                    />
 
                 <SeekBar
                     android:id="@+id/weight_seekbar"
@@ -169,50 +182,42 @@
                     android:layout_marginTop="16dp"
                     android:layout_marginBottom="16dp"
                     android:background="@null"
-                    android:max="100"
+                    android:max="70"
                     android:progressDrawable="@drawable/background_weight_bar"
                     android:splitTrack="false"
                     android:thumb="@drawable/ic_thumb"
-                    android:progress="80"
-                    app:layout_constraintBottom_toTopOf="@id/weight_tag_iv"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/weight_title_tv" />
-
-                <ImageView
-                    android:id="@+id/weight_tag_iv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginBottom="17dp"
-                    android:src="@drawable/ic_tag_caution"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" />
 
                 <TextView
                     android:id="@+id/weight_status_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="6dp"
-                    android:text="평균체중에 비해"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="16dp"
+                    android:text="@{vm.getHomeFlow.weight.title}"
                     android:textColor="#3A433E"
                     android:textSize="16sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/weight_tag_iv"
-                    app:layout_constraintStart_toEndOf="@+id/weight_tag_iv"
-                    app:layout_constraintTop_toTopOf="@+id/weight_tag_iv" />
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/weight_seekbar" />
 
                 <TextView
-                    android:id="@+id/weight_number_tv"
+                    android:id="@+id/weight_none_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="+3kg 많아요"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="16dp"
+                    android:visibility="gone"
+                    android:text="체중을 추가해보세요."
                     android:textColor="#3A433E"
                     android:textSize="16sp"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="@+id/weight_tag_iv"
-                    app:layout_constraintStart_toEndOf="@id/weight_status_tv"
-                    app:layout_constraintTop_toTopOf="@+id/weight_tag_iv"
-                    tools:layout_editor_absoluteX="67dp" />
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/weight_seekbar"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
