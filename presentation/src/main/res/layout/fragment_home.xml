@@ -41,6 +41,15 @@
                 app:layout_constraintEnd_toStartOf="@id/calendar_iv"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <View
+                android:id="@+id/bell_exist_view"
+                android:layout_width="9dp"
+                android:layout_height="9dp"
+                android:background="@drawable/background_alarm_circle"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="@id/bell_iv"
+                app:layout_constraintTop_toTopOf="@id/bell_iv" />
+
             <ImageView
                 android:id="@+id/calendar_iv"
                 android:layout_width="wrap_content"

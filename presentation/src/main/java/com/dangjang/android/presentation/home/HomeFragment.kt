@@ -57,6 +57,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
                     binding.weightNoneTv.visibility = View.GONE
                 }
 
+                if (it.notification) {
+                    binding.bellExistView.visibility = View.VISIBLE
+                } else {
+                    binding.bellExistView.visibility = View.GONE
+                }
+
             }
         }
 
