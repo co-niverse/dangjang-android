@@ -34,3 +34,10 @@ fun addStepUnit(view: TextView, stepCount: Int?) {
         view.text = stepCount.toString() + "보"
     }
 }
+
+@BindingAdapter("addWeightUnit")
+fun addWeightUnit(view: TextView, weight: String?) {
+    if (weight != null && weight != "") {
+        view.text = weight+"KG"
+    }
+}
