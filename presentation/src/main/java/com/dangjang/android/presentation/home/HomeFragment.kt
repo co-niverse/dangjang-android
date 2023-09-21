@@ -42,20 +42,16 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
 
         binding.weightSeekbar.setOnTouchListener({ v, event -> true })
 
-        getAccessToken()?.let {
-                accessToken -> viewModel.getGlucose(accessToken)
-        }
-
         lifecycleScope.launchWhenStarted {
-            viewModel.getGlucoseFlow.collectLatest {
-                if (it.todayGuides.isNullOrEmpty()) {
+            viewModel.getHomeFlow.collectLatest {
+                if (it.bloodSugars.isNullOrEmpty()) {
                     binding.glucoseGuideNoneTv.visibility = View.VISIBLE
                 }
                 else {
                     binding.glucoseGuideNoneTv.visibility = View.GONE
                 }
-                val todayGuidesList = viewModel.addBackgroundToTodayGuides(it.todayGuides)
-                glucoseGuideAdapter.submitList(todayGuidesList)
+                val bloodSugarsList = viewModel.addBackgroundToTodayGuides(it.bloodSugars)
+                glucoseGuideAdapter.submitList(bloodSugarsList)
             }
         }
 
