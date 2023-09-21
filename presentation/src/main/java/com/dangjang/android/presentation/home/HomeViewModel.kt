@@ -23,6 +23,7 @@ import com.dangjang.android.domain.model.EditHealthMetricVO
 import com.dangjang.android.domain.model.ExerciseListVO
 import com.dangjang.android.domain.model.GetExerciseCaloriesVO
 import com.dangjang.android.domain.model.GetExerciseVO
+import com.dangjang.android.domain.model.GetHomeVO
 import com.dangjang.android.domain.model.GetWeightVO
 import com.dangjang.android.domain.model.PostPatchExerciseVO
 import com.dangjang.android.domain.model.PostPatchWeightVO
@@ -41,6 +42,9 @@ class HomeViewModel @Inject constructor(
     private val getHomeUseCase: HomeUseCase,
     application: Application
 ) : AndroidViewModel(application) {
+    //홈
+    private val _getHomeFlow = MutableStateFlow(GetHomeVO())
+    val getHomeFlow = _getHomeFlow.asStateFlow()
 
     //혈당
     private val _postPatchGlucoseFlow = MutableStateFlow(EditHealthMetricVO())
@@ -86,6 +90,18 @@ class HomeViewModel @Inject constructor(
 
     private val _editExerciseRequest = MutableStateFlow(EditSameHealthMetricRequest())
     val editExerciseRequest = _editExerciseRequest.asStateFlow()
+
+    //홈
+    fun getHome(accessToken: String, date: String) {
+        viewModelScope.launch {
+            getHomeUseCase.getHome("Bearer $accessToken", date)
+                .onEach {
+                    _getHomeFlow.emit(it)
+                }
+                .handleErrors()
+                .collect()
+        }
+    }
 
     fun changeExerciseCaloriesToExerciseList(exerciseCalories: List<GetExerciseCaloriesVO>) : List<ExerciseListVO> {
         var originExerciseList = getExerciseList()
