@@ -35,6 +35,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
     override fun onStart() {
         super.onStart()
 
+        binding.vm = viewModel
+        binding.lifecycleOwner = this
+
+        getAccessToken()?.let { viewModel.getHome(it, viewModel.getTodayDate()) }
+
         binding.weightSeekbar.setOnTouchListener({ v, event -> true })
 
         getAccessToken()?.let {
