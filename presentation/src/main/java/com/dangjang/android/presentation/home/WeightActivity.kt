@@ -8,10 +8,6 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.dangjang.android.domain.constants.ACCESS_TOKEN_KEY
-import com.dangjang.android.domain.constants.BMI_NORMAL_END
-import com.dangjang.android.domain.constants.BMI_NORMAL_START
-import com.dangjang.android.domain.constants.SEEKBAR_NORMAL_END
-import com.dangjang.android.domain.constants.SEEKBAR_NORMAL_START
 import com.dangjang.android.domain.constants.TOKEN_SPF_KEY
 import com.dangjang.android.presentation.R
 import com.dangjang.android.presentation.databinding.ActivityWeightBinding
@@ -41,7 +37,7 @@ class WeightActivity : FragmentActivity() {
         //TODO : lifecyelceScope에 없어도 되는지 테스트 해보기
         lifecycleScope.launchWhenStarted {
             viewModel.getWeightFlow.collectLatest {
-                binding.weightSeekbar.progress = calculateSeekbarProgress(it.bmi)
+                binding.weightSeekbar.progress = viewModel.calculateSeekbarProgress(it.bmi)
             }
         }
 
@@ -87,18 +83,6 @@ class WeightActivity : FragmentActivity() {
         val sharedPreferences = getSharedPreferences(TOKEN_SPF_KEY, Context.MODE_PRIVATE)
 
         return sharedPreferences.getString(ACCESS_TOKEN_KEY, null)
-    }
-
-    private fun calculateSeekbarProgress(bmi: Double): Int {
-        val progress: Double = if (bmi < BMI_NORMAL_START) {
-            SEEKBAR_NORMAL_START - (BMI_NORMAL_START - bmi)
-        } else if (bmi in BMI_NORMAL_START..BMI_NORMAL_END) {
-            SEEKBAR_NORMAL_START + (bmi - BMI_NORMAL_START)*((SEEKBAR_NORMAL_END - SEEKBAR_NORMAL_START)/(BMI_NORMAL_END - BMI_NORMAL_START))
-        } else {
-            SEEKBAR_NORMAL_END + (bmi - BMI_NORMAL_END)
-        }
-
-        return progress.toInt()
     }
 
 }

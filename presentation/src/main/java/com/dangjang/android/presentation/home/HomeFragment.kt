@@ -11,10 +11,6 @@ import com.dangjang.android.common_ui.BaseFragment
 import com.dangjang.android.domain.constants.AUTO_LOGIN_SPF_KEY
 import com.dangjang.android.domain.constants.HEALTH_CONNECT_TOKEN_KEY
 import com.dangjang.android.domain.constants.ACCESS_TOKEN_KEY
-import com.dangjang.android.domain.constants.BMI_NORMAL_END
-import com.dangjang.android.domain.constants.BMI_NORMAL_START
-import com.dangjang.android.domain.constants.SEEKBAR_NORMAL_END
-import com.dangjang.android.domain.constants.SEEKBAR_NORMAL_START
 import com.dangjang.android.domain.constants.TOKEN_SPF_KEY
 import com.dangjang.android.domain.model.GlucoseGuideVO
 import com.dangjang.android.presentation.R
@@ -53,7 +49,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
                 val bloodSugarsList = viewModel.addBackgroundToTodayGuides(it.bloodSugars)
                 glucoseGuideAdapter.submitList(bloodSugarsList)
 
-                binding.weightSeekbar.progress = calculateSeekbarProgress(it.weight.bmi)
+                binding.weightSeekbar.progress = viewModel.calculateSeekbarProgress(it.weight.bmi)
 
                 if (it.weight.unit == "") {
                     binding.weightNoneTv.visibility = View.VISIBLE
@@ -115,17 +111,5 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
         val sharedPreferences = requireContext().getSharedPreferences(TOKEN_SPF_KEY, Context.MODE_PRIVATE)
 
         return sharedPreferences.getString(ACCESS_TOKEN_KEY, null)
-    }
-
-    private fun calculateSeekbarProgress(bmi: Double): Int {
-        val progress: Double = if (bmi < BMI_NORMAL_START) {
-            SEEKBAR_NORMAL_START - (BMI_NORMAL_START - bmi)
-        } else if (bmi in BMI_NORMAL_START..BMI_NORMAL_END) {
-            SEEKBAR_NORMAL_START + (bmi - BMI_NORMAL_START)*((SEEKBAR_NORMAL_END - SEEKBAR_NORMAL_START)/(BMI_NORMAL_END - BMI_NORMAL_START))
-        } else {
-            SEEKBAR_NORMAL_END + (bmi - BMI_NORMAL_END)
-        }
-
-        return progress.toInt()
     }
 }
