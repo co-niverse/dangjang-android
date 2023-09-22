@@ -62,17 +62,51 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/title_tv"
+                android:id="@+id/title_nickname_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
-                android:text="쿼카님을 위한\n오늘의 가이드"
+                android:text="@{vm.getHomeFlow.nickname}"
                 android:textColor="@color/black"
                 android:textSize="24sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tag_iv" />
+
+            <TextView
+                android:id="@+id/title_nickname_tv2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="님을 위한"
+                android:textColor="@color/black"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/title_nickname_tv"
+                app:layout_constraintStart_toEndOf="@+id/title_nickname_tv"
+                app:layout_constraintTop_toTopOf="@+id/title_nickname_tv" />
+
+            <TextView
+                android:id="@+id/title_date_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                getHomeDate="@{vm.getHomeFlow.date}"
+                android:textColor="@color/black"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@+id/title_nickname_tv"
+                app:layout_constraintTop_toBottomOf="@+id/title_nickname_tv" />
+
+            <TextView
+                android:id="@+id/title_date_tv2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="의 조언"
+                android:textColor="@color/black"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@+id/title_date_tv"
+                app:layout_constraintTop_toBottomOf="@+id/title_nickname_tv" />
 
             <Button
                 android:id="@+id/auto_input_btn"
@@ -83,22 +117,22 @@
                 android:text="자동 입력\n설정하러 가기"
                 android:textColor="@color/green"
                 android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="@+id/title_tv"
+                app:layout_constraintBottom_toBottomOf="@+id/title_nickname_tv"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/title_tv" />
+                app:layout_constraintTop_toTopOf="@+id/title_nickname_tv" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/glucose_cl"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="24dp"
                 android:layout_marginEnd="16dp"
                 android:background="@drawable/background_white_gradient"
                 android:elevation="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/title_tv">
+                app:layout_constraintTop_toBottomOf="@+id/title_date_tv2">
 
                 <TextView
                     android:id="@+id/glucose_title_tv"

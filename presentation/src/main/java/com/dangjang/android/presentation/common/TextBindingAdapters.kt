@@ -2,6 +2,9 @@ package com.dangjang.android.presentation.common
 
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Date
 
 @BindingAdapter("dateToString")
 fun dateToString(view: TextView, date: String?) {
@@ -43,4 +46,20 @@ fun addWeightUnit(view: TextView, weight: String?) {
         else
             view.text = weight
     }
+}
+
+@BindingAdapter("getHomeDate")
+fun getHomeDate(view: TextView, date: String?) {
+    if (date != null) {
+        if (date == getTodayDate()) {
+            view.text = "오늘"
+        } else if (date.isNotEmpty()) {
+            view.text = date.substring(5, 7) + "/" + date.substring(8, 10)
+        }
+    }
+}
+private fun getTodayDate(): String {
+    val currentTime: Date = Calendar.getInstance().getTime()
+    val format = SimpleDateFormat("yyyy-MM-dd")
+    return format.format(currentTime)
 }

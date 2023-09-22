@@ -39,6 +39,7 @@ import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
+import java.util.Locale
 import javax.inject.Inject
 
 @HiltViewModel
@@ -505,5 +506,13 @@ class HomeViewModel @Inject constructor(
         }
 
         return progress.toInt()
+    }
+
+    fun getDatePickerDate(year: Int, month: Int, day: Int): String {
+        val calendar = Calendar.getInstance()
+        calendar.set(year, month, day)
+
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.KOREA)
+        return dateFormat.format(calendar.time)
     }
 }

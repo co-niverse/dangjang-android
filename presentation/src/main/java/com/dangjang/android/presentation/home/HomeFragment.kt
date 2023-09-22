@@ -47,7 +47,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
 
             val cal = Calendar.getInstance()
             val data = DatePickerDialog.OnDateSetListener { view, year, month, day ->
-                Log.e("date", "$year, $month, $day")
+                getAccessToken()?.let { viewModel.getHome(it, viewModel.getDatePickerDate(year, month, day)) }
             }
             val datePickerDialog = DatePickerDialog(requireContext(),data,cal.get(Calendar.YEAR),cal.get(Calendar.MONTH),cal.get(Calendar.DAY_OF_MONTH))
             datePickerDialog.show()
