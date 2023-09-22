@@ -3,6 +3,7 @@ package com.dangjang.android.domain.usecase
 import com.dangjang.android.domain.model.GetGlucoseVO
 import com.dangjang.android.domain.model.EditHealthMetricVO
 import com.dangjang.android.domain.model.GetExerciseVO
+import com.dangjang.android.domain.model.GetHomeVO
 import com.dangjang.android.domain.model.GetWeightVO
 import com.dangjang.android.domain.model.PostPatchExerciseVO
 import com.dangjang.android.domain.model.PostPatchWeightVO
@@ -18,6 +19,14 @@ import javax.inject.Inject
 class HomeUseCase @Inject constructor(
     private val homeRepository: HomeRepository
 ){
+    suspend fun getHome(
+        accessToken: String,
+        date: String
+    ): Flow<GetHomeVO> =
+        withContext(Dispatchers.IO) {
+            homeRepository.getHome(accessToken, date)
+        }
+
     suspend fun addHealthMetric(
         accessToken: String,
         addHealthMetricRequest: AddHealthMetricRequest

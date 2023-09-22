@@ -3,6 +3,7 @@ package com.dangjang.android.data.datasource
 import com.dangjang.android.data.model.dto.GetGlucoseDto
 import com.dangjang.android.data.model.dto.EditHealthMetricDto
 import com.dangjang.android.data.model.dto.GetExerciseDto
+import com.dangjang.android.data.model.dto.GetHomeDto
 import com.dangjang.android.data.model.dto.GetWeightDto
 import com.dangjang.android.data.model.dto.PostPatchExerciseDto
 import com.dangjang.android.data.model.dto.PostPatchWeightDto
@@ -15,6 +16,10 @@ import javax.inject.Inject
 class HomeDataSource @Inject constructor(
     private val homeApiService: HomeApiService
 ): BaseNetworkDataSource() {
+
+    suspend fun getHome(accessToken: String, date: String): BaseResponse<GetHomeDto> {
+        return checkResponse(homeApiService.getHome(accessToken, date))
+    }
 
     suspend fun addHealthMetric(accessToken: String, addHealthMetricRequest: AddHealthMetricRequest): BaseResponse<EditHealthMetricDto> {
         return checkResponse(homeApiService.addHealthMetric(accessToken, addHealthMetricRequest))

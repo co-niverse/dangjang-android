@@ -4,6 +4,7 @@ import com.dangjang.android.data.datasource.HomeDataSource
 import com.dangjang.android.domain.model.GetGlucoseVO
 import com.dangjang.android.domain.model.EditHealthMetricVO
 import com.dangjang.android.domain.model.GetExerciseVO
+import com.dangjang.android.domain.model.GetHomeVO
 import com.dangjang.android.domain.model.GetWeightVO
 import com.dangjang.android.domain.model.PostPatchExerciseVO
 import com.dangjang.android.domain.model.PostPatchWeightVO
@@ -18,6 +19,12 @@ import javax.inject.Inject
 class HomeRepositoryImpl @Inject constructor(
     private val homeDataSource: HomeDataSource
 ) : HomeRepository {
+
+    override fun getHome(accessToken: String, date: String): Flow<GetHomeVO> = flow {
+        val response = homeDataSource.getHome(accessToken, date)
+        emit(response.data.toDomain())
+    }
+
     override fun addHealthMetric(accessToken: String, addHealthMetricRequest: AddHealthMetricRequest): Flow<EditHealthMetricVO> = flow {
         val response = homeDataSource.addHealthMetric(accessToken, addHealthMetricRequest)
         emit(response.data.toDomain())

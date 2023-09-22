@@ -1,8 +1,11 @@
 package com.dangjang.android.presentation.home
 
+import android.app.Activity
+import android.app.DatePickerDialog
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
@@ -17,16 +20,17 @@ import com.dangjang.android.presentation.R
 import com.dangjang.android.presentation.databinding.FragmentHomeBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
-import java.text.SimpleDateFormat
 import java.util.Calendar
-import java.util.Date
-
+import java.util.Locale
 
 @AndroidEntryPoint
 class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
 
     private val viewModel by viewModels<HomeViewModel>()
     private lateinit var glucoseGuideAdapter: GlucoseGuideAdapter
+    private lateinit var date: String
+    private var intentDate = ""
+
     override fun initView() {
         bind {
             vm = viewModel
@@ -35,40 +39,77 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
     override fun onStart() {
         super.onStart()
 
+        binding.vm = viewModel
+        binding.lifecycleOwner = this
+
+        date = if (intentDate == "") {
+            viewModel.getTodayDate()
+        } else {
+            intentDate
+        }
+
+        getAccessToken()?.let { viewModel.getHome(it, date) }
+
         binding.weightSeekbar.setOnTouchListener({ v, event -> true })
 
-        getAccessToken()?.let {
-                accessToken -> viewModel.getGlucose(accessToken)
+        binding.calendarIv.setOnClickListener {
+            Locale.setDefault(Locale.KOREA)
+
+            val cal = Calendar.getInstance()
+            val data = DatePickerDialog.OnDateSetListener { view, year, month, day ->
+                getAccessToken()?.let { viewModel.getHome(it, viewModel.getDatePickerDate(year, month, day)) }
+                date = viewModel.getDatePickerDate(year, month, day)
+            }
+            val datePickerDialog = DatePickerDialog(requireContext(),data,cal.get(Calendar.YEAR),cal.get(Calendar.MONTH),cal.get(Calendar.DAY_OF_MONTH))
+            datePickerDialog.show()
         }
 
         lifecycleScope.launchWhenStarted {
-            viewModel.getGlucoseFlow.collectLatest {
-                if (it.todayGuides.isNullOrEmpty()) {
+            viewModel.getHomeFlow.collectLatest {
+                if (it.bloodSugars.isNullOrEmpty()) {
                     binding.glucoseGuideNoneTv.visibility = View.VISIBLE
                 }
                 else {
                     binding.glucoseGuideNoneTv.visibility = View.GONE
                 }
-                val todayGuidesList = viewModel.addBackgroundToTodayGuides(it.todayGuides)
-                glucoseGuideAdapter.submitList(todayGuidesList)
+                val bloodSugarsList = viewModel.addBackgroundToTodayGuides(it.bloodSugars)
+                glucoseGuideAdapter.submitList(bloodSugarsList)
+
+                binding.weightSeekbar.progress = viewModel.calculateSeekbarProgress(it.weight.bmi)
+
+                if (it.weight.unit == "") {
+                    binding.weightNoneTv.visibility = View.VISIBLE
+                } else {
+                    binding.weightNoneTv.visibility = View.GONE
+                }
+
+                if (it.notification) {
+                    binding.bellExistView.visibility = View.VISIBLE
+                } else {
+                    binding.bellExistView.visibility = View.GONE
+                }
+
             }
         }
 
         binding.glucoseCl.setOnClickListener {
             Intent(activity, GlucoseActivity::class.java).apply {
-                startActivity(this)
+                putExtra("date",date)
+                startActivityForResult(this, 101)
             }
         }
 
         binding.weightCl.setOnClickListener {
             Intent(activity, WeightActivity::class.java).apply {
-                startActivity(this)
+                putExtra("date",date)
+                startActivityForResult(this, 101)
             }
         }
 
         binding.exerciseCl.setOnClickListener {
             Intent(activity, ExerciseActivity::class.java).apply {
-                startActivity(this)
+                putExtra("date",date)
+                startActivityForResult(this, 101)
             }
         }
 
@@ -83,6 +124,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
         }
 
         setGlucoseGuideListAdapter()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK) {
+            val result = data?.getStringExtra("date")
+            intentDate = result.toString()
+        }
     }
 
     private fun setGlucoseGuideListAdapter() {
@@ -106,5 +155,4 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
 
         return sharedPreferences.getString(ACCESS_TOKEN_KEY, null)
     }
-
 }

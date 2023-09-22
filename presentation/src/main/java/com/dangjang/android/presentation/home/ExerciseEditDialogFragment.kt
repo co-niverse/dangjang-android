@@ -27,6 +27,7 @@ class ExerciseEditDialogFragment : DialogFragment() {
     private var originExerciseMinute: String = ""
     private var exerciseHour: String = ""
     private var exerciseMinute: String = ""
+    private var date = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,6 +46,7 @@ class ExerciseEditDialogFragment : DialogFragment() {
         exerciseName = arguments?.getString("type").toString()
         originExerciseHour = arguments?.getString("hour").toString()
         originExerciseMinute = arguments?.getString("minute").toString()
+        date = arguments?.getString("date").toString()
 
         setHourSpinner()
         setMinuteSpinner()
@@ -62,12 +64,12 @@ class ExerciseEditDialogFragment : DialogFragment() {
         }
         binding.exerciseEditSaveBtn.setOnClickListener {
             if (originExerciseHour == "0" && originExerciseMinute == "0") {
-                viewModel.setExerciseTypeAndCreatedAt(exerciseName)
+                viewModel.setExerciseTypeAndCreatedAt(exerciseName, date)
                 viewModel.setExerciseUnit(getExerciseTime(exerciseHour, exerciseMinute))
                 getAccessToken()?.let { viewModel.addExercise(it) }
                 dismiss()
             } else {
-                viewModel.setEditExerciseTypeAndCreatedAt(exerciseName)
+                viewModel.setEditExerciseTypeAndCreatedAt(exerciseName, date)
                 viewModel.setEditExerciseUnit(getExerciseTime(exerciseHour, exerciseMinute))
                 getAccessToken()?.let { viewModel.editExercise(it) }
                 dismiss()

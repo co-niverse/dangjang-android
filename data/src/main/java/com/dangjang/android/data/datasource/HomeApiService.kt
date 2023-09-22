@@ -4,6 +4,7 @@ import com.dangjang.android.data.model.dto.GetGlucoseDto
 import com.dangjang.android.data.model.dto.EditHealthMetricDto
 import com.dangjang.android.data.model.dto.EditWeightExerciseDto
 import com.dangjang.android.data.model.dto.GetExerciseDto
+import com.dangjang.android.data.model.dto.GetHomeDto
 import com.dangjang.android.data.model.dto.GetWeightDto
 import com.dangjang.android.data.model.dto.PostPatchExerciseDto
 import com.dangjang.android.data.model.dto.PostPatchWeightDto
@@ -20,6 +21,13 @@ import retrofit2.http.POST
 import retrofit2.http.Query
 
 interface HomeApiService {
+
+    //홈 조회 API
+    @GET("/api/guide")
+    suspend fun getHome(
+        @Header("Authorization") accessToken: String,
+        @Query("date") date: String
+    ) : Response<BaseResponse<GetHomeDto>>
 
     //혈당 등록 API
     @POST("/api/health-metric")

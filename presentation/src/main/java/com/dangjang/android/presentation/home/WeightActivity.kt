@@ -1,6 +1,7 @@
 package com.dangjang.android.presentation.home
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.databinding.DataBindingUtil
@@ -8,10 +9,6 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.dangjang.android.domain.constants.ACCESS_TOKEN_KEY
-import com.dangjang.android.domain.constants.BMI_NORMAL_END
-import com.dangjang.android.domain.constants.BMI_NORMAL_START
-import com.dangjang.android.domain.constants.SEEKBAR_NORMAL_END
-import com.dangjang.android.domain.constants.SEEKBAR_NORMAL_START
 import com.dangjang.android.domain.constants.TOKEN_SPF_KEY
 import com.dangjang.android.presentation.R
 import com.dangjang.android.presentation.databinding.ActivityWeightBinding
@@ -23,6 +20,7 @@ class WeightActivity : FragmentActivity() {
     private lateinit var binding: ActivityWeightBinding
     private lateinit var viewModel: HomeViewModel
     private var originWeight: Int = 0
+    private var date = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,14 +32,16 @@ class WeightActivity : FragmentActivity() {
 
         binding.lifecycleOwner = this
 
-        getAccessToken()?.let { viewModel.getWeight(it) }
+        date = intent.getStringExtra("date").toString()
+
+        getAccessToken()?.let { viewModel.getWeight(it, date) }
 
         binding.weightSeekbar.setOnTouchListener({ v, event -> true })
         
         //TODO : lifecyelceScope에 없어도 되는지 테스트 해보기
         lifecycleScope.launchWhenStarted {
             viewModel.getWeightFlow.collectLatest {
-                binding.weightSeekbar.progress = calculateSeekbarProgress(it.bmi)
+                binding.weightSeekbar.progress = viewModel.calculateSeekbarProgress(it.bmi)
             }
         }
 
@@ -66,15 +66,18 @@ class WeightActivity : FragmentActivity() {
 
             if (originWeight == 0) {
                 viewModel.setWeightUnit(binding.weightEt.text.toString())
-                getAccessToken()?.let { viewModel.addWeight(it) }
+                getAccessToken()?.let { viewModel.addWeight(it, date) }
             } else {
                 viewModel.setEditWeightUnit(binding.weightEt.text.toString())
-                getAccessToken()?.let {  viewModel.editWeight(it) }
+                getAccessToken()?.let {  viewModel.editWeight(it, date) }
             }
 
         }
 
         binding.backIv.setOnClickListener {
+            val resultIntent = Intent()
+            resultIntent.putExtra("date",date)
+            setResult(RESULT_OK, resultIntent)
             finish()
         }
 
@@ -87,18 +90,6 @@ class WeightActivity : FragmentActivity() {
         val sharedPreferences = getSharedPreferences(TOKEN_SPF_KEY, Context.MODE_PRIVATE)
 
         return sharedPreferences.getString(ACCESS_TOKEN_KEY, null)
-    }
-
-    private fun calculateSeekbarProgress(bmi: Double): Int {
-        val progress: Double = if (bmi < BMI_NORMAL_START) {
-            SEEKBAR_NORMAL_START - (BMI_NORMAL_START - bmi)
-        } else if (bmi in BMI_NORMAL_START..BMI_NORMAL_END) {
-            SEEKBAR_NORMAL_START + (bmi - BMI_NORMAL_START)*((SEEKBAR_NORMAL_END - SEEKBAR_NORMAL_START)/(BMI_NORMAL_END - BMI_NORMAL_START))
-        } else {
-            SEEKBAR_NORMAL_END + (bmi - BMI_NORMAL_END)
-        }
-
-        return progress.toInt()
     }
 
 }

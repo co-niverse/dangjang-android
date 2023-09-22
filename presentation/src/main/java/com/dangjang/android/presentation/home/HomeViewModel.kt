@@ -5,6 +5,10 @@ import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.dangjang.android.domain.constants.BMI_NORMAL_END
+import com.dangjang.android.domain.constants.BMI_NORMAL_START
+import com.dangjang.android.domain.constants.SEEKBAR_NORMAL_END
+import com.dangjang.android.domain.constants.SEEKBAR_NORMAL_START
 import com.dangjang.android.domain.model.GetGlucoseVO
 import com.dangjang.android.domain.model.GlucoseGuideVO
 import com.dangjang.android.domain.request.AddHealthMetricRequest
@@ -23,6 +27,7 @@ import com.dangjang.android.domain.model.EditHealthMetricVO
 import com.dangjang.android.domain.model.ExerciseListVO
 import com.dangjang.android.domain.model.GetExerciseCaloriesVO
 import com.dangjang.android.domain.model.GetExerciseVO
+import com.dangjang.android.domain.model.GetHomeVO
 import com.dangjang.android.domain.model.GetWeightVO
 import com.dangjang.android.domain.model.PostPatchExerciseVO
 import com.dangjang.android.domain.model.PostPatchWeightVO
@@ -34,6 +39,7 @@ import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
+import java.util.Locale
 import javax.inject.Inject
 
 @HiltViewModel
@@ -41,6 +47,9 @@ class HomeViewModel @Inject constructor(
     private val getHomeUseCase: HomeUseCase,
     application: Application
 ) : AndroidViewModel(application) {
+    //홈
+    private val _getHomeFlow = MutableStateFlow(GetHomeVO())
+    val getHomeFlow = _getHomeFlow.asStateFlow()
 
     //혈당
     private val _postPatchGlucoseFlow = MutableStateFlow(EditHealthMetricVO())
@@ -87,6 +96,18 @@ class HomeViewModel @Inject constructor(
     private val _editExerciseRequest = MutableStateFlow(EditSameHealthMetricRequest())
     val editExerciseRequest = _editExerciseRequest.asStateFlow()
 
+    //홈
+    fun getHome(accessToken: String, date: String) {
+        viewModelScope.launch {
+            getHomeUseCase.getHome("Bearer $accessToken", date)
+                .onEach {
+                    _getHomeFlow.emit(it)
+                }
+                .handleErrors()
+                .collect()
+        }
+    }
+
     fun changeExerciseCaloriesToExerciseList(exerciseCalories: List<GetExerciseCaloriesVO>) : List<ExerciseListVO> {
         var originExerciseList = getExerciseList()
         var exerciseCaloriesNameList = mutableListOf<ExerciseListVO>()
@@ -126,9 +147,9 @@ class HomeViewModel @Inject constructor(
     }
 
     //체중
-    fun getWeight(accessToken: String) {
+    fun getWeight(accessToken: String, date: String) {
         viewModelScope.launch {
-            getHomeUseCase.getWeight("Bearer $accessToken", getTodayDate())
+            getHomeUseCase.getWeight("Bearer $accessToken", date)
                 .onEach {
                     _getWeightFlow.emit(it)
                 }
@@ -137,8 +158,9 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun addWeight(accessToken: String) {
-        setWeightTypeAndCreatedAt()
+    fun addWeight(accessToken: String, date: String) {
+        setWeightType()
+        setWeightCreatedAt(date)
         viewModelScope.launch {
             getHomeUseCase.addWeight("Bearer $accessToken", addWeightRequest.value)
                 .onEach {
@@ -146,14 +168,20 @@ class HomeViewModel @Inject constructor(
                 }
                 .handleErrors()
                 .collect{
-                    getWeight(accessToken)
+                    getWeight(accessToken, it.createdAt)
                 }
         }
     }
 
-    private fun setWeightTypeAndCreatedAt() {
+    private fun setWeightType() {
         _addWeightRequest.update {
-            it.copy(type = "체중", createdAt = getTodayDate())
+            it.copy(type = "체중")
+        }
+    }
+
+    private fun setWeightCreatedAt(date: String) {
+        _addWeightRequest.update {
+            it.copy(createdAt = date)
         }
     }
 
@@ -163,8 +191,9 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun editWeight(accessToken: String) {
-        setEditWeightTypeAndCreatedAt()
+    fun editWeight(accessToken: String, date: String) {
+        setEditWeightType()
+        setEditWeightCreatedAt(date)
         viewModelScope.launch {
             getHomeUseCase.editWeight("Bearer $accessToken", editWeightRequest.value)
                 .onEach {
@@ -172,14 +201,20 @@ class HomeViewModel @Inject constructor(
                 }
                 .handleErrors()
                 .collect{
-                    getWeight(accessToken)
+                    getWeight(accessToken, it.createdAt)
                 }
         }
     }
 
-    private fun setEditWeightTypeAndCreatedAt() {
+    private fun setEditWeightType() {
         _editWeightRequest.update {
-            it.copy(type = "체중", createdAt = getTodayDate())
+            it.copy(type = "체중")
+        }
+    }
+
+    private fun setEditWeightCreatedAt(date: String) {
+        _editWeightRequest.update {
+            it.copy(createdAt = date)
         }
     }
 
@@ -190,9 +225,9 @@ class HomeViewModel @Inject constructor(
     }
 
     //운동
-    fun getExercise(accessToken: String) {
+    fun getExercise(accessToken: String, date: String) {
         viewModelScope.launch {
-            getHomeUseCase.getExercise("Bearer $accessToken", getTodayDate())
+            getHomeUseCase.getExercise("Bearer $accessToken", date)
                 .onEach {
                     _getExerciseFlow.emit(it)
                 }
@@ -209,14 +244,14 @@ class HomeViewModel @Inject constructor(
                 }
                 .handleErrors()
                 .collect{
-                    getExercise(accessToken)
+                    getExercise(accessToken, it.createdAt)
                 }
         }
     }
 
-    fun setExerciseTypeAndCreatedAt(type: String) {
+    fun setExerciseTypeAndCreatedAt(type: String, date: String) {
         _addExerciseRequest.update {
-            it.copy(type = type, createdAt = getTodayDate())
+            it.copy(type = type, createdAt = date)
         }
     }
 
@@ -234,14 +269,14 @@ class HomeViewModel @Inject constructor(
                 }
                 .handleErrors()
                 .collect{
-                    getExercise(accessToken)
+                    getExercise(accessToken, it.createdAt)
                 }
         }
     }
 
-    fun setEditExerciseTypeAndCreatedAt(type: String) {
+    fun setEditExerciseTypeAndCreatedAt(type: String, date: String) {
         _editExerciseRequest.update {
-            it.copy(type = type, createdAt = getTodayDate())
+            it.copy(type = type, createdAt = date)
         }
     }
 
@@ -282,7 +317,7 @@ class HomeViewModel @Inject constructor(
                 }
                 .handleErrors()
                 .collect{
-                    getGlucose(accessToken)
+                    getGlucose(accessToken, addHealthMetricRequest.value.createdAt)
                 }
         }
     }
@@ -302,7 +337,7 @@ class HomeViewModel @Inject constructor(
                     }
                     .handleErrors()
                     .collect{
-                        getGlucose(accessToken)
+                        getGlucose(accessToken, editHealthMetricRequest.value.createdAt)
                     }
             } else {
                 getHomeUseCase.editGlucose("Bearer $accessToken", editHealthMetricRequest.value)
@@ -311,7 +346,7 @@ class HomeViewModel @Inject constructor(
                     }
                     .handleErrors()
                     .collect{
-                        getGlucose(accessToken)
+                        getGlucose(accessToken, editHealthMetricRequest.value.createdAt)
                     }
             }
         }
@@ -342,10 +377,10 @@ class HomeViewModel @Inject constructor(
     }
 
     fun getGlucose(
-        accessToken: String
+        accessToken: String, date: String
     ) {
         viewModelScope.launch {
-            getHomeUseCase.getGlucose("Bearer $accessToken", getTodayDate())
+            getHomeUseCase.getGlucose("Bearer $accessToken", date)
                 .onEach {
                     _getGlucoseFlow.emit(it)
                 }
@@ -473,5 +508,25 @@ class HomeViewModel @Inject constructor(
         val currentTime: Date = Calendar.getInstance().getTime()
         val format = SimpleDateFormat("yyyy-MM-dd")
         return format.format(currentTime)
+    }
+
+    fun calculateSeekbarProgress(bmi: Double): Int {
+        val progress: Double = if (bmi < BMI_NORMAL_START) {
+            SEEKBAR_NORMAL_START - (BMI_NORMAL_START - bmi)
+        } else if (bmi in BMI_NORMAL_START..BMI_NORMAL_END) {
+            SEEKBAR_NORMAL_START + (bmi - BMI_NORMAL_START)*((SEEKBAR_NORMAL_END - SEEKBAR_NORMAL_START)/(BMI_NORMAL_END - BMI_NORMAL_START))
+        } else {
+            SEEKBAR_NORMAL_END + (bmi - BMI_NORMAL_END)
+        }
+
+        return progress.toInt()
+    }
+
+    fun getDatePickerDate(year: Int, month: Int, day: Int): String {
+        val calendar = Calendar.getInstance()
+        calendar.set(year, month, day)
+
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.KOREA)
+        return dateFormat.format(calendar.time)
     }
 }
