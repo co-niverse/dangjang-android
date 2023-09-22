@@ -23,6 +23,7 @@ import com.dangjang.android.domain.request.HealthConnectRequest
 import com.dangjang.android.domain.request.PostHealthConnectRequest
 import com.dangjang.android.domain.usecase.SplashUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -31,6 +32,7 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import java.time.Duration
 import java.time.Instant
 import java.time.ZoneId
@@ -55,7 +57,8 @@ class SplashViewModel @Inject constructor(
 
     private val healthConnectClient by lazy { HealthConnectClient.getOrCreate(getApplication<Application>().applicationContext) }
 
-    private var healthConnectList = mutableListOf<HealthConnectRequest>()
+    private val _healthConnectList = MutableStateFlow(mutableListOf<HealthConnectRequest>())
+    val healthConnectList = _healthConnectList.asStateFlow()
 
     lateinit var weightList: List<WeightRecord>
     lateinit var stepList: List<StepsRecord>
@@ -114,9 +117,9 @@ class SplashViewModel @Inject constructor(
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun getExerciseHealthConnect() {
+    fun getExerciseHealthConnect(accessToken: String) {
         viewModelScope.launch {
-            tryWithExerciseSessionPermissionCheck()
+            tryWithExerciseSessionPermissionCheck(accessToken)
         }
     }
 
@@ -148,10 +151,10 @@ class SplashViewModel @Inject constructor(
         }
     }
 
-    private suspend fun tryWithExerciseSessionPermissionCheck() {
+    private suspend fun tryWithExerciseSessionPermissionCheck(accessToken: String) {
         exerciseSessionPermissionGranted = hasAllPermissions(exerciseSessionPermission)
         if (exerciseSessionPermissionGranted) {
-            readExerciseSession()
+            readExerciseSession(accessToken)
         } else {
             Log.e("GRANT-ERROR","운동 권한이 허용되지 않았습니다.")
         }
@@ -169,7 +172,14 @@ class SplashViewModel @Inject constructor(
         for (weightRecord in weightList) {
             Log.e("HC-Weight",weightRecord.weight.toString())
             //TODO : 날짜 처리
-            healthConnectList.add(HealthConnectRequest(changeInstantToKSTDate(weightRecord.time),"체중",weightRecord.weight.toString()))
+            _healthConnectList.value =
+                _healthConnectList.value.apply {
+                    add(HealthConnectRequest(
+                        changeInstantToKSTDate(weightRecord.time),
+                        "체중",
+                        weightRecord.weight.toString()
+                    ))
+                }
         }
     }
 
@@ -227,7 +237,10 @@ class SplashViewModel @Inject constructor(
                 }
             }
 
-            healthConnectList.add(HealthConnectRequest(changeInstantToKSTDate(bloodGlucoseRecord.time), relationToMeal ?: "기타", bloodGlucoseRecord.level.inMilligramsPerDeciliter.roundToInt().toString()))
+            _healthConnectList.value =
+                _healthConnectList.value.apply {
+                    add(HealthConnectRequest(changeInstantToKSTDate(bloodGlucoseRecord.time), relationToMeal ?: "기타", bloodGlucoseRecord.level.inMilligramsPerDeciliter.roundToInt().toString()))
+                }
         }
     }
 
@@ -247,8 +260,13 @@ class SplashViewModel @Inject constructor(
         for (stepsRecord in stepList) {
             Log.e("HC-Steps",stepsRecord.count.toString()+"보")
             //TODO : 날짜 처리
-            healthConnectList.add(HealthConnectRequest(changeInstantToKSTDate(stepsRecord.startTime),"걸음수",stepsRecord.count.toString()))
-        }
+            _healthConnectList.value =
+                _healthConnectList.value.apply {
+                    add(
+                    HealthConnectRequest(changeInstantToKSTDate(stepsRecord.startTime),"걸음수",stepsRecord.count.toString())
+                    )
+                }
+       }
     }
 
     private suspend fun readStepsRecord(start: Instant, end: Instant): List<StepsRecord> {
@@ -262,7 +280,7 @@ class SplashViewModel @Inject constructor(
 
     //운동
     @RequiresApi(Build.VERSION_CODES.O)
-    private suspend fun readExerciseSession() {
+    private suspend fun readExerciseSession(accessToken: String) {
         exerciseList = readExerciseSessionRecord(getTodayStartTime(),getNowTime())
         for (exerciseRecord in exerciseList) {
             var exerciseName = ExerciseSessionRecord.EXERCISE_TYPE_INT_TO_STRING_MAP.get(exerciseRecord.exerciseType)
@@ -299,15 +317,19 @@ class SplashViewModel @Inject constructor(
 
             if (exerciseName != "제외") {
                 //TODO : 날짜 처리 & 운동명 처리 & 운동시간 처리
-                healthConnectList.add(
-                    HealthConnectRequest(
-                        changeInstantToKSTDate(exerciseRecord.startTime),
-                        exerciseName,
-                        duration.toString()
-                    )
-                )
+                _healthConnectList.value =
+                    _healthConnectList.value.apply {
+                        add(HealthConnectRequest(
+                            changeInstantToKSTDate(exerciseRecord.startTime),
+                            exerciseName,
+                            duration.toString()
+                        ))
+                    }
             }
         }
+        Log.e("운동 완료",healthConnectList.value.toString())
+        //TODO : 여기서 POST health connect 수행하기  (XXXX)
+        postHealthConnectData(accessToken)
     }
 
     private suspend fun readExerciseSessionRecord(start: Instant, end: Instant): List<ExerciseSessionRecord> {
@@ -338,9 +360,22 @@ class SplashViewModel @Inject constructor(
         }
     }
 
+    fun getAllHealthConnectData(accessToken: String) =
+        runBlocking {
+            val deferred1 = async {
+                getGlucoseHealthConnect()
+                getWeightHealthConnect()
+                getStepsHealthConnect()
+                getExerciseHealthConnect(accessToken)
+            }
+
+            deferred1.await()
+        }
+
     fun postHealthConnectData(accessToken: String) {
         viewModelScope.launch {
-            splashUseCase.postHealthConnect("Bearer $accessToken", PostHealthConnectRequest(healthConnectList))
+            Log.e("테스트 테스트", healthConnectList.toString())
+            splashUseCase.postHealthConnect("Bearer $accessToken", PostHealthConnectRequest(healthConnectList.value))
                 .handleErrors()
                 .collect()
         }

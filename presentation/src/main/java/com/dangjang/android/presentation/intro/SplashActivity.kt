@@ -28,7 +28,26 @@ class SplashActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         val sp: SharedPreferences = getSharedPreferences(AUTO_LOGIN_SPF_KEY, MODE_PRIVATE)
         val provider = sp.getString(AUTO_LOGIN_EDITOR_KEY, "null")
-        Log.e("sp",provider.toString())
+        Log.e("sp", provider.toString())
+
+        viewModel.getIntroData()
+
+        viewModel.checkAvailability()
+
+        val healthConnect = sp.getString(HEALTH_CONNECT_TOKEN_KEY, "null")
+
+        if (healthConnect == "true") {
+        if (viewModel.healthConnectFlow.value.isAvaiable == HEALTH_CONNECT_INSTALLED) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    getAccessToken()?.let { viewModel.getAllHealthConnectData(it) }
+            }
+         }
+
+        } else if (healthConnect == "false") {
+            if (viewModel.healthConnectFlow.value.isAvaiable == HEALTH_CONNECT_NOT_INSTALLED) {
+                //TODO : 헬스커넥트 팝업 띄우기
+            }
+        }
 
         if (provider == KAKAO) {
             startActivity(Intent(this, LoginActivity::class.java))
@@ -39,31 +58,8 @@ class SplashActivity : AppCompatActivity() {
         } else {
             startActivity(Intent(this, LoginActivity::class.java))
             finish()
-        }
+        }}
 
-        viewModel.getIntroData()
-
-        viewModel.checkAvailability()
-
-        val healthConnect = sp.getString(HEALTH_CONNECT_TOKEN_KEY, "null")
-
-        if (healthConnect == "true") {
-            if (viewModel.healthConnectFlow.value.isAvaiable == HEALTH_CONNECT_INSTALLED) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    viewModel.getWeightHealthConnect()
-                    viewModel.getGlucoseHealthConnect()
-                    viewModel.getStepsHealthConnect()
-                    viewModel.getExerciseHealthConnect()
-                    getAccessToken()?.let { viewModel.postHealthConnectData(it) }
-                }
-            }
-        }
-        else if (healthConnect == "false") {
-            if (viewModel.healthConnectFlow.value.isAvaiable == HEALTH_CONNECT_NOT_INSTALLED) {
-                //TODO : 헬스커넥트 팝업 띄우기
-            }
-        }
-    }
 
     private fun getAccessToken(): String? {
         val sharedPreferences = getSharedPreferences(TOKEN_SPF_KEY, Context.MODE_PRIVATE)
