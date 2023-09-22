@@ -303,7 +303,7 @@ class HomeViewModel @Inject constructor(
                 }
                 .handleErrors()
                 .collect{
-                    getGlucose(accessToken)
+                    getGlucose(accessToken, addHealthMetricRequest.value.createdAt)
                 }
         }
     }
@@ -323,7 +323,7 @@ class HomeViewModel @Inject constructor(
                     }
                     .handleErrors()
                     .collect{
-                        getGlucose(accessToken)
+                        getGlucose(accessToken, editHealthMetricRequest.value.createdAt)
                     }
             } else {
                 getHomeUseCase.editGlucose("Bearer $accessToken", editHealthMetricRequest.value)
@@ -332,7 +332,7 @@ class HomeViewModel @Inject constructor(
                     }
                     .handleErrors()
                     .collect{
-                        getGlucose(accessToken)
+                        getGlucose(accessToken, editHealthMetricRequest.value.createdAt)
                     }
             }
         }
@@ -363,10 +363,10 @@ class HomeViewModel @Inject constructor(
     }
 
     fun getGlucose(
-        accessToken: String
+        accessToken: String, date: String
     ) {
         viewModelScope.launch {
-            getHomeUseCase.getGlucose("Bearer $accessToken", getTodayDate())
+            getHomeUseCase.getGlucose("Bearer $accessToken", date)
                 .onEach {
                     _getGlucoseFlow.emit(it)
                 }

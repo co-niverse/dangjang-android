@@ -1,6 +1,7 @@
 package com.dangjang.android.presentation.home
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
@@ -29,6 +30,7 @@ class GlucoseActivity : FragmentActivity() {
     private lateinit var glucoseListAdapter: GlucoseListAdapter
     private var glucoseSpinnerType: String = ""
     private lateinit var glucoseGuideAdapter: GlucoseGuideAdapter
+    private var date = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_glucose)
@@ -39,8 +41,10 @@ class GlucoseActivity : FragmentActivity() {
 
         binding.lifecycleOwner = this
 
+        date = intent.getStringExtra("date").toString()
+
         getAccessToken()?.let {
-                accessToken -> viewModel.getGlucose(accessToken)
+                accessToken -> viewModel.getGlucose(accessToken, date)
         }
 
         lifecycleScope.launchWhenStarted {
@@ -52,8 +56,7 @@ class GlucoseActivity : FragmentActivity() {
 
         binding.glucoseAddSaveBtn.setOnClickListener {
             viewModel.setType(glucoseSpinnerType)
-
-            viewModel.setCreatedAt(viewModel.getTodayDate())
+            viewModel.setCreatedAt(date)
             viewModel.setUnit(binding.glucoseAddEt.text.toString())
 
             getAccessToken()?.let {
@@ -76,6 +79,9 @@ class GlucoseActivity : FragmentActivity() {
         }
 
         binding.backIv.setOnClickListener {
+            val resultIntent = Intent()
+            resultIntent.putExtra("date",date)
+            setResult(RESULT_OK, resultIntent)
             finish()
         }
 
