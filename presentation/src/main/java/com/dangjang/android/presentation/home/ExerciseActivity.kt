@@ -136,6 +136,7 @@ class ExerciseActivity : FragmentActivity() {
                 bundle.putString("type", exerciseList.exerciseName)
                 bundle.putString("hour", exerciseList.exerciseHour)
                 bundle.putString("minute", exerciseList.exerciseMinute)
+                bundle.putString("date",date)
                 exerciseEditDialogFragment.arguments = bundle
                 exerciseEditDialogFragment.show(supportFragmentManager, "ExerciseEditDialogFragment")
             }
