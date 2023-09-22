@@ -147,9 +147,9 @@ class HomeViewModel @Inject constructor(
     }
 
     //체중
-    fun getWeight(accessToken: String) {
+    fun getWeight(accessToken: String, date: String) {
         viewModelScope.launch {
-            getHomeUseCase.getWeight("Bearer $accessToken", getTodayDate())
+            getHomeUseCase.getWeight("Bearer $accessToken", date)
                 .onEach {
                     _getWeightFlow.emit(it)
                 }
@@ -158,8 +158,9 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun addWeight(accessToken: String) {
-        setWeightTypeAndCreatedAt()
+    fun addWeight(accessToken: String, date: String) {
+        setWeightType()
+        setWeightCreatedAt(date)
         viewModelScope.launch {
             getHomeUseCase.addWeight("Bearer $accessToken", addWeightRequest.value)
                 .onEach {
@@ -167,14 +168,20 @@ class HomeViewModel @Inject constructor(
                 }
                 .handleErrors()
                 .collect{
-                    getWeight(accessToken)
+                    getWeight(accessToken, it.createdAt)
                 }
         }
     }
 
-    private fun setWeightTypeAndCreatedAt() {
+    private fun setWeightType() {
         _addWeightRequest.update {
-            it.copy(type = "체중", createdAt = getTodayDate())
+            it.copy(type = "체중")
+        }
+    }
+
+    private fun setWeightCreatedAt(date: String) {
+        _addWeightRequest.update {
+            it.copy(createdAt = date)
         }
     }
 
@@ -184,8 +191,9 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun editWeight(accessToken: String) {
-        setEditWeightTypeAndCreatedAt()
+    fun editWeight(accessToken: String, date: String) {
+        setEditWeightType()
+        setEditWeightCreatedAt(date)
         viewModelScope.launch {
             getHomeUseCase.editWeight("Bearer $accessToken", editWeightRequest.value)
                 .onEach {
@@ -193,14 +201,20 @@ class HomeViewModel @Inject constructor(
                 }
                 .handleErrors()
                 .collect{
-                    getWeight(accessToken)
+                    getWeight(accessToken, it.createdAt)
                 }
         }
     }
 
-    private fun setEditWeightTypeAndCreatedAt() {
+    private fun setEditWeightType() {
         _editWeightRequest.update {
-            it.copy(type = "체중", createdAt = getTodayDate())
+            it.copy(type = "체중")
+        }
+    }
+
+    private fun setEditWeightCreatedAt(date: String) {
+        _editWeightRequest.update {
+            it.copy(createdAt = date)
         }
     }
 

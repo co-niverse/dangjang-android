@@ -94,7 +94,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
 
         binding.glucoseCl.setOnClickListener {
             Intent(activity, GlucoseActivity::class.java).apply {
-                Log.e("homeDate", date)
                 putExtra("date",date)
                 startActivityForResult(this, 101)
             }
@@ -102,7 +101,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
 
         binding.weightCl.setOnClickListener {
             Intent(activity, WeightActivity::class.java).apply {
-                startActivity(this)
+                putExtra("date",date)
+                startActivityForResult(this, 101)
             }
         }
 
