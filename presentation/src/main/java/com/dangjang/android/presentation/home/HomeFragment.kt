@@ -108,7 +108,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
 
         binding.exerciseCl.setOnClickListener {
             Intent(activity, ExerciseActivity::class.java).apply {
-                startActivity(this)
+                putExtra("date",date)
+                startActivityForResult(this, 101)
             }
         }
 

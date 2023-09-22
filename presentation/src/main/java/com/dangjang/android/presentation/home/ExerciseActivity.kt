@@ -1,6 +1,7 @@
 package com.dangjang.android.presentation.home
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.databinding.DataBindingUtil
@@ -21,6 +22,7 @@ class ExerciseActivity : FragmentActivity() {
     private lateinit var viewModel: HomeViewModel
     private lateinit var exerciseListAdapter: ExerciseListAdapter
     private var originStep: Int = 0
+    private var date = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,7 +34,9 @@ class ExerciseActivity : FragmentActivity() {
 
         binding.lifecycleOwner = this
 
-        getAccessToken()?.let { viewModel.getExercise(it) }
+        date = intent.getStringExtra("date").toString()
+
+        getAccessToken()?.let { viewModel.getExercise(it, date) }
 
         lifecycleScope.launchWhenStarted {
             viewModel.getExerciseFlow.collectLatest {
@@ -94,11 +98,11 @@ class ExerciseActivity : FragmentActivity() {
             originStep = binding.stepTv.text.toString().toInt()
 
             if (originStep == 0) {
-                viewModel.setExerciseTypeAndCreatedAt("걸음수")
+                viewModel.setExerciseTypeAndCreatedAt("걸음수", date)
                 viewModel.setExerciseUnit(binding.stepEt.text.toString())
                 getAccessToken()?.let { viewModel.addExercise(it) }
             } else {
-                viewModel.setEditExerciseTypeAndCreatedAt("걸음수")
+                viewModel.setEditExerciseTypeAndCreatedAt("걸음수", date)
                 viewModel.setEditExerciseUnit(binding.stepEt.text.toString())
                 getAccessToken()?.let { viewModel.editExercise(it) }
             }
@@ -106,6 +110,9 @@ class ExerciseActivity : FragmentActivity() {
         }
 
         binding.backIv.setOnClickListener {
+            val resultIntent = Intent()
+            resultIntent.putExtra("date",date)
+            setResult(RESULT_OK, resultIntent)
             finish()
         }
 

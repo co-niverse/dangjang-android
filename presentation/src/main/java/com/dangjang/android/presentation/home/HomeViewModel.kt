@@ -225,9 +225,9 @@ class HomeViewModel @Inject constructor(
     }
 
     //운동
-    fun getExercise(accessToken: String) {
+    fun getExercise(accessToken: String, date: String) {
         viewModelScope.launch {
-            getHomeUseCase.getExercise("Bearer $accessToken", getTodayDate())
+            getHomeUseCase.getExercise("Bearer $accessToken", date)
                 .onEach {
                     _getExerciseFlow.emit(it)
                 }
@@ -244,14 +244,14 @@ class HomeViewModel @Inject constructor(
                 }
                 .handleErrors()
                 .collect{
-                    getExercise(accessToken)
+                    getExercise(accessToken, it.createdAt)
                 }
         }
     }
 
-    fun setExerciseTypeAndCreatedAt(type: String) {
+    fun setExerciseTypeAndCreatedAt(type: String, date: String) {
         _addExerciseRequest.update {
-            it.copy(type = type, createdAt = getTodayDate())
+            it.copy(type = type, createdAt = date)
         }
     }
 
@@ -269,14 +269,14 @@ class HomeViewModel @Inject constructor(
                 }
                 .handleErrors()
                 .collect{
-                    getExercise(accessToken)
+                    getExercise(accessToken, it.createdAt)
                 }
         }
     }
 
-    fun setEditExerciseTypeAndCreatedAt(type: String) {
+    fun setEditExerciseTypeAndCreatedAt(type: String, date: String) {
         _editExerciseRequest.update {
-            it.copy(type = type, createdAt = getTodayDate())
+            it.copy(type = type, createdAt = date)
         }
     }
 
