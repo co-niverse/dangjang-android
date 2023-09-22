@@ -102,6 +102,7 @@ class GlucoseActivity : FragmentActivity() {
                 var bundle = Bundle()
                 bundle.putString("time", glucoseList.time)
                 bundle.putString("glucose", glucoseList.glucose)
+                bundle.putString("date", date)
                 glucoseEditDialogFragment.arguments = bundle
 
                 glucoseEditDialogFragment.show(supportFragmentManager, "GlucoseEditDialogFragment")

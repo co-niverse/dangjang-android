@@ -29,6 +29,7 @@ class GlucoseEditDialogFragment : DialogFragment(
     private val viewModel by activityViewModels<HomeViewModel>()
     private var newType: String = ""
     private var time: String = ""
+    private var date = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,6 +46,7 @@ class GlucoseEditDialogFragment : DialogFragment(
 
         time = arguments?.getString("time").toString()
         var glucose = arguments?.getString("glucose")
+        date = arguments?.getString("date").toString()
 
         binding.glucoseAddEt.setText(glucose)
         if (time != null) {
@@ -62,7 +64,7 @@ class GlucoseEditDialogFragment : DialogFragment(
         }
 
         binding.glucoseAddSaveBtn.setOnClickListener {
-            viewModel.setEditGlucoseCreatedAt(getTodayDate())
+            viewModel.setEditGlucoseCreatedAt(date)
             viewModel.setEditGlucoseNewType(newType)
             viewModel.setEditGlucoseType(time)
             viewModel.setEditGlucoseValue(getGlucose())
@@ -105,12 +107,6 @@ class GlucoseEditDialogFragment : DialogFragment(
     private fun getAccessToken(): String? {
         val sharedPreferences = requireContext().getSharedPreferences(TOKEN_SPF_KEY, Context.MODE_PRIVATE)
         return sharedPreferences.getString(ACCESS_TOKEN_KEY, null)
-    }
-
-    private fun getTodayDate(): String {
-        val currentTime: Date = Calendar.getInstance().getTime()
-        val format = SimpleDateFormat("yyyy-MM-dd")
-        return format.format(currentTime)
     }
 
     private fun getGlucose(): String {
