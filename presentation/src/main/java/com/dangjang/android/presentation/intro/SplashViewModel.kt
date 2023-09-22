@@ -177,7 +177,7 @@ class SplashViewModel @Inject constructor(
                     add(HealthConnectRequest(
                         changeInstantToKSTDate(weightRecord.time),
                         "체중",
-                        weightRecord.weight.toString()
+                        weightRecord.weight.inKilograms.toInt().toString()
                     ))
                 }
         }
