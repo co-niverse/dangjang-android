@@ -1,6 +1,6 @@
 package com.dangjang.android.presentation.intro
 
-import android.app.Application
+import  android.app.Application
 import android.os.Build
 import android.util.Log
 import android.widget.Toast
@@ -23,7 +23,6 @@ import com.dangjang.android.domain.request.HealthConnectRequest
 import com.dangjang.android.domain.request.PostHealthConnectRequest
 import com.dangjang.android.domain.usecase.SplashUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -32,7 +31,6 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import java.time.Duration
 import java.time.Instant
 import java.time.ZoneId
@@ -59,6 +57,24 @@ class SplashViewModel @Inject constructor(
 
     private val _healthConnectList = MutableStateFlow(mutableListOf<HealthConnectRequest>())
     val healthConnectList = _healthConnectList.asStateFlow()
+
+    private val _hcWeightList = MutableStateFlow(mutableListOf<HealthConnectRequest>())
+    val hcWeightList = _hcWeightList.asStateFlow()
+
+    private val _hcGlucoseList = MutableStateFlow(mutableListOf<HealthConnectRequest>())
+    val hcGlucoseList = _hcGlucoseList.asStateFlow()
+
+    private val _hcStepList = MutableStateFlow(mutableListOf<HealthConnectRequest>())
+    val hcStepList = _hcStepList.asStateFlow()
+
+    private val _hcExerciseList = MutableStateFlow(mutableListOf<HealthConnectRequest>())
+    val hcExerciseList = _hcExerciseList.asStateFlow()
+
+    private val _hcExerciseGlucoseList = MutableStateFlow(mutableListOf<HealthConnectRequest>())
+    val hcExerciseGlucoseList = _hcExerciseGlucoseList.asStateFlow()
+
+    private val _hcWeightStepList = MutableStateFlow(mutableListOf<HealthConnectRequest>())
+    val hcWeightStepList = _hcWeightStepList.asStateFlow()
 
     lateinit var weightList: List<WeightRecord>
     lateinit var stepList: List<StepsRecord>
@@ -117,9 +133,9 @@ class SplashViewModel @Inject constructor(
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun getExerciseHealthConnect(accessToken: String) {
+    fun getExerciseHealthConnect() {
         viewModelScope.launch {
-            tryWithExerciseSessionPermissionCheck(accessToken)
+            tryWithExerciseSessionPermissionCheck()
         }
     }
 
@@ -151,10 +167,10 @@ class SplashViewModel @Inject constructor(
         }
     }
 
-    private suspend fun tryWithExerciseSessionPermissionCheck(accessToken: String) {
+    private suspend fun tryWithExerciseSessionPermissionCheck() {
         exerciseSessionPermissionGranted = hasAllPermissions(exerciseSessionPermission)
         if (exerciseSessionPermissionGranted) {
-            readExerciseSession(accessToken)
+            readExerciseSession()
         } else {
             Log.e("GRANT-ERROR","운동 권한이 허용되지 않았습니다.")
         }
@@ -167,13 +183,12 @@ class SplashViewModel @Inject constructor(
     //체중
     @RequiresApi(Build.VERSION_CODES.O)
     private suspend fun readWeight() {
+        val hcWeightTestList = mutableListOf<HealthConnectRequest>()
         //TODO : 로그인 시작 시간 처리 후 getTodayStartTime() -> getStartTime() 함수로 대치
         weightList = readWeightRecord(getTodayStartTime(), getNowTime())
         for (weightRecord in weightList) {
             Log.e("HC-Weight",weightRecord.weight.toString())
-            //TODO : 날짜 처리
-            _healthConnectList.value =
-                _healthConnectList.value.apply {
+            hcWeightTestList.apply {
                     add(HealthConnectRequest(
                         changeInstantToKSTDate(weightRecord.time),
                         "체중",
@@ -181,6 +196,7 @@ class SplashViewModel @Inject constructor(
                     ))
                 }
         }
+        _hcWeightList.update { hcWeightTestList }
     }
 
     private suspend fun readWeightRecord(start: Instant, end: Instant): List<WeightRecord> {
@@ -195,6 +211,7 @@ class SplashViewModel @Inject constructor(
     //혈당
     @RequiresApi(Build.VERSION_CODES.O)
     private suspend fun readBloodGlucose() {
+        val hcGlucoseTestList = mutableListOf<HealthConnectRequest>()
         bloodGlucoseList = readBloodGlucoseRecord(getTodayStartTime(), getNowTime())
         for (bloodGlucoseRecord in bloodGlucoseList) {
             val bgTime = changeInstantToKST(bloodGlucoseRecord.time)
@@ -237,11 +254,11 @@ class SplashViewModel @Inject constructor(
                 }
             }
 
-            _healthConnectList.value =
-                _healthConnectList.value.apply {
+            hcGlucoseTestList.apply {
                     add(HealthConnectRequest(changeInstantToKSTDate(bloodGlucoseRecord.time), relationToMeal ?: "기타", bloodGlucoseRecord.level.inMilligramsPerDeciliter.roundToInt().toString()))
                 }
         }
+        _hcGlucoseList.update { hcGlucoseTestList }
     }
 
     private suspend fun readBloodGlucoseRecord(start: Instant, end: Instant): List<BloodGlucoseRecord> {
@@ -256,17 +273,17 @@ class SplashViewModel @Inject constructor(
     //걸음수
     @RequiresApi(Build.VERSION_CODES.O)
     private suspend fun readSteps() {
+        val hcStepsTestList = mutableListOf<HealthConnectRequest>()
         stepList = readStepsRecord(getTodayStartTime(), getNowTime())
         for (stepsRecord in stepList) {
             Log.e("HC-Steps",stepsRecord.count.toString()+"보")
-            //TODO : 날짜 처리
-            _healthConnectList.value =
-                _healthConnectList.value.apply {
+            hcStepsTestList.apply {
                     add(
                     HealthConnectRequest(changeInstantToKSTDate(stepsRecord.startTime),"걸음수",stepsRecord.count.toString())
                     )
                 }
        }
+        _hcStepList.update { hcStepsTestList }
     }
 
     private suspend fun readStepsRecord(start: Instant, end: Instant): List<StepsRecord> {
@@ -280,7 +297,8 @@ class SplashViewModel @Inject constructor(
 
     //운동
     @RequiresApi(Build.VERSION_CODES.O)
-    private suspend fun readExerciseSession(accessToken: String) {
+    private suspend fun readExerciseSession() {
+        val hcExerciseTestList = mutableListOf<HealthConnectRequest>()
         exerciseList = readExerciseSessionRecord(getTodayStartTime(),getNowTime())
         for (exerciseRecord in exerciseList) {
             var exerciseName = ExerciseSessionRecord.EXERCISE_TYPE_INT_TO_STRING_MAP.get(exerciseRecord.exerciseType)
@@ -316,9 +334,7 @@ class SplashViewModel @Inject constructor(
             }
 
             if (exerciseName != "제외") {
-                //TODO : 날짜 처리 & 운동명 처리 & 운동시간 처리
-                _healthConnectList.value =
-                    _healthConnectList.value.apply {
+                hcExerciseTestList.apply {
                         add(HealthConnectRequest(
                             changeInstantToKSTDate(exerciseRecord.startTime),
                             exerciseName,
@@ -328,8 +344,7 @@ class SplashViewModel @Inject constructor(
             }
         }
         Log.e("운동 완료",healthConnectList.value.toString())
-        //TODO : 여기서 POST health connect 수행하기  (XXXX)
-        postHealthConnectData(accessToken)
+        _hcExerciseList.update { hcExerciseTestList }
     }
 
     private suspend fun readExerciseSessionRecord(start: Instant, end: Instant): List<ExerciseSessionRecord> {
@@ -360,22 +375,28 @@ class SplashViewModel @Inject constructor(
         }
     }
 
-    fun getAllHealthConnectData(accessToken: String) =
-        runBlocking {
-            val deferred1 = async {
-                getGlucoseHealthConnect()
-                getWeightHealthConnect()
-                getStepsHealthConnect()
-                getExerciseHealthConnect(accessToken)
-            }
+    fun setHcExerciseGlucoseList(list: List<HealthConnectRequest>) {
+        _hcExerciseGlucoseList.value = list.toMutableList()
+    }
 
-            deferred1.await()
-        }
+    fun setHcWeightStepList(list: List<HealthConnectRequest>) {
+        _hcWeightStepList.value = list.toMutableList()
+    }
+
+    fun getAllHealthConnectData() {
+        getGlucoseHealthConnect()
+        getWeightHealthConnect()
+        getStepsHealthConnect()
+        getExerciseHealthConnect()
+    }
+
 
     fun postHealthConnectData(accessToken: String) {
+        _healthConnectList.value.addAll(hcExerciseGlucoseList.value)
+        _healthConnectList.value.addAll(hcWeightStepList.value)
         viewModelScope.launch {
-            Log.e("테스트 테스트", healthConnectList.toString())
-            splashUseCase.postHealthConnect("Bearer $accessToken", PostHealthConnectRequest(healthConnectList.value))
+            Log.e("hc 등록 테스트",healthConnectList.value.toString())
+            splashUseCase.postHealthConnect("Bearer $accessToken", PostHealthConnectRequest(data = healthConnectList.value))
                 .handleErrors()
                 .collect()
         }
