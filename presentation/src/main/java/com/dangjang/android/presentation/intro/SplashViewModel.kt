@@ -465,4 +465,12 @@ class SplashViewModel @Inject constructor(
 
         return sp.getString(HEALTH_CONNECT_TOKEN_KEY, "null")
     }
+
+    fun getAutoLoginProviderSpf(): String? {
+        val sp: SharedPreferences = getApplication<Application>().applicationContext.getSharedPreferences(
+            AUTO_LOGIN_SPF_KEY,
+            AppCompatActivity.MODE_PRIVATE
+        )
+        return sp.getString(AUTO_LOGIN_EDITOR_KEY, "null")
+    }
 }

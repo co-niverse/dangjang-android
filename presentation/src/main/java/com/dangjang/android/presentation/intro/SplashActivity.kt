@@ -1,6 +1,7 @@
 package com.dangjang.android.presentation.intro
 
 import android.content.Context
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -10,9 +11,13 @@ import androidx.lifecycle.lifecycleScope
 import com.dangjang.android.domain.constants.ACCESS_TOKEN_KEY
 import com.dangjang.android.domain.constants.HEALTH_CONNECT_INSTALLED
 import com.dangjang.android.domain.constants.HEALTH_CONNECT_NOT_INSTALLED
+import com.dangjang.android.domain.constants.KAKAO
+import com.dangjang.android.domain.constants.NAVER
 import com.dangjang.android.domain.constants.TOKEN_SPF_KEY
 import com.dangjang.android.domain.request.HealthConnectRequest
+import com.dangjang.android.presentation.MainActivity
 import com.dangjang.android.presentation.R
+import com.dangjang.android.presentation.login.LoginActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.zip
 import kotlinx.coroutines.launch
@@ -26,12 +31,6 @@ class SplashActivity : FragmentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
-
-//        Handler().postDelayed(Runnable {
-//            val i = Intent(this@SplashActivity, LoginActivity::class.java)
-//            startActivity(i)
-//            finish()
-//        }, 5000)
 
         viewModel.getIntroData()
 
@@ -87,6 +86,9 @@ class SplashActivity : FragmentActivity() {
                             }
                         }
                     }
+
+                    //TODO : health connect API Response 받았을 때
+                    goToMainOrLoginActivity()
                 }
             }
 
@@ -96,18 +98,17 @@ class SplashActivity : FragmentActivity() {
             }
         }
 
-//        if (provider == KAKAO) {
-//            startActivity(Intent(this, LoginActivity::class.java))
-//            finish()
-//        } else if (provider == NAVER) {
-//            startActivity(Intent(this, MainActivity::class.java))
-//            finish()
-//        } else {
-//            startActivity(Intent(this, LoginActivity::class.java))
-//            finish()
-//        }
     }
 
+    private fun goToMainOrLoginActivity() {
+        if (viewModel.getAutoLoginProviderSpf() == KAKAO || viewModel.getAutoLoginProviderSpf() == NAVER) {
+            startActivity(Intent(this, MainActivity::class.java))
+            finish()
+        } else {
+            startActivity(Intent(this, LoginActivity::class.java))
+            finish()
+        }
+    }
 
     private fun getAccessToken(): String? {
         val sharedPreferences = getSharedPreferences(TOKEN_SPF_KEY, Context.MODE_PRIVATE)
