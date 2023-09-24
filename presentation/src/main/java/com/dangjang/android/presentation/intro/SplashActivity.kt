@@ -88,8 +88,12 @@ class SplashActivity : FragmentActivity() {
                         }
                     }
 
-                    //TODO : health connect API Response 받았을 때
-                    goToMainOrLoginActivity()
+                    lifecycleScope.launch {
+                        //TODO : API Response 받은 후 화면 이동 처리 -> 현재 안됨
+                        viewModel.postHealthConnectFlow.collect {
+                            //goToMainOrLoginActivity()
+                        }
+                    }
                 }
             }
 

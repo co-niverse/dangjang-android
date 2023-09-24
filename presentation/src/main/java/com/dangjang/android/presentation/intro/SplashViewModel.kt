@@ -34,6 +34,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import java.time.Duration
@@ -59,6 +60,9 @@ class SplashViewModel @Inject constructor(
     val healthConnectFlow = _healthConnectFlow.asStateFlow()
 
     private val healthConnectClient by lazy { HealthConnectClient.getOrCreate(getApplication<Application>().applicationContext) }
+
+    private val _postHealthConnectFlow = MutableStateFlow(false)
+    val postHealthConnectFlow = _postHealthConnectFlow.asStateFlow()
 
     private val _healthConnectList = MutableStateFlow(mutableListOf<HealthConnectRequest>())
     val healthConnectList = _healthConnectList.asStateFlow()
@@ -402,6 +406,10 @@ class SplashViewModel @Inject constructor(
         viewModelScope.launch {
             Log.e("hc 등록 테스트",healthConnectList.value.toString())
             splashUseCase.postHealthConnect("Bearer $accessToken", PostHealthConnectRequest(data = healthConnectList.value))
+                .onEach {
+                    //TODO : it에 들어오는 값이 없음 -> 해결
+                    _postHealthConnectFlow.emit(it)
+                }
                 .handleErrors()
                 .collect()
         }
