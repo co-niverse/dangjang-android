@@ -13,3 +13,13 @@ const val HEALTH_CONNECT_TOKEN_KEY = "HealthConnect"
 const val HEALTH_CONNECT_UNAVAILABLE = 1
 const val HEALTH_CONNECT_NOT_INSTALLED = 2
 const val HEALTH_CONNECT_INSTALLED = 3
+
+const val UNKNOWN_DOUBLE = 0.0
+const val UNKNOWN_BOOLEAN = false
+const val UNKNOWN_STRING = ""
+const val UNKNOWN_INT = 0
+
+const val BMI_NORMAL_START = 18.5
+const val BMI_NORMAL_END = 22.9
+const val SEEKBAR_NORMAL_START = 20
+const val SEEKBAR_NORMAL_END = 50

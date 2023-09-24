@@ -41,6 +41,15 @@
                 app:layout_constraintEnd_toStartOf="@id/calendar_iv"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <View
+                android:id="@+id/bell_exist_view"
+                android:layout_width="9dp"
+                android:layout_height="9dp"
+                android:background="@drawable/background_alarm_circle"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="@id/bell_iv"
+                app:layout_constraintTop_toTopOf="@id/bell_iv" />
+
             <ImageView
                 android:id="@+id/calendar_iv"
                 android:layout_width="wrap_content"
@@ -53,17 +62,51 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/title_tv"
+                android:id="@+id/title_nickname_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
-                android:text="쿼카님을 위한\n오늘의 가이드"
+                android:text="@{vm.getHomeFlow.nickname}"
                 android:textColor="@color/black"
                 android:textSize="24sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tag_iv" />
+
+            <TextView
+                android:id="@+id/title_nickname_tv2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="님을 위한"
+                android:textColor="@color/black"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/title_nickname_tv"
+                app:layout_constraintStart_toEndOf="@+id/title_nickname_tv"
+                app:layout_constraintTop_toTopOf="@+id/title_nickname_tv" />
+
+            <TextView
+                android:id="@+id/title_date_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                getHomeDate="@{vm.getHomeFlow.date}"
+                android:textColor="@color/black"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@+id/title_nickname_tv"
+                app:layout_constraintTop_toBottomOf="@+id/title_nickname_tv" />
+
+            <TextView
+                android:id="@+id/title_date_tv2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="의 조언"
+                android:textColor="@color/black"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@+id/title_date_tv"
+                app:layout_constraintTop_toBottomOf="@+id/title_nickname_tv" />
 
             <Button
                 android:id="@+id/auto_input_btn"
@@ -74,22 +117,22 @@
                 android:text="자동 입력\n설정하러 가기"
                 android:textColor="@color/green"
                 android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="@+id/title_tv"
+                app:layout_constraintBottom_toBottomOf="@+id/title_nickname_tv"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/title_tv" />
+                app:layout_constraintTop_toTopOf="@+id/title_nickname_tv" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/glucose_cl"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="24dp"
                 android:layout_marginEnd="16dp"
                 android:background="@drawable/background_white_gradient"
                 android:elevation="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/title_tv">
+                app:layout_constraintTop_toBottomOf="@+id/title_date_tv2">
 
                 <TextView
                     android:id="@+id/glucose_title_tv"
@@ -101,6 +144,22 @@
                     android:textColor="#131F11"
                     android:textSize="18sp"
                     android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/glucose_guide_none_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="40dp"
+                    android:layout_marginBottom="32dp"
+                    android:text="오늘 혈당을 추가해보세요 !"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:translationZ="8dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -139,12 +198,25 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="17dp"
-                    android:text="체중 55KG"
+                    android:text="체중 "
                     android:textColor="#131F11"
                     android:textSize="18sp"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/weight_unit_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    addWeightUnit = "@{vm.getHomeFlow.weight.unit}"
+                    android:textColor="#131F11"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toEndOf="@id/weight_title_tv"
+                    app:layout_constraintTop_toTopOf="@id/weight_title_tv"
+                    app:layout_constraintBottom_toBottomOf="@id/weight_title_tv"
+                    />
 
                 <SeekBar
                     android:id="@+id/weight_seekbar"
@@ -153,50 +225,42 @@
                     android:layout_marginTop="16dp"
                     android:layout_marginBottom="16dp"
                     android:background="@null"
-                    android:max="100"
+                    android:max="70"
                     android:progressDrawable="@drawable/background_weight_bar"
                     android:splitTrack="false"
                     android:thumb="@drawable/ic_thumb"
-                    android:progress="80"
-                    app:layout_constraintBottom_toTopOf="@id/weight_tag_iv"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/weight_title_tv" />
-
-                <ImageView
-                    android:id="@+id/weight_tag_iv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginBottom="17dp"
-                    android:src="@drawable/ic_tag_caution"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" />
 
                 <TextView
                     android:id="@+id/weight_status_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="6dp"
-                    android:text="평균체중에 비해"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="16dp"
+                    android:text="@{vm.getHomeFlow.weight.title}"
                     android:textColor="#3A433E"
                     android:textSize="16sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/weight_tag_iv"
-                    app:layout_constraintStart_toEndOf="@+id/weight_tag_iv"
-                    app:layout_constraintTop_toTopOf="@+id/weight_tag_iv" />
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/weight_seekbar" />
 
                 <TextView
-                    android:id="@+id/weight_number_tv"
+                    android:id="@+id/weight_none_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="+3kg 많아요"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="16dp"
+                    android:visibility="gone"
+                    android:text="체중을 추가해보세요."
                     android:textColor="#3A433E"
                     android:textSize="16sp"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="@+id/weight_tag_iv"
-                    app:layout_constraintStart_toEndOf="@id/weight_status_tv"
-                    app:layout_constraintTop_toTopOf="@+id/weight_tag_iv"
-                    tools:layout_editor_absoluteX="67dp" />
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/weight_seekbar"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -250,7 +314,7 @@
                         android:id="@+id/exercise_kcal_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="600kcal"
+                        addKcalText="@{vm.getHomeFlow.exercise.calorie}"
                         android:textColor="#3A433E"
                         android:textSize="16sp"
                         android:textStyle="bold"
@@ -275,7 +339,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="16dp"
                         android:layout_marginBottom="21dp"
-                        android:text="10,000보"
+                        addStepUnit="@{vm.getHomeFlow.exercise.stepCount}"
                         android:textColor="#131F11"
                         android:textSize="18sp"
                         android:textStyle="bold"

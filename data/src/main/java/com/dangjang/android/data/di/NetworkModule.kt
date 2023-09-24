@@ -2,6 +2,7 @@ package com.dangjang.android.data.di
 
 import android.content.Context
 import com.dangjang.android.data.BuildConfig
+import com.dangjang.android.data.datasource.ChartApiService
 import com.dangjang.android.data.datasource.HomeApiService
 import com.dangjang.android.data.datasource.SplashApiService
 import com.dangjang.android.data.datasource.LoginApiService
@@ -71,5 +72,11 @@ object NetworkModule {
     @Singleton
     fun provideHomeApiService(retrofit: Retrofit): HomeApiService {
         return retrofit.create(HomeApiService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideChartApiService(retrofit: Retrofit): ChartApiService {
+        return retrofit.create(ChartApiService::class.java)
     }
 }

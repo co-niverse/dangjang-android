@@ -1,9 +1,9 @@
 package com.dangjang.android.presentation.home
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
@@ -14,16 +14,14 @@ import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.dangjang.android.domain.constants.ACCESS_TOKEN_KEY
 import com.dangjang.android.domain.constants.TOKEN_SPF_KEY
-import com.dangjang.android.domain.model.GlucoseGuideVO
 import com.dangjang.android.domain.model.GlucoseListVO
 import com.dangjang.android.presentation.R
 import com.dangjang.android.presentation.databinding.ActivityGlucoseBinding
 import dagger.hilt.android.AndroidEntryPoint
-import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.Date
+import kotlinx.coroutines.flow.collectLatest
 
 @AndroidEntryPoint
 class GlucoseActivity : FragmentActivity() {
@@ -32,21 +30,32 @@ class GlucoseActivity : FragmentActivity() {
     private lateinit var glucoseListAdapter: GlucoseListAdapter
     private var glucoseSpinnerType: String = ""
     private lateinit var glucoseGuideAdapter: GlucoseGuideAdapter
-    private var glucoseGuideList = arrayListOf<GlucoseGuideVO>()
-
+    private var date = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_glucose)
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_glucose)
         viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
+        binding.vm = viewModel
+
+        binding.lifecycleOwner = this
+
+        date = intent.getStringExtra("date").toString()
+
+        getAccessToken()?.let {
+                accessToken -> viewModel.getGlucose(accessToken, date)
+        }
+
+        lifecycleScope.launchWhenStarted {
+            viewModel.getGlucoseFlow.collectLatest {
+                glucoseGuideAdapter.submitList(viewModel.addBackgroundToTodayGuides(it.todayGuides))
+                glucoseListAdapter.submitList(viewModel.addIconToGuides(it.guides))
+            }
+        }
 
         binding.glucoseAddSaveBtn.setOnClickListener {
             viewModel.setType(glucoseSpinnerType)
-
-            val currentTime: Date = Calendar.getInstance().getTime()
-            val format = SimpleDateFormat("yyyy-MM-dd")
-            val date = format.format(currentTime)
             viewModel.setCreatedAt(date)
             viewModel.setUnit(binding.glucoseAddEt.text.toString())
 
@@ -70,17 +79,13 @@ class GlucoseActivity : FragmentActivity() {
         }
 
         binding.backIv.setOnClickListener {
+            val resultIntent = Intent()
+            resultIntent.putExtra("date",date)
+            setResult(RESULT_OK, resultIntent)
             finish()
         }
 
-        viewModel.getGlucoseList()
         viewModel.getGlucoseTimeList()
-
-        glucoseGuideList.add(GlucoseGuideVO("저혈당","1번",R.drawable.background_circle_red))
-        glucoseGuideList.add(GlucoseGuideVO("저혈당\n의심","1번",R.drawable.background_circle_orange))
-        glucoseGuideList.add(GlucoseGuideVO("정상","1번",R.drawable.background_circle_green))
-        glucoseGuideList.add(GlucoseGuideVO("주의","1번",R.drawable.background_circle_orange))
-        glucoseGuideList.add(GlucoseGuideVO("경고","1번",R.drawable.background_circle_red))
 
         setGlucoseListAdapter()
         setGlucoseTimeSpinner()
@@ -88,15 +93,20 @@ class GlucoseActivity : FragmentActivity() {
     }
 
     private fun setGlucoseListAdapter() {
-        glucoseListAdapter = GlucoseListAdapter(viewModel.glucoseList)
+        glucoseListAdapter = GlucoseListAdapter(viewModel)
 
         glucoseListAdapter.setMyItemClickListener(object :
             GlucoseListAdapter.MyItemClickListener {
             override fun onItemClick(glucoseList: GlucoseListVO) {
-                GlucoseEditDialogFragment().show(supportFragmentManager, "GlucoseEditDialogFragment")
-            }
-        })
+                var glucoseEditDialogFragment = GlucoseEditDialogFragment()
+                var bundle = Bundle()
+                bundle.putString("time", glucoseList.time)
+                bundle.putString("glucose", glucoseList.glucose)
+                bundle.putString("date", date)
+                glucoseEditDialogFragment.arguments = bundle
 
+                glucoseEditDialogFragment.show(supportFragmentManager, "GlucoseEditDialogFragment")
+            }})
         binding.glucoseRv.adapter = glucoseListAdapter
     }
 
@@ -134,8 +144,7 @@ class GlucoseActivity : FragmentActivity() {
     }
 
     private fun setGlucoseGuideListAdapter() {
-        glucoseGuideAdapter = GlucoseGuideAdapter(glucoseGuideList)
+        glucoseGuideAdapter = GlucoseGuideAdapter(viewModel)
         binding.glucoseGuideRv.adapter = glucoseGuideAdapter
     }
-
 }
