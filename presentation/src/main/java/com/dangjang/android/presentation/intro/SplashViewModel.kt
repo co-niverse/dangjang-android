@@ -1,10 +1,12 @@
 package com.dangjang.android.presentation.intro
 
 import  android.app.Application
+import android.content.SharedPreferences
 import android.os.Build
 import android.util.Log
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import androidx.health.connect.client.HealthConnectClient
 import androidx.health.connect.client.permission.HealthPermission
 import androidx.health.connect.client.records.BloodGlucoseRecord
@@ -17,6 +19,9 @@ import androidx.health.connect.client.request.ReadRecordsRequest
 import androidx.health.connect.client.time.TimeRangeFilter
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.dangjang.android.domain.constants.AUTO_LOGIN_EDITOR_KEY
+import com.dangjang.android.domain.constants.AUTO_LOGIN_SPF_KEY
+import com.dangjang.android.domain.constants.HEALTH_CONNECT_TOKEN_KEY
 import com.dangjang.android.domain.model.HealthConnectVO
 import com.dangjang.android.domain.model.IntroVO
 import com.dangjang.android.domain.request.HealthConnectRequest
@@ -448,5 +453,16 @@ class SplashViewModel @Inject constructor(
         val formattedDateTime = koreaTime.format(formatter)
 
         return formattedDateTime
+    }
+
+    fun getHealtConnectSpf(): String? {
+        val sp: SharedPreferences = getApplication<Application>().applicationContext.getSharedPreferences(
+            AUTO_LOGIN_SPF_KEY,
+            AppCompatActivity.MODE_PRIVATE
+        )
+        val provider = sp.getString(AUTO_LOGIN_EDITOR_KEY, "null")
+        Log.e("sp", provider.toString())
+
+        return sp.getString(HEALTH_CONNECT_TOKEN_KEY, "null")
     }
 }

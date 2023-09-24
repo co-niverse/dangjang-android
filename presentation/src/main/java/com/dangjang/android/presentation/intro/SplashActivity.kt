@@ -2,7 +2,6 @@ package com.dangjang.android.presentation.intro
 
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
@@ -11,12 +10,8 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.dangjang.android.domain.constants.ACCESS_TOKEN_KEY
-import com.dangjang.android.domain.constants.AUTO_LOGIN_EDITOR_KEY
-import com.dangjang.android.domain.constants.AUTO_LOGIN_SPF_KEY
 import com.dangjang.android.domain.constants.HEALTH_CONNECT_INSTALLED
 import com.dangjang.android.domain.constants.HEALTH_CONNECT_NOT_INSTALLED
-import com.dangjang.android.domain.constants.HEALTH_CONNECT_TOKEN_KEY
-import com.dangjang.android.domain.constants.KAKAO
 import com.dangjang.android.domain.constants.TOKEN_SPF_KEY
 import com.dangjang.android.domain.request.HealthConnectRequest
 import com.dangjang.android.presentation.login.LoginActivity
@@ -39,17 +34,11 @@ class SplashActivity : AppCompatActivity() {
             finish()
         }, 5000)
 
-        val sp: SharedPreferences = getSharedPreferences(AUTO_LOGIN_SPF_KEY, MODE_PRIVATE)
-        val provider = sp.getString(AUTO_LOGIN_EDITOR_KEY, "null")
-        Log.e("sp", provider.toString())
-
         viewModel.getIntroData()
 
         viewModel.checkAvailability()
 
-        val healthConnect = sp.getString(HEALTH_CONNECT_TOKEN_KEY, "null")
-
-        if (healthConnect == "true") {
+        if (viewModel.getHealtConnectSpf() == "true") {
             if (viewModel.healthConnectFlow.value.isAvaiable == HEALTH_CONNECT_INSTALLED) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     viewModel.getAllHealthConnectData()
@@ -101,7 +90,7 @@ class SplashActivity : AppCompatActivity() {
                 }
             }
 
-        } else if (healthConnect == "false") {
+        } else if (viewModel.getHealtConnectSpf() == "false") {
             if (viewModel.healthConnectFlow.value.isAvaiable == HEALTH_CONNECT_NOT_INSTALLED) {
                 //TODO : 헬스커넥트 팝업 띄우기
             }
