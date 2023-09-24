@@ -1,38 +1,37 @@
 package com.dangjang.android.presentation.intro
 
 import android.content.Context
-import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.os.Handler
 import android.util.Log
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
 import com.dangjang.android.domain.constants.ACCESS_TOKEN_KEY
 import com.dangjang.android.domain.constants.HEALTH_CONNECT_INSTALLED
 import com.dangjang.android.domain.constants.HEALTH_CONNECT_NOT_INSTALLED
 import com.dangjang.android.domain.constants.TOKEN_SPF_KEY
 import com.dangjang.android.domain.request.HealthConnectRequest
-import com.dangjang.android.presentation.login.LoginActivity
+import com.dangjang.android.presentation.R
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.zip
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class SplashActivity : AppCompatActivity() {
+class SplashActivity : FragmentActivity() {
     private val viewModel by viewModels<SplashViewModel>()
     private var hcExerciseGlucoseList = mutableListOf<HealthConnectRequest>()
     private var hcWeightStepList = mutableListOf<HealthConnectRequest>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_splash)
 
-        Handler().postDelayed(Runnable {
-            val i = Intent(this@SplashActivity, LoginActivity::class.java)
-            startActivity(i)
-            finish()
-        }, 5000)
+//        Handler().postDelayed(Runnable {
+//            val i = Intent(this@SplashActivity, LoginActivity::class.java)
+//            startActivity(i)
+//            finish()
+//        }, 5000)
 
         viewModel.getIntroData()
 
@@ -43,6 +42,7 @@ class SplashActivity : AppCompatActivity() {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     viewModel.getAllHealthConnectData()
 
+                    //TODO : view model로 이동
                     lifecycleScope.launch {
                         viewModel.hcExerciseList.zip(viewModel.hcGlucoseList) { exerciseList, glucoseList ->
                             Log.e("exerciseList", exerciseList.toString())

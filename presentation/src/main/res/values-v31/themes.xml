@@ -16,9 +16,8 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
-    <style name="AppTheme.Starting" parent="Theme.SplashScreen">
-        <!-- TODO: splash image 변경 -->
-        <item name="android:windowBackground">@drawable/blood_image</item>
+    <style name="AppTheme.Starting" parent="@style/Theme.AppCompat.NoActionBar">
+        <item name="android:windowBackground">@drawable/logo_dangjang</item>
         <item name="android:windowSplashScreenAnimationDuration">1000</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
