@@ -36,7 +36,8 @@ class SplashActivity : FragmentActivity() {
 
         viewModel.checkAvailability()
 
-        if (viewModel.getHealtConnectSpf() == "true") {
+        val healthConnectAvailability = viewModel.getHealtConnectSpf()
+        if (healthConnectAvailability == "true") {
             if (viewModel.healthConnectFlow.value.isAvaiable == HEALTH_CONNECT_INSTALLED) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     viewModel.getAllHealthConnectData()
@@ -92,7 +93,8 @@ class SplashActivity : FragmentActivity() {
                 }
             }
 
-        } else if (viewModel.getHealtConnectSpf() == "false") {
+        } else if (healthConnectAvailability == "false") {
+            goToMainOrLoginActivity()
             if (viewModel.healthConnectFlow.value.isAvaiable == HEALTH_CONNECT_NOT_INSTALLED) {
                 //TODO : 헬스커넥트 팝업 띄우기
             }
