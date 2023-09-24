@@ -4,7 +4,7 @@ import android.content.Context
 import com.dangjang.android.data.BuildConfig
 import com.dangjang.android.data.datasource.ChartApiService
 import com.dangjang.android.data.datasource.HomeApiService
-import com.dangjang.android.data.datasource.IntroApiService
+import com.dangjang.android.data.datasource.SplashApiService
 import com.dangjang.android.data.datasource.LoginApiService
 import com.dangjang.android.data.datasource.SignupApiService
 import com.dangjang.android.data.datasource.TokenInterceptor
@@ -52,8 +52,8 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideIntroApiService(retrofit: Retrofit): IntroApiService {
-        return retrofit.create(IntroApiService::class.java)
+    fun provideIntroApiService(retrofit: Retrofit): SplashApiService {
+        return retrofit.create(SplashApiService::class.java)
     }
 
     @Provides
