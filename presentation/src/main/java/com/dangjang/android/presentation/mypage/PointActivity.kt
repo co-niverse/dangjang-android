@@ -2,6 +2,7 @@ package com.dangjang.android.presentation.mypage
 
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentActivity
 import com.dangjang.android.presentation.R
 import com.dangjang.android.presentation.databinding.ActivityPointBinding
@@ -16,7 +17,16 @@ class PointActivity : FragmentActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_point)
 
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_point)
+        binding.vm = viewModel
+
+        binding.lifecycleOwner = this
+
         setGiftListAdapter()
+
+        binding.backIv.setOnClickListener {
+            finish()
+        }
     }
 
     private fun setGiftListAdapter() {
