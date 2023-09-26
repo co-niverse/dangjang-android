@@ -19,6 +19,10 @@ class PointDoneFragment : BaseFragment<FragmentPointDoneBinding>(R.layout.fragme
 
     override fun onStart() {
         super.onStart()
+
+        binding.nextBtn.setOnClickListener {
+            activity?.finish()
+        }
     }
 
 }

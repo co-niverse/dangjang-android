@@ -29,6 +29,12 @@ class PointActivity : FragmentActivity() {
         binding.backIv.setOnClickListener {
             finish()
         }
+
+        binding.nextBtn.setOnClickListener {
+            binding.coinCl.elevation = 0f
+            val pointPhoneFragment = PointPhoneFragment()
+            supportFragmentManager.beginTransaction().replace(R.id.point_cl, pointPhoneFragment).addToBackStack(null).commit()
+        }
     }
 
     private fun setGiftListAdapter() {

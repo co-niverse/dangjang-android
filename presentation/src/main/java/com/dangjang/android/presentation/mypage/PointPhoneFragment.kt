@@ -19,6 +19,15 @@ class PointPhoneFragment : BaseFragment<FragmentPointPhoneBinding>(R.layout.frag
 
     override fun onStart() {
         super.onStart()
+
+        binding.backIv.setOnClickListener {
+            parentFragmentManager.popBackStack()
+        }
+
+        binding.nextBtn.setOnClickListener {
+            val pointCheckFragment = PointCheckFragment()
+            parentFragmentManager.beginTransaction().replace(R.id.point_cl, pointCheckFragment).addToBackStack(null).commit()
+        }
     }
 
 }
