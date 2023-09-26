@@ -7,7 +7,9 @@ import androidx.fragment.app.FragmentActivity
 import com.dangjang.android.presentation.R
 import com.dangjang.android.presentation.databinding.ActivityPointBinding
 import com.dangjang.android.presentation.home.GiftListAdapter
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class PointActivity : FragmentActivity() {
     private lateinit var binding: ActivityPointBinding
     private val viewModel by viewModels<MypageViewModel>()
