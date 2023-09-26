@@ -26,6 +26,12 @@ class MypageFragment : BaseFragment<FragmentMypageBinding>(R.layout.fragment_myp
         binding.deviceTv.setOnClickListener {
             startActivity(Intent(context, DeviceActivity::class.java))
         }
+        binding.coinCl.setOnClickListener {
+            startActivity(Intent(context, PointActivity::class.java))
+        }
+        binding.pointBtn.setOnClickListener {
+            startActivity(Intent(context, PointActivity::class.java))
+        }
     }
 
 }
