@@ -6,6 +6,7 @@ import com.dangjang.android.data.datasource.ChartApiService
 import com.dangjang.android.data.datasource.HomeApiService
 import com.dangjang.android.data.datasource.SplashApiService
 import com.dangjang.android.data.datasource.LoginApiService
+import com.dangjang.android.data.datasource.MypageApiService
 import com.dangjang.android.data.datasource.SignupApiService
 import com.dangjang.android.data.datasource.TokenInterceptor
 import dagger.Module
@@ -78,5 +79,11 @@ object NetworkModule {
     @Singleton
     fun provideChartApiService(retrofit: Retrofit): ChartApiService {
         return retrofit.create(ChartApiService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideMypageApiService(retrofit: Retrofit): MypageApiService {
+        return retrofit.create(MypageApiService::class.java)
     }
 }

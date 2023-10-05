@@ -32,17 +32,29 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/title_tv"
+                android:id="@+id/nickname_title_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
-                android:text="쿼카님,\n오늘 하루는 어떠셨나요?"
+                mypageNickname="@{vm.getMypageFlow.nickname}"
                 android:textColor="@color/black"
                 android:textSize="24sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tag_iv" />
+                app:layout_constraintTop_toBottomOf="@id/tag_iv" />
+
+            <TextView
+                android:id="@+id/title_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:text="오늘 하루는 어떠셨나요?"
+                android:textColor="@color/black"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/nickname_title_tv" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/coin_cl"
@@ -73,7 +85,7 @@
                     android:id="@+id/point_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="5000 포인트"
+                    addPointUnit="@{vm.getMypageFlow.point}"
                     android:textColor="@color/black"
                     android:textSize="18sp"
                     android:textStyle="bold"
