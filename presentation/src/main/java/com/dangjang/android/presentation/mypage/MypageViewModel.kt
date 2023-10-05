@@ -1,10 +1,48 @@
 package com.dangjang.android.presentation.mypage
 
-import androidx.lifecycle.ViewModel
+import android.app.Application
+import android.util.Log
+import android.widget.Toast
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.viewModelScope
+import com.dangjang.android.domain.model.GetMypageVO
+import com.dangjang.android.domain.usecase.MypageUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class MypageViewModel @Inject constructor(
-) : ViewModel() {
+    private val getMypageUseCase: MypageUseCase,
+    application: Application
+) : AndroidViewModel(application) {
+
+    private val _getMypageFlow = MutableStateFlow(GetMypageVO())
+    val getMypageFlow = _getMypageFlow.asStateFlow()
+
+    fun getMypage(accessToken: String) {
+        viewModelScope.launch {
+            getMypageUseCase.getMypage("Bearer $accessToken")
+                .onEach {
+                    _getMypageFlow.emit(it)
+                }
+                .handleErrors()
+                .collect()
+        }
+    }
+
+    private fun <T> Flow<T>.handleErrors(): Flow<T> =
+        catch { e ->
+            Log.e("error",e.message.toString())
+            Toast.makeText(
+                getApplication<Application>().applicationContext, e.message,
+                Toast.LENGTH_SHORT
+            ).show()
+        }
 }

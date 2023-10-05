@@ -48,6 +48,20 @@ fun addWeightUnit(view: TextView, weight: String?) {
     }
 }
 
+@BindingAdapter("mypageNickname")
+fun mypageNickname(view: TextView, nickname: String?) {
+    if (nickname != null) {
+        view.text = nickname + "님,"
+    }
+}
+
+@BindingAdapter("addPointUnit")
+fun addPointUnit(view: TextView, point: Int?) {
+    if (point != null) {
+        view.text = point.toString() + " 포인트"
+    }
+}
+
 @BindingAdapter("getHomeDate")
 fun getHomeDate(view: TextView, date: String?) {
     if (date != null) {

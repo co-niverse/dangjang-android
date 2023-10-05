@@ -1,8 +1,11 @@
 package com.dangjang.android.presentation.mypage
 
+import android.content.Context
 import android.content.Intent
 import androidx.fragment.app.viewModels
 import com.dangjang.android.common_ui.BaseFragment
+import com.dangjang.android.domain.constants.ACCESS_TOKEN_KEY
+import com.dangjang.android.domain.constants.TOKEN_SPF_KEY
 import com.dangjang.android.presentation.R
 import com.dangjang.android.presentation.databinding.FragmentMypageBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -20,6 +23,11 @@ class MypageFragment : BaseFragment<FragmentMypageBinding>(R.layout.fragment_myp
     override fun onStart() {
         super.onStart()
 
+        binding.vm = viewModel
+        binding.lifecycleOwner = this
+
+        getAccessToken()?.let { viewModel.getMypage(it) }
+
         binding.deviceIv.setOnClickListener {
             startActivity(Intent(context, DeviceActivity::class.java))
         }
@@ -34,4 +42,8 @@ class MypageFragment : BaseFragment<FragmentMypageBinding>(R.layout.fragment_myp
         }
     }
 
+    private fun getAccessToken(): String? {
+        val sharedPreferences = requireContext().getSharedPreferences(TOKEN_SPF_KEY, Context.MODE_PRIVATE)
+        return sharedPreferences.getString(ACCESS_TOKEN_KEY, null)
+    }
 }
