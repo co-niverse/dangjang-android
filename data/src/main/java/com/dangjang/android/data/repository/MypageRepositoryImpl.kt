@@ -1,0 +1,17 @@
+package com.dangjang.android.data.repository
+
+import com.dangjang.android.data.datasource.MypageDataSource
+import com.dangjang.android.domain.model.GetMypageVO
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import javax.inject.Inject
+
+class MypageRepositoryImpl @Inject constructor(
+    private val mypageDataSource: MypageDataSource
+) : MypageRepository {
+
+    override fun getMypage(accessToken: String): Flow<GetMypageVO> = flow {
+        val response = mypageDataSource.getMypage(accessToken)
+        emit(response.data.toDomain())
+    }
+}
