@@ -2,6 +2,7 @@ package com.dangjang.android.data.repository
 
 import com.dangjang.android.data.datasource.MypageDataSource
 import com.dangjang.android.domain.model.GetMypageVO
+import com.dangjang.android.domain.repository.MypageRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
