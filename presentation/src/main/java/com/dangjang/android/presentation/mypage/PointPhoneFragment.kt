@@ -27,9 +27,25 @@ class PointPhoneFragment : BaseFragment<FragmentPointPhoneBinding>(R.layout.frag
         binding.giftTitleTv.text = type
         binding.giftPointTv.text = price + " 포인트"
 
+        binding.nextBtn.setOnTouchListener({ v, event -> true })
+
         binding.backIv.setOnClickListener {
             parentFragmentManager.popBackStack()
         }
+
+        binding.phoneEt.addTextChangedListener(object : android.text.TextWatcher{
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun afterTextChanged(p0: android.text.Editable?) {
+                setBtnGreen()
+                binding.nextBtn.setOnTouchListener({ v, event -> false })
+            }
+
+        })
 
         binding.nextBtn.setOnClickListener {
             val pointCheckFragment = PointCheckFragment()
@@ -40,6 +56,11 @@ class PointPhoneFragment : BaseFragment<FragmentPointPhoneBinding>(R.layout.frag
             pointCheckFragment.arguments = bundle
             parentFragmentManager.beginTransaction().replace(R.id.point_cl, pointCheckFragment).addToBackStack(null).commit()
         }
+    }
+
+    private fun setBtnGreen() {
+        binding.nextBtn.setBackgroundResource(R.drawable.background_green_gradient)
+        binding.nextBtn.setOnTouchListener({ v, event -> false })
     }
 
 }
