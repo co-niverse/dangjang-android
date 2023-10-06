@@ -1,6 +1,7 @@
 package com.dangjang.android.data.datasource
 
 import com.dangjang.android.data.model.dto.GetMypageDto
+import com.dangjang.android.data.model.dto.GetPointDto
 import com.dangjang.android.data.model.response.BaseResponse
 import javax.inject.Inject
 
@@ -10,5 +11,9 @@ class MypageDataSource @Inject constructor(
 
     suspend fun getMypage(accessToken: String): BaseResponse<GetMypageDto> {
         return checkResponse(mypageApiService.getMypage(accessToken))
+    }
+
+    suspend fun getPoint(accessToken: String): BaseResponse<GetPointDto> {
+        return checkResponse(mypageApiService.getPoint(accessToken))
     }
 }
