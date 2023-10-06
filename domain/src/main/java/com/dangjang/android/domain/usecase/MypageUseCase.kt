@@ -2,7 +2,9 @@ package com.dangjang.android.domain.usecase
 
 import com.dangjang.android.domain.model.GetMypageVO
 import com.dangjang.android.domain.model.GetPointVO
+import com.dangjang.android.domain.model.PostPointVO
 import com.dangjang.android.domain.repository.MypageRepository
+import com.dangjang.android.domain.request.PostPointRequest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
@@ -20,5 +22,10 @@ class MypageUseCase @Inject constructor(
     suspend fun getPoint(accessToken: String): Flow<GetPointVO> =
         withContext(Dispatchers.IO) {
             mypageRepository.getPoint(accessToken)
+        }
+
+    suspend fun postPoint(accessToken: String, postPointRequest: PostPointRequest): Flow<PostPointVO> =
+        withContext(Dispatchers.IO) {
+            mypageRepository.postPoint(accessToken, postPointRequest)
         }
 }
