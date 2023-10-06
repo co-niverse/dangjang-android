@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.dangjang.android.domain.model.GetMypageVO
+import com.dangjang.android.domain.model.GetPointVO
 import com.dangjang.android.domain.usecase.MypageUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
@@ -26,11 +27,25 @@ class MypageViewModel @Inject constructor(
     private val _getMypageFlow = MutableStateFlow(GetMypageVO())
     val getMypageFlow = _getMypageFlow.asStateFlow()
 
+    private val _getPointFlow = MutableStateFlow(GetPointVO())
+    val getPointFlow = _getPointFlow.asStateFlow()
+
     fun getMypage(accessToken: String) {
         viewModelScope.launch {
             getMypageUseCase.getMypage("Bearer $accessToken")
                 .onEach {
                     _getMypageFlow.emit(it)
+                }
+                .handleErrors()
+                .collect()
+        }
+    }
+
+    fun getPoint(accessToken: String) {
+        viewModelScope.launch {
+            getMypageUseCase.getPoint("Bearer $accessToken")
+                .onEach {
+                    _getPointFlow.emit(it)
                 }
                 .handleErrors()
                 .collect()

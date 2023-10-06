@@ -11,7 +11,7 @@
 
         <variable
             name="giftList"
-            type="com.dangjang.android.domain.model.GiftListItem" />
+            type="com.dangjang.android.domain.model.ProductVO" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

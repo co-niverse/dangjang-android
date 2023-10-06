@@ -67,7 +67,7 @@
                 android:id="@+id/point_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="5000 포인트"
+                addPointUnit="@{vm.getPointFlow.balancedPoint}"
                 android:textColor="@color/black"
                 android:textSize="18sp"
                 android:textStyle="bold"
