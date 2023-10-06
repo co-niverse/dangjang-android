@@ -20,6 +20,14 @@ class PointCheckFragment : BaseFragment<FragmentPointCheckBinding>(R.layout.frag
     override fun onStart() {
         super.onStart()
 
+        val type = arguments?.getString("type").toString()
+        val price = arguments?.getString("price").toString()
+        val phone = arguments?.getString("phone").toString()
+
+        binding.giftTitleTv.text = type
+        binding.giftPointTv.text = price + " 포인트"
+        binding.phoneTv.text = formatPhoneNumber(phone)
+
         binding.backIv.setOnClickListener {
             parentFragmentManager.popBackStack()
         }
@@ -28,6 +36,11 @@ class PointCheckFragment : BaseFragment<FragmentPointCheckBinding>(R.layout.frag
             val pointDoneFragment = PointDoneFragment()
             parentFragmentManager.beginTransaction().replace(R.id.point_cl, pointDoneFragment).addToBackStack(null).commit()
         }
+    }
+
+    private fun formatPhoneNumber(phone: String): String {
+        val regex = "(\\d{3})(\\d{4})(\\d{4})".toRegex()
+        return phone.replace(regex, "$1-$2-$3")
     }
 
 }

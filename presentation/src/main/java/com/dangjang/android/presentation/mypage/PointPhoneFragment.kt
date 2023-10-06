@@ -37,6 +37,7 @@ class PointPhoneFragment : BaseFragment<FragmentPointPhoneBinding>(R.layout.frag
             bundle.putString("type", type)
             bundle.putString("price", price)
             bundle.putString("phone", binding.phoneEt.text.toString())
+            pointCheckFragment.arguments = bundle
             parentFragmentManager.beginTransaction().replace(R.id.point_cl, pointCheckFragment).addToBackStack(null).commit()
         }
     }
