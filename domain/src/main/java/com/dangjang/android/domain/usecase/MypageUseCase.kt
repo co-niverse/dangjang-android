@@ -1,6 +1,7 @@
 package com.dangjang.android.domain.usecase
 
 import com.dangjang.android.domain.model.GetMypageVO
+import com.dangjang.android.domain.model.GetPointVO
 import com.dangjang.android.domain.repository.MypageRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -14,5 +15,10 @@ class MypageUseCase @Inject constructor(
     suspend fun getMypage(accessToken: String): Flow<GetMypageVO> =
         withContext(Dispatchers.IO) {
             mypageRepository.getMypage(accessToken)
+        }
+
+    suspend fun getPoint(accessToken: String): Flow<GetPointVO> =
+        withContext(Dispatchers.IO) {
+            mypageRepository.getPoint(accessToken)
         }
 }
