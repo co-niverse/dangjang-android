@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
 import com.dangjang.android.domain.constants.ACCESS_TOKEN_KEY
 import com.dangjang.android.domain.constants.TOKEN_SPF_KEY
+import com.dangjang.android.domain.model.ProductVO
 import com.dangjang.android.presentation.R
 import com.dangjang.android.presentation.databinding.ActivityPointBinding
 import com.dangjang.android.presentation.home.GiftListAdapter
@@ -33,6 +34,8 @@ class PointActivity : FragmentActivity() {
 
         setGiftListAdapter()
 
+        binding.nextBtn.setOnTouchListener({ v, event -> true })
+
         lifecycleScope.launchWhenStarted {
             viewModel.getPointFlow.collectLatest {
                 giftListAdapter.submitList(it.products)
@@ -52,7 +55,23 @@ class PointActivity : FragmentActivity() {
 
     private fun setGiftListAdapter() {
         giftListAdapter = GiftListAdapter(viewModel)
+        giftListAdapter.setMyItemClickListener(object :
+            GiftListAdapter.MyItemClickListener {
+            override fun onItemClick(giftListItem: ProductVO) {
+                setBtnGreen()
+                var pointPhoneFragment = PointPhoneFragment()
+                var bundle = Bundle()
+                bundle.putString("type", giftListItem.title)
+                bundle.putString("price", giftListItem.price.toString())
+                pointPhoneFragment.arguments = bundle
+            }
+        })
         binding.pointGiftRv.adapter = giftListAdapter
+    }
+
+    private fun setBtnGreen() {
+        binding.nextBtn.setBackgroundResource(R.drawable.background_green_gradient)
+        binding.nextBtn.setOnTouchListener({ v, event -> false })
     }
 
     private fun getAccessToken(): String? {

@@ -44,9 +44,24 @@ class GiftListAdapter(
 
     inner class ViewHolder(val binding: ItemGiftListBinding) :
         RecyclerView.ViewHolder(binding.root) {
+
+        private fun resetBackgroundColors() {
+            for (i in 0 until itemCount) {
+                val itemView = (binding.root.parent as RecyclerView).getChildAt(i)
+                itemView.setBackgroundResource(com.dangjang.android.presentation.R.drawable.background_white_gradient)
+            }
+        }
+
         fun bind(giftListItem: ProductVO) {
             binding.vm = viewModel
             binding.giftList = giftListItem
+
+            itemView.setOnClickListener {
+                mItemClickListener.onItemClick(getItem(adapterPosition))
+
+                resetBackgroundColors()
+                itemView.setBackgroundResource(com.dangjang.android.presentation.R.drawable.background_border_green)
+            }
         }
     }
 
