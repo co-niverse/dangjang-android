@@ -6,6 +6,9 @@ import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.dangjang.android.domain.model.GetMypageVO
+import com.dangjang.android.domain.model.GetPointVO
+import com.dangjang.android.domain.model.PostPointVO
+import com.dangjang.android.domain.request.PostPointRequest
 import com.dangjang.android.domain.usecase.MypageUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
@@ -14,6 +17,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -26,11 +30,48 @@ class MypageViewModel @Inject constructor(
     private val _getMypageFlow = MutableStateFlow(GetMypageVO())
     val getMypageFlow = _getMypageFlow.asStateFlow()
 
+    private val _getPointFlow = MutableStateFlow(GetPointVO())
+    val getPointFlow = _getPointFlow.asStateFlow()
+
+    private val _postPointRequest = MutableStateFlow(PostPointRequest())
+    val postPointRequest = _postPointRequest.asStateFlow()
+
+    private val _postPointFlow = MutableStateFlow(PostPointVO())
+    val postPointFlow = _postPointFlow.asStateFlow()
+
     fun getMypage(accessToken: String) {
         viewModelScope.launch {
             getMypageUseCase.getMypage("Bearer $accessToken")
                 .onEach {
                     _getMypageFlow.emit(it)
+                }
+                .handleErrors()
+                .collect()
+        }
+    }
+
+    fun getPoint(accessToken: String) {
+        viewModelScope.launch {
+            getMypageUseCase.getPoint("Bearer $accessToken")
+                .onEach {
+                    _getPointFlow.emit(it)
+                }
+                .handleErrors()
+                .collect()
+        }
+    }
+
+    fun setPostPointRequest(type: String, phone: String) {
+        _postPointRequest.update {
+            it.copy(type = type, phone = phone)
+        }
+    }
+
+    fun postPoint(accessToken: String) {
+        viewModelScope.launch {
+            getMypageUseCase.postPoint("Bearer $accessToken", postPointRequest.value)
+                .onEach {
+                    _postPointFlow.emit(it)
                 }
                 .handleErrors()
                 .collect()
