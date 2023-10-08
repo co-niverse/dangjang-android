@@ -132,8 +132,8 @@ class LoginViewModel @Inject constructor(
 
             Log.e("error", error.httpCode.toString())
 
-            if (e.status == HttpResponseStatus.NOT_FOUND) {
-                _signupStartActivity.value = HttpResponseStatus.NOT_FOUND
+            if (e.status == HttpResponseStatus.UNAUTHORIZED) {
+                _signupStartActivity.value = HttpResponseStatus.UNAUTHORIZED
             }
         }
 
