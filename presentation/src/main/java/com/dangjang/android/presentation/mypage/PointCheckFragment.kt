@@ -23,9 +23,9 @@ class PointCheckFragment : BaseFragment<FragmentPointCheckBinding>(R.layout.frag
     override fun onStart() {
         super.onStart()
 
-        val type = arguments?.getString("type").toString()
-        val price = arguments?.getString("price").toString()
-        val phone = arguments?.getString("phone").toString()
+        val type = viewModel.selectedGiftTitle.value
+        val price = viewModel.selectedGiftPrice.value
+        val phone = viewModel.selectedGiftPhone.value
 
         binding.giftTitleTv.text = type
         binding.giftPointTv.text = price + " 포인트"

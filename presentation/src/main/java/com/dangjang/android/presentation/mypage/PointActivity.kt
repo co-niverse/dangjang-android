@@ -58,12 +58,9 @@ class PointActivity : FragmentActivity() {
         giftListAdapter.setMyItemClickListener(object :
             GiftListAdapter.MyItemClickListener {
             override fun onItemClick(giftListItem: ProductVO) {
+                viewModel.setSelectedGiftTitle(giftListItem.title)
+                viewModel.setSelectedGiftPrice(giftListItem.price.toString())
                 setBtnGreen()
-                var pointPhoneFragment = PointPhoneFragment()
-                var bundle = Bundle()
-                bundle.putString("type", giftListItem.title)
-                bundle.putString("price", giftListItem.price.toString())
-                pointPhoneFragment.arguments = bundle
             }
         })
         binding.pointGiftRv.adapter = giftListAdapter

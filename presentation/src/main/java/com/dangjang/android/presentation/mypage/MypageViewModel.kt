@@ -39,6 +39,15 @@ class MypageViewModel @Inject constructor(
     private val _postPointFlow = MutableStateFlow(PostPointVO())
     val postPointFlow = _postPointFlow.asStateFlow()
 
+    private val _selectedGiftTitle = MutableStateFlow(String())
+    val selectedGiftTitle = _selectedGiftTitle.asStateFlow()
+
+    private val _selectedGiftPrice = MutableStateFlow(String())
+    val selectedGiftPrice = _selectedGiftPrice.asStateFlow()
+
+    private val _selectedGiftPhone = MutableStateFlow(String())
+    val selectedGiftPhone = _selectedGiftPhone.asStateFlow()
+
     fun getMypage(accessToken: String) {
         viewModelScope.launch {
             getMypageUseCase.getMypage("Bearer $accessToken")
@@ -64,6 +73,24 @@ class MypageViewModel @Inject constructor(
     fun setPostPointRequest(type: String, phone: String) {
         _postPointRequest.update {
             it.copy(type = type, phone = phone)
+        }
+    }
+
+    fun setSelectedGiftTitle(title: String) {
+        _selectedGiftTitle.update {
+            title
+        }
+    }
+
+    fun setSelectedGiftPrice(price: String) {
+        _selectedGiftPrice.update {
+            price
+        }
+    }
+
+    fun setSelectedGiftPhone(phone: String) {
+        _selectedGiftPhone.update {
+            phone
         }
     }
 
