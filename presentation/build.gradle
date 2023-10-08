@@ -65,6 +65,7 @@ dependencies {
     // Hilt
     implementation "com.google.dagger:hilt-android:$hilt_version"
     implementation 'androidx.fragment:fragment:1.6.0'
+    implementation project(path: ':swm-logging')
     annotationProcessor "com.google.dagger:hilt-android:$hilt_version"
 
     implementation 'androidx.navigation:navigation-fragment-ktx:2.6.0'
