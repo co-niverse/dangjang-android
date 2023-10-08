@@ -1,5 +1,6 @@
 package com.dangjang.android.presentation.home
 
+import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -17,6 +18,7 @@ class GiftListAdapter(
     }
 
     private lateinit var mItemClickListener: MyItemClickListener
+    private var selectedPosition: Int = RecyclerView.NO_POSITION
 
     fun setMyItemClickListener(itemClickListener: MyItemClickListener) {
         mItemClickListener = itemClickListener
@@ -28,7 +30,7 @@ class GiftListAdapter(
     ): ViewHolder {
         val binding: ItemGiftListBinding =
             ItemGiftListBinding.inflate(
-                android.view.LayoutInflater.from(parent.context),
+                LayoutInflater.from(parent.context),
                 parent,
                 false
             )
@@ -37,31 +39,30 @@ class GiftListAdapter(
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         (holder as ViewHolder).bind(getItem(position))
+
+        if (position == selectedPosition) {
+            holder.binding.giftListCl.setBackgroundResource(com.dangjang.android.presentation.R.drawable.background_border_green)
+        } else {
+            holder.binding.giftListCl.setBackgroundResource(com.dangjang.android.presentation.R.drawable.background_white_gradient)
+        }
+
         holder.itemView.setOnClickListener {
             mItemClickListener.onItemClick(getItem(position))
+
+            val previousSelectedPosition = selectedPosition
+            selectedPosition = position
+
+            notifyItemChanged(previousSelectedPosition)
+            notifyItemChanged(selectedPosition)
         }
     }
 
     inner class ViewHolder(val binding: ItemGiftListBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        private fun resetBackgroundColors() {
-            for (i in 0 until itemCount) {
-                val itemView = (binding.root.parent as RecyclerView).getChildAt(i)
-                itemView.setBackgroundResource(com.dangjang.android.presentation.R.drawable.background_white_gradient)
-            }
-        }
-
         fun bind(giftListItem: ProductVO) {
             binding.vm = viewModel
             binding.giftList = giftListItem
-
-            itemView.setOnClickListener {
-                mItemClickListener.onItemClick(getItem(adapterPosition))
-
-                resetBackgroundColors()
-                itemView.setBackgroundResource(com.dangjang.android.presentation.R.drawable.background_border_green)
-            }
         }
     }
 
