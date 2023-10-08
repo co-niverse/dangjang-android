@@ -53,6 +53,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
         binding.weightSeekbar.setOnTouchListener({ v, event -> true })
 
         binding.calendarIv.setOnClickListener {
+            viewModel.shotCalendarClickLogging()
+
             Locale.setDefault(Locale.KOREA)
 
             val cal = Calendar.getInstance()
