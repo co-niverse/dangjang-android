@@ -9,6 +9,7 @@ import com.dangjang.android.domain.constants.BMI_NORMAL_END
 import com.dangjang.android.domain.constants.BMI_NORMAL_START
 import com.dangjang.android.domain.constants.SEEKBAR_NORMAL_END
 import com.dangjang.android.domain.constants.SEEKBAR_NORMAL_START
+import com.dangjang.android.domain.logging.GlucoseScreenClickScheme
 import com.dangjang.android.domain.model.GetGlucoseVO
 import com.dangjang.android.domain.model.GlucoseGuideVO
 import com.dangjang.android.domain.request.AddHealthMetricRequest
@@ -35,6 +36,8 @@ import com.dangjang.android.domain.model.TodayGuidesVO
 import com.dangjang.android.domain.request.EditHealthMetricRequest
 import com.dangjang.android.domain.request.EditSameHealthMetricRequest
 import com.dangjang.android.presentation.R
+import com.dangjang.android.swm_logging.SWMLogging
+import com.dangjang.android.swm_logging.logging_scheme.ClickScheme
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -529,4 +532,18 @@ class HomeViewModel @Inject constructor(
         val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.KOREA)
         return dateFormat.format(calendar.time)
     }
+
+    //Logging
+
+    fun shotGlucoseClickLogging() {
+        val scheme = getGlucoseClickLoggingScheme()
+        SWMLogging.logEvent(scheme)
+    }
+
+    private fun getGlucoseClickLoggingScheme(): ClickScheme {
+        return GlucoseScreenClickScheme.Builder()
+            .setClicked(true)
+            .build()
+    }
+
 }

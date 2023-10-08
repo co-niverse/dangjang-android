@@ -41,6 +41,8 @@ class GlucoseActivity : FragmentActivity() {
 
         binding.lifecycleOwner = this
 
+        viewModel.shotGlucoseClickLogging()
+
         date = intent.getStringExtra("date").toString()
 
         getAccessToken()?.let {
