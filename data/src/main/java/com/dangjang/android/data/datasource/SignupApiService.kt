@@ -13,7 +13,7 @@ import retrofit2.http.Query
 interface SignupApiService {
 
     //Duplicate Nickname API
-    @GET("api/duplicateNickname")
+    @GET("api/user/duplicateNickname")
     suspend fun getDuplicateNickname(
         @Query("nickname") nickname: String
     ) : Response<BaseResponse<DuplicateNicknameDto>>
