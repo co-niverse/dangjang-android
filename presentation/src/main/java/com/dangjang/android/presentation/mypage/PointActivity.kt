@@ -2,6 +2,7 @@ package com.dangjang.android.presentation.mypage
 
 import android.content.Context
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentActivity
@@ -58,12 +59,13 @@ class PointActivity : FragmentActivity() {
         giftListAdapter.setMyItemClickListener(object :
             GiftListAdapter.MyItemClickListener {
             override fun onItemClick(giftListItem: ProductVO) {
-                setBtnGreen()
-                var pointPhoneFragment = PointPhoneFragment()
-                var bundle = Bundle()
-                bundle.putString("type", giftListItem.title)
-                bundle.putString("price", giftListItem.price.toString())
-                pointPhoneFragment.arguments = bundle
+                viewModel.setSelectedGiftTitle(giftListItem.title)
+                viewModel.setSelectedGiftPrice(giftListItem.price.toString())
+                if (giftListItem.price <= viewModel.getPointFlow.value.balancedPoint) {
+                    setBtnGreen()
+                } else {
+                    Toast.makeText(applicationContext,"포인트가 부족합니다.", Toast.LENGTH_SHORT).show()
+                }
             }
         })
         binding.pointGiftRv.adapter = giftListAdapter
