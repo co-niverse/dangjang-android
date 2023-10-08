@@ -31,9 +31,14 @@ class GlucoseActivity : FragmentActivity() {
     private var glucoseSpinnerType: String = ""
     private lateinit var glucoseGuideAdapter: GlucoseGuideAdapter
     private var date = ""
+    private var startTime: Double = 0.0
+    private var endTime: Double = 0.0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_glucose)
+
+        startTime = System.currentTimeMillis().toDouble()
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_glucose)
         viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
@@ -137,6 +142,12 @@ class GlucoseActivity : FragmentActivity() {
 
         glucoseSpinner.adapter = glucoseTimeAdapter
 
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        endTime = System.currentTimeMillis().toDouble()
+        viewModel.shotGlucoseStayTimeLogging(endTime- startTime)
     }
 
     private fun getAccessToken(): String? {

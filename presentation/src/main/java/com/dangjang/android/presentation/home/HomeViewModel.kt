@@ -13,6 +13,7 @@ import com.dangjang.android.domain.logging.CalendarClickScheme
 import com.dangjang.android.domain.logging.CalorieScreenClickScheme
 import com.dangjang.android.domain.logging.ExerciseScreenClickScheme
 import com.dangjang.android.domain.logging.GlucoseScreenClickScheme
+import com.dangjang.android.domain.logging.GlucoseScreenStayScheme
 import com.dangjang.android.domain.logging.WeightScreenClickScheme
 import com.dangjang.android.domain.model.GetGlucoseVO
 import com.dangjang.android.domain.model.GlucoseGuideVO
@@ -42,6 +43,7 @@ import com.dangjang.android.domain.request.EditSameHealthMetricRequest
 import com.dangjang.android.presentation.R
 import com.dangjang.android.swm_logging.SWMLogging
 import com.dangjang.android.swm_logging.logging_scheme.ClickScheme
+import com.dangjang.android.swm_logging.logging_scheme.ExposureScheme
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -591,6 +593,17 @@ class HomeViewModel @Inject constructor(
     private fun getCalendarClickLoggingScheme(): ClickScheme {
         return CalendarClickScheme.Builder()
             .setClicked(true)
+            .build()
+    }
+
+    fun shotGlucoseStayTimeLogging(stayTime: Double) {
+        val scheme = getGlucoseStayTimeLoggingScheme(stayTime)
+        SWMLogging.logEvent(scheme)
+    }
+
+    private fun getGlucoseStayTimeLoggingScheme(stayTime: Double): ExposureScheme {
+        return GlucoseScreenStayScheme.Builder()
+            .setStayTime(stayTime)
             .build()
     }
 
