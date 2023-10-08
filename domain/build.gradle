@@ -37,6 +37,7 @@ dependencies {
 
     // Hilt
     implementation "com.google.dagger:hilt-android:$hilt_version"
+    implementation project(path: ':swm-logging')
     kapt "com.google.dagger:hilt-compiler:$hilt_version"
 
     //Coroutines
