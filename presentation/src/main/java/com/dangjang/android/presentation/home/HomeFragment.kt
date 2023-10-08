@@ -124,6 +124,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
         }
 
         setGlucoseGuideListAdapter()
+
+        binding.caloryCl.setOnClickListener {
+            viewModel.shotCalorieClickLogging()
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

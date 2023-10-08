@@ -9,6 +9,7 @@ import com.dangjang.android.domain.constants.BMI_NORMAL_END
 import com.dangjang.android.domain.constants.BMI_NORMAL_START
 import com.dangjang.android.domain.constants.SEEKBAR_NORMAL_END
 import com.dangjang.android.domain.constants.SEEKBAR_NORMAL_START
+import com.dangjang.android.domain.logging.CalorieScreenClickScheme
 import com.dangjang.android.domain.logging.ExerciseScreenClickScheme
 import com.dangjang.android.domain.logging.GlucoseScreenClickScheme
 import com.dangjang.android.domain.logging.WeightScreenClickScheme
@@ -566,6 +567,17 @@ class HomeViewModel @Inject constructor(
 
     private fun getExerciseClickLoggingScheme(): ClickScheme {
         return ExerciseScreenClickScheme.Builder()
+            .setClicked(true)
+            .build()
+    }
+
+    fun shotCalorieClickLogging() {
+        val scheme = getCalorieClickLoggingScheme()
+        SWMLogging.logEvent(scheme)
+    }
+
+    private fun getCalorieClickLoggingScheme(): ClickScheme {
+        return CalorieScreenClickScheme.Builder()
             .setClicked(true)
             .build()
     }
