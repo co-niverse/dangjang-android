@@ -8,6 +8,7 @@ import com.dangjang.android.data.datasource.SplashApiService
 import com.dangjang.android.data.datasource.LoginApiService
 import com.dangjang.android.data.datasource.MypageApiService
 import com.dangjang.android.data.datasource.SignupApiService
+import com.dangjang.android.data.interceptor.NetworkInterceptor
 import com.dangjang.android.data.interceptor.TokenInterceptor
 import dagger.Module
 import dagger.Provides
@@ -38,6 +39,7 @@ object NetworkModule {
         return OkHttpClient.Builder()
             .addInterceptor(interceptor)
             .addInterceptor(TokenInterceptor(context))
+            .addInterceptor(NetworkInterceptor())
             .build()
     }
 
