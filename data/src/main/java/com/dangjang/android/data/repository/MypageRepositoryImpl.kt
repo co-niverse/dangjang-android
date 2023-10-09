@@ -29,6 +29,11 @@ class MypageRepositoryImpl @Inject constructor(
         emit(response.data.toDomain())
     }
 
+    override fun logout(accessToken: String, fcmToken: String): Flow<Boolean> = flow {
+        val response = mypageDataSource.logout(accessToken, fcmToken)
+        emit(response.success)
+    }
+
     override fun signout(accessToken: String): Flow<Boolean> = flow {
         val response = mypageDataSource.signout(accessToken)
         emit(response.success)

@@ -26,4 +26,8 @@ class MypageDataSource @Inject constructor(
     suspend fun signout(accessToken: String): BaseResponse<Nothing> {
         return checkResponse(mypageApiService.signout(accessToken))
     }
+
+    suspend fun logout(accessToken: String, fcmToken:String): BaseResponse<Nothing> {
+        return checkResponse(mypageApiService.logout(accessToken, fcmToken))
+    }
 }
