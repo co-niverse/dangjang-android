@@ -11,13 +11,13 @@ class LoginRepositoryImpl @Inject constructor(
     private val loginDataSource: LoginDataSource
 ) : LoginRepository {
 
-    override suspend fun kakaoLogin(accessToken: String): Flow<AuthVO> = flow {
-        val response = loginDataSource.kakaoLogin(accessToken)
+    override suspend fun kakaoLogin(fcmToken: String, accessToken: String): Flow<AuthVO> = flow {
+        val response = loginDataSource.kakaoLogin(fcmToken, accessToken)
         emit(response.data.toDomain())
     }
 
-    override suspend fun naverLogin(accessToken: String): Flow<AuthVO> = flow {
-        val response = loginDataSource.naverLogin(accessToken)
+    override suspend fun naverLogin(fcmToken: String, accessToken: String): Flow<AuthVO> = flow {
+        val response = loginDataSource.naverLogin(fcmToken, accessToken)
         emit(response.data.toDomain())
     }
 

@@ -2,12 +2,14 @@ package com.dangjang.android.presentation.login
 
 import android.app.Application
 import android.content.ContentValues
+import android.content.Context
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.dangjang.android.domain.HttpResponseException
 import com.dangjang.android.domain.HttpResponseStatus
+import com.dangjang.android.domain.constants.FCM_TOKEN_KEY
 import com.dangjang.android.domain.constants.KAKAO
 import com.dangjang.android.domain.constants.NAVER
 import com.dangjang.android.domain.model.AuthVO
@@ -94,7 +96,7 @@ class LoginViewModel @Inject constructor(
 
     private fun getKakaoLoginData(accessToken: String) {
         viewModelScope.launch {
-            loginUseCase.kakoLogin(accessToken)
+            loginUseCase.kakoLogin(getFCMToken() ?: "", accessToken)
                 .onEach {
                     _loginDataFlow.emit(it)
                     _signupStartActivity.value = HttpResponseStatus.OK
@@ -109,7 +111,7 @@ class LoginViewModel @Inject constructor(
 
     fun getNaverLoginData(accessToken: String) {
         viewModelScope.launch {
-            loginUseCase.naverLogin(accessToken)
+            loginUseCase.naverLogin(getFCMToken() ?: "", accessToken)
                 .onEach {
                     _loginDataFlow.emit(it)
                     _signupStartActivity.value = HttpResponseStatus.OK
@@ -120,6 +122,12 @@ class LoginViewModel @Inject constructor(
         _loginToSignup.update {
             it.copy(accessToken = accessToken, provider = NAVER)
         }
+    }
+
+    private fun getFCMToken(): String? {
+        val sharedPreferences = getApplication<Application>().applicationContext.getSharedPreferences(
+            FCM_TOKEN_KEY, Context.MODE_PRIVATE)
+        return sharedPreferences.getString(FCM_TOKEN_KEY, null)
     }
 
     private fun <T> Flow<T>.handleErrors(): Flow<T> =

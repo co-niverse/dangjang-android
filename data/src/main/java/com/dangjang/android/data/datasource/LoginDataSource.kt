@@ -9,11 +9,11 @@ class LoginDataSource @Inject constructor(
     private val loginApiService: LoginApiService
 ) : LoginNetworkDataSource() {
 
-    suspend fun kakaoLogin(accessToken: String): BaseResponse<AuthDto> {
-        return checkResponse(loginApiService.kakaoLogin(LoginRequest(accessToken)))
+    suspend fun kakaoLogin(fcmToken: String, accessToken: String): BaseResponse<AuthDto> {
+        return checkResponse(loginApiService.kakaoLogin(fcmToken, LoginRequest(accessToken)))
     }
 
-    suspend fun naverLogin(accessToken: String): BaseResponse<AuthDto> {
-        return checkResponse(loginApiService.naverLogin(LoginRequest(accessToken)))
+    suspend fun naverLogin(fcmToken: String, accessToken: String): BaseResponse<AuthDto> {
+        return checkResponse(loginApiService.naverLogin(fcmToken, LoginRequest(accessToken)))
     }
 }
