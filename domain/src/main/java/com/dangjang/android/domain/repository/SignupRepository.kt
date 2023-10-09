@@ -11,5 +11,5 @@ interface SignupRepository {
     fun getDuplicateNickname(nickname: String): Flow<DuplicateNicknameVO>
 
     //회원가입
-    fun signup(data: SignupRequestVO): Flow<AuthVO>
+    fun signup(fcmToken: String, data: SignupRequestVO): Flow<AuthVO>
 }

@@ -1,14 +1,18 @@
 package com.dangjang.android.presentation.home
 
 import android.app.Application
+import android.content.Context
+import android.content.Intent
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.dangjang.android.domain.constants.ACCESS_TOKEN_KEY
 import com.dangjang.android.domain.constants.BMI_NORMAL_END
 import com.dangjang.android.domain.constants.BMI_NORMAL_START
 import com.dangjang.android.domain.constants.SEEKBAR_NORMAL_END
 import com.dangjang.android.domain.constants.SEEKBAR_NORMAL_START
+import com.dangjang.android.domain.constants.TOKEN_SPF_KEY
 import com.dangjang.android.domain.logging.CalendarClickScheme
 import com.dangjang.android.domain.logging.CalorieScreenClickScheme
 import com.dangjang.android.domain.logging.ExerciseScreenClickScheme
@@ -40,7 +44,9 @@ import com.dangjang.android.domain.model.PostPatchWeightVO
 import com.dangjang.android.domain.model.TodayGuidesVO
 import com.dangjang.android.domain.request.EditHealthMetricRequest
 import com.dangjang.android.domain.request.EditSameHealthMetricRequest
+import com.dangjang.android.domain.usecase.TokenUseCase
 import com.dangjang.android.presentation.R
+import com.dangjang.android.presentation.login.LoginActivity
 import com.dangjang.android.swm_logging.SWMLogging
 import com.dangjang.android.swm_logging.logging_scheme.ClickScheme
 import com.dangjang.android.swm_logging.logging_scheme.ExposureScheme
@@ -54,6 +60,7 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val getHomeUseCase: HomeUseCase,
+    private val getTokenUseCase: TokenUseCase,
     application: Application
 ) : AndroidViewModel(application) {
     //홈
@@ -104,6 +111,13 @@ class HomeViewModel @Inject constructor(
 
     private val _editExerciseRequest = MutableStateFlow(EditSameHealthMetricRequest())
     val editExerciseRequest = _editExerciseRequest.asStateFlow()
+
+    //토큰 재발급
+    private val _reissueTokenFlow = MutableStateFlow(false)
+    val reissueTokenFlow = _reissueTokenFlow.asStateFlow()
+
+    private val _goToLoginActivityFlow = MutableStateFlow(false)
+    val goToLoginActivityFlow = _goToLoginActivityFlow.asStateFlow()
 
     //홈
     fun getHome(accessToken: String, date: String) {
@@ -398,15 +412,6 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun <T> Flow<T>.handleErrors(): Flow<T> =
-        catch { e ->
-            Log.e("error",e.message.toString())
-            Toast.makeText(
-                getApplication<Application>().applicationContext, e.message,
-                Toast.LENGTH_SHORT
-            ).show()
-        }
-
     fun setType(type: String) {
         _addHealthMetricRequest.update {
             it.copy(type = type)
@@ -606,5 +611,53 @@ class HomeViewModel @Inject constructor(
             .setStayTime(stayTime)
             .build()
     }
+
+    private fun getAccessToken(): String? {
+        val sharedPreferences = getApplication<Application>().applicationContext.getSharedPreferences(TOKEN_SPF_KEY, Context.MODE_PRIVATE)
+
+        return sharedPreferences.getString(ACCESS_TOKEN_KEY, null)
+    }
+
+
+    fun reissueToken(accessToken: String) {
+        viewModelScope.launch {
+            getTokenUseCase.reissueToken("Bearer $accessToken")
+                .onEach {
+                    _reissueTokenFlow.emit(it)
+                }
+                .handleReissueTokenErrors()
+                .collect()
+        }
+    }
+
+    private fun <T> Flow<T>.handleErrors(): Flow<T> =
+        catch { e ->
+            Log.e("error",e.message.toString())
+            if (e.message.toString() == "만료된 토큰입니다.") {
+                reissueToken(getAccessToken() ?: "")
+//                Toast.makeText(
+//                    getApplication<Application>().applicationContext, "로그인이 만료되었습니다. 다시 한번 시도해주세요.",
+//                    Toast.LENGTH_SHORT
+//                ).show()
+
+            }
+//            Toast.makeText(
+//                getApplication<Application>().applicationContext, e.message,
+//                Toast.LENGTH_SHORT
+//            ).show()
+        }
+
+    private fun <T> Flow<T>.handleReissueTokenErrors(): Flow<T> =
+        catch { e ->
+            Log.e("reissue error",e.message.toString())
+            // refreshToken까지 만료된 경우 -> 로그인 화면으로 이동
+            if (e.message.toString() == "만료된 토큰입니다.") {
+                _goToLoginActivityFlow.value = true
+                Toast.makeText(
+                    getApplication<Application>().applicationContext, "로그인이 필요합니다.",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
 
 }

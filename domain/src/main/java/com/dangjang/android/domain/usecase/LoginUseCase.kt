@@ -11,14 +11,14 @@ class LoginUseCase @Inject constructor(
     private val loginRepository: LoginRepository
 ) {
 
-    suspend fun kakoLogin(accessToken: String): Flow<AuthVO> =
+    suspend fun kakoLogin(fcmToken: String, accessToken: String): Flow<AuthVO> =
         withContext(Dispatchers.IO) {
-            loginRepository.kakaoLogin(accessToken)
+            loginRepository.kakaoLogin(fcmToken, accessToken)
         }
 
-    suspend fun naverLogin(accessToken: String): Flow<AuthVO> =
+    suspend fun naverLogin(fcmToken: String, accessToken: String): Flow<AuthVO> =
         withContext(Dispatchers.IO) {
-            loginRepository.naverLogin(accessToken)
+            loginRepository.naverLogin(fcmToken, accessToken)
         }
 
 }

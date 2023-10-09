@@ -19,10 +19,11 @@ class SignupUseCase @Inject constructor(
         }
 
     suspend fun signup(
+        fcmToken: String,
         data: SignupRequestVO
     ): Flow<AuthVO> =
         withContext(Dispatchers.IO) {
-            signupRepository.signup(data)
+            signupRepository.signup(fcmToken, data)
         }
 
 }

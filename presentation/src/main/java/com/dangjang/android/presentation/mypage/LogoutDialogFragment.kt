@@ -1,6 +1,7 @@
 package com.dangjang.android.presentation.mypage
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -14,6 +15,7 @@ import com.dangjang.android.domain.constants.ACCESS_TOKEN_KEY
 import com.dangjang.android.domain.constants.FCM_TOKEN_KEY
 import com.dangjang.android.domain.constants.TOKEN_SPF_KEY
 import com.dangjang.android.presentation.databinding.FragmentLogoutDialogBinding
+import com.dangjang.android.presentation.login.LoginActivity
 import kotlinx.coroutines.flow.collectLatest
 
 class LogoutDialogFragment : DialogFragment() {
@@ -52,7 +54,14 @@ class LogoutDialogFragment : DialogFragment() {
         lifecycleScope.launchWhenStarted {
             viewModel.logoutFlow.collectLatest {
                 if (it) {
-                    dismiss()
+                    viewModel.removeAutoLoginProviderSpf()
+                    viewModel.removeAccessTokenSpf()
+                    viewModel.removeFcmTokenSpf()
+
+                    val intent = Intent(requireContext(), LoginActivity::class.java)
+                    startActivity(intent)
+
+                    activity?.finish()
                 }
             }
         }

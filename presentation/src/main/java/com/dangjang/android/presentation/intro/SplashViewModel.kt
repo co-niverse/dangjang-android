@@ -1,6 +1,8 @@
 package com.dangjang.android.presentation.intro
 
 import  android.app.Application
+import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Build
 import android.util.Log
@@ -19,14 +21,18 @@ import androidx.health.connect.client.request.ReadRecordsRequest
 import androidx.health.connect.client.time.TimeRangeFilter
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.dangjang.android.domain.constants.ACCESS_TOKEN_KEY
 import com.dangjang.android.domain.constants.AUTO_LOGIN_EDITOR_KEY
 import com.dangjang.android.domain.constants.AUTO_LOGIN_SPF_KEY
 import com.dangjang.android.domain.constants.HEALTH_CONNECT_TOKEN_KEY
+import com.dangjang.android.domain.constants.TOKEN_SPF_KEY
 import com.dangjang.android.domain.model.HealthConnectVO
 import com.dangjang.android.domain.model.IntroVO
 import com.dangjang.android.domain.request.HealthConnectRequest
 import com.dangjang.android.domain.request.PostHealthConnectRequest
 import com.dangjang.android.domain.usecase.SplashUseCase
+import com.dangjang.android.domain.usecase.TokenUseCase
+import com.dangjang.android.presentation.login.LoginActivity
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -50,6 +56,7 @@ import kotlin.math.roundToInt
 @HiltViewModel
 class SplashViewModel @Inject constructor(
     private val splashUseCase: SplashUseCase,
+    private val getTokenUseCase: TokenUseCase,
     application: Application
 ) : AndroidViewModel(application) {
 
@@ -107,6 +114,9 @@ class SplashViewModel @Inject constructor(
     var bloodGlucosePermissionGranted = false
     var stepsPermissionGranted = false
     var exerciseSessionPermissionGranted = false
+
+    private val _reissueTokenFlow = MutableStateFlow(false)
+    val reissueTokenFlow = _reissueTokenFlow.asStateFlow()
 
     fun checkAvailability() {
         //설치여부 확인
@@ -415,9 +425,6 @@ class SplashViewModel @Inject constructor(
         }
     }
 
-    private fun <T> Flow<T>.handleErrors(): Flow<T> =
-        catch { e -> Toast.makeText(getApplication<Application>().applicationContext,e.message,Toast.LENGTH_SHORT).show() }
-
     private fun getTodayStartTime(): Instant {
         val koreaZoneId = ZoneId.of("Asia/Seoul")
         val koreaTime = ZonedDateTime.now().truncatedTo(ChronoUnit.DAYS).toInstant().atZone(koreaZoneId)
@@ -481,4 +488,51 @@ class SplashViewModel @Inject constructor(
         )
         return sp.getString(AUTO_LOGIN_EDITOR_KEY, "null")
     }
+
+    private fun getAccessToken(): String? {
+        val sharedPreferences = getApplication<Application>().applicationContext.getSharedPreferences(
+            TOKEN_SPF_KEY, Context.MODE_PRIVATE)
+
+        return sharedPreferences.getString(ACCESS_TOKEN_KEY, null)
+    }
+
+    private fun <T> Flow<T>.handleErrors(): Flow<T> =
+        catch { e ->
+            Log.e("error",e.message.toString())
+            if (e.message.toString() == "만료된 토큰입니다.") {
+                getTokenUseCase.reissueToken(getAccessToken() ?: "")
+                    .onEach {
+                        _reissueTokenFlow.emit(it)
+                    }
+                    .handleReissueTokenErrors()
+                    .collect()
+                Toast.makeText(
+                    getApplication<Application>().applicationContext, "로그인이 만료되었습니다. 다시 한번 시도해주세요.",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+//            Toast.makeText(
+//                getApplication<Application>().applicationContext, e.message,
+//                Toast.LENGTH_SHORT
+//            ).show()
+        }
+
+    private fun <T> Flow<T>.handleReissueTokenErrors(): Flow<T> =
+        catch { e ->
+            Log.e("error",e.message.toString())
+            // refreshToken까지 만료된 경우 -> 로그인 화면으로 이동
+            if (e.message.toString() == "만료된 토큰입니다.") {
+                Intent(getApplication<Application>().applicationContext, LoginActivity::class.java).apply {
+                    getApplication<Application>().applicationContext.startActivity(this)
+                }
+                Toast.makeText(
+                    getApplication<Application>().applicationContext, "로그인이 필요합니다.",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+//            Toast.makeText(
+//                getApplication<Application>().applicationContext, e.message,
+//                Toast.LENGTH_SHORT
+//            ).show()
+        }
 }

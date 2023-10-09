@@ -1,12 +1,18 @@
 package com.dangjang.android.presentation.chart
 
 import android.app.Application
+import android.content.Context
+import android.content.Intent
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.dangjang.android.domain.constants.ACCESS_TOKEN_KEY
+import com.dangjang.android.domain.constants.TOKEN_SPF_KEY
 import com.dangjang.android.domain.model.GetChartVO
 import com.dangjang.android.domain.usecase.ChartUseCase
+import com.dangjang.android.domain.usecase.TokenUseCase
+import com.dangjang.android.presentation.login.LoginActivity
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.data.Entry
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -26,6 +32,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ChartViewModel @Inject constructor(
     private val getChartUseCase: ChartUseCase,
+    private val getTokenUseCase: TokenUseCase,
     application: Application
 ) : AndroidViewModel(application) {
 
@@ -37,6 +44,10 @@ class ChartViewModel @Inject constructor(
 
     private val _endDate = MutableStateFlow(String())
     val endDate = _endDate.asStateFlow()
+
+    //토큰 재발급
+    private val _reissueTokenFlow = MutableStateFlow(false)
+    val reissueTokenFlow = _reissueTokenFlow.asStateFlow()
 
     fun getGlucoseMinList(): MutableList<BarEntry> {
         var glucoseMinList = mutableListOf<BarEntry>()
@@ -190,12 +201,50 @@ class ChartViewModel @Inject constructor(
         return format.format(calendar.time)
     }
 
+    private fun getAccessToken(): String? {
+        val sharedPreferences = getApplication<Application>().applicationContext.getSharedPreferences(
+            TOKEN_SPF_KEY, Context.MODE_PRIVATE)
+
+        return sharedPreferences.getString(ACCESS_TOKEN_KEY, null)
+    }
+
     private fun <T> Flow<T>.handleErrors(): Flow<T> =
         catch { e ->
             Log.e("error",e.message.toString())
-            Toast.makeText(
-                getApplication<Application>().applicationContext, e.message,
-                Toast.LENGTH_SHORT
-            ).show()
+            if (e.message.toString() == "만료된 토큰입니다.") {
+                getTokenUseCase.reissueToken(getAccessToken() ?: "")
+                    .onEach {
+                        _reissueTokenFlow.emit(it)
+                    }
+                    .handleReissueTokenErrors()
+                    .collect()
+                Toast.makeText(
+                    getApplication<Application>().applicationContext, "로그인이 만료되었습니다. 다시 한번 시도해주세요.",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+//            Toast.makeText(
+//                getApplication<Application>().applicationContext, e.message,
+//                Toast.LENGTH_SHORT
+//            ).show()
+        }
+
+    private fun <T> Flow<T>.handleReissueTokenErrors(): Flow<T> =
+        catch { e ->
+            Log.e("error",e.message.toString())
+            // refreshToken까지 만료된 경우 -> 로그인 화면으로 이동
+            if (e.message.toString() == "만료된 토큰입니다.") {
+                Intent(getApplication<Application>().applicationContext, LoginActivity::class.java).apply {
+                    getApplication<Application>().applicationContext.startActivity(this)
+                }
+                Toast.makeText(
+                    getApplication<Application>().applicationContext, "로그인이 필요합니다.",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+//            Toast.makeText(
+//                getApplication<Application>().applicationContext, e.message,
+//                Toast.LENGTH_SHORT
+//            ).show()
         }
 }
