@@ -9,6 +9,7 @@ import com.dangjang.android.domain.request.AddHealthMetricRequest
 import com.dangjang.android.domain.request.PostPointRequest
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
@@ -33,5 +34,11 @@ interface MypageApiService {
         @Header("Authorization") accessToken: String,
         @Body postPointRequest: PostPointRequest
     ) : Response<BaseResponse<PostPointDto>>
+
+    //회원탈퇴
+    @DELETE("api/user/withdrawal")
+    suspend fun signout(
+        @Header("Authorization") accessToken: String
+    ) : Response<BaseResponse<Nothing>>
 
 }
