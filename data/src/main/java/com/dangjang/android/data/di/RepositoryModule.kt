@@ -6,12 +6,14 @@ import com.dangjang.android.data.repository.SplashRepositoryImpl
 import com.dangjang.android.data.repository.LoginRepositoryImpl
 import com.dangjang.android.data.repository.MypageRepositoryImpl
 import com.dangjang.android.data.repository.SignupRepositoryImpl
+import com.dangjang.android.data.repository.TokenRepositoryImpl
 import com.dangjang.android.domain.repository.ChartRepository
 import com.dangjang.android.domain.repository.HomeRepository
 import com.dangjang.android.domain.repository.SplashRepository
 import com.dangjang.android.domain.repository.LoginRepository
 import com.dangjang.android.domain.repository.MypageRepository
 import com.dangjang.android.domain.repository.SignupRepository
+import com.dangjang.android.domain.repository.TokenRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -50,4 +52,9 @@ interface RepositoryModule {
     fun bindsMypageRepository(
         mypageRepositoryImpl: MypageRepositoryImpl
     ) : MypageRepository
+
+    @Binds
+    fun bindsTokenRepository(
+        tokenRepositoryImpl: TokenRepositoryImpl
+    ) : TokenRepository
 }
