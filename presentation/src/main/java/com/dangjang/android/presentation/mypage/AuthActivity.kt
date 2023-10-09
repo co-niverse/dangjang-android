@@ -25,5 +25,10 @@ class AuthActivity : FragmentActivity() {
             val logoutDialogFragment = LogoutDialogFragment()
             logoutDialogFragment.show(supportFragmentManager, "logoutDialog")
         }
+
+        binding.signoutBtn.setOnClickListener {
+            val signoutDialogFragment = SignoutDialogFragment()
+            signoutDialogFragment.show(supportFragmentManager, "signoutDialog")
+        }
     }
 }
