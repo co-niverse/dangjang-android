@@ -6,7 +6,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentActivity
 import com.dangjang.android.presentation.R
 import com.dangjang.android.presentation.databinding.ActivityAuthBinding
-import com.dangjang.android.presentation.databinding.ActivityDeviceBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -20,6 +19,11 @@ class AuthActivity : FragmentActivity() {
 
         binding.backIv.setOnClickListener {
             finish()
+        }
+
+        binding.logoutBtn.setOnClickListener {
+            val logoutDialogFragment = LogoutDialogFragment()
+            logoutDialogFragment.show(supportFragmentManager, "logoutDialog")
         }
     }
 }
