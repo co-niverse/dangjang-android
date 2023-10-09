@@ -116,6 +116,9 @@ class HomeViewModel @Inject constructor(
     private val _reissueTokenFlow = MutableStateFlow(false)
     val reissueTokenFlow = _reissueTokenFlow.asStateFlow()
 
+    private val _goToLoginActivityFlow = MutableStateFlow(false)
+    val goToLoginActivityFlow = _goToLoginActivityFlow.asStateFlow()
+
     //홈
     fun getHome(accessToken: String, date: String) {
         viewModelScope.launch {
@@ -615,20 +618,28 @@ class HomeViewModel @Inject constructor(
         return sharedPreferences.getString(ACCESS_TOKEN_KEY, null)
     }
 
+
+    fun reissueToken(accessToken: String) {
+        viewModelScope.launch {
+            getTokenUseCase.reissueToken("Bearer $accessToken")
+                .onEach {
+                    _reissueTokenFlow.emit(it)
+                }
+                .handleReissueTokenErrors()
+                .collect()
+        }
+    }
+
     private fun <T> Flow<T>.handleErrors(): Flow<T> =
         catch { e ->
             Log.e("error",e.message.toString())
             if (e.message.toString() == "만료된 토큰입니다.") {
-                getTokenUseCase.reissueToken(getAccessToken() ?: "")
-                    .onEach {
-                        _reissueTokenFlow.emit(it)
-                    }
-                    .handleReissueTokenErrors()
-                    .collect()
-                Toast.makeText(
-                    getApplication<Application>().applicationContext, "로그인이 만료되었습니다. 다시 한번 시도해주세요.",
-                    Toast.LENGTH_SHORT
-                ).show()
+                reissueToken(getAccessToken() ?: "")
+//                Toast.makeText(
+//                    getApplication<Application>().applicationContext, "로그인이 만료되었습니다. 다시 한번 시도해주세요.",
+//                    Toast.LENGTH_SHORT
+//                ).show()
+
             }
 //            Toast.makeText(
 //                getApplication<Application>().applicationContext, e.message,
@@ -638,21 +649,15 @@ class HomeViewModel @Inject constructor(
 
     private fun <T> Flow<T>.handleReissueTokenErrors(): Flow<T> =
         catch { e ->
-            Log.e("error",e.message.toString())
+            Log.e("reissue error",e.message.toString())
             // refreshToken까지 만료된 경우 -> 로그인 화면으로 이동
             if (e.message.toString() == "만료된 토큰입니다.") {
-                Intent(getApplication<Application>().applicationContext, LoginActivity::class.java).apply {
-                    getApplication<Application>().applicationContext.startActivity(this)
-                }
+                _goToLoginActivityFlow.value = true
                 Toast.makeText(
                     getApplication<Application>().applicationContext, "로그인이 필요합니다.",
                     Toast.LENGTH_SHORT
                 ).show()
             }
-//            Toast.makeText(
-//                getApplication<Application>().applicationContext, e.message,
-//                Toast.LENGTH_SHORT
-//            ).show()
         }
 
 }
