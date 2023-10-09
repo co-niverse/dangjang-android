@@ -8,6 +8,7 @@ import com.dangjang.android.data.datasource.SplashApiService
 import com.dangjang.android.data.datasource.LoginApiService
 import com.dangjang.android.data.datasource.MypageApiService
 import com.dangjang.android.data.datasource.SignupApiService
+import com.dangjang.android.data.datasource.TokenApiService
 import com.dangjang.android.data.interceptor.NetworkInterceptor
 import com.dangjang.android.data.interceptor.TokenInterceptor
 import dagger.Module
@@ -87,5 +88,11 @@ object NetworkModule {
     @Singleton
     fun provideMypageApiService(retrofit: Retrofit): MypageApiService {
         return retrofit.create(MypageApiService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideTokenApiService(retrofit: Retrofit): TokenApiService {
+        return retrofit.create(TokenApiService::class.java)
     }
 }
