@@ -8,6 +8,7 @@ import androidx.lifecycle.lifecycleScope
 import com.dangjang.android.presentation.R
 import com.dangjang.android.presentation.databinding.ActivityAlarmBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 
 @AndroidEntryPoint
 class AlarmActivity : FragmentActivity() {
@@ -22,12 +23,13 @@ class AlarmActivity : FragmentActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_alarm)
         binding.lifecycleOwner = this
 
+        viewModel.getNotification()
         setAlarmListAdapter()
 
         lifecycleScope.launchWhenStarted {
-//            viewModel.getAlarmFlow.collectLatest {
-//                alarmListAdapter.submitList()
-//            }
+            viewModel.getNotificationFlow.collectLatest {
+                alarmListAdapter.submitList(it.notificationList)
+            }
         }
 
         binding.backIv.setOnClickListener {

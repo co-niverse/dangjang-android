@@ -38,6 +38,7 @@ import com.dangjang.android.domain.model.ExerciseListVO
 import com.dangjang.android.domain.model.GetExerciseCaloriesVO
 import com.dangjang.android.domain.model.GetExerciseVO
 import com.dangjang.android.domain.model.GetHomeVO
+import com.dangjang.android.domain.model.GetNotificationVO
 import com.dangjang.android.domain.model.GetWeightVO
 import com.dangjang.android.domain.model.PostPatchExerciseVO
 import com.dangjang.android.domain.model.PostPatchWeightVO
@@ -66,6 +67,10 @@ class HomeViewModel @Inject constructor(
     //홈
     private val _getHomeFlow = MutableStateFlow(GetHomeVO())
     val getHomeFlow = _getHomeFlow.asStateFlow()
+
+    //알람
+    private val _getNotificationFlow = MutableStateFlow(GetNotificationVO())
+    val getNotificationFlow = _getNotificationFlow.asStateFlow()
 
     //혈당
     private val _postPatchGlucoseFlow = MutableStateFlow(EditHealthMetricVO())
@@ -125,6 +130,18 @@ class HomeViewModel @Inject constructor(
             getHomeUseCase.getHome("Bearer $accessToken", date)
                 .onEach {
                     _getHomeFlow.emit(it)
+                }
+                .handleErrors()
+                .collect()
+        }
+    }
+
+    //알람
+    fun getNotification() {
+        viewModelScope.launch {
+            getHomeUseCase.getNotification("Bearer ${getAccessToken() ?: ""}")
+                .onEach {
+                    _getNotificationFlow.emit(it)
                 }
                 .handleErrors()
                 .collect()
