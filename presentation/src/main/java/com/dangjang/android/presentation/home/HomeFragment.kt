@@ -126,6 +126,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
             }
         }
 
+        binding.bellIv.setOnClickListener {
+            Intent(activity, AlarmActivity::class.java).apply {
+                startActivity(this)
+            }
+        }
+
         val sp: SharedPreferences = requireContext().getSharedPreferences(AUTO_LOGIN_SPF_KEY, AppCompatActivity.MODE_PRIVATE)
         val healthConnect = sp.getString(HEALTH_CONNECT_TOKEN_KEY, "null")
 

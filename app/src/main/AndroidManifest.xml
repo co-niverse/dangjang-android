@@ -80,6 +80,11 @@
             android:theme="@android:style/Theme.NoTitleBar">
         </activity>
         <activity
+            android:name=".presentation.home.AlarmActivity"
+            android:exported="true"
+            android:theme="@android:style/Theme.NoTitleBar">
+        </activity>
+        <activity
             android:name=".presentation.mypage.AuthActivity"
             android:exported="true"
             android:theme="@android:style/Theme.NoTitleBar">
