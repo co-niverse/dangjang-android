@@ -8,7 +8,7 @@ import com.dangjang.android.data.datasource.SplashApiService
 import com.dangjang.android.data.datasource.LoginApiService
 import com.dangjang.android.data.datasource.MypageApiService
 import com.dangjang.android.data.datasource.SignupApiService
-import com.dangjang.android.data.datasource.TokenInterceptor
+import com.dangjang.android.data.interceptor.TokenInterceptor
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

@@ -1,7 +1,6 @@
-package com.dangjang.android.data.datasource
+package com.dangjang.android.data.interceptor
 
 import android.content.Context
-import android.util.Log
 import com.dangjang.android.data.storage.InAppStorageHelperImpl
 import com.dangjang.android.domain.constants.ACCESS_TOKEN_KEY
 import okhttp3.Interceptor
