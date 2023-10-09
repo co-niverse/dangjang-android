@@ -20,6 +20,9 @@ interface HomeRepository {
     //알람 목록 조회
     fun getNotification(accessToken: String): Flow<GetNotificationVO>
 
+    //알람 확인 체크
+    fun checkNotification(accessToken: String, notificationIdList: List<Int>): Flow<Boolean>
+
     //건강지표 등록
     fun addHealthMetric(accessToken: String, addHealthMetricRequest: AddHealthMetricRequest): Flow<EditHealthMetricVO>
 

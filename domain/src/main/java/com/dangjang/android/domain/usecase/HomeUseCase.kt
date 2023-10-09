@@ -35,6 +35,14 @@ class HomeUseCase @Inject constructor(
             homeRepository.getNotification(accessToken)
         }
 
+    suspend fun checkNotification(
+        accessToken: String,
+        notificationIdList: List<Int>
+    ): Flow<Boolean> =
+        withContext(Dispatchers.IO) {
+            homeRepository.checkNotification(accessToken, notificationIdList)
+        }
+
     suspend fun addHealthMetric(
         accessToken: String,
         addHealthMetricRequest: AddHealthMetricRequest
