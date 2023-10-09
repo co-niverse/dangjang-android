@@ -45,7 +45,7 @@
                 android:layout_height="wrap_content">
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/exercise_rv"
+                    android:id="@+id/alarm_rv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
