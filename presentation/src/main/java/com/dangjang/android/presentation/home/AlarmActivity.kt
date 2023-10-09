@@ -29,6 +29,7 @@ class AlarmActivity : FragmentActivity() {
         lifecycleScope.launchWhenStarted {
             viewModel.getNotificationFlow.collectLatest {
                 alarmListAdapter.submitList(it.notificationList)
+                viewModel.checkNotification()
             }
         }
 

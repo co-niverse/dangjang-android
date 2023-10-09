@@ -72,6 +72,11 @@ class HomeViewModel @Inject constructor(
     private val _getNotificationFlow = MutableStateFlow(GetNotificationVO())
     val getNotificationFlow = _getNotificationFlow.asStateFlow()
 
+    private val _checkNotificationFlow = MutableStateFlow(false)
+    val checkNotificationFlow = _checkNotificationFlow.asStateFlow()
+
+    private val notificationIdList = mutableListOf<Int>()
+
     //혈당
     private val _postPatchGlucoseFlow = MutableStateFlow(EditHealthMetricVO())
     val postPatchGlucoseFlow = _postPatchGlucoseFlow.asStateFlow()
@@ -142,6 +147,20 @@ class HomeViewModel @Inject constructor(
             getHomeUseCase.getNotification("Bearer ${getAccessToken() ?: ""}")
                 .onEach {
                     _getNotificationFlow.emit(it)
+                    it.notificationList.forEach {
+                        notificationIdList.add(it.notificationId)
+                    }
+                }
+                .handleErrors()
+                .collect()
+        }
+    }
+
+    fun checkNotification() {
+        viewModelScope.launch {
+            getHomeUseCase.checkNotification("Bearer ${getAccessToken() ?: ""}", notificationIdList)
+                .onEach {
+                    _checkNotificationFlow.update { it }
                 }
                 .handleErrors()
                 .collect()
