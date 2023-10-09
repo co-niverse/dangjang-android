@@ -31,6 +31,14 @@ class HomeRepositoryImpl @Inject constructor(
         emit(response.data.toDomain())
     }
 
+    override fun checkNotification(
+        accessToken: String,
+        notificationIdList: List<Int>
+    ): Flow<Boolean> = flow {
+        val response = homeDataSource.checkNotification(accessToken, notificationIdList)
+        emit(response.success)
+    }
+
     override fun addHealthMetric(accessToken: String, addHealthMetricRequest: AddHealthMetricRequest): Flow<EditHealthMetricVO> = flow {
         val response = homeDataSource.addHealthMetric(accessToken, addHealthMetricRequest)
         emit(response.data.toDomain())

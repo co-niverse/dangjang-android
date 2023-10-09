@@ -25,6 +25,11 @@ class HomeDataSource @Inject constructor(
     suspend fun getNotification(accessToken: String): BaseResponse<GetNotificationDto> {
         return checkResponse(homeApiService.getNotification(accessToken))
     }
+
+    suspend fun checkNotification(accessToken: String, notificationIdList: List<Int>): BaseResponse<Nothing> {
+        return checkResponse(homeApiService.checkNotification(accessToken, notificationIdList))
+    }
+
     suspend fun addHealthMetric(accessToken: String, addHealthMetricRequest: AddHealthMetricRequest): BaseResponse<EditHealthMetricDto> {
         return checkResponse(homeApiService.addHealthMetric(accessToken, addHealthMetricRequest))
     }

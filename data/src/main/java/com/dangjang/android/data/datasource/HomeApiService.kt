@@ -36,6 +36,12 @@ interface HomeApiService {
         @Header("Authorization") accessToken: String
     ) : Response<BaseResponse<GetNotificationDto>>
 
+    //알람 확인 체크 API
+    @PATCH("/api/notification")
+    suspend fun checkNotification(
+        @Header("Authorization") accessToken: String,
+        @Body notificationIdList: List<Int>
+    ): Response<BaseResponse<Nothing>>
 
     //혈당 등록 API
     @POST("/api/health-metric")
