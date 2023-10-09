@@ -8,6 +8,7 @@ const val KAKAO = "kakao"
 const val TOKEN_SPF_KEY = "token"
 const val ACCESS_TOKEN_KEY = "AccessToken"
 const val HEALTH_CONNECT_TOKEN_KEY = "HealthConnect"
+const val FCM_TOKEN_KEY = "token"
 
 // Health Connect
 const val HEALTH_CONNECT_UNAVAILABLE = 1

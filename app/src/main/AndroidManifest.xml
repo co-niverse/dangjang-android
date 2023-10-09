@@ -79,6 +79,11 @@
             android:exported="true"
             android:theme="@android:style/Theme.NoTitleBar">
         </activity>
+        <activity
+            android:name=".presentation.mypage.AuthActivity"
+            android:exported="true"
+            android:theme="@android:style/Theme.NoTitleBar">
+        </activity>
         <service
             android:name=".FcmService"
             android:enabled="true"

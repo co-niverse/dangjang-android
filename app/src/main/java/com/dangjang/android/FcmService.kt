@@ -9,8 +9,8 @@ import android.media.RingtoneManager
 import android.os.Build
 import android.util.Log
 import androidx.core.app.NotificationCompat
+import com.dangjang.android.domain.constants.FCM_TOKEN_KEY
 import com.dangjang.android.presentation.MainActivity
-import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 
@@ -21,9 +21,9 @@ class FcmService : FirebaseMessagingService() {
     override fun onNewToken(token: String) {
         super.onNewToken(token)
 
-        val pref = this.getSharedPreferences("token", Context.MODE_PRIVATE)
+        val pref = this.getSharedPreferences(FCM_TOKEN_KEY, Context.MODE_PRIVATE)
         val editor = pref.edit()
-        editor.putString("token", token).apply()
+        editor.putString(FCM_TOKEN_KEY, token).apply()
         editor.commit()
         Log.e(TAG, "성공적으로 토큰을 저장함 $token")
 

@@ -2,6 +2,7 @@ package com.dangjang.android.presentation.signup
 
 import android.content.Intent
 import android.graphics.Color
+import android.net.Uri
 import android.util.Log
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
@@ -63,6 +64,14 @@ class SignupAgreeFragment : BaseFragment<FragmentSignupAgreeBinding>(R.layout.fr
             }
         }
 
+        binding.serviceUrlTv.setOnClickListener {
+            goToServiceUrl()
+        }
+
+        binding.privateUrlTv.setOnClickListener {
+            goToPrivateUrl()
+        }
+
         binding.backIv.setOnClickListener {
             parentFragmentManager.popBackStack()
         }
@@ -71,6 +80,16 @@ class SignupAgreeFragment : BaseFragment<FragmentSignupAgreeBinding>(R.layout.fr
     private fun setBtnGreen() {
         binding.agreeBtn.setBackgroundResource(R.drawable.background_green_gradient)
         binding.agreeBtn.setOnTouchListener({ v, event -> false })
+    }
+
+    private fun goToServiceUrl() {
+        val intentUrl = Intent(Intent.ACTION_VIEW, Uri.parse("https://co-niverse.notion.site/a3e0b9b54d0f4b3bba174901297ec918?pvs=4"))
+        startActivity(intentUrl)
+    }
+
+    private fun goToPrivateUrl() {
+        val intentUrl = Intent(Intent.ACTION_VIEW, Uri.parse("https://co-niverse.notion.site/cb58f28f2c6e465ea5c596871baaca78?pvs=4"))
+        startActivity(intentUrl)
     }
 
 }

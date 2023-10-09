@@ -28,4 +28,14 @@ class MypageUseCase @Inject constructor(
         withContext(Dispatchers.IO) {
             mypageRepository.postPoint(accessToken, postPointRequest)
         }
+
+    suspend fun logout(accessToken: String, fcmToken: String): Flow<Boolean> =
+        withContext(Dispatchers.IO) {
+            mypageRepository.logout(accessToken, fcmToken)
+        }
+
+    suspend fun signout(accessToken: String): Flow<Boolean> =
+        withContext(Dispatchers.IO) {
+            mypageRepository.signout(accessToken)
+        }
 }

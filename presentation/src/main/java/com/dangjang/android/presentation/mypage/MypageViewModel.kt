@@ -48,6 +48,12 @@ class MypageViewModel @Inject constructor(
     private val _selectedGiftPhone = MutableStateFlow(String())
     val selectedGiftPhone = _selectedGiftPhone.asStateFlow()
 
+    private val _signoutFlow = MutableStateFlow(false)
+    val signoutFlow = _signoutFlow.asStateFlow()
+
+    private val _logoutFlow = MutableStateFlow(false)
+    val logoutFlow = _logoutFlow.asStateFlow()
+
     fun getMypage(accessToken: String) {
         viewModelScope.launch {
             getMypageUseCase.getMypage("Bearer $accessToken")
@@ -99,6 +105,28 @@ class MypageViewModel @Inject constructor(
             getMypageUseCase.postPoint("Bearer $accessToken", postPointRequest.value)
                 .onEach {
                     _postPointFlow.emit(it)
+                }
+                .handleErrors()
+                .collect()
+        }
+    }
+
+    fun logout(accessToken: String, fcmToken: String) {
+        viewModelScope.launch {
+            getMypageUseCase.logout("Bearer $accessToken", fcmToken)
+                .onEach {
+                    _signoutFlow.emit(it)
+                }
+                .handleErrors()
+                .collect()
+        }
+    }
+
+    fun signout(accessToken: String) {
+        viewModelScope.launch {
+            getMypageUseCase.signout("Bearer $accessToken")
+                .onEach {
+                    _signoutFlow.emit(it)
                 }
                 .handleErrors()
                 .collect()

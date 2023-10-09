@@ -22,4 +22,12 @@ class MypageDataSource @Inject constructor(
     suspend fun postPoint(accessToken: String, postPointRequest: PostPointRequest): BaseResponse<PostPointDto> {
         return checkResponse(mypageApiService.postPoint(accessToken, postPointRequest))
     }
+
+    suspend fun signout(accessToken: String): BaseResponse<Nothing> {
+        return checkResponse(mypageApiService.signout(accessToken))
+    }
+
+    suspend fun logout(accessToken: String, fcmToken:String): BaseResponse<Nothing> {
+        return checkResponse(mypageApiService.logout(accessToken, fcmToken))
+    }
 }
