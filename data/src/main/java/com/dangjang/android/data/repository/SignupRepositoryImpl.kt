@@ -19,8 +19,8 @@ class SignupRepositoryImpl @Inject constructor(
         emit(response.data.toDomain())
     }
 
-    override fun signup(data: SignupRequestVO): Flow<AuthVO> = flow {
-        val response = signupDataScurce.signup(SignupRequest(
+    override fun signup(fcmToken: String, data: SignupRequestVO): Flow<AuthVO> = flow {
+        val response = signupDataScurce.signup(fcmToken, SignupRequest(
             data.accessToken,
             data.provider,
             data.nickname,

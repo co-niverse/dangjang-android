@@ -1,11 +1,13 @@
 package com.dangjang.android.presentation.signup
 
 import android.app.Application
+import android.content.Context
 import android.graphics.Color
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.dangjang.android.domain.HttpResponseStatus
+import com.dangjang.android.domain.constants.FCM_TOKEN_KEY
 import com.dangjang.android.domain.model.DuplicateNicknameVO
 import com.dangjang.android.domain.model.AuthVO
 import com.dangjang.android.domain.requestVO.SignupRequestVO
@@ -55,7 +57,7 @@ class SignupViewModel @Inject constructor(
         data: SignupRequestVO
     ) {
         viewModelScope.launch {
-            getSignupUseCase.signup(data)
+            getSignupUseCase.signup(getFCMToken() ?: "", data)
                 .onEach {
                     _signupFlow.emit(it)
                     _startMainActivity.emit(HttpResponseStatus.OK)
@@ -167,4 +169,8 @@ class SignupViewModel @Inject constructor(
         return R.drawable.background_green_gradient
     }
 
+    private fun getFCMToken(): String? {
+        val sharedPreferences = getApplication<Application>().applicationContext.getSharedPreferences(FCM_TOKEN_KEY, Context.MODE_PRIVATE)
+        return sharedPreferences.getString(FCM_TOKEN_KEY, null)
+    }
 }

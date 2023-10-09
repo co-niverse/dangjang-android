@@ -16,8 +16,6 @@ class TokenInterceptor(
     override fun intercept(chain: Interceptor.Chain): Response {
         val response = chain.proceed(chain.request())
         val headerAccessToken = response.headers.get("AccessToken")
-        // TODO : 서버 토큰 로직 변경 시 수정
-        val headerRefreshToken = response.headers.get("RefreshToken")
 
         headerAccessToken?.let {
             inAppStorageHelper.setAccessToken(ACCESS_TOKEN_KEY, it)
