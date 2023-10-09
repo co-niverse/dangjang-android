@@ -16,4 +16,7 @@ interface MypageRepository {
 
     //포인트 상품 구매
     fun postPoint(accessToken: String, postPointRequest: PostPointRequest): Flow<PostPointVO>
+
+    //회원탈퇴
+    fun signout(accessToken: String): Flow<Boolean>
 }
