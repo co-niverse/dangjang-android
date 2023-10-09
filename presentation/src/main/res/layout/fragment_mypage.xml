@@ -202,7 +202,7 @@
                 app:layout_constraintTop_toTopOf="@id/private_iv" />
 
             <ImageView
-                android:id="@+id/logout_iv"
+                android:id="@+id/auth_iv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
@@ -212,17 +212,17 @@
                 app:layout_constraintTop_toBottomOf="@+id/private_iv" />
 
             <TextView
-                android:id="@+id/logout_tv"
+                android:id="@+id/auth_tv"
                 android:layout_width="300dp"
                 android:layout_height="30dp"
                 android:layout_marginStart="10dp"
                 android:gravity="center_vertical"
-                android:text="로그아웃"
+                android:text="내 계정 관리"
                 android:textColor="@color/black"
                 android:textSize="16sp"
-                app:layout_constraintBottom_toBottomOf="@+id/logout_iv"
-                app:layout_constraintStart_toEndOf="@+id/logout_iv"
-                app:layout_constraintTop_toTopOf="@+id/logout_iv" />
+                app:layout_constraintBottom_toBottomOf="@+id/auth_iv"
+                app:layout_constraintStart_toEndOf="@+id/auth_iv"
+                app:layout_constraintTop_toTopOf="@+id/auth_iv" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -236,7 +236,7 @@
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/logout_iv" />
+                app:layout_constraintTop_toBottomOf="@+id/auth_iv" />
 
             <TextView
                 android:id="@+id/version_tv"

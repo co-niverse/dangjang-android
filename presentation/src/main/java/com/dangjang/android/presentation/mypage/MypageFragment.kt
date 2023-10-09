@@ -40,6 +40,12 @@ class MypageFragment : BaseFragment<FragmentMypageBinding>(R.layout.fragment_myp
         binding.pointBtn.setOnClickListener {
             startActivity(Intent(context, PointActivity::class.java))
         }
+        binding.authIv.setOnClickListener {
+            startActivity(Intent(context, AuthActivity::class.java))
+        }
+        binding.authTv.setOnClickListener {
+            startActivity(Intent(context, AuthActivity::class.java))
+        }
     }
 
     private fun getAccessToken(): String? {
