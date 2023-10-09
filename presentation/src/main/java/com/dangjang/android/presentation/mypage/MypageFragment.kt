@@ -2,6 +2,7 @@ package com.dangjang.android.presentation.mypage
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import androidx.fragment.app.viewModels
 import com.dangjang.android.common_ui.BaseFragment
 import com.dangjang.android.domain.constants.ACCESS_TOKEN_KEY
@@ -46,6 +47,28 @@ class MypageFragment : BaseFragment<FragmentMypageBinding>(R.layout.fragment_myp
         binding.authTv.setOnClickListener {
             startActivity(Intent(context, AuthActivity::class.java))
         }
+        binding.serviceIv.setOnClickListener {
+            goToServiceUrl()
+        }
+        binding.serviceTv.setOnClickListener {
+            goToServiceUrl()
+        }
+        binding.privateIv.setOnClickListener {
+            goToPrivateUrl()
+        }
+        binding.privateTv.setOnClickListener {
+            goToPrivateUrl()
+        }
+    }
+
+    private fun goToServiceUrl() {
+        val intentUrl = Intent(Intent.ACTION_VIEW, Uri.parse("https://co-niverse.notion.site/a3e0b9b54d0f4b3bba174901297ec918?pvs=4"))
+        startActivity(intentUrl)
+    }
+
+    private fun goToPrivateUrl() {
+        val intentUrl = Intent(Intent.ACTION_VIEW, Uri.parse("https://co-niverse.notion.site/cb58f28f2c6e465ea5c596871baaca78?pvs=4"))
+        startActivity(intentUrl)
     }
 
     private fun getAccessToken(): String? {
