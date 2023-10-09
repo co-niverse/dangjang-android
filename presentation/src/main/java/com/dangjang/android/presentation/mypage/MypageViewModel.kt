@@ -3,11 +3,16 @@ package com.dangjang.android.presentation.mypage
 import android.app.Application
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.util.Log
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.dangjang.android.domain.constants.ACCESS_TOKEN_KEY
+import com.dangjang.android.domain.constants.AUTO_LOGIN_EDITOR_KEY
+import com.dangjang.android.domain.constants.AUTO_LOGIN_SPF_KEY
+import com.dangjang.android.domain.constants.FCM_TOKEN_KEY
 import com.dangjang.android.domain.constants.TOKEN_SPF_KEY
 import com.dangjang.android.domain.model.GetMypageVO
 import com.dangjang.android.domain.model.GetPointVO
@@ -143,12 +148,41 @@ class MypageViewModel @Inject constructor(
         }
     }
 
-
     private fun getAccessToken(): String? {
         val sharedPreferences = getApplication<Application>().applicationContext.getSharedPreferences(
             TOKEN_SPF_KEY, Context.MODE_PRIVATE)
 
         return sharedPreferences.getString(ACCESS_TOKEN_KEY, null)
+    }
+
+    fun removeAutoLoginProviderSpf() {
+        val sp: SharedPreferences = getApplication<Application>().applicationContext.getSharedPreferences(
+            AUTO_LOGIN_SPF_KEY,
+            AppCompatActivity.MODE_PRIVATE
+        )
+        val editor = sp.edit()
+        editor.remove(AUTO_LOGIN_EDITOR_KEY)
+        editor.apply()
+    }
+
+    fun removeAccessTokenSpf() {
+        val sp: SharedPreferences = getApplication<Application>().applicationContext.getSharedPreferences(
+            TOKEN_SPF_KEY,
+            AppCompatActivity.MODE_PRIVATE
+        )
+        val editor = sp.edit()
+        editor.remove(ACCESS_TOKEN_KEY)
+        editor.apply()
+    }
+
+    fun removeFcmTokenSpf() {
+        val sp: SharedPreferences = getApplication<Application>().applicationContext.getSharedPreferences(
+            FCM_TOKEN_KEY,
+            AppCompatActivity.MODE_PRIVATE
+        )
+        val editor = sp.edit()
+        editor.remove(FCM_TOKEN_KEY)
+        editor.apply()
     }
 
     private fun <T> Flow<T>.handleErrors(): Flow<T> =
