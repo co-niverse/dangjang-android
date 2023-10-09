@@ -132,15 +132,7 @@ class LoginViewModel @Inject constructor(
 
     private fun <T> Flow<T>.handleErrors(): Flow<T> =
         catch { e ->
-
-            val error: HttpResponseException = e as HttpResponseException
-
-            Toast.makeText(getApplication<Application>().applicationContext,e.message,
-            Toast.LENGTH_SHORT).show()
-
-            Log.e("error", error.httpCode.toString())
-
-            if (e.status == HttpResponseStatus.UNAUTHORIZED) {
+            if (e.message == "존재하는 유저가 아닙니다.") {
                 _signupStartActivity.value = HttpResponseStatus.UNAUTHORIZED
             }
         }

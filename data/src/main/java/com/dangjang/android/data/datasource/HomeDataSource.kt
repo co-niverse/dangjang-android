@@ -4,6 +4,7 @@ import com.dangjang.android.data.model.dto.GetGlucoseDto
 import com.dangjang.android.data.model.dto.EditHealthMetricDto
 import com.dangjang.android.data.model.dto.GetExerciseDto
 import com.dangjang.android.data.model.dto.GetHomeDto
+import com.dangjang.android.data.model.dto.GetNotificationDto
 import com.dangjang.android.data.model.dto.GetWeightDto
 import com.dangjang.android.data.model.dto.PostPatchExerciseDto
 import com.dangjang.android.data.model.dto.PostPatchWeightDto
@@ -19,6 +20,14 @@ class HomeDataSource @Inject constructor(
 
     suspend fun getHome(accessToken: String, date: String): BaseResponse<GetHomeDto> {
         return checkResponse(homeApiService.getHome(accessToken, date))
+    }
+
+    suspend fun getNotification(accessToken: String): BaseResponse<GetNotificationDto> {
+        return checkResponse(homeApiService.getNotification(accessToken))
+    }
+
+    suspend fun checkNotification(accessToken: String, notificationIdList: List<Int>): BaseResponse<Nothing> {
+        return checkResponse(homeApiService.checkNotification(accessToken, notificationIdList))
     }
 
     suspend fun addHealthMetric(accessToken: String, addHealthMetricRequest: AddHealthMetricRequest): BaseResponse<EditHealthMetricDto> {

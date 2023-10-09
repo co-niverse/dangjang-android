@@ -4,6 +4,7 @@ import com.dangjang.android.domain.model.GetGlucoseVO
 import com.dangjang.android.domain.model.EditHealthMetricVO
 import com.dangjang.android.domain.model.GetExerciseVO
 import com.dangjang.android.domain.model.GetHomeVO
+import com.dangjang.android.domain.model.GetNotificationVO
 import com.dangjang.android.domain.model.GetWeightVO
 import com.dangjang.android.domain.model.PostPatchExerciseVO
 import com.dangjang.android.domain.model.PostPatchWeightVO
@@ -25,6 +26,21 @@ class HomeUseCase @Inject constructor(
     ): Flow<GetHomeVO> =
         withContext(Dispatchers.IO) {
             homeRepository.getHome(accessToken, date)
+        }
+
+    suspend fun getNotification(
+        accessToken: String
+    ): Flow<GetNotificationVO> =
+        withContext(Dispatchers.IO) {
+            homeRepository.getNotification(accessToken)
+        }
+
+    suspend fun checkNotification(
+        accessToken: String,
+        notificationIdList: List<Int>
+    ): Flow<Boolean> =
+        withContext(Dispatchers.IO) {
+            homeRepository.checkNotification(accessToken, notificationIdList)
         }
 
     suspend fun addHealthMetric(

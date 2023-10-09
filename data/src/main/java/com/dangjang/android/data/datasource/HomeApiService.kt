@@ -5,6 +5,7 @@ import com.dangjang.android.data.model.dto.EditHealthMetricDto
 import com.dangjang.android.data.model.dto.EditWeightExerciseDto
 import com.dangjang.android.data.model.dto.GetExerciseDto
 import com.dangjang.android.data.model.dto.GetHomeDto
+import com.dangjang.android.data.model.dto.GetNotificationDto
 import com.dangjang.android.data.model.dto.GetWeightDto
 import com.dangjang.android.data.model.dto.PostPatchExerciseDto
 import com.dangjang.android.data.model.dto.PostPatchWeightDto
@@ -28,6 +29,19 @@ interface HomeApiService {
         @Header("Authorization") accessToken: String,
         @Query("date") date: String
     ) : Response<BaseResponse<GetHomeDto>>
+
+    //알람 목록 조회 API
+    @GET("/api/notification")
+    suspend fun getNotification(
+        @Header("Authorization") accessToken: String
+    ) : Response<BaseResponse<GetNotificationDto>>
+
+    //알람 확인 체크 API
+    @PATCH("/api/notification")
+    suspend fun checkNotification(
+        @Header("Authorization") accessToken: String,
+        @Body notificationIdList: List<Int>
+    ): Response<BaseResponse<Nothing>>
 
     //혈당 등록 API
     @POST("/api/health-metric")

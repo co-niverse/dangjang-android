@@ -4,6 +4,7 @@ import com.dangjang.android.domain.model.GetGlucoseVO
 import com.dangjang.android.domain.model.EditHealthMetricVO
 import com.dangjang.android.domain.model.GetExerciseVO
 import com.dangjang.android.domain.model.GetHomeVO
+import com.dangjang.android.domain.model.GetNotificationVO
 import com.dangjang.android.domain.model.GetWeightVO
 import com.dangjang.android.domain.model.PostPatchExerciseVO
 import com.dangjang.android.domain.model.PostPatchWeightVO
@@ -15,6 +16,12 @@ import kotlinx.coroutines.flow.Flow
 interface HomeRepository {
     //홈 조회
     fun getHome(accessToken: String, date: String): Flow<GetHomeVO>
+
+    //알람 목록 조회
+    fun getNotification(accessToken: String): Flow<GetNotificationVO>
+
+    //알람 확인 체크
+    fun checkNotification(accessToken: String, notificationIdList: List<Int>): Flow<Boolean>
 
     //건강지표 등록
     fun addHealthMetric(accessToken: String, addHealthMetricRequest: AddHealthMetricRequest): Flow<EditHealthMetricVO>
