@@ -133,9 +133,9 @@ class ChartFragment : BaseFragment<FragmentChartBinding>(R.layout.fragment_chart
 
         //최소값
         val minGlucoseDataSet = BarDataSet(viewModel.getGlucoseMinList(), title)
-        minGlucoseDataSet.barBorderWidth = 2f
-        minGlucoseDataSet.barBorderColor = Color.WHITE
-        minGlucoseDataSet.color = Color.WHITE
+        minGlucoseDataSet.setColors(
+            ContextCompat.getColor(requireContext(), R.color.dark_green)
+        )
 
         //최대값
         val maxGlucoseDataSet = BarDataSet(viewModel.getGlucoseMaxList(), title)
