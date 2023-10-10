@@ -130,7 +130,7 @@ class MypageViewModel @Inject constructor(
         viewModelScope.launch {
             getMypageUseCase.logout("Bearer $accessToken", fcmToken)
                 .onEach {
-                    _signoutFlow.emit(it)
+                    _logoutFlow.emit(it)
                 }
                 .handleErrors()
                 .collect()
