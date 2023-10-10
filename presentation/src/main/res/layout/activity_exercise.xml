@@ -273,6 +273,21 @@
                         app:layout_constraintTop_toTopOf="@+id/imageView2" />
 
                     <TextView
+                        android:id="@+id/exercise_none_tv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:padding="20dp"
+                        android:text="아직 걸음수가 없어요😢\n오늘 걸음수를 추가해주세요!"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:translationZ="8dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/step_feedback_title_tv" />
+
+                    <TextView
                         android:id="@+id/step_feedback_average_tv"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"

@@ -2,6 +2,7 @@ package com.dangjang.android.presentation.home
 
 import android.content.Context
 import android.content.Intent
+import android.opengl.Visibility
 import android.os.Bundle
 import android.view.View
 import androidx.databinding.DataBindingUtil
@@ -42,6 +43,11 @@ class ExerciseActivity : FragmentActivity() {
 
         lifecycleScope.launchWhenStarted {
             viewModel.getExerciseFlow.collectLatest {
+                if (it.stepsCount == 0) {
+                    binding.exerciseNoneTv.visibility = View.VISIBLE
+                } else {
+                    binding.exerciseNoneTv.visibility = View.GONE
+                }
                 exerciseListAdapter.submitList(viewModel.changeExerciseCaloriesToExerciseList(it.exerciseCalories))
 
                 var totalCalorie = 0
