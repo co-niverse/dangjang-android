@@ -4,11 +4,15 @@ import android.graphics.Color
 import android.text.Editable
 import android.text.InputFilter
 import android.text.TextWatcher
+import android.util.Log
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import com.dangjang.android.common_ui.BaseFragment
 import com.dangjang.android.presentation.R
 import com.dangjang.android.presentation.databinding.FragmentSignupNicknameBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import java.util.regex.Pattern
 
 
@@ -38,7 +42,8 @@ class SignupNicknameFragment :
                 } else {
                     return@InputFilter null
                 }
-            }
+            },
+            InputFilter.LengthFilter(8)
         ))
 
         binding.nicknameEt.addTextChangedListener(object : TextWatcher {
@@ -49,35 +54,34 @@ class SignupNicknameFragment :
             }
 
             override fun afterTextChanged(p0: Editable?) {
-
-                viewModel.getDuplicateNickname(p0.toString())
-
-                if (p0!!.isNotEmpty()) {
-                    if (viewModel.duplicateNicknameFlow.value.duplicate) {
-                        if (p0!!.length > 8) {
-                            binding.warnTv.text = "8글자 이내로 작성해주세요"
-                            binding.warnTv.setTextColor(Color.RED)
-                            setBtnGray()
-                        } else {
-                            binding.nicknameTextTv.setTextColor(Color.parseColor("#41E551"))
-                            binding.warnTv.text = "사용 가능한 닉네임이에요."
-                            binding.warnTv.setTextColor(Color.parseColor("#41E551"))
-                            setBtnGreen()
-                        }
-                    } else {
-                        binding.nicknameTextTv.setTextColor(Color.RED)
-                        binding.warnTv.text = "이미 사용중인 닉네임이에요."
-                        binding.warnTv.setTextColor(Color.RED)
-                        setBtnGreen()
-                    }
-                } else if (p0!!.isEmpty()) {
-                    binding.warnTv.text = ""
-                    binding.warnTv.setTextColor(Color.parseColor("#41E551"))
-                    setBtnGray()
-                }
+                setBtnGray()
+                binding.warnTv.text = ""
+                binding.nicknameTextTv.setTextColor(Color.parseColor("#666666"))
             }
 
         })
+
+        lifecycleScope.launch {
+            viewModel.duplicateNicknameFlow.collectLatest {
+                Log.e("duplicateNicknameFlow", it.toString())
+                if (it.duplicate == "true") {
+                    binding.nicknameTextTv.setTextColor(Color.parseColor("#41E551"))
+                    binding.warnTv.text = "사용 가능한 닉네임이에요."
+                    binding.warnTv.setTextColor(Color.parseColor("#41E551"))
+                    setBtnGreen()
+                } else if (it.duplicate == "false") {
+                    binding.nicknameTextTv.setTextColor(Color.RED)
+                    binding.warnTv.text = "이미 사용중인 닉네임이에요."
+                    binding.warnTv.setTextColor(Color.RED)
+                    setBtnGray()
+                }
+            }
+        }
+
+        binding.duplicateNicknameBtn.setOnClickListener {
+            viewModel.getDuplicateNickname(binding.nicknameEt.text.toString())
+        }
+
 
         binding.nicknameBtn.setOnClickListener {
 
