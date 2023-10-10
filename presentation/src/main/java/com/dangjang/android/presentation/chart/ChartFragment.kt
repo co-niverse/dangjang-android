@@ -3,6 +3,7 @@ package com.dangjang.android.presentation.chart
 import android.content.Context
 import android.graphics.Color
 import android.util.Log
+import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -45,15 +46,35 @@ class ChartFragment : BaseFragment<FragmentChartBinding>(R.layout.fragment_chart
 
         lifecycleScope.launchWhenStarted {
             viewModel.getChartFlow.collectLatest {
+                if (it.bloodSugars.isEmpty()) {
+                    binding.glucoseChartNoneTv.visibility = View.VISIBLE
+                } else {
+                    binding.glucoseChartNoneTv.visibility = View.GONE
+                }
                 initBarChart(binding.glucoseChart)
                 setGlucoseChartData(binding.glucoseChart)
 
+                if (it.weights.isEmpty()) {
+                    binding.weightChartNoneTv.visibility = View.VISIBLE
+                } else {
+                    binding.weightChartNoneTv.visibility = View.GONE
+                }
                 initLineChart(binding.weightChart)
                 setWeightChartData(binding.weightChart)
 
+                if (it.stepCounts.isEmpty()) {
+                    binding.stepChartNoneTv.visibility = View.VISIBLE
+                } else {
+                    binding.stepChartNoneTv.visibility = View.GONE
+                }
                 initLineChart(binding.stepChart)
                 setStepChartData(binding.stepChart)
 
+                if (it.exerciseCalories.isEmpty()) {
+                    binding.exerciseChartNoneTv.visibility = View.VISIBLE
+                } else {
+                    binding.exerciseChartNoneTv.visibility = View.GONE
+                }
                 initLineChart(binding.exerciseChart)
                 setExerciseChartData(binding.exerciseChart)
             }
