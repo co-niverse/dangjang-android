@@ -2,7 +2,6 @@ package com.dangjang.android.presentation.chart
 
 import android.content.Context
 import android.graphics.Color
-import android.util.Log
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
@@ -19,10 +18,9 @@ import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
-import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
-import com.github.mikephil.charting.formatter.ValueFormatter
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 
@@ -44,6 +42,11 @@ class ChartFragment : BaseFragment<FragmentChartBinding>(R.layout.fragment_chart
 
         getAccessToken()?.let { viewModel.getChart(it) }
 
+        initBarChart(binding.glucoseChart)
+        initLineChart(binding.weightChart)
+        initLineChart(binding.stepChart)
+        initLineChart(binding.exerciseChart)
+
         lifecycleScope.launchWhenStarted {
             viewModel.getChartFlow.collectLatest {
                 if (it.bloodSugars.isEmpty()) {
@@ -51,7 +54,6 @@ class ChartFragment : BaseFragment<FragmentChartBinding>(R.layout.fragment_chart
                 } else {
                     binding.glucoseChartNoneTv.visibility = View.GONE
                 }
-                initBarChart(binding.glucoseChart)
                 setGlucoseChartData(binding.glucoseChart)
 
                 if (it.weights.isEmpty()) {
@@ -59,7 +61,6 @@ class ChartFragment : BaseFragment<FragmentChartBinding>(R.layout.fragment_chart
                 } else {
                     binding.weightChartNoneTv.visibility = View.GONE
                 }
-                initLineChart(binding.weightChart)
                 setWeightChartData(binding.weightChart)
 
                 if (it.stepCounts.isEmpty()) {
@@ -67,7 +68,6 @@ class ChartFragment : BaseFragment<FragmentChartBinding>(R.layout.fragment_chart
                 } else {
                     binding.stepChartNoneTv.visibility = View.GONE
                 }
-                initLineChart(binding.stepChart)
                 setStepChartData(binding.stepChart)
 
                 if (it.exerciseCalories.isEmpty()) {
@@ -75,7 +75,6 @@ class ChartFragment : BaseFragment<FragmentChartBinding>(R.layout.fragment_chart
                 } else {
                     binding.exerciseChartNoneTv.visibility = View.GONE
                 }
-                initLineChart(binding.exerciseChart)
                 setExerciseChartData(binding.exerciseChart)
             }
         }
@@ -113,7 +112,8 @@ class ChartFragment : BaseFragment<FragmentChartBinding>(R.layout.fragment_chart
         xAxis.textColor = Color.BLACK
         xAxis.setDrawAxisLine(false)
         xAxis.setDrawGridLines(false)
-        xAxis.valueFormatter = LabelCustomFormatter(viewModel.getDateList())
+
+        xAxis.valueFormatter = IndexAxisValueFormatter(viewModel.getDateList())
 
         val leftAxis: YAxis = barChart.axisLeft
         leftAxis.setDrawAxisLine(false)
@@ -152,19 +152,6 @@ class ChartFragment : BaseFragment<FragmentChartBinding>(R.layout.fragment_chart
         barChart.invalidate()
     }
 
-    class LabelCustomFormatter(glucoseDateList: ArrayList<String>) : ValueFormatter() {
-        private var index = 0
-        private var glucoseDateList = glucoseDateList
-        override fun getFormattedValue(value: Float): String {
-            index = value.toInt()
-            return glucoseDateList[index]
-        }
-
-        override fun getBarStackedLabel(value: Float, stackedEntry: BarEntry?): String {
-            return super.getBarStackedLabel(value, stackedEntry)
-        }
-    }
-
     // line 차트 설정
     private fun initLineChart(lineChart: LineChart) {
         lineChart.setDrawGridBackground(false)
@@ -183,7 +170,7 @@ class ChartFragment : BaseFragment<FragmentChartBinding>(R.layout.fragment_chart
         xAxis.textColor = Color.BLACK
         xAxis.setDrawAxisLine(false)
         xAxis.setDrawGridLines(false)
-        xAxis.valueFormatter = LabelCustomFormatter(viewModel.getDateList())
+        xAxis.valueFormatter = IndexAxisValueFormatter(viewModel.getDateList())
 
         val leftAxis: YAxis = lineChart.axisLeft
         leftAxis.setDrawAxisLine(false)
