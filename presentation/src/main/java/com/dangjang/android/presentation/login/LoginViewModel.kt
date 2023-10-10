@@ -132,7 +132,7 @@ class LoginViewModel @Inject constructor(
 
     private fun <T> Flow<T>.handleErrors(): Flow<T> =
         catch { e ->
-            if (e.message == "존재하는 유저가 아닙니다.") {
+            if (e.message == "401 : 존재하는 유저가 아닙니다.") {
                 _signupStartActivity.value = HttpResponseStatus.UNAUTHORIZED
             }
         }

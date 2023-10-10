@@ -142,7 +142,19 @@ class ChartViewModel @Inject constructor(
             date = getAmountDate(startDate.value, index)
         }
         dateList.add(date.substring(8,10)+"일")
-        return dateList
+        return formatZeroDate(dateList)
+    }
+
+    private fun formatZeroDate(dateList: ArrayList<String>): ArrayList<String> {
+        var formattedDateList = ArrayList<String>()
+        dateList.forEach {
+            if (it.startsWith("0")) {
+                formattedDateList.add(it.substring(1))
+            } else {
+                formattedDateList.add(it)
+            }
+        }
+        return formattedDateList
     }
 
     fun getChart(accessToken: String) {
