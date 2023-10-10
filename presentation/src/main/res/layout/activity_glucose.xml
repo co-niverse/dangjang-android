@@ -238,6 +238,21 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/feedback_title_tv">
 
+                <TextView
+                    android:id="@+id/glucose_none_tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="아직 혈당 기록이 없어요😢\n추가하기 버튼을 눌러서 기록해주세요!"
+                    android:gravity="center"
+                    android:padding="20dp"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:translationZ="8dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/glucose_guide_rv"
                     android:layout_width="wrap_content"
