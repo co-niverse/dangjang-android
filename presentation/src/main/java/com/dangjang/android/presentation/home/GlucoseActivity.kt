@@ -56,7 +56,10 @@ class GlucoseActivity : FragmentActivity() {
 
         lifecycleScope.launchWhenStarted {
             viewModel.getGlucoseFlow.collectLatest {
-                binding.glucoseNoneTv.visibility = View.GONE
+                if (it.guides.isEmpty())
+                    binding.glucoseNoneTv.visibility = View.VISIBLE
+                else
+                    binding.glucoseNoneTv.visibility = View.GONE
                 glucoseGuideAdapter.submitList(viewModel.addBackgroundToTodayGuides(it.todayGuides))
                 glucoseListAdapter.submitList(viewModel.addIconToGuides(it.guides))
             }
