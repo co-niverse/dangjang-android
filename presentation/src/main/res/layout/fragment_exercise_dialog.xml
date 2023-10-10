@@ -13,9 +13,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="44dp"
+            android:layout_marginTop="32dp"
             android:layout_marginEnd="16dp"
-            android:text="경고, 주의, 정상 기준 정보 제공"
+            android:text="운동 가이드 기준"
             android:textColor="@color/black"
             android:textSize="20sp"
             android:textStyle="bold"
@@ -23,12 +23,27 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <TextView
+            android:id="@+id/weight_dialog_content_tv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:gravity="center"
+            android:text="지난주 평균 대비 걸음수와 만보를 기준으로 \n걸음수 가이드를 제공해드리고 있어요.\n운동은 시간을 입력해주시면 그에 맞는 칼로리를 계산해드려요!"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/exercise_dialog_tv" />
+
         <Button
             android:id="@+id/exercise_dialog_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="21dp"
-            android:layout_marginTop="43dp"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="21dp"
             android:layout_marginBottom="20dp"
             android:background="@drawable/background_green_gradient"
@@ -38,7 +53,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/exercise_dialog_tv" />
+            app:layout_constraintTop_toBottomOf="@id/weight_dialog_content_tv" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
