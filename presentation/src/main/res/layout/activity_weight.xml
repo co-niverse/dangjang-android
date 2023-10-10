@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
@@ -217,6 +218,20 @@
             app:layout_constraintTop_toBottomOf="@id/today_feedback_title_tv">
 
             <TextView
+                android:id="@+id/weight_none_title_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="아직 체중 기록이 없어요😢"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:translationZ="8dp"
+                app:layout_constraintBottom_toTopOf="@+id/weight_seekbar"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
                 android:id="@+id/feedback_title_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -228,6 +243,20 @@
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/weight_none_content_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="수정하기 버튼을 눌러서 기록해주세요!"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:translationZ="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/weight_seekbar" />
 
             <SeekBar
                 android:id="@+id/weight_seekbar"

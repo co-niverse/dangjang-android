@@ -2,6 +2,7 @@ package com.dangjang.android.presentation.home
 
 import android.content.Context
 import android.content.Intent
+import android.opengl.Visibility
 import android.os.Bundle
 import android.view.View
 import androidx.databinding.DataBindingUtil
@@ -23,6 +24,7 @@ class ExerciseActivity : FragmentActivity() {
     private lateinit var exerciseListAdapter: ExerciseListAdapter
     private var originStep: Int = 0
     private var date = ""
+    private var openBtnFlag = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,8 +42,24 @@ class ExerciseActivity : FragmentActivity() {
 
         getAccessToken()?.let { viewModel.getExercise(it, date) }
 
+        binding.exerciseOpenBtn.setOnClickListener {
+            if (openBtnFlag) {
+                binding.exerciseRv.visibility = View.VISIBLE
+                binding.exerciseOpenBtn.text = "숨기기"
+            } else {
+                binding.exerciseRv.visibility = View.GONE
+                binding.exerciseOpenBtn.text = "추가하기"
+            }
+            openBtnFlag = !openBtnFlag
+        }
+
         lifecycleScope.launchWhenStarted {
             viewModel.getExerciseFlow.collectLatest {
+                if (it.stepsCount == 0) {
+                    binding.exerciseNoneTv.visibility = View.VISIBLE
+                } else {
+                    binding.exerciseNoneTv.visibility = View.GONE
+                }
                 exerciseListAdapter.submitList(viewModel.changeExerciseCaloriesToExerciseList(it.exerciseCalories))
 
                 var totalCalorie = 0

@@ -44,6 +44,13 @@ class WeightActivity : FragmentActivity() {
         lifecycleScope.launchWhenStarted {
             viewModel.getWeightFlow.collectLatest {
                 binding.weightSeekbar.progress = viewModel.calculateSeekbarProgress(it.bmi)
+                if (it.bmi == 0.0) {
+                    binding.weightNoneTitleTv.visibility = View.VISIBLE
+                    binding.weightNoneContentTv.visibility = View.VISIBLE
+                } else {
+                    binding.weightNoneTitleTv.visibility = View.GONE
+                    binding.weightNoneContentTv.visibility = View.GONE
+                }
             }
         }
 
