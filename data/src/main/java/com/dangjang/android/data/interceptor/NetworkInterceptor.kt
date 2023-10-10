@@ -44,7 +44,7 @@ class NetworkInterceptor(
             }
 
             if (errorCode > 399) {
-                throw IOException("$errorMessage")
+                throw IOException("$errorCode : $errorMessage")
             }
         }
 
