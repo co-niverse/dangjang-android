@@ -24,6 +24,7 @@ class ExerciseActivity : FragmentActivity() {
     private lateinit var exerciseListAdapter: ExerciseListAdapter
     private var originStep: Int = 0
     private var date = ""
+    private var openBtnFlag = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,6 +41,17 @@ class ExerciseActivity : FragmentActivity() {
         date = intent.getStringExtra("date").toString()
 
         getAccessToken()?.let { viewModel.getExercise(it, date) }
+
+        binding.exerciseOpenBtn.setOnClickListener {
+            if (openBtnFlag) {
+                binding.exerciseRv.visibility = View.VISIBLE
+                binding.exerciseOpenBtn.text = "숨기기"
+            } else {
+                binding.exerciseRv.visibility = View.GONE
+                binding.exerciseOpenBtn.text = "추가하기"
+            }
+            openBtnFlag = !openBtnFlag
+        }
 
         lifecycleScope.launchWhenStarted {
             viewModel.getExerciseFlow.collectLatest {

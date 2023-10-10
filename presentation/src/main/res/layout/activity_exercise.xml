@@ -214,12 +214,27 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/step_ok_btn" />
 
+                <Button
+                    android:id="@+id/exercise_open_btn"
+                    android:layout_width="61dp"
+                    android:layout_height="29dp"
+                    android:layout_marginEnd="16dp"
+                    android:background="@drawable/background_green_gradient_small"
+                    android:text="추가하기"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="@+id/today_exercise_title_tv"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/today_exercise_title_tv" />
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/exercise_rv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:orientation="vertical"
+                    android:visibility="gone"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintTop_toBottomOf="@id/today_exercise_title_tv" />
 
