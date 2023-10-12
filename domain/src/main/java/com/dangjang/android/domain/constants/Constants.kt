@@ -1,5 +1,8 @@
 package com.dangjang.android.domain.constants
 
+// Play Store TODO: 출시 후 URL 변경
+const val PLAY_STORE_URL = "https://play.google.com/store/apps/details?id=com.dangjang.android"
+
 // Shared Preference
 const val AUTO_LOGIN_SPF_KEY = "auto"
 const val AUTO_LOGIN_EDITOR_KEY = "isAuto"
