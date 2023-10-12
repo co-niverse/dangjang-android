@@ -2,8 +2,11 @@ package com.dangjang.android
 
 import android.app.Application
 import android.content.Context
+import com.dangjang.android.data.storage.InAppStorageHelperImpl
 import com.dangjang.android.domain.constants.ACCESS_TOKEN_KEY
 import com.dangjang.android.domain.constants.TOKEN_SPF_KEY
+import com.dangjang.android.domain.constants.VERSION_SPF_KEY
+import com.dangjang.android.domain.constants.VERSION_TOKEN_KEY
 import com.kakao.sdk.common.KakaoSdk
 import com.navercorp.nid.NaverIdLoginSDK
 import com.dangjang.android.swm_logging.SWMLogging
@@ -24,6 +27,9 @@ class DangjangApplication : Application() {
             serverPath = "api/log",
             token = getAccessToken() ?: ""
         )
+
+        val sharedPreferences = applicationContext.getSharedPreferences(VERSION_SPF_KEY, Context.MODE_PRIVATE)
+        sharedPreferences.edit().putString(VERSION_TOKEN_KEY, BuildConfig.VERSION_NAME).apply()
 
         //TODO : 앱 꺼짐 방지 에러 핸들링 -> 홈 화면 이동
         Thread.setDefaultUncaughtExceptionHandler { t, e ->  }
