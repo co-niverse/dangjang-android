@@ -499,7 +499,7 @@ class SplashViewModel @Inject constructor(
     private fun <T> Flow<T>.handleErrors(): Flow<T> =
         catch { e ->
             Log.e("error",e.message.toString())
-            if (e.message.toString() == "만료된 토큰입니다.") {
+            if (e.message.toString() == "401 : 만료된 토큰입니다.") {
                 getTokenUseCase.reissueToken(getAccessToken() ?: "")
                     .onEach {
                         _reissueTokenFlow.emit(it)
@@ -521,7 +521,7 @@ class SplashViewModel @Inject constructor(
         catch { e ->
             Log.e("error",e.message.toString())
             // refreshToken까지 만료된 경우 -> 로그인 화면으로 이동
-            if (e.message.toString() == "만료된 토큰입니다.") {
+            if (e.message.toString() == "401 : 만료된 토큰입니다.") {
                 Intent(getApplication<Application>().applicationContext, LoginActivity::class.java).apply {
                     getApplication<Application>().applicationContext.startActivity(this)
                 }

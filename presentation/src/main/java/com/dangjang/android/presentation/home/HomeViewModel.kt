@@ -51,6 +51,7 @@ import com.dangjang.android.presentation.login.LoginActivity
 import com.dangjang.android.swm_logging.SWMLogging
 import com.dangjang.android.swm_logging.logging_scheme.ClickScheme
 import com.dangjang.android.swm_logging.logging_scheme.ExposureScheme
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -669,25 +670,25 @@ class HomeViewModel @Inject constructor(
     private fun <T> Flow<T>.handleErrors(): Flow<T> =
         catch { e ->
             Log.e("error",e.message.toString())
-            if (e.message.toString() == "만료된 토큰입니다.") {
+            if (e.message.toString() == "401 : 만료된 토큰입니다.") {
                 reissueToken(getAccessToken() ?: "")
-//                Toast.makeText(
-//                    getApplication<Application>().applicationContext, "로그인이 만료되었습니다. 다시 한번 시도해주세요.",
-//                    Toast.LENGTH_SHORT
-//                ).show()
-
+                reissueTokenFlow.collectLatest {
+                    if (it) {
+                        Toast.makeText(
+                            getApplication<Application>().applicationContext,
+                            "토큰이 만료되었습니다. 다시 한번 시도해주세요.",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
             }
-//            Toast.makeText(
-//                getApplication<Application>().applicationContext, e.message,
-//                Toast.LENGTH_SHORT
-//            ).show()
         }
 
     private fun <T> Flow<T>.handleReissueTokenErrors(): Flow<T> =
         catch { e ->
             Log.e("reissue error",e.message.toString())
             // refreshToken까지 만료된 경우 -> 로그인 화면으로 이동
-            if (e.message.toString() == "만료된 토큰입니다.") {
+            if (e.message.toString() == "401 : 만료된 토큰입니다.") {
                 _goToLoginActivityFlow.value = true
                 Toast.makeText(
                     getApplication<Application>().applicationContext, "로그인이 필요합니다.",
