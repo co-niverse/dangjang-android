@@ -114,7 +114,7 @@ class SplashActivity : FragmentActivity() {
 
     private fun goToMainOrLoginActivity() {
         if (viewModel.getAutoLoginProviderSpf() == KAKAO || viewModel.getAutoLoginProviderSpf() == NAVER) {
-            startActivity(Intent(this, MainActivity::class.java))
+            startActivity(Intent(this, LoginActivity::class.java))
             finish()
         } else {
             startActivity(Intent(this, LoginActivity::class.java))

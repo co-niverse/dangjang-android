@@ -191,6 +191,13 @@ class MypageViewModel @Inject constructor(
     private fun <T> Flow<T>.handleErrors(): Flow<T> =
         catch { e ->
             Log.e("error",e.message.toString())
+            if (e.message == null) {
+                _goToLoginActivityFlow.value = true
+                Toast.makeText(
+                    getApplication<Application>().applicationContext, "회원탈퇴가 완료되었습니다.",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
             if (e.message.toString() == "401 : 만료된 토큰입니다.") {
                 getTokenUseCase.reissueToken(getAccessToken() ?: "")
                     .onEach {
