@@ -14,6 +14,9 @@ import com.dangjang.android.domain.constants.HEALTH_CONNECT_NOT_INSTALLED
 import com.dangjang.android.domain.constants.KAKAO
 import com.dangjang.android.domain.constants.NAVER
 import com.dangjang.android.domain.constants.TOKEN_SPF_KEY
+import com.dangjang.android.domain.constants.VERSION_INTRO_TOKEN_KEY
+import com.dangjang.android.domain.constants.VERSION_SPF_KEY
+import com.dangjang.android.domain.constants.VERSION_TOKEN_KEY
 import com.dangjang.android.domain.request.HealthConnectRequest
 import com.dangjang.android.presentation.MainActivity
 import com.dangjang.android.presentation.R
@@ -37,6 +40,12 @@ class SplashActivity : FragmentActivity() {
         viewModel.getIntroData()
 
         viewModel.checkAvailability()
+
+        lifecycleScope.launch {
+            viewModel.introDataFlow.collectLatest {
+                setIntroVersionName(it.latestVersion)
+            }
+        }
 
         goToMainOrLoginActivity()
 
@@ -124,4 +133,10 @@ class SplashActivity : FragmentActivity() {
         val sharedPreferences = getSharedPreferences(TOKEN_SPF_KEY, Context.MODE_PRIVATE)
         return sharedPreferences.getString(ACCESS_TOKEN_KEY, null)
     }
+
+    private fun setIntroVersionName(introVersionName: String) {
+        val sharedPreferences = applicationContext.getSharedPreferences(VERSION_SPF_KEY, Context.MODE_PRIVATE)
+        sharedPreferences.edit().putString(VERSION_INTRO_TOKEN_KEY, introVersionName).apply()
+    }
+
 }

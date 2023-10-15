@@ -5,7 +5,6 @@ import android.app.DatePickerDialog
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
@@ -15,9 +14,13 @@ import com.dangjang.android.domain.constants.AUTO_LOGIN_SPF_KEY
 import com.dangjang.android.domain.constants.HEALTH_CONNECT_TOKEN_KEY
 import com.dangjang.android.domain.constants.ACCESS_TOKEN_KEY
 import com.dangjang.android.domain.constants.TOKEN_SPF_KEY
+import com.dangjang.android.domain.constants.VERSION_INTRO_TOKEN_KEY
+import com.dangjang.android.domain.constants.VERSION_SPF_KEY
+import com.dangjang.android.domain.constants.VERSION_TOKEN_KEY
 import com.dangjang.android.domain.model.GlucoseGuideVO
 import com.dangjang.android.presentation.R
 import com.dangjang.android.presentation.databinding.FragmentHomeBinding
+import com.dangjang.android.presentation.intro.UpdateBottomSheetFragment
 import com.dangjang.android.presentation.login.LoginActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -47,6 +50,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
             viewModel.getTodayDate()
         } else {
             intentDate
+        }
+
+        if (getVersionName() != getIntroVersionName()) {
+            UpdateBottomSheetFragment().show(parentFragmentManager, "updateBottomSheetFragment")
         }
 
         getAccessToken()?.let { viewModel.getHome(it, date) }
@@ -178,4 +185,16 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
 
         return sharedPreferences.getString(ACCESS_TOKEN_KEY, null)
     }
+
+    private fun getVersionName(): String? {
+        val sharedPreferences = requireContext().getSharedPreferences(VERSION_SPF_KEY, Context.MODE_PRIVATE)
+        return sharedPreferences.getString(VERSION_TOKEN_KEY, null)
+    }
+
+    private fun getIntroVersionName(): String? {
+        val sharedPreferences = requireContext().getSharedPreferences(VERSION_SPF_KEY, Context.MODE_PRIVATE)
+        return sharedPreferences.getString(VERSION_INTRO_TOKEN_KEY, null)
+    }
+
+
 }
