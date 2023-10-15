@@ -10,4 +10,8 @@ class TokenDataSource @Inject constructor(
     suspend fun reissueToken(accessToken: String): BaseResponse<Nothing> {
         return checkResponse(tokenApiService.reissueToken(accessToken))
     }
+
+    suspend fun postFcmToken(accessToken: String, fcmToken: String): BaseResponse<Nothing> {
+        return checkResponse(tokenApiService.postFcmToken("Bearer $accessToken", fcmToken))
+    }
 }
