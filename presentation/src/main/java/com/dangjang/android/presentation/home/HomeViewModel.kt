@@ -681,6 +681,12 @@ class HomeViewModel @Inject constructor(
                         ).show()
                     }
                 }
+            } else if (e.message.toString() == "400 : 이미 존재하는 가이드입니다.") {
+                Toast.makeText(
+                    getApplication<Application>().applicationContext,
+                    "해당 시간에 이미 등록이 되어 있어요! \n다른 시간으로 등록해주세요.",
+                    Toast.LENGTH_LONG
+                ).show()
             }
         }
 
