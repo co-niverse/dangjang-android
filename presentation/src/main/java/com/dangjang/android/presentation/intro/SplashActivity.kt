@@ -18,7 +18,9 @@ import com.dangjang.android.domain.request.HealthConnectRequest
 import com.dangjang.android.presentation.MainActivity
 import com.dangjang.android.presentation.R
 import com.dangjang.android.presentation.login.LoginActivity
+import com.dangjang.android.presentation.signup.SignupActivity
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.zip
 import kotlinx.coroutines.launch
 
@@ -36,73 +38,75 @@ class SplashActivity : FragmentActivity() {
 
         viewModel.checkAvailability()
 
-        val healthConnectAvailability = viewModel.getHealtConnectSpf()
-        if (healthConnectAvailability == "true") {
-            if (viewModel.healthConnectFlow.value.isAvaiable == HEALTH_CONNECT_INSTALLED) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    viewModel.getAllHealthConnectData()
+        goToMainOrLoginActivity()
 
-                    //TODO : view model로 이동
-                    lifecycleScope.launch {
-                        viewModel.hcExerciseList.zip(viewModel.hcGlucoseList) { exerciseList, glucoseList ->
-                            Log.e("exerciseList", exerciseList.toString())
-                            Log.e("glucoseList", glucoseList.toString())
-                        }.collect {
-                            if (viewModel.hcStepList.value.isNotEmpty() && viewModel.hcWeightList.value.isNotEmpty()) {
-                                hcExerciseGlucoseList.addAll(viewModel.hcExerciseList.value)
-                                hcExerciseGlucoseList.addAll(viewModel.hcGlucoseList.value)
-                                viewModel.setHcExerciseGlucoseList(hcExerciseGlucoseList)
-                                Log.e(
-                                    "zip1",
-                                    viewModel.hcExerciseList.value.toString() + viewModel.hcGlucoseList.value.toString()
-                                )
-                            }
-                        }
-                    }
-
-                    lifecycleScope.launch {
-                        viewModel.hcStepList.zip(viewModel.hcWeightList) { stepList, weightList ->
-                            Log.e("stepList", stepList.toString())
-                            Log.e("weightList", weightList.toString())
-                        }.collect {
-                            if (viewModel.hcStepList.value.isNotEmpty() && viewModel.hcWeightList.value.isNotEmpty()) {
-                                hcWeightStepList.addAll(viewModel.hcStepList.value)
-                                hcWeightStepList.addAll(viewModel.hcWeightList.value)
-                                viewModel.setHcWeightStepList(hcWeightStepList)
-                                Log.e(
-                                    "zip2",
-                                    viewModel.hcStepList.value.toString() + viewModel.hcWeightList.value.toString()
-                                )
-                            }
-                        }
-                    }
-
-                    lifecycleScope.launch {
-                        viewModel.hcExerciseGlucoseList.zip(viewModel.hcWeightStepList) { exerciseGlucoseList, weightStepList ->
-                            Log.e("exerciseGlucoseList", exerciseGlucoseList.toString())
-                            Log.e("weightStepList", weightStepList.toString())
-                        }.collect {
-                            if (viewModel.hcExerciseGlucoseList.value.isNotEmpty() && viewModel.hcWeightStepList.value.isNotEmpty()) {
-                                getAccessToken()?.let { it1 -> viewModel.postHealthConnectData(it1) }
-                            }
-                        }
-                    }
-
-                    lifecycleScope.launch {
-                        //TODO : API Response 받은 후 화면 이동 처리 -> 현재 안됨
-                        viewModel.postHealthConnectFlow.collect {
-                            //goToMainOrLoginActivity()
-                        }
-                    }
-                }
-            }
-
-        } else if (healthConnectAvailability == "false") {
-            goToMainOrLoginActivity()
-            if (viewModel.healthConnectFlow.value.isAvaiable == HEALTH_CONNECT_NOT_INSTALLED) {
-                //TODO : 헬스커넥트 팝업 띄우기
-            }
-        }
+//        val healthConnectAvailability = viewModel.getHealtConnectSpf()
+//        if (healthConnectAvailability == "true") {
+//            if (viewModel.healthConnectFlow.value.isAvaiable == HEALTH_CONNECT_INSTALLED) {
+//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//                    viewModel.getAllHealthConnectData()
+//
+//                    //TODO : view model로 이동
+//                    lifecycleScope.launch {
+//                        viewModel.hcExerciseList.zip(viewModel.hcGlucoseList) { exerciseList, glucoseList ->
+//                            Log.e("exerciseList", exerciseList.toString())
+//                            Log.e("glucoseList", glucoseList.toString())
+//                        }.collect {
+//                            if (viewModel.hcStepList.value.isNotEmpty() && viewModel.hcWeightList.value.isNotEmpty()) {
+//                                hcExerciseGlucoseList.addAll(viewModel.hcExerciseList.value)
+//                                hcExerciseGlucoseList.addAll(viewModel.hcGlucoseList.value)
+//                                viewModel.setHcExerciseGlucoseList(hcExerciseGlucoseList)
+//                                Log.e(
+//                                    "zip1",
+//                                    viewModel.hcExerciseList.value.toString() + viewModel.hcGlucoseList.value.toString()
+//                                )
+//                            }
+//                        }
+//                    }
+//
+//                    lifecycleScope.launch {
+//                        viewModel.hcStepList.zip(viewModel.hcWeightList) { stepList, weightList ->
+//                            Log.e("stepList", stepList.toString())
+//                            Log.e("weightList", weightList.toString())
+//                        }.collect {
+//                            if (viewModel.hcStepList.value.isNotEmpty() && viewModel.hcWeightList.value.isNotEmpty()) {
+//                                hcWeightStepList.addAll(viewModel.hcStepList.value)
+//                                hcWeightStepList.addAll(viewModel.hcWeightList.value)
+//                                viewModel.setHcWeightStepList(hcWeightStepList)
+//                                Log.e(
+//                                    "zip2",
+//                                    viewModel.hcStepList.value.toString() + viewModel.hcWeightList.value.toString()
+//                                )
+//                            }
+//                        }
+//                    }
+//
+//                    lifecycleScope.launch {
+//                        viewModel.hcExerciseGlucoseList.zip(viewModel.hcWeightStepList) { exerciseGlucoseList, weightStepList ->
+//                            Log.e("exerciseGlucoseList", exerciseGlucoseList.toString())
+//                            Log.e("weightStepList", weightStepList.toString())
+//                        }.collect {
+//                            if (viewModel.hcExerciseGlucoseList.value.isNotEmpty() && viewModel.hcWeightStepList.value.isNotEmpty()) {
+//                                getAccessToken()?.let { it1 -> viewModel.postHealthConnectData(it1) }
+//                            }
+//                        }
+//                    }
+//
+//                    lifecycleScope.launch {
+//                        //TODO : API Response 받은 후 화면 이동 처리 -> 현재 안됨
+//                        viewModel.postHealthConnectFlow.collect {
+//                            //goToMainOrLoginActivity()
+//                        }
+//                    }
+//                }
+//            }
+//
+//        } else if (healthConnectAvailability == "false") {
+//            goToMainOrLoginActivity()
+//            if (viewModel.healthConnectFlow.value.isAvaiable == HEALTH_CONNECT_NOT_INSTALLED) {
+//                //TODO : 헬스커넥트 팝업 띄우기
+//            }
+//        }
 
     }
 
