@@ -15,4 +15,9 @@ class TokenUseCase @Inject constructor(
             tokenRepository.reissueToken(accessToken)
         }
 
+    suspend fun postFcmToken(accessToken: String, fcmToken: String): Flow<Boolean> =
+        withContext(Dispatchers.IO) {
+            tokenRepository.postFcmToken(accessToken, fcmToken)
+        }
+
 }
