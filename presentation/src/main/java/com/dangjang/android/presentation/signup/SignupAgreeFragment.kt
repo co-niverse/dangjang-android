@@ -11,7 +11,10 @@ import com.dangjang.android.domain.HttpResponseStatus
 import com.dangjang.android.presentation.MainActivity
 import com.dangjang.android.presentation.R
 import com.dangjang.android.presentation.databinding.FragmentSignupAgreeBinding
+import com.dangjang.android.presentation.login.LoginActivity
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class SignupAgreeFragment : BaseFragment<FragmentSignupAgreeBinding>(R.layout.fragment_signup_agree) {
@@ -30,6 +33,16 @@ class SignupAgreeFragment : BaseFragment<FragmentSignupAgreeBinding>(R.layout.fr
 
         var serviceFlag = false
         var personalFlag = false
+
+        lifecycleScope.launch {
+            viewModel.goToLoginActivity.collectLatest {
+                if (it) {
+                    val intent = Intent(requireContext(), LoginActivity::class.java)
+                    startActivity(intent)
+                    activity?.finish()
+                }
+            }
+        }
 
         binding.serviceCl.setOnClickListener {
             binding.serviceTv.setTextColor((Color.BLACK))

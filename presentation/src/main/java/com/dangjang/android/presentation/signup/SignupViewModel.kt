@@ -2,7 +2,9 @@ package com.dangjang.android.presentation.signup
 
 import android.app.Application
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
+import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
@@ -13,6 +15,7 @@ import com.dangjang.android.domain.model.AuthVO
 import com.dangjang.android.domain.requestVO.SignupRequestVO
 import com.dangjang.android.domain.usecase.SignupUseCase
 import com.dangjang.android.presentation.R
+import com.dangjang.android.presentation.login.LoginActivity
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -41,6 +44,9 @@ class SignupViewModel @Inject constructor(
 
     private val _startMainActivity = MutableStateFlow(HttpResponseStatus.NONE)
     val startMainActivity = _startMainActivity.asStateFlow()
+
+    private val _goToLoginActivity = MutableStateFlow(false)
+    val goToLoginActivity = _goToLoginActivity.asStateFlow()
 
     fun getDuplicateNickname(nickname: String) {
         viewModelScope.launch {
@@ -128,8 +134,14 @@ class SignupViewModel @Inject constructor(
     }
 
     private fun <T> Flow<T>.handleErrors(): Flow<T> =
-        catch { e -> Toast.makeText(getApplication<Application>().applicationContext,e.message,
-            Toast.LENGTH_SHORT).show() }
+        catch { e ->
+            Log.e("error",e.message.toString())
+            if (e.message.toString() == "409 : 이미 존재하는 데이터입니다.") {
+                Log.e("test","로그인 화면으로 이동")
+                _goToLoginActivity.value = true
+            }
+        }
+
 
     private val _diagnosisFlag = MutableStateFlow(false)
     val diagnosisFlag = _diagnosisFlag.asStateFlow()
