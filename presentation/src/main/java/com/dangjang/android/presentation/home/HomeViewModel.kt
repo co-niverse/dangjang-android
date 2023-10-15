@@ -40,11 +40,13 @@ import com.dangjang.android.domain.model.GetExerciseVO
 import com.dangjang.android.domain.model.GetHomeVO
 import com.dangjang.android.domain.model.GetNotificationVO
 import com.dangjang.android.domain.model.GetWeightVO
+import com.dangjang.android.domain.model.IntroVO
 import com.dangjang.android.domain.model.PostPatchExerciseVO
 import com.dangjang.android.domain.model.PostPatchWeightVO
 import com.dangjang.android.domain.model.TodayGuidesVO
 import com.dangjang.android.domain.request.EditHealthMetricRequest
 import com.dangjang.android.domain.request.EditSameHealthMetricRequest
+import com.dangjang.android.domain.usecase.SplashUseCase
 import com.dangjang.android.domain.usecase.TokenUseCase
 import com.dangjang.android.presentation.R
 import com.dangjang.android.presentation.login.LoginActivity
@@ -63,8 +65,13 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     private val getHomeUseCase: HomeUseCase,
     private val getTokenUseCase: TokenUseCase,
+    private val splashUseCase: SplashUseCase,
     application: Application
 ) : AndroidViewModel(application) {
+    //버전
+    private val _introDataFlow = MutableStateFlow(IntroVO())
+    val introDataFlow = _introDataFlow.asStateFlow()
+
     //홈
     private val _getHomeFlow = MutableStateFlow(GetHomeVO())
     val getHomeFlow = _getHomeFlow.asStateFlow()
@@ -129,6 +136,17 @@ class HomeViewModel @Inject constructor(
 
     private val _goToLoginActivityFlow = MutableStateFlow(false)
     val goToLoginActivityFlow = _goToLoginActivityFlow.asStateFlow()
+
+    fun getIntroData() {
+        viewModelScope.launch {
+            splashUseCase.getIntro()
+                .onEach {
+                    _introDataFlow.emit(it)
+                }
+                .handleErrors()
+                .collect()
+        }
+    }
 
     //홈
     fun getHome(accessToken: String, date: String) {
