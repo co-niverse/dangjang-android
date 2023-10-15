@@ -69,6 +69,9 @@ class MypageViewModel @Inject constructor(
     private val _reissueTokenFlow = MutableStateFlow(false)
     val reissueTokenFlow = _reissueTokenFlow.asStateFlow()
 
+    private val _goToLoginActivityFlow = MutableStateFlow(false)
+    val goToLoginActivityFlow = _goToLoginActivityFlow.asStateFlow()
+
     fun getMypage(accessToken: String) {
         viewModelScope.launch {
             getMypageUseCase.getMypage("Bearer $accessToken")
@@ -188,7 +191,14 @@ class MypageViewModel @Inject constructor(
     private fun <T> Flow<T>.handleErrors(): Flow<T> =
         catch { e ->
             Log.e("error",e.message.toString())
-            if (e.message.toString() == "만료된 토큰입니다.") {
+            if (e.message == null) {
+                _goToLoginActivityFlow.value = true
+                Toast.makeText(
+                    getApplication<Application>().applicationContext, "회원탈퇴가 완료되었습니다.",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+            if (e.message.toString() == "401 : 만료된 토큰입니다.") {
                 getTokenUseCase.reissueToken(getAccessToken() ?: "")
                     .onEach {
                         _reissueTokenFlow.emit(it)
@@ -210,10 +220,8 @@ class MypageViewModel @Inject constructor(
         catch { e ->
             Log.e("error",e.message.toString())
             // refreshToken까지 만료된 경우 -> 로그인 화면으로 이동
-            if (e.message.toString() == "만료된 토큰입니다.") {
-                Intent(getApplication<Application>().applicationContext, LoginActivity::class.java).apply {
-                    getApplication<Application>().applicationContext.startActivity(this)
-                }
+            if (e.message.toString() == "401 : 만료된 토큰입니다.") {
+                _goToLoginActivityFlow.value = true
                 Toast.makeText(
                     getApplication<Application>().applicationContext, "로그인이 필요합니다.",
                     Toast.LENGTH_SHORT

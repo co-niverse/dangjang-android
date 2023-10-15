@@ -1,5 +1,6 @@
 package com.dangjang.android.presentation.home
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
@@ -7,6 +8,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
 import com.dangjang.android.presentation.R
 import com.dangjang.android.presentation.databinding.ActivityAlarmBinding
+import com.dangjang.android.presentation.login.LoginActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 
@@ -25,6 +27,16 @@ class AlarmActivity : FragmentActivity() {
 
         viewModel.getNotification()
         setAlarmListAdapter()
+
+        lifecycleScope.launchWhenStarted {
+            viewModel.goToLoginActivityFlow.collectLatest {
+                if (it) {
+                    val intent = Intent(applicationContext, LoginActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                }
+            }
+        }
 
         lifecycleScope.launchWhenStarted {
             viewModel.getNotificationFlow.collectLatest {

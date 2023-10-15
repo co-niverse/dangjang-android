@@ -15,12 +15,16 @@ import com.dangjang.android.domain.constants.AUTO_LOGIN_SPF_KEY
 import com.dangjang.android.domain.constants.HEALTH_CONNECT_TOKEN_KEY
 import com.dangjang.android.domain.constants.ACCESS_TOKEN_KEY
 import com.dangjang.android.domain.constants.TOKEN_SPF_KEY
+import com.dangjang.android.domain.constants.VERSION_SPF_KEY
+import com.dangjang.android.domain.constants.VERSION_TOKEN_KEY
 import com.dangjang.android.domain.model.GlucoseGuideVO
 import com.dangjang.android.presentation.R
 import com.dangjang.android.presentation.databinding.FragmentHomeBinding
+import com.dangjang.android.presentation.intro.UpdateBottomSheetFragment
 import com.dangjang.android.presentation.login.LoginActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import java.util.Calendar
 import java.util.Locale
 
@@ -50,6 +54,17 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
         }
 
         getAccessToken()?.let { viewModel.getHome(it, date) }
+
+        viewModel.getIntroData()
+        lifecycleScope.launch {
+            viewModel.introDataFlow.collectLatest {
+                if (it.latestVersion != "") {
+                    if (it.latestVersion != getVersionName()) {
+                        UpdateBottomSheetFragment().show(parentFragmentManager, "UpdateBottomSheetFragment")
+                    }
+                }
+            }
+        }
 
         binding.weightSeekbar.setOnTouchListener({ v, event -> true })
 
@@ -135,12 +150,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
         val sp: SharedPreferences = requireContext().getSharedPreferences(AUTO_LOGIN_SPF_KEY, AppCompatActivity.MODE_PRIVATE)
         val healthConnect = sp.getString(HEALTH_CONNECT_TOKEN_KEY, "null")
 
-        if (healthConnect == "false") {
-            binding.autoInputBtn.visibility = View.VISIBLE
-            binding.autoInputBtn.setOnClickListener {
-                HealthConnectBottomSheetFragment().show(parentFragmentManager, "HealthConnectBottomSheetFragment")
-            }
-        }
+//        if (healthConnect == "false") {
+//            binding.autoInputBtn.visibility = View.VISIBLE
+//            binding.autoInputBtn.setOnClickListener {
+//                HealthConnectBottomSheetFragment().show(parentFragmentManager, "HealthConnectBottomSheetFragment")
+//            }
+//        }
 
         setGlucoseGuideListAdapter()
 
@@ -177,5 +192,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
         val sharedPreferences = requireContext().getSharedPreferences(TOKEN_SPF_KEY, Context.MODE_PRIVATE)
 
         return sharedPreferences.getString(ACCESS_TOKEN_KEY, null)
+    }
+
+    private fun getVersionName(): String? {
+        val sharedPreferences = requireContext().getSharedPreferences(VERSION_SPF_KEY, Context.MODE_PRIVATE)
+        return sharedPreferences.getString(VERSION_TOKEN_KEY, null)
     }
 }

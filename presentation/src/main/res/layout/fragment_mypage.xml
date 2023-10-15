@@ -12,9 +12,9 @@
 
     </data>
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+<!--    <ScrollView-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent">-->
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -116,6 +116,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="60dp"
+                android:visibility="gone"
                 android:src="@drawable/ic_mypage_device"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/coin_cl" />
@@ -127,6 +128,7 @@
                 android:layout_marginStart="10dp"
                 android:gravity="center_vertical"
                 android:text="기기 연동"
+                android:visibility="gone"
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="@+id/device_iv"
@@ -139,6 +141,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="36dp"
+                android:visibility="gone"
                 android:src="@drawable/ic_mypage_alarm"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/device_iv" />
@@ -149,6 +152,7 @@
                 android:layout_marginStart="10dp"
                 android:gravity="center_vertical"
                 android:text="푸시 알림"
+                android:visibility="gone"
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="@+id/alarm_iv"
@@ -228,15 +232,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="50dp"
                 android:layout_marginBottom="32dp"
                 android:text="앱버전"
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/auth_iv" />
+                app:layout_constraintStart_toStartOf="parent" />
 
             <TextView
                 android:id="@+id/version_tv"
@@ -244,7 +246,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="32dp"
-                android:text="ver.1.0"
+                android:text="ver.1.0.0"
                 android:textColor="#29C138"
                 android:textSize="16sp"
                 android:textStyle="bold"
@@ -252,5 +254,5 @@
                 app:layout_constraintEnd_toEndOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </ScrollView>
+<!--    </ScrollView>-->
 </layout>

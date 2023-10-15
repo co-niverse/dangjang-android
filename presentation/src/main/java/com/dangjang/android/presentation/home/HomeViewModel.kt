@@ -40,17 +40,20 @@ import com.dangjang.android.domain.model.GetExerciseVO
 import com.dangjang.android.domain.model.GetHomeVO
 import com.dangjang.android.domain.model.GetNotificationVO
 import com.dangjang.android.domain.model.GetWeightVO
+import com.dangjang.android.domain.model.IntroVO
 import com.dangjang.android.domain.model.PostPatchExerciseVO
 import com.dangjang.android.domain.model.PostPatchWeightVO
 import com.dangjang.android.domain.model.TodayGuidesVO
 import com.dangjang.android.domain.request.EditHealthMetricRequest
 import com.dangjang.android.domain.request.EditSameHealthMetricRequest
+import com.dangjang.android.domain.usecase.SplashUseCase
 import com.dangjang.android.domain.usecase.TokenUseCase
 import com.dangjang.android.presentation.R
 import com.dangjang.android.presentation.login.LoginActivity
 import com.dangjang.android.swm_logging.SWMLogging
 import com.dangjang.android.swm_logging.logging_scheme.ClickScheme
 import com.dangjang.android.swm_logging.logging_scheme.ExposureScheme
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -62,8 +65,13 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     private val getHomeUseCase: HomeUseCase,
     private val getTokenUseCase: TokenUseCase,
+    private val splashUseCase: SplashUseCase,
     application: Application
 ) : AndroidViewModel(application) {
+    //버전
+    private val _introDataFlow = MutableStateFlow(IntroVO())
+    val introDataFlow = _introDataFlow.asStateFlow()
+
     //홈
     private val _getHomeFlow = MutableStateFlow(GetHomeVO())
     val getHomeFlow = _getHomeFlow.asStateFlow()
@@ -128,6 +136,17 @@ class HomeViewModel @Inject constructor(
 
     private val _goToLoginActivityFlow = MutableStateFlow(false)
     val goToLoginActivityFlow = _goToLoginActivityFlow.asStateFlow()
+
+    fun getIntroData() {
+        viewModelScope.launch {
+            splashUseCase.getIntro()
+                .onEach {
+                    _introDataFlow.emit(it)
+                }
+                .handleErrors()
+                .collect()
+        }
+    }
 
     //홈
     fun getHome(accessToken: String, date: String) {
@@ -669,25 +688,31 @@ class HomeViewModel @Inject constructor(
     private fun <T> Flow<T>.handleErrors(): Flow<T> =
         catch { e ->
             Log.e("error",e.message.toString())
-            if (e.message.toString() == "만료된 토큰입니다.") {
+            if (e.message.toString() == "401 : 만료된 토큰입니다.") {
                 reissueToken(getAccessToken() ?: "")
-//                Toast.makeText(
-//                    getApplication<Application>().applicationContext, "로그인이 만료되었습니다. 다시 한번 시도해주세요.",
-//                    Toast.LENGTH_SHORT
-//                ).show()
-
+                reissueTokenFlow.collectLatest {
+                    if (it) {
+                        Toast.makeText(
+                            getApplication<Application>().applicationContext,
+                            "토큰이 만료되었습니다. 다시 한번 시도해주세요.",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+            } else if (e.message.toString() == "400 : 이미 존재하는 가이드입니다.") {
+                Toast.makeText(
+                    getApplication<Application>().applicationContext,
+                    "해당 시간에 이미 등록이 되어 있어요! \n다른 시간으로 등록해주세요.",
+                    Toast.LENGTH_LONG
+                ).show()
             }
-//            Toast.makeText(
-//                getApplication<Application>().applicationContext, e.message,
-//                Toast.LENGTH_SHORT
-//            ).show()
         }
 
     private fun <T> Flow<T>.handleReissueTokenErrors(): Flow<T> =
         catch { e ->
             Log.e("reissue error",e.message.toString())
             // refreshToken까지 만료된 경우 -> 로그인 화면으로 이동
-            if (e.message.toString() == "만료된 토큰입니다.") {
+            if (e.message.toString() == "401 : 만료된 토큰입니다.") {
                 _goToLoginActivityFlow.value = true
                 Toast.makeText(
                     getApplication<Application>().applicationContext, "로그인이 필요합니다.",

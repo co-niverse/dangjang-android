@@ -11,4 +11,12 @@ interface TokenApiService {
     suspend fun reissueToken(
         @Header("Authorization") accessToken: String
     ) : Response<BaseResponse<Nothing>>
+
+    //FCM 토큰 재발급
+    @POST("/api/user/fcmToken")
+    suspend fun postFcmToken(
+        @Header("Authorization") accessToken: String,
+        @Header("FcmToken") fcmToken: String
+    ) : Response<BaseResponse<Nothing>>
+
 }

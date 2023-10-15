@@ -4,12 +4,17 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.dangjang.android.common_ui.BaseFragment
 import com.dangjang.android.domain.constants.ACCESS_TOKEN_KEY
 import com.dangjang.android.domain.constants.TOKEN_SPF_KEY
+import com.dangjang.android.domain.constants.VERSION_SPF_KEY
+import com.dangjang.android.domain.constants.VERSION_TOKEN_KEY
 import com.dangjang.android.presentation.R
 import com.dangjang.android.presentation.databinding.FragmentMypageBinding
+import com.dangjang.android.presentation.login.LoginActivity
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 
 @AndroidEntryPoint
 class MypageFragment : BaseFragment<FragmentMypageBinding>(R.layout.fragment_mypage) {
@@ -27,7 +32,19 @@ class MypageFragment : BaseFragment<FragmentMypageBinding>(R.layout.fragment_myp
         binding.vm = viewModel
         binding.lifecycleOwner = this
 
+        binding.versionTv.text = "ver " + getVersionName()
+
         getAccessToken()?.let { viewModel.getMypage(it) }
+
+        lifecycleScope.launchWhenStarted {
+            viewModel.goToLoginActivityFlow.collectLatest {
+                if (it) {
+                    val intent = Intent(requireContext(), LoginActivity::class.java)
+                    startActivity(intent)
+                    activity?.finish()
+                }
+            }
+        }
 
         binding.deviceIv.setOnClickListener {
             startActivity(Intent(context, DeviceActivity::class.java))
@@ -74,5 +91,10 @@ class MypageFragment : BaseFragment<FragmentMypageBinding>(R.layout.fragment_myp
     private fun getAccessToken(): String? {
         val sharedPreferences = requireContext().getSharedPreferences(TOKEN_SPF_KEY, Context.MODE_PRIVATE)
         return sharedPreferences.getString(ACCESS_TOKEN_KEY, null)
+    }
+
+    private fun getVersionName(): String? {
+        val sharedPreferences = requireContext().getSharedPreferences(VERSION_SPF_KEY, Context.MODE_PRIVATE)
+        return sharedPreferences.getString(VERSION_TOKEN_KEY, null)
     }
 }

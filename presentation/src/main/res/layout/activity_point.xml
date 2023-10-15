@@ -79,17 +79,47 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
+            android:id="@+id/point_info_tv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:text="서비스 오픈 기념 포인트 이벤트를 진행중입니다! \n매일 서비스를 이용해서 포인트를 모은 후 기프티콘을 받아보세요!"
+            android:textColor="@color/black"
+            android:gravity="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/coin_cl" />
+
+
+        <TextView
+            android:id="@+id/point_info_tv2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:gravity="center"
+            android:text="1일 1접속 (100), 회원가입 (500), 헬스커넥트 연동 (500) 포인트를 드리고 있어요. 포인트 제공 방법은 더 추가될 예정입니다.\n*이벤트가 조기 종료될 수 있어요*"
+            android:textColor="#676767"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/point_info_tv" />
+
+        <TextView
             android:id="@+id/point_gift_title_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="24dp"
             android:text="교환 가능한 기프티콘"
             android:textColor="@color/black"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/coin_cl" />
+            app:layout_constraintTop_toBottomOf="@+id/point_info_tv2" />
 
         <ScrollView
             android:layout_width="match_parent"

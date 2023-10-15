@@ -12,6 +12,7 @@ import com.dangjang.android.domain.constants.ACCESS_TOKEN_KEY
 import com.dangjang.android.domain.constants.TOKEN_SPF_KEY
 import com.dangjang.android.presentation.R
 import com.dangjang.android.presentation.databinding.ActivityWeightBinding
+import com.dangjang.android.presentation.login.LoginActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 
@@ -37,6 +38,16 @@ class WeightActivity : FragmentActivity() {
         date = intent.getStringExtra("date").toString()
 
         getAccessToken()?.let { viewModel.getWeight(it, date) }
+
+        lifecycleScope.launchWhenStarted {
+            viewModel.goToLoginActivityFlow.collectLatest {
+                if (it) {
+                    val intent = Intent(applicationContext, LoginActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                }
+            }
+        }
 
         binding.weightSeekbar.setOnTouchListener({ v, event -> true })
         

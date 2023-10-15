@@ -135,6 +135,9 @@ class LoginViewModel @Inject constructor(
             if (e.message == "401 : 존재하는 유저가 아닙니다.") {
                 _signupStartActivity.value = HttpResponseStatus.UNAUTHORIZED
             }
+            if (e.message == "400 : 탈퇴 후 30일이 지나지 않았습니다.") {
+                Toast.makeText(getApplication<Application>().applicationContext, "탈퇴 후 30일이 지나지 않았습니다.", Toast.LENGTH_SHORT).show()
+            }
         }
 
 

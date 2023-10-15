@@ -1,6 +1,7 @@
 package com.dangjang.android.presentation.mypage
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -13,6 +14,7 @@ import com.dangjang.android.domain.model.ProductVO
 import com.dangjang.android.presentation.R
 import com.dangjang.android.presentation.databinding.ActivityPointBinding
 import com.dangjang.android.presentation.home.GiftListAdapter
+import com.dangjang.android.presentation.login.LoginActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 
@@ -30,6 +32,16 @@ class PointActivity : FragmentActivity() {
         binding.vm = viewModel
 
         getAccessToken()?.let { viewModel.getPoint(it) }
+
+        lifecycleScope.launchWhenStarted {
+            viewModel.goToLoginActivityFlow.collectLatest {
+                if (it) {
+                    val intent = Intent(applicationContext, LoginActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                }
+            }
+        }
 
         binding.lifecycleOwner = this
 

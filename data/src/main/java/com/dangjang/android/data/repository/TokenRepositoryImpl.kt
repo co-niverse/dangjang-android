@@ -14,4 +14,9 @@ class TokenRepositoryImpl @Inject constructor(
         val response = tokenDataSource.reissueToken(accessToken)
         emit(response.success)
     }
+
+    override fun postFcmToken(accessToken: String, fcmToken: String): Flow<Boolean> = flow {
+        val response = tokenDataSource.postFcmToken(accessToken, fcmToken)
+        emit(response.success)
+    }
 }
