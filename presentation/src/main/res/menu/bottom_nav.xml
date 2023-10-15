@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@id/nav_home"
+        android:title="홈"
+        android:icon="@drawable/selector_menu_home" />
+    <item
+        android:id="@id/nav_chart"
+        android:title="건강차트"
+        android:icon="@drawable/selector_menu_chart" />
+    <item
+        android:id="@id/nav_food"
+        android:title="식단"
+        android:icon="@drawable/selector_menu_food" />
+    <item
+        android:id="@id/nav_mypage"
+        android:title="내정보"
+        android:icon="@drawable/selector_menu_mypage" />
+</menu>
