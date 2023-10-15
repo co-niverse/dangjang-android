@@ -30,6 +30,7 @@ android {
             buildConfigField("String", "BASE_URL",""+localProperties['BASE_URL']+"")
         }
         release {
+            buildConfigField("String", "BASE_URL",""+localProperties['BASE_URL']+"")
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }

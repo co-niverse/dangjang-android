@@ -38,7 +38,7 @@ class SplashActivity : FragmentActivity() {
 
         viewModel.getIntroData()
 
-        viewModel.checkAvailability()
+//        viewModel.checkAvailability()
 
         goToMainOrLoginActivity()
 
