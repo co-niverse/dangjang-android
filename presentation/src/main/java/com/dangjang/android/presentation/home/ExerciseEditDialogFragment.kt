@@ -1,6 +1,7 @@
 package com.dangjang.android.presentation.home
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -14,10 +15,13 @@ import android.widget.SpinnerAdapter
 import android.widget.TextView
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import com.dangjang.android.domain.constants.ACCESS_TOKEN_KEY
 import com.dangjang.android.domain.constants.TOKEN_SPF_KEY
 import com.dangjang.android.presentation.R
 import com.dangjang.android.presentation.databinding.FragmentExerciseEditDialogBinding
+import com.dangjang.android.presentation.login.LoginActivity
+import kotlinx.coroutines.flow.collectLatest
 
 class ExerciseEditDialogFragment : DialogFragment() {
 
@@ -47,6 +51,16 @@ class ExerciseEditDialogFragment : DialogFragment() {
         originExerciseHour = arguments?.getString("hour").toString()
         originExerciseMinute = arguments?.getString("minute").toString()
         date = arguments?.getString("date").toString()
+
+        lifecycleScope.launchWhenStarted {
+            viewModel.goToLoginActivityFlow.collectLatest {
+                if (it) {
+                    val intent = Intent(requireContext(), LoginActivity::class.java)
+                    startActivity(intent)
+                    activity?.finish()
+                }
+            }
+        }
 
         setHourSpinner()
         setMinuteSpinner()

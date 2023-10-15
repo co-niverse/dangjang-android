@@ -43,6 +43,16 @@ class SignoutDialogFragment: DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        lifecycleScope.launchWhenStarted {
+            viewModel.goToLoginActivityFlow.collectLatest {
+                if (it) {
+                    val intent = Intent(requireContext(), LoginActivity::class.java)
+                    startActivity(intent)
+                    activity?.finish()
+                }
+            }
+        }
+
         binding.signoutBtn.setOnClickListener {
             getAccessToken()?.let { viewModel.signout(it) }
             lifecycleScope.launchWhenStarted {

@@ -1,13 +1,17 @@
 package com.dangjang.android.presentation.mypage
 
 import android.content.Context
+import android.content.Intent
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import com.dangjang.android.common_ui.BaseFragment
 import com.dangjang.android.domain.constants.ACCESS_TOKEN_KEY
 import com.dangjang.android.domain.constants.TOKEN_SPF_KEY
 import com.dangjang.android.presentation.R
 import com.dangjang.android.presentation.databinding.FragmentPointCheckBinding
+import com.dangjang.android.presentation.login.LoginActivity
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 
 @AndroidEntryPoint
 class PointCheckFragment : BaseFragment<FragmentPointCheckBinding>(R.layout.fragment_point_check){
@@ -22,6 +26,16 @@ class PointCheckFragment : BaseFragment<FragmentPointCheckBinding>(R.layout.frag
 
     override fun onStart() {
         super.onStart()
+
+        lifecycleScope.launchWhenStarted {
+            viewModel.goToLoginActivityFlow.collectLatest {
+                if (it) {
+                    val intent = Intent(requireContext(), LoginActivity::class.java)
+                    startActivity(intent)
+                    activity?.finish()
+                }
+            }
+        }
 
         val type = viewModel.selectedGiftTitle.value
         val price = viewModel.selectedGiftPrice.value

@@ -14,6 +14,7 @@ import com.dangjang.android.domain.constants.TOKEN_SPF_KEY
 import com.dangjang.android.domain.model.ExerciseListVO
 import com.dangjang.android.presentation.R
 import com.dangjang.android.presentation.databinding.ActivityExerciseBinding
+import com.dangjang.android.presentation.login.LoginActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 
@@ -41,6 +42,16 @@ class ExerciseActivity : FragmentActivity() {
         date = intent.getStringExtra("date").toString()
 
         getAccessToken()?.let { viewModel.getExercise(it, date) }
+
+        lifecycleScope.launchWhenStarted {
+            viewModel.goToLoginActivityFlow.collectLatest {
+                if (it) {
+                    val intent = Intent(applicationContext, LoginActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                }
+            }
+        }
 
         binding.exerciseOpenBtn.setOnClickListener {
             if (openBtnFlag) {

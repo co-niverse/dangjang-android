@@ -44,6 +44,16 @@ class LogoutDialogFragment : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        lifecycleScope.launchWhenStarted {
+            viewModel.goToLoginActivityFlow.collectLatest {
+                if (it) {
+                    val intent = Intent(requireContext(), LoginActivity::class.java)
+                    startActivity(intent)
+                    activity?.finish()
+                }
+            }
+        }
+
         binding.logoutBtn.setOnClickListener {
             viewModel.logout(getAccessToken() ?: "", getFCMToken() ?: "")
             lifecycleScope.launchWhenStarted {

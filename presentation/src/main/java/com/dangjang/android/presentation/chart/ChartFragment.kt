@@ -1,6 +1,7 @@
 package com.dangjang.android.presentation.chart
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.view.View
 import androidx.core.content.ContextCompat
@@ -11,6 +12,7 @@ import com.dangjang.android.domain.constants.ACCESS_TOKEN_KEY
 import com.dangjang.android.domain.constants.TOKEN_SPF_KEY
 import com.dangjang.android.presentation.R
 import com.dangjang.android.presentation.databinding.FragmentChartBinding
+import com.dangjang.android.presentation.login.LoginActivity
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.Description
@@ -46,6 +48,16 @@ class ChartFragment : BaseFragment<FragmentChartBinding>(R.layout.fragment_chart
         initLineChart(binding.weightChart)
         initLineChart(binding.stepChart)
         initLineChart(binding.exerciseChart)
+
+        lifecycleScope.launchWhenStarted {
+            viewModel.goToLoginActivityFlow.collectLatest {
+                if (it) {
+                    val intent = Intent(requireContext(), LoginActivity::class.java)
+                    startActivity(intent)
+                    activity?.finish()
+                }
+            }
+        }
 
         lifecycleScope.launchWhenStarted {
             viewModel.getChartFlow.collectLatest {
