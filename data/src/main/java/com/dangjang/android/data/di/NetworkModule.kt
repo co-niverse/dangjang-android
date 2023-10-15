@@ -41,6 +41,7 @@ object NetworkModule {
             .addInterceptor(interceptor)
             .addInterceptor(TokenInterceptor(context))
             .addInterceptor(NetworkInterceptor())
+            .retryOnConnectionFailure(false)
             .build()
     }
 
