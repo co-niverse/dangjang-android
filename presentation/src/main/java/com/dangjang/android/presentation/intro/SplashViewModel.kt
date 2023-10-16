@@ -30,6 +30,7 @@ import com.dangjang.android.domain.constants.TOKEN_SPF_KEY
 import com.dangjang.android.domain.model.HealthConnectVO
 import com.dangjang.android.domain.model.IntroVO
 import com.dangjang.android.domain.request.HealthConnectRequest
+import com.dangjang.android.domain.request.PatchHealthConnectRequest
 import com.dangjang.android.domain.request.PostHealthConnectRequest
 import com.dangjang.android.domain.usecase.SplashUseCase
 import com.dangjang.android.domain.usecase.TokenUseCase
@@ -63,6 +64,9 @@ class SplashViewModel @Inject constructor(
 
     private val _introDataFlow = MutableStateFlow(IntroVO())
     val introDataFlow = _introDataFlow.asStateFlow()
+
+    private val _patchHealthConnectInterlockFlow = MutableStateFlow(false)
+    val patchHealthConnectInterlockFlow = _patchHealthConnectInterlockFlow.asStateFlow()
 
     private val _healthConnectFlow = MutableStateFlow(HealthConnectVO())
     val healthConnectFlow = _healthConnectFlow.asStateFlow()
@@ -138,12 +142,12 @@ class SplashViewModel @Inject constructor(
             checkHealthConnectInterlock.collectLatest {
                 if (it == "true") {
                     if (healthConnectFlow.value.isAvaiable == HEALTH_CONNECT_INSTALLED) {
-                        //TODO : 연동 true로 API 요청
+                        patchHealthConnectInterlock(getAccessToken() ?: "", PatchHealthConnectRequest(true))
                     } else {
-                        //TODO : 연동 false로 API 요청
+                        patchHealthConnectInterlock(getAccessToken() ?: "", PatchHealthConnectRequest(false))
                     }
                 } else if (it == "false") {
-                    //TODO : 연동 false로 API 요청
+                    patchHealthConnectInterlock(getAccessToken() ?: "", PatchHealthConnectRequest(false))
                 }
             }
         }
@@ -422,6 +426,17 @@ class SplashViewModel @Inject constructor(
             splashUseCase.getIntro()
                 .onEach {
                     _introDataFlow.emit(it)
+                }
+                .handleErrors()
+                .collect()
+        }
+    }
+
+    private fun patchHealthConnectInterlock(accessToken: String, patchHealthConnectRequest: PatchHealthConnectRequest) {
+        viewModelScope.launch {
+            splashUseCase.patchHealthConnectInterlock(accessToken, patchHealthConnectRequest)
+                .onEach {
+                    _patchHealthConnectInterlockFlow.emit(it)
                 }
                 .handleErrors()
                 .collect()
