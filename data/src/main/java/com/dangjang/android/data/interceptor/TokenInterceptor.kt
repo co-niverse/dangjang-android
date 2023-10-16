@@ -18,8 +18,8 @@ class TokenInterceptor(
 
         headerAccessToken?.let {
             inAppStorageHelper.setAccessToken(ACCESS_TOKEN_KEY, it)
-            val refreshRequest = chain.request().newBuilder().addHeader("AccessToken", it).build()
-            chain.proceed(refreshRequest)
+            //val refreshRequest = chain.request().newBuilder().addHeader("AccessToken", it).build()
+            //chain.proceed(refreshRequest)
         }
 
         return response.newBuilder().body(response.body).build()
