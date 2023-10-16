@@ -4,6 +4,7 @@ import android.util.Log
 import com.dangjang.android.domain.model.IntroVO
 import com.dangjang.android.domain.repository.SplashRepository
 import com.dangjang.android.domain.request.HealthConnectRequest
+import com.dangjang.android.domain.request.PatchHealthConnectRequest
 import com.dangjang.android.domain.request.PostHealthConnectRequest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -28,5 +29,10 @@ class SplashUseCase @Inject constructor(
             }
             Log.e("postHealthConnectRequestNotNull",postHealthConnectRequestNotNull.toString())
             splashRepository.postHealthConnect(accessToken, PostHealthConnectRequest(postHealthConnectRequestNotNull))
+        }
+
+    suspend fun patchHealthConnectInterlock(accessToken: String, patchHealthConnectRequest: PatchHealthConnectRequest): Flow<Boolean> =
+        withContext(Dispatchers.IO) {
+            splashRepository.patchHealthConnectInterlock("Bearer $accessToken", patchHealthConnectRequest)
         }
 }
