@@ -24,6 +24,7 @@ import androidx.lifecycle.viewModelScope
 import com.dangjang.android.domain.constants.ACCESS_TOKEN_KEY
 import com.dangjang.android.domain.constants.AUTO_LOGIN_EDITOR_KEY
 import com.dangjang.android.domain.constants.AUTO_LOGIN_SPF_KEY
+import com.dangjang.android.domain.constants.HEALTH_CONNECT_INSTALLED
 import com.dangjang.android.domain.constants.HEALTH_CONNECT_TOKEN_KEY
 import com.dangjang.android.domain.constants.TOKEN_SPF_KEY
 import com.dangjang.android.domain.model.HealthConnectVO
@@ -115,6 +116,9 @@ class SplashViewModel @Inject constructor(
     var stepsPermissionGranted = false
     var exerciseSessionPermissionGranted = false
 
+    private val _checkHealthConnectInterlock = MutableStateFlow("none")
+    val checkHealthConnectInterlock = _checkHealthConnectInterlock.asStateFlow()
+
     private val _reissueTokenFlow = MutableStateFlow(false)
     val reissueTokenFlow = _reissueTokenFlow.asStateFlow()
 
@@ -126,6 +130,22 @@ class SplashViewModel @Inject constructor(
             HealthConnectClient.SDK_UNAVAILABLE_PROVIDER_UPDATE_REQUIRED -> Log.e("HealthConnect-ERROR","헬스커넥트 설치나 업데이트가 필요합니다.")
             HealthConnectClient.SDK_UNAVAILABLE -> Log.e("HealthConnect-ERROR","헬스커넥트를 설치할 수 없습니다.")
             HealthConnectClient.SDK_AVAILABLE -> Log.e("HealthConnect-status","헬스커넥트가 설치되어 있습니다.")
+        }
+    }
+
+    fun checkHealthConnectInterlock() {
+        viewModelScope.launch {
+            checkHealthConnectInterlock.collectLatest {
+                if (it == "true") {
+                    if (healthConnectFlow.value.isAvaiable == HEALTH_CONNECT_INSTALLED) {
+                        //TODO : 연동 true로 API 요청
+                    } else {
+                        //TODO : 연동 false로 API 요청
+                    }
+                } else if (it == "false") {
+                    //TODO : 연동 false로 API 요청
+                }
+            }
         }
     }
 
@@ -162,6 +182,7 @@ class SplashViewModel @Inject constructor(
         weightPermissionGranted = hasAllPermissions(weightPermission)
         if (weightPermissionGranted) {
             readWeight()
+            _checkHealthConnectInterlock.update { "true" }
         } else {
             Log.e("GRANT-ERROR","체중 권한이 허용되지 않았습니다.")
         }
@@ -171,6 +192,7 @@ class SplashViewModel @Inject constructor(
         bloodGlucosePermissionGranted = hasAllPermissions(bloodGlucosePermission)
         if (bloodGlucosePermissionGranted) {
             readBloodGlucose()
+            _checkHealthConnectInterlock.update { "true" }
         } else {
             Log.e("GRANT-ERROR","혈당 권한이 허용되지 않았습니다.")
         }
@@ -180,7 +202,7 @@ class SplashViewModel @Inject constructor(
         stepsPermissionGranted = hasAllPermissions(stepsPermission)
         if (stepsPermissionGranted) {
             readSteps()
-            Log.e("실행 되는지","실행 되는가 ??")
+            _checkHealthConnectInterlock.update { "true" }
         } else {
             Log.e("GRANT-ERROR","걸음수 권한이 허용되지 않았습니다.")
         }
@@ -190,6 +212,7 @@ class SplashViewModel @Inject constructor(
         exerciseSessionPermissionGranted = hasAllPermissions(exerciseSessionPermission)
         if (exerciseSessionPermissionGranted) {
             readExerciseSession()
+            _checkHealthConnectInterlock.update { "true" }
         } else {
             Log.e("GRANT-ERROR","운동 권한이 허용되지 않았습니다.")
         }

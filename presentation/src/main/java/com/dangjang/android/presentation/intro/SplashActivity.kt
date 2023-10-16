@@ -126,6 +126,8 @@ class SplashActivity : FragmentActivity() {
             }
         }
 
+        viewModel.checkHealthConnectInterlock()
+
     }
 
     private fun goToMainOrLoginActivity() {
