@@ -1,7 +1,9 @@
 package com.dangjang.android.domain.usecase
 
+import android.util.Log
 import com.dangjang.android.domain.model.IntroVO
 import com.dangjang.android.domain.repository.SplashRepository
+import com.dangjang.android.domain.request.HealthConnectRequest
 import com.dangjang.android.domain.request.PostHealthConnectRequest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -18,6 +20,13 @@ class SplashUseCase @Inject constructor(
 
     suspend fun postHealthConnect(accessToken: String, postHealthConnectRequest: PostHealthConnectRequest): Flow<Nothing> =
         withContext(Dispatchers.IO) {
-            splashRepository.postHealthConnect(accessToken, postHealthConnectRequest)
+            var postHealthConnectRequestNotNull = mutableListOf<HealthConnectRequest>()
+            postHealthConnectRequest.data.forEach {
+                if (it != HealthConnectRequest("","","")) {
+                    postHealthConnectRequestNotNull.add(it)
+                }
+            }
+            Log.e("postHealthConnectRequestNotNull",postHealthConnectRequestNotNull.toString())
+            splashRepository.postHealthConnect(accessToken, PostHealthConnectRequest(postHealthConnectRequestNotNull))
         }
 }

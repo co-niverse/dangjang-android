@@ -116,7 +116,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="60dp"
-                android:visibility="gone"
                 android:src="@drawable/ic_mypage_device"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/coin_cl" />
@@ -128,7 +127,6 @@
                 android:layout_marginStart="10dp"
                 android:gravity="center_vertical"
                 android:text="기기 연동"
-                android:visibility="gone"
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="@+id/device_iv"
