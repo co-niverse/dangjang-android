@@ -59,6 +59,8 @@ class LogoutDialogFragment : DialogFragment() {
             lifecycleScope.launchWhenStarted {
                 viewModel.logoutFlow.collectLatest {
                     if (it) {
+                        Toast.makeText(requireContext(), "로그아웃이 완료되었습니다..", Toast.LENGTH_SHORT).show()
+
                         viewModel.removeAutoLoginProviderSpf()
                         viewModel.removeAccessTokenSpf()
                         viewModel.removeFcmTokenSpf()
@@ -68,9 +70,9 @@ class LogoutDialogFragment : DialogFragment() {
 
                         activity?.finish()
                     } else {
-                        Toast.makeText(requireContext(), "다시 한번 시도해주세요.", Toast.LENGTH_SHORT)
-                            .show()
-                        dismiss()
+//                        Toast.makeText(requireContext(), "다시 한번 시도해주세요.", Toast.LENGTH_SHORT)
+//                            .show()
+//                        dismiss()
                     }
                 }
             }
