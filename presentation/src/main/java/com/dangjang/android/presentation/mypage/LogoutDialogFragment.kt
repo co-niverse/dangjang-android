@@ -59,13 +59,14 @@ class LogoutDialogFragment : DialogFragment() {
             lifecycleScope.launchWhenStarted {
                 viewModel.logoutFlow.collectLatest {
                     if (it) {
-                        Toast.makeText(requireContext(), "로그아웃이 완료되었습니다..", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), "로그아웃이 완료되었습니다.", Toast.LENGTH_SHORT).show()
 
                         viewModel.removeAutoLoginProviderSpf()
                         viewModel.removeAccessTokenSpf()
                         viewModel.removeFcmTokenSpf()
 
                         val intent = Intent(requireContext(), LoginActivity::class.java)
+                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                         startActivity(intent)
 
                         activity?.finish()
