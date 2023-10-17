@@ -17,9 +17,9 @@ class HealthConnectRepositoryImpl @Inject constructor(
         emit(response.data.toDomain())
     }
 
-    override suspend fun postHealthConnect(accessToken: String, postHealthConnectRequest: PostHealthConnectRequest): Flow<Nothing> = flow {
+    override suspend fun postHealthConnect(accessToken: String, postHealthConnectRequest: PostHealthConnectRequest): Flow<Boolean> = flow {
         val response = healthConnectDataSource.postHealthConnect(accessToken, postHealthConnectRequest)
-        emit(response.data)
+        emit(response.success)
     }
 
     override suspend fun patchHealthConnectInterlock(accessToken: String, patchHealthConnectRequest: PatchHealthConnectRequest): Flow<Boolean> = flow {

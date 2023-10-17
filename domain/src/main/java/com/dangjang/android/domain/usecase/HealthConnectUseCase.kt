@@ -19,7 +19,7 @@ class HealthConnectUseCase @Inject constructor(
             healthConnectRepository.getIntroApi()
         }
 
-    suspend fun postHealthConnect(accessToken: String, postHealthConnectRequest: PostHealthConnectRequest): Flow<Nothing> =
+    suspend fun postHealthConnect(accessToken: String, postHealthConnectRequest: PostHealthConnectRequest): Flow<Boolean> =
         withContext(Dispatchers.IO) {
             var postHealthConnectRequestNotNull = mutableListOf<HealthConnectRequest>()
             postHealthConnectRequest.data.forEach {

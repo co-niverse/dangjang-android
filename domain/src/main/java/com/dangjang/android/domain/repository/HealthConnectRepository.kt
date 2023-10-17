@@ -11,7 +11,7 @@ interface HealthConnectRepository {
     suspend fun getIntroApi(): Flow<IntroVO>
 
     //Health Connect API
-    suspend fun postHealthConnect(accessToken: String, postHealthConnectRequest: PostHealthConnectRequest): Flow<Nothing>
+    suspend fun postHealthConnect(accessToken: String, postHealthConnectRequest: PostHealthConnectRequest): Flow<Boolean>
 
     //Health Connect Interlock API
     suspend fun patchHealthConnectInterlock(accessToken: String, patchHealthConnectRequest: PatchHealthConnectRequest): Flow<Boolean>

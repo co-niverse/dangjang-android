@@ -52,7 +52,7 @@ class HealthConnectActivity : FragmentActivity() {
                                 "zip1Test",
                                 viewModel.hcExerciseList.value.toString() + viewModel.hcGlucoseList.value.toString()
                             )
-                            if (viewModel.hcStepList.value.isNotEmpty() && viewModel.hcWeightList.value.isNotEmpty()) {
+                            if (viewModel.hcExerciseList.value.isNotEmpty() && viewModel.hcGlucoseList.value.isNotEmpty()) {
                                 hcExerciseGlucoseList.addAll(viewModel.hcExerciseList.value)
                                 hcExerciseGlucoseList.addAll(viewModel.hcGlucoseList.value)
                                 viewModel.setHcExerciseGlucoseList(hcExerciseGlucoseList)
@@ -103,19 +103,17 @@ class HealthConnectActivity : FragmentActivity() {
                     }
 
                     lifecycleScope.launch {
-                        //TODO : API Response 받은 후 화면 이동 처리 -> 현재 안됨
                         viewModel.postHealthConnectFlow.collect {
-                            //goToMainActivity
+                            if (it) {
+                                goToMainActivity()
+                            }
                         }
                     }
                 }
             }
 
         } else if (healthConnectAvailability == "false") {
-            // goToMainActivity()
-            if (viewModel.healthConnectFlow.value.isAvaiable == HEALTH_CONNECT_NOT_INSTALLED) {
-                //TODO : 헬스커넥트 팝업 띄우기
-            }
+            goToMainActivity()
         }
 
         viewModel.checkHealthConnectInterlock()

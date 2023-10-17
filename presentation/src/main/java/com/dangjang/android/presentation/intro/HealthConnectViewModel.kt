@@ -486,16 +486,10 @@ class HealthConnectViewModel @Inject constructor(
     fun postHealthConnectData(accessToken: String) {
         _healthConnectList.value.addAll(hcExerciseGlucoseList.value)
         _healthConnectList.value.addAll(hcWeightStepList.value)
-//        healthConnectList.value.forEach {
-//            if (it == HealthConnectRequest("","","")) {
-//                _healthConnectList.value.remove(it)
-//            }
-//        }
         viewModelScope.launch {
             Log.e("hc 등록 테스트",healthConnectList.value.toString())
             healthConnectUseCase.postHealthConnect("Bearer $accessToken", PostHealthConnectRequest(data = healthConnectList.value))
                 .onEach {
-                    //TODO : it에 들어오는 값이 없음 -> 해결
                     _postHealthConnectFlow.emit(it)
                 }
                 .handleErrors()
