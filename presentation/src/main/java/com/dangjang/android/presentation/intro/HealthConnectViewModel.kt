@@ -56,7 +56,7 @@ import javax.inject.Inject
 import kotlin.math.roundToInt
 
 @HiltViewModel
-class SplashViewModel @Inject constructor(
+class HealthConnectViewModel @Inject constructor(
     private val splashUseCase: SplashUseCase,
     private val getTokenUseCase: TokenUseCase,
     application: Application
@@ -242,7 +242,15 @@ class SplashViewModel @Inject constructor(
                     ))
                 }
         }
-        _hcWeightList.update { hcWeightTestList }
+        if (hcWeightTestList.isEmpty()) {
+            _hcWeightList.update {
+                mutableListOf(HealthConnectRequest("","",""))
+            }
+        } else {
+            _hcWeightList.update {
+                hcWeightTestList
+            }
+        }
     }
 
     private suspend fun readWeightRecord(start: Instant, end: Instant): List<WeightRecord> {
@@ -340,7 +348,15 @@ class SplashViewModel @Inject constructor(
                     )
                 }
        }
-        _hcStepList.update { hcStepsTestList }
+        if (hcStepsTestList.isEmpty()) {
+            _hcStepList.update {
+                mutableListOf(HealthConnectRequest("","",""))
+            }
+        } else {
+            _hcStepList.update {
+                hcStepsTestList
+            }
+        }
     }
 
     private suspend fun readStepsRecord(start: Instant, end: Instant): List<StepsRecord> {
@@ -401,7 +417,15 @@ class SplashViewModel @Inject constructor(
             }
         }
         Log.e("운동 완료",healthConnectList.value.toString())
-        _hcExerciseList.update { hcExerciseTestList }
+        if (hcExerciseTestList.isEmpty()) {
+            _hcExerciseList.update {
+                mutableListOf(HealthConnectRequest("","",""))
+            }
+        } else {
+            _hcExerciseList.update {
+                hcExerciseTestList
+            }
+        }
     }
 
     private suspend fun readExerciseSessionRecord(start: Instant, end: Instant): List<ExerciseSessionRecord> {
