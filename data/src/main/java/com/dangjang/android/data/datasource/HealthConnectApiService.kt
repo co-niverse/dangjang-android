@@ -11,7 +11,7 @@ import retrofit2.http.Header
 import retrofit2.http.PATCH
 import retrofit2.http.POST
 
-interface SplashApiService {
+interface HealthConnectApiService {
     //Intro API
     @GET("api/intro/prod")
     suspend fun getIntroApi(

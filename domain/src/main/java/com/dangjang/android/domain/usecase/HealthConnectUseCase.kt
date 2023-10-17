@@ -2,7 +2,7 @@ package com.dangjang.android.domain.usecase
 
 import android.util.Log
 import com.dangjang.android.domain.model.IntroVO
-import com.dangjang.android.domain.repository.SplashRepository
+import com.dangjang.android.domain.repository.HealthConnectRepository
 import com.dangjang.android.domain.request.HealthConnectRequest
 import com.dangjang.android.domain.request.PatchHealthConnectRequest
 import com.dangjang.android.domain.request.PostHealthConnectRequest
@@ -11,12 +11,12 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class SplashUseCase @Inject constructor(
-    private val splashRepository: SplashRepository
+class HealthConnectUseCase @Inject constructor(
+    private val healthConnectRepository: HealthConnectRepository
 ) {
     suspend fun getIntro(): Flow<IntroVO> =
         withContext(Dispatchers.IO) {
-            splashRepository.getIntroApi()
+            healthConnectRepository.getIntroApi()
         }
 
     suspend fun postHealthConnect(accessToken: String, postHealthConnectRequest: PostHealthConnectRequest): Flow<Nothing> =
@@ -28,11 +28,11 @@ class SplashUseCase @Inject constructor(
                 }
             }
             Log.e("postHealthConnectRequestNotNull",postHealthConnectRequestNotNull.toString())
-            splashRepository.postHealthConnect(accessToken, PostHealthConnectRequest(postHealthConnectRequestNotNull))
+            healthConnectRepository.postHealthConnect(accessToken, PostHealthConnectRequest(postHealthConnectRequestNotNull))
         }
 
     suspend fun patchHealthConnectInterlock(accessToken: String, patchHealthConnectRequest: PatchHealthConnectRequest): Flow<Boolean> =
         withContext(Dispatchers.IO) {
-            splashRepository.patchHealthConnectInterlock("Bearer $accessToken", patchHealthConnectRequest)
+            healthConnectRepository.patchHealthConnectInterlock("Bearer $accessToken", patchHealthConnectRequest)
         }
 }

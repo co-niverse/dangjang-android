@@ -5,7 +5,7 @@ import com.dangjang.android.domain.request.PatchHealthConnectRequest
 import com.dangjang.android.domain.request.PostHealthConnectRequest
 import kotlinx.coroutines.flow.Flow
 
-interface SplashRepository {
+interface HealthConnectRepository {
 
     //Intro API
     suspend fun getIntroApi(): Flow<IntroVO>

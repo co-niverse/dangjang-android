@@ -32,7 +32,7 @@ import com.dangjang.android.domain.model.IntroVO
 import com.dangjang.android.domain.request.HealthConnectRequest
 import com.dangjang.android.domain.request.PatchHealthConnectRequest
 import com.dangjang.android.domain.request.PostHealthConnectRequest
-import com.dangjang.android.domain.usecase.SplashUseCase
+import com.dangjang.android.domain.usecase.HealthConnectUseCase
 import com.dangjang.android.domain.usecase.TokenUseCase
 import com.dangjang.android.presentation.login.LoginActivity
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -57,7 +57,7 @@ import kotlin.math.roundToInt
 
 @HiltViewModel
 class HealthConnectViewModel @Inject constructor(
-    private val splashUseCase: SplashUseCase,
+    private val healthConnectUseCase: HealthConnectUseCase,
     private val getTokenUseCase: TokenUseCase,
     application: Application
 ) : AndroidViewModel(application) {
@@ -447,7 +447,7 @@ class HealthConnectViewModel @Inject constructor(
 
     fun getIntroData() {
         viewModelScope.launch {
-            splashUseCase.getIntro()
+            healthConnectUseCase.getIntro()
                 .onEach {
                     _introDataFlow.emit(it)
                 }
@@ -458,7 +458,7 @@ class HealthConnectViewModel @Inject constructor(
 
     private fun patchHealthConnectInterlock(accessToken: String, patchHealthConnectRequest: PatchHealthConnectRequest) {
         viewModelScope.launch {
-            splashUseCase.patchHealthConnectInterlock(accessToken, patchHealthConnectRequest)
+            healthConnectUseCase.patchHealthConnectInterlock(accessToken, patchHealthConnectRequest)
                 .onEach {
                     _patchHealthConnectInterlockFlow.emit(it)
                 }
@@ -493,7 +493,7 @@ class HealthConnectViewModel @Inject constructor(
 //        }
         viewModelScope.launch {
             Log.e("hc 등록 테스트",healthConnectList.value.toString())
-            splashUseCase.postHealthConnect("Bearer $accessToken", PostHealthConnectRequest(data = healthConnectList.value))
+            healthConnectUseCase.postHealthConnect("Bearer $accessToken", PostHealthConnectRequest(data = healthConnectList.value))
                 .onEach {
                     //TODO : it에 들어오는 값이 없음 -> 해결
                     _postHealthConnectFlow.emit(it)
