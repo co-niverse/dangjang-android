@@ -56,15 +56,15 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
         getAccessToken()?.let { viewModel.getHome(it, date) }
 
         viewModel.getIntroData()
-        lifecycleScope.launch {
-            viewModel.introDataFlow.collectLatest {
-                if (it.latestVersion != "") {
-                    if (it.latestVersion != getVersionName()) {
-                        UpdateBottomSheetFragment().show(parentFragmentManager, "UpdateBottomSheetFragment")
-                    }
-                }
-            }
-        }
+//        lifecycleScope.launch {
+//            viewModel.introDataFlow.collectLatest {
+//                if (it.latestVersion != "") {
+//                    if (it.latestVersion != getVersionName()) {
+//                        UpdateBottomSheetFragment().show(parentFragmentManager, "UpdateBottomSheetFragment")
+//                    }
+//                }
+//            }
+//        }
 
         binding.weightSeekbar.setOnTouchListener({ v, event -> true })
 
@@ -150,12 +150,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
         val sp: SharedPreferences = requireContext().getSharedPreferences(AUTO_LOGIN_SPF_KEY, AppCompatActivity.MODE_PRIVATE)
         val healthConnect = sp.getString(HEALTH_CONNECT_TOKEN_KEY, "null")
 
-        if (healthConnect == "false") {
-            binding.autoInputBtn.visibility = View.VISIBLE
-            binding.autoInputBtn.setOnClickListener {
-                HealthConnectBottomSheetFragment().show(parentFragmentManager, "HealthConnectBottomSheetFragment")
-            }
-        }
+//        if (healthConnect == "false") {
+//            binding.autoInputBtn.visibility = View.VISIBLE
+//            binding.autoInputBtn.setOnClickListener {
+//                HealthConnectBottomSheetFragment().show(parentFragmentManager, "HealthConnectBottomSheetFragment")
+//            }
+//        }
 
         setGlucoseGuideListAdapter()
 
