@@ -32,10 +32,10 @@ class HealthConnectActivity : FragmentActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_healthconnect)
 
-        viewModel.checkAvailability()
+//        viewModel.checkAvailability()
 
 //        val healthConnectAvailability = viewModel.getHealtConnectSpf()
-        val healthConnectAvailability = "true" // 테스트 용
+        val healthConnectAvailability = "false" // 테스트 용
 
         if (healthConnectAvailability == "true") {
             if (viewModel.healthConnectFlow.value.isAvaiable == HEALTH_CONNECT_INSTALLED) {
@@ -116,7 +116,7 @@ class HealthConnectActivity : FragmentActivity() {
             goToMainActivity()
         }
 
-        viewModel.checkHealthConnectInterlock()
+//        viewModel.checkHealthConnectInterlock()
 
     }
 
