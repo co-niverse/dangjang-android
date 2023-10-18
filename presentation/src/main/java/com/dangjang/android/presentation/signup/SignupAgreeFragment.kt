@@ -54,7 +54,27 @@ class SignupAgreeFragment : BaseFragment<FragmentSignupAgreeBinding>(R.layout.fr
             }
         }
 
+        binding.serviceCheckIv.setOnClickListener {
+            binding.serviceTv.setTextColor((Color.BLACK))
+            binding.serviceCheckIv.setImageResource(R.drawable.ic_check_green)
+            serviceFlag = true
+
+            if (personalFlag) {
+                setBtnGreen()
+            }
+        }
+
         binding.personalCl.setOnClickListener {
+            binding.personalTv.setTextColor((Color.BLACK))
+            binding.personalCheckIv.setImageResource(R.drawable.ic_check_green)
+            personalFlag = true
+
+            if (serviceFlag) {
+                setBtnGreen()
+            }
+        }
+
+        binding.personalCheckIv.setOnClickListener {
             binding.personalTv.setTextColor((Color.BLACK))
             binding.personalCheckIv.setImageResource(R.drawable.ic_check_green)
             personalFlag = true

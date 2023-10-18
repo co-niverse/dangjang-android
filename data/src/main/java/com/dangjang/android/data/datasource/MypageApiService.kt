@@ -36,7 +36,7 @@ interface MypageApiService {
     ) : Response<BaseResponse<PostPointDto>>
 
     //로그아웃
-    @GET("api/auth/logout")
+    @POST("api/auth/logout")
     suspend fun logout(
         @Header("Authorization") accessToken: String,
         @Header("FcmToken") fcmToken: String

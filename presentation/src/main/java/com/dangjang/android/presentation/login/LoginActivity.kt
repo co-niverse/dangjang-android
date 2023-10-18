@@ -17,6 +17,7 @@ import com.dangjang.android.domain.constants.HEALTH_CONNECT_TOKEN_KEY
 import com.dangjang.android.presentation.MainActivity
 import com.dangjang.android.presentation.R
 import com.dangjang.android.presentation.databinding.ActivityLoginBinding
+import com.dangjang.android.presentation.intro.HealthConnectActivity
 import com.dangjang.android.presentation.signup.SignupActivity
 import com.navercorp.nid.NaverIdLoginSDK
 import com.navercorp.nid.oauth.NidOAuthLogin
@@ -58,7 +59,7 @@ class LoginActivity: FragmentActivity() {
                     autoLoginEdit.putString(AUTO_LOGIN_EDITOR_KEY, viewModel.loginToSignup.value.provider)
                     autoLoginEdit.apply()
 
-                    val intent = Intent(applicationContext, MainActivity::class.java)
+                    val intent = Intent(applicationContext, HealthConnectActivity::class.java)
                     startActivity(intent)
                     finish()
                 }
