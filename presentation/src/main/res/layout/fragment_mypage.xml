@@ -128,9 +128,9 @@
                 android:layout_marginStart="10dp"
                 android:gravity="center_vertical"
                 android:text="기기 연동"
-                android:visibility="gone"
                 android:textColor="@color/black"
                 android:textSize="16sp"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="@+id/device_iv"
                 app:layout_constraintStart_toEndOf="@+id/device_iv"
                 app:layout_constraintTop_toTopOf="@+id/device_iv" />

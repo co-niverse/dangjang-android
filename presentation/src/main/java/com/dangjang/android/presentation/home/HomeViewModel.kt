@@ -2,7 +2,6 @@ package com.dangjang.android.presentation.home
 
 import android.app.Application
 import android.content.Context
-import android.content.Intent
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
@@ -46,10 +45,9 @@ import com.dangjang.android.domain.model.PostPatchWeightVO
 import com.dangjang.android.domain.model.TodayGuidesVO
 import com.dangjang.android.domain.request.EditHealthMetricRequest
 import com.dangjang.android.domain.request.EditSameHealthMetricRequest
-import com.dangjang.android.domain.usecase.SplashUseCase
+import com.dangjang.android.domain.usecase.HealthConnectUseCase
 import com.dangjang.android.domain.usecase.TokenUseCase
 import com.dangjang.android.presentation.R
-import com.dangjang.android.presentation.login.LoginActivity
 import com.dangjang.android.swm_logging.SWMLogging
 import com.dangjang.android.swm_logging.logging_scheme.ClickScheme
 import com.dangjang.android.swm_logging.logging_scheme.ExposureScheme
@@ -65,7 +63,7 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     private val getHomeUseCase: HomeUseCase,
     private val getTokenUseCase: TokenUseCase,
-    private val splashUseCase: SplashUseCase,
+    private val healthConnectUseCase: HealthConnectUseCase,
     application: Application
 ) : AndroidViewModel(application) {
     //버전
@@ -139,7 +137,7 @@ class HomeViewModel @Inject constructor(
 
     fun getIntroData() {
         viewModelScope.launch {
-            splashUseCase.getIntro()
+            healthConnectUseCase.getIntro()
                 .onEach {
                     _introDataFlow.emit(it)
                 }

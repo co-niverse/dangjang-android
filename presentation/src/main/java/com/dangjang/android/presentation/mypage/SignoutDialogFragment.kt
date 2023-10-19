@@ -63,13 +63,14 @@ class SignoutDialogFragment: DialogFragment() {
                         viewModel.removeFcmTokenSpf()
 
                         val intent = Intent(requireContext(), LoginActivity::class.java)
+                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                         startActivity(intent)
 
                         activity?.finish()
                     } else {
-                        Toast.makeText(requireContext(), "다시 한번 시도해주세요.", Toast.LENGTH_SHORT)
-                            .show()
-                        dismiss()
+//                        Toast.makeText(requireContext(), "다시 한번 시도해주세요.", Toast.LENGTH_SHORT)
+//                            .show()
+//                        dismiss()
                     }
                 }
             }

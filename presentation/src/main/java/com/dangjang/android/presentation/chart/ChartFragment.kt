@@ -25,6 +25,7 @@ import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class ChartFragment : BaseFragment<FragmentChartBinding>(R.layout.fragment_chart) {
@@ -94,11 +95,27 @@ class ChartFragment : BaseFragment<FragmentChartBinding>(R.layout.fragment_chart
         binding.chartAddIv.setOnClickListener {
             viewModel.addStartAndEndDate()
             getAccessToken()?.let { viewModel.getChart(it) }
+            lifecycleScope.launch {
+                viewModel.getChartFlow.collectLatest {
+                    initBarChart(binding.glucoseChart)
+                    initLineChart(binding.weightChart)
+                    initLineChart(binding.stepChart)
+                    initLineChart(binding.exerciseChart)
+                }
+            }
         }
 
         binding.chartSubtractIv.setOnClickListener {
             viewModel.subtractStartAndEndDate()
             getAccessToken()?.let { viewModel.getChart(it) }
+            lifecycleScope.launch {
+                viewModel.getChartFlow.collectLatest {
+                    initBarChart(binding.glucoseChart)
+                    initLineChart(binding.weightChart)
+                    initLineChart(binding.stepChart)
+                    initLineChart(binding.exerciseChart)
+                }
+            }
         }
 
     }
