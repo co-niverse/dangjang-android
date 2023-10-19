@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -161,6 +162,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
 
         binding.caloryCl.setOnClickListener {
             viewModel.shotCalorieClickLogging()
+            Toast.makeText(context, "서비스 준비중입니다.", Toast.LENGTH_SHORT).show()
         }
     }
 
