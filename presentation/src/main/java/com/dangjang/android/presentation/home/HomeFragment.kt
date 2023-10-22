@@ -130,6 +130,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
         }
 
         binding.weightCl.setOnClickListener {
+            viewModel.shotWeightClickLogging()
             Intent(activity, WeightActivity::class.java).apply {
                 putExtra("date",date)
                 startActivityForResult(this, 101)

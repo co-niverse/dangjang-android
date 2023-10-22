@@ -620,6 +620,7 @@ class HomeViewModel @Inject constructor(
     private fun getWeightClickLoggingScheme(): ClickScheme {
         return WeightScreenClickScheme.Builder()
             .setClicked(true)
+            .setUserLog(getHomeFlow.value.userLog)
             .build()
     }
 
