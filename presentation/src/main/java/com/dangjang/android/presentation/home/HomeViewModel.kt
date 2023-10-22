@@ -632,6 +632,8 @@ class HomeViewModel @Inject constructor(
     private fun getExerciseClickLoggingScheme(): ClickScheme {
         return ExerciseScreenClickScheme.Builder()
             .setClicked(true)
+            .setExercise(getHomeFlow.value.exercise)
+            .setUserLog(getHomeFlow.value.userLog)
             .build()
     }
 

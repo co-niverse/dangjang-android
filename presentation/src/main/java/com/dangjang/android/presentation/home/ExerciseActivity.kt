@@ -37,8 +37,6 @@ class ExerciseActivity : FragmentActivity() {
 
         binding.lifecycleOwner = this
 
-        viewModel.shotExerciseClickLogging()
-
         date = intent.getStringExtra("date").toString()
 
         getAccessToken()?.let { viewModel.getExercise(it, date) }
