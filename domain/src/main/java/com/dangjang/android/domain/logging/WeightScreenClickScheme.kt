@@ -1,5 +1,6 @@
 package com.dangjang.android.domain.logging
 
+import com.dangjang.android.domain.constants.Log_VERSION
 import com.dangjang.android.domain.model.UserLogVO
 import com.dangjang.android.swm_logging.logging_scheme.ClickScheme
 import java.util.UUID
@@ -15,7 +16,7 @@ class WeightScreenClickScheme(
         setLoggingScheme(
             eventLogName = "home_weight_click",
             screenName = "home",
-            logVersion = 1,
+            logVersion = Log_VERSION,
             appVersion = "1.0.2",
             sessionId = UUID.randomUUID().toString(),
             logData = mutableMapOf(

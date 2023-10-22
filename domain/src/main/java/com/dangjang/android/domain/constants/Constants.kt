@@ -1,6 +1,5 @@
 package com.dangjang.android.domain.constants
 
-// Play Store TODO: 출시 후 URL 변경
 const val PLAY_STORE_URL = "https://play.google.com/store/apps/details?id=com.dangjang.android"
 
 // Shared Preference
@@ -29,3 +28,6 @@ const val BMI_NORMAL_START = 18.5
 const val BMI_NORMAL_END = 22.9
 const val SEEKBAR_NORMAL_START = 20
 const val SEEKBAR_NORMAL_END = 50
+
+//Logging
+const val Log_VERSION = 2

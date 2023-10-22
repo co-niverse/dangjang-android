@@ -1,6 +1,7 @@
 package com.dangjang.android.domain.logging
 
 import android.content.Context
+import com.dangjang.android.domain.constants.Log_VERSION
 import com.dangjang.android.domain.constants.VERSION_SPF_KEY
 import com.dangjang.android.domain.constants.VERSION_TOKEN_KEY
 import com.dangjang.android.swm_logging.logging_scheme.ClickScheme
@@ -16,7 +17,7 @@ class CalendarClickScheme(
         setLoggingScheme(
             eventLogName = "home_calendar_click",
             screenName = "home",
-            logVersion = 1,
+            logVersion = Log_VERSION,
             appVersion = "1.0.2",
             sessionId = UUID.randomUUID().toString(),
             logData = mutableMapOf(
