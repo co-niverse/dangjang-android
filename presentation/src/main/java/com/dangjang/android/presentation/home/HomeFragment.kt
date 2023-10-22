@@ -56,12 +56,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
 
         getAccessToken()?.let { viewModel.getHome(it, date) }
 
-        lifecycleScope.launch {
-            viewModel.getHomeFlow.collectLatest {
-                Log.e("userLog",it.userLog.toString())
-            }
-        }
-
         viewModel.getIntroData()
 //        lifecycleScope.launch {
 //            viewModel.introDataFlow.collectLatest {
@@ -128,6 +122,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
         }
 
         binding.glucoseCl.setOnClickListener {
+            viewModel.shotGlucoseClickLogging()
             Intent(activity, GlucoseActivity::class.java).apply {
                 putExtra("date",date)
                 startActivityForResult(this, 101)

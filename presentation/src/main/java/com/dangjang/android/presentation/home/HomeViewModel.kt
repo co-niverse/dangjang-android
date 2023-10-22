@@ -607,6 +607,8 @@ class HomeViewModel @Inject constructor(
     private fun getGlucoseClickLoggingScheme(): ClickScheme {
         return GlucoseScreenClickScheme.Builder()
             .setClicked(true)
+            .setBloodSugars(getHomeFlow.value.bloodSugars)
+            .setUserLog(getHomeFlow.value.userLog)
             .build()
     }
 
