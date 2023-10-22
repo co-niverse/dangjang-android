@@ -645,6 +645,7 @@ class HomeViewModel @Inject constructor(
     private fun getCalorieClickLoggingScheme(): ClickScheme {
         return CalorieScreenClickScheme.Builder()
             .setClicked(true)
+            .setUserLog(getHomeFlow.value.userLog)
             .build()
     }
 
