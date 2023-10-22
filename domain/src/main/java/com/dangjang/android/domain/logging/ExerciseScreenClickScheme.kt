@@ -14,6 +14,7 @@ class ExerciseScreenClickScheme(
             eventLogName = "home_exercise_click",
             screenName = "home",
             logVersion = 1,
+            appVersion = "1.0.2",
             sessionId = UUID.randomUUID().toString(),
             logData = mutableMapOf(
                 "clicked" to clicked

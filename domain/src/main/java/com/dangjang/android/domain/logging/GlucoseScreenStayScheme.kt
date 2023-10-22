@@ -14,6 +14,7 @@ class GlucoseScreenStayScheme(
             eventLogName = "bloodsugar_stay_time",
             screenName = "bloodsugar",
             logVersion = 1,
+            appVersion = "1.0.2",
             sessionId = UUID.randomUUID().toString(),
             logData = mutableMapOf(
                 "stayTime" to stayTime

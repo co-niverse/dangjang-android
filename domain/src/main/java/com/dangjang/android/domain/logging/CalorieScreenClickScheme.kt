@@ -14,6 +14,7 @@ class CalorieScreenClickScheme(
             eventLogName = "home_calorie_click",
             screenName = "home",
             logVersion = 1,
+            appVersion = "1.0.2",
             sessionId = UUID.randomUUID().toString(),
             logData = mutableMapOf(
                 "clicked" to clicked
