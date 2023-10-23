@@ -236,4 +236,15 @@ class SignupViewModel @Inject constructor(
             .setStayTime(stayTime)
             .build()
     }
+
+    fun shotSignupDiagnosisLogging(stayTime: Double) {
+        val scheme = getSignupDiagnosisLoggingScheme(stayTime)
+        SWMLogging.logEvent(scheme)
+    }
+
+    private fun getSignupDiagnosisLoggingScheme(stayTime: Double): ExposureScheme {
+        return SignupActiveScheme.Builder()
+            .setStayTime(stayTime)
+            .build()
+    }
 }

@@ -19,6 +19,8 @@ import dagger.hilt.android.AndroidEntryPoint
 class SignupDiagnosisFragment : BaseFragment<FragmentSignupDiagnosisBinding>(R.layout.fragment_signup_diagnosis) {
 
     private val viewModel : SignupViewModel by activityViewModels()
+    private var startTime: Double = 0.0
+    private var endTime: Double = 0.0
 
     private var diabetesYear = 0
 
@@ -29,6 +31,7 @@ class SignupDiagnosisFragment : BaseFragment<FragmentSignupDiagnosisBinding>(R.l
     }
     override fun onStart() {
         super.onStart()
+        startTime = System.currentTimeMillis().toDouble()
 
         binding.diagnosisBtn.setOnTouchListener({ v, event -> true })
 
@@ -64,6 +67,12 @@ class SignupDiagnosisFragment : BaseFragment<FragmentSignupDiagnosisBinding>(R.l
         binding.backIv.setOnClickListener {
             parentFragmentManager.popBackStack()
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        endTime = System.currentTimeMillis().toDouble()
+        viewModel.shotSignupDiagnosisLogging(endTime- startTime)
     }
 
     private fun setYearSpinner() {
