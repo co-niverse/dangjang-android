@@ -13,6 +13,7 @@ import com.dangjang.android.domain.constants.FCM_TOKEN_KEY
 import com.dangjang.android.domain.logging.SignupActiveScheme
 import com.dangjang.android.domain.logging.SignupBodyScheme
 import com.dangjang.android.domain.logging.SignupDiagnosisScheme
+import com.dangjang.android.domain.logging.SignupDiseaseScheme
 import com.dangjang.android.domain.logging.SignupGenderBirthScheme
 import com.dangjang.android.domain.logging.SignupMediScheme
 import com.dangjang.android.domain.logging.SignupNicknameScheme
@@ -257,6 +258,17 @@ class SignupViewModel @Inject constructor(
 
     private fun getSignupMediLoggingScheme(stayTime: Double): ExposureScheme {
         return SignupMediScheme.Builder()
+            .setStayTime(stayTime)
+            .build()
+    }
+
+    fun shotSignupDiseaseLogging(stayTime: Double) {
+        val scheme = getSignupDiseaseLoggingScheme(stayTime)
+        SWMLogging.logEvent(scheme)
+    }
+
+    private fun getSignupDiseaseLoggingScheme(stayTime: Double): ExposureScheme {
+        return SignupDiseaseScheme.Builder()
             .setStayTime(stayTime)
             .build()
     }
