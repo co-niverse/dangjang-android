@@ -66,7 +66,7 @@ class SignupActiveFragment : BaseFragment<FragmentSignupActiveBinding>(R.layout.
     override fun onDestroy() {
         super.onDestroy()
         endTime = System.currentTimeMillis().toDouble()
-        viewModel.shotSignupNicknameLogging(endTime- startTime)
+        viewModel.shotSignupActiveLogging(endTime- startTime)
     }
 
     private fun setSmallClGray() {
