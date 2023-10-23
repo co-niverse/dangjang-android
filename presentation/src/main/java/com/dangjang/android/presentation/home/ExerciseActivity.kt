@@ -153,6 +153,11 @@ class ExerciseActivity : FragmentActivity() {
 
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        viewModel.shotExerciseExposureLogging()
+    }
+
     private fun setExerciseListAdapter() {
         exerciseListAdapter = ExerciseListAdapter(viewModel)
 

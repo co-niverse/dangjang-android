@@ -15,6 +15,7 @@ import com.dangjang.android.domain.constants.TOKEN_SPF_KEY
 import com.dangjang.android.domain.logging.CalendarClickScheme
 import com.dangjang.android.domain.logging.CalorieScreenClickScheme
 import com.dangjang.android.domain.logging.ExerciseScreenClickScheme
+import com.dangjang.android.domain.logging.ExerciseScreenExposureScheme
 import com.dangjang.android.domain.logging.GlucoseScreenClickScheme
 import com.dangjang.android.domain.logging.GlucoseScreenExposureScheme
 import com.dangjang.android.domain.logging.GlucoseScreenStayScheme
@@ -702,6 +703,16 @@ class HomeViewModel @Inject constructor(
 
     private fun getGlucoseExposureLoggingScheme(): ExposureScheme {
         return GlucoseScreenExposureScheme.Builder()
+            .build()
+    }
+
+    fun shotExerciseExposureLogging() {
+        val scheme = getExerciseExposureLoggingScheme()
+        SWMLogging.logEvent(scheme)
+    }
+
+    private fun getExerciseExposureLoggingScheme(): ExposureScheme {
+        return ExerciseScreenExposureScheme.Builder()
             .build()
     }
 
