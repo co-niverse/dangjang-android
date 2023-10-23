@@ -20,6 +20,7 @@ import com.dangjang.android.domain.logging.GlucoseScreenClickScheme
 import com.dangjang.android.domain.logging.GlucoseScreenExposureScheme
 import com.dangjang.android.domain.logging.GlucoseScreenStayScheme
 import com.dangjang.android.domain.logging.HomeScreenExposureScheme
+import com.dangjang.android.domain.logging.MypageScreenExposureScheme
 import com.dangjang.android.domain.logging.SignupAfterTimeScheme
 import com.dangjang.android.domain.logging.WeightScreenClickScheme
 import com.dangjang.android.domain.logging.WeightScreenExposureScheme
