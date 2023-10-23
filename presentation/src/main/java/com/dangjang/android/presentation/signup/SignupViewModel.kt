@@ -11,6 +11,7 @@ import androidx.lifecycle.viewModelScope
 import com.dangjang.android.domain.HttpResponseStatus
 import com.dangjang.android.domain.constants.FCM_TOKEN_KEY
 import com.dangjang.android.domain.logging.SignupActiveScheme
+import com.dangjang.android.domain.logging.SignupAgreeScheme
 import com.dangjang.android.domain.logging.SignupBodyScheme
 import com.dangjang.android.domain.logging.SignupDiagnosisScheme
 import com.dangjang.android.domain.logging.SignupDiseaseScheme
@@ -269,6 +270,17 @@ class SignupViewModel @Inject constructor(
 
     private fun getSignupDiseaseLoggingScheme(stayTime: Double): ExposureScheme {
         return SignupDiseaseScheme.Builder()
+            .setStayTime(stayTime)
+            .build()
+    }
+
+    fun shotSignupAgreeLogging(stayTime: Double) {
+        val scheme = getSignupAgreeLoggingScheme(stayTime)
+        SWMLogging.logEvent(scheme)
+    }
+
+    private fun getSignupAgreeLoggingScheme(stayTime: Double): ExposureScheme {
+        return SignupAgreeScheme.Builder()
             .setStayTime(stayTime)
             .build()
     }

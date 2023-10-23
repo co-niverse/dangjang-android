@@ -22,6 +22,8 @@ import kotlinx.coroutines.launch
 class SignupAgreeFragment : BaseFragment<FragmentSignupAgreeBinding>(R.layout.fragment_signup_agree) {
 
     private val viewModel : SignupViewModel by activityViewModels()
+    private var startTime: Double = 0.0
+    private var endTime: Double = 0.0
 
     override fun initView() {
         bind {
@@ -30,6 +32,7 @@ class SignupAgreeFragment : BaseFragment<FragmentSignupAgreeBinding>(R.layout.fr
     }
     override fun onStart() {
         super.onStart()
+        startTime = System.currentTimeMillis().toDouble()
 
         binding.agreeBtn.setOnTouchListener({ v, event -> true })
 
@@ -112,6 +115,12 @@ class SignupAgreeFragment : BaseFragment<FragmentSignupAgreeBinding>(R.layout.fr
         binding.backIv.setOnClickListener {
             parentFragmentManager.popBackStack()
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        endTime = System.currentTimeMillis().toDouble()
+        viewModel.shotSignupAgreeLogging(endTime- startTime)
     }
 
     private fun setBtnGreen() {
