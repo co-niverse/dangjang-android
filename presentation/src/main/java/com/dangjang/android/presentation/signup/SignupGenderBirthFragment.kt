@@ -20,6 +20,8 @@ import java.util.Date
 class SignupGenderBirthFragment : BaseFragment<FragmentSignupGenderBirthBinding>(R.layout.fragment_signup_gender_birth) {
 
     private val viewModel : SignupViewModel by activityViewModels()
+    private var startTime: Double = 0.0
+    private var endTime: Double = 0.0
 
     var manFlag = false
     var womanFlag = false
@@ -35,6 +37,7 @@ class SignupGenderBirthFragment : BaseFragment<FragmentSignupGenderBirthBinding>
     }
     override fun onStart() {
         super.onStart()
+        startTime = System.currentTimeMillis().toDouble()
 
         binding.genderBirthBtn.setOnTouchListener({ v, event -> true })
 
@@ -104,6 +107,12 @@ class SignupGenderBirthFragment : BaseFragment<FragmentSignupGenderBirthBinding>
             parentFragmentManager.popBackStack()
         }
 
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        endTime = System.currentTimeMillis().toDouble()
+        viewModel.shotSignupGenderBirthLogging(endTime- startTime)
     }
 
     private fun setWomanBtnGreen() {
