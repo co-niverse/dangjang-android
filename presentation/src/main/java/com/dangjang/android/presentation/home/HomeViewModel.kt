@@ -17,6 +17,7 @@ import com.dangjang.android.domain.logging.CalorieScreenClickScheme
 import com.dangjang.android.domain.logging.ExerciseScreenClickScheme
 import com.dangjang.android.domain.logging.GlucoseScreenClickScheme
 import com.dangjang.android.domain.logging.GlucoseScreenStayScheme
+import com.dangjang.android.domain.logging.HomeScreenExposureScheme
 import com.dangjang.android.domain.logging.SignupAfterTimeScheme
 import com.dangjang.android.domain.logging.WeightScreenClickScheme
 import com.dangjang.android.domain.model.GetGlucoseVO
@@ -680,6 +681,16 @@ class HomeViewModel @Inject constructor(
     private fun getSignupAfterTimeLoggingScheme(stayTime: Double): ExposureScheme {
         return SignupAfterTimeScheme.Builder()
             .setStayTime(stayTime)
+            .build()
+    }
+
+    fun shotHomeExposureLogging() {
+        val scheme = getHomeExposureLoggingScheme()
+        SWMLogging.logEvent(scheme)
+    }
+
+    private fun getHomeExposureLoggingScheme(): ExposureScheme {
+        return HomeScreenExposureScheme.Builder()
             .build()
     }
 
