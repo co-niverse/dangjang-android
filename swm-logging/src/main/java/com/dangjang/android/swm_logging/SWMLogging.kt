@@ -25,7 +25,6 @@ object SWMLogging {
     //private lateinit var OSNameAndVersion: String
     private lateinit var baseUrl: String
     private lateinit var serverPath: String
-    private lateinit var accessToken: String
     private lateinit var sessionId: UUID
     private lateinit var loggingService: LoggingService
     private val observable = PublishSubject.create<SWMLoggingScheme>() // 발행
@@ -56,20 +55,10 @@ object SWMLogging {
             .connectTimeout(15, TimeUnit.SECONDS)
             .writeTimeout(20, TimeUnit.SECONDS)
             .readTimeout(15, TimeUnit.SECONDS)
-            .addInterceptor(interceptor)
             .addInterceptor(HttpLoggingInterceptor().apply {
                 level = HttpLoggingInterceptor.Level.BODY
             }).build()
     }
-
-    private val interceptor: Interceptor =
-        Interceptor { chain ->
-            with(chain) {
-                proceed(
-                    request().newBuilder().addHeader(AUTHORIZATION, "Bearer $accessToken").build()
-                )
-            }
-        }
 
     private val loggingRetrofit: Retrofit by lazy {
         Retrofit.Builder()
@@ -98,14 +87,12 @@ object SWMLogging {
         //appVersion: String,
         //osNameAndVersion: String,
         baseUrl: String,
-        serverPath: String,
-        token: String
+        serverPath: String
     ) {
         //SWMLogging.appVersion = appVersion
         //OSNameAndVersion = osNameAndVersion
         SWMLogging.baseUrl = baseUrl
         SWMLogging.serverPath = serverPath
-        accessToken = token
         sessionId = UUID.randomUUID()
         setLoggingService()
         observable.throttleFirst(500, TimeUnit.MILLISECONDS).subscribe(observer)
