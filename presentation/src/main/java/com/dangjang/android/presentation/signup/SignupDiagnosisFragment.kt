@@ -69,8 +69,8 @@ class SignupDiagnosisFragment : BaseFragment<FragmentSignupDiagnosisBinding>(R.l
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onDestroyView() {
+        super.onDestroyView()
         endTime = System.currentTimeMillis().toDouble()
         viewModel.shotSignupDiagnosisLogging(endTime- startTime)
     }

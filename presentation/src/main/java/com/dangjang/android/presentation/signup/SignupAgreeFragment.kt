@@ -117,8 +117,8 @@ class SignupAgreeFragment : BaseFragment<FragmentSignupAgreeBinding>(R.layout.fr
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onDestroyView() {
+        super.onDestroyView()
         endTime = System.currentTimeMillis().toDouble()
         viewModel.shotSignupAgreeLogging(endTime- startTime)
     }

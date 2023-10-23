@@ -109,8 +109,8 @@ class SignupGenderBirthFragment : BaseFragment<FragmentSignupGenderBirthBinding>
 
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onDestroyView() {
+        super.onDestroyView()
         endTime = System.currentTimeMillis().toDouble()
         viewModel.shotSignupGenderBirthLogging(endTime- startTime)
     }

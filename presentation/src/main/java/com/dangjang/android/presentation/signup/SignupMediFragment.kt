@@ -85,8 +85,8 @@ class SignupMediFragment : BaseFragment<FragmentSignupMediBinding>(R.layout.frag
 
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onDestroyView() {
+        super.onDestroyView()
         endTime = System.currentTimeMillis().toDouble()
         viewModel.shotSignupMediLogging(endTime- startTime)
     }
