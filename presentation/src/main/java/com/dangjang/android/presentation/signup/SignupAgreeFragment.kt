@@ -1,5 +1,6 @@
 package com.dangjang.android.presentation.signup
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
@@ -8,6 +9,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import com.dangjang.android.common_ui.BaseFragment
 import com.dangjang.android.domain.HttpResponseStatus
+import com.dangjang.android.domain.constants.NEW_USER_KEY
 import com.dangjang.android.presentation.MainActivity
 import com.dangjang.android.presentation.R
 import com.dangjang.android.presentation.databinding.FragmentSignupAgreeBinding
@@ -95,6 +97,8 @@ class SignupAgreeFragment : BaseFragment<FragmentSignupAgreeBinding>(R.layout.fr
                     }
                 }
             }
+            //TODO : 회원가입 유저라는거 저장
+            saveNewUserSpf(NEW_USER_KEY, "newUser")
         }
 
         binding.serviceUrlTv.setOnClickListener {
@@ -123,6 +127,11 @@ class SignupAgreeFragment : BaseFragment<FragmentSignupAgreeBinding>(R.layout.fr
     private fun goToPrivateUrl() {
         val intentUrl = Intent(Intent.ACTION_VIEW, Uri.parse("https://co-niverse.notion.site/cb58f28f2c6e465ea5c596871baaca78?pvs=4"))
         startActivity(intentUrl)
+    }
+
+    private fun saveNewUserSpf(key: String, newUser: String?) {
+        val sharedPreferences = requireContext().getSharedPreferences(NEW_USER_KEY, Context.MODE_PRIVATE)
+        sharedPreferences.edit().putString(key, newUser).apply()
     }
 
 }
