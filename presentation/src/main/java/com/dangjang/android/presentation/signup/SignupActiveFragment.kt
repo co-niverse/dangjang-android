@@ -12,6 +12,8 @@ class SignupActiveFragment : BaseFragment<FragmentSignupActiveBinding>(R.layout.
 
     private val viewModel : SignupViewModel by activityViewModels()
     private var activityAmount: String = ""
+    private var startTime: Double = 0.0
+    private var endTime: Double = 0.0
 
     override fun initView() {
         bind {
@@ -20,6 +22,7 @@ class SignupActiveFragment : BaseFragment<FragmentSignupActiveBinding>(R.layout.
     }
     override fun onStart() {
         super.onStart()
+        startTime = System.currentTimeMillis().toDouble()
 
         binding.activeBtn.setOnTouchListener({ v, event -> true })
 
@@ -58,6 +61,12 @@ class SignupActiveFragment : BaseFragment<FragmentSignupActiveBinding>(R.layout.
             parentFragmentManager.popBackStack()
         }
 
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        endTime = System.currentTimeMillis().toDouble()
+        viewModel.shotSignupNicknameLogging(endTime- startTime)
     }
 
     private fun setSmallClGray() {
