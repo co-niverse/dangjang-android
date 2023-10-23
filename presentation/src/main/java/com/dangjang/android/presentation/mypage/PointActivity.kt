@@ -66,6 +66,11 @@ class PointActivity : FragmentActivity() {
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        viewModel.shotPointExposureLogging()
+    }
+
     private fun setGiftListAdapter() {
         giftListAdapter = GiftListAdapter(viewModel)
         giftListAdapter.setMyItemClickListener(object :

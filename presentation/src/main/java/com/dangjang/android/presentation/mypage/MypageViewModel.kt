@@ -15,6 +15,7 @@ import com.dangjang.android.domain.constants.AUTO_LOGIN_SPF_KEY
 import com.dangjang.android.domain.constants.FCM_TOKEN_KEY
 import com.dangjang.android.domain.constants.TOKEN_SPF_KEY
 import com.dangjang.android.domain.logging.MypageScreenExposureScheme
+import com.dangjang.android.domain.logging.PointScreenExposureScheme
 import com.dangjang.android.domain.model.GetMypageVO
 import com.dangjang.android.domain.model.GetPointVO
 import com.dangjang.android.domain.model.PostPointVO
@@ -200,6 +201,16 @@ class MypageViewModel @Inject constructor(
 
     private fun getMypageExposureLoggingScheme(): ExposureScheme {
         return MypageScreenExposureScheme.Builder()
+            .build()
+    }
+
+    fun shotPointExposureLogging() {
+        val scheme = getPointExposureLoggingScheme()
+        SWMLogging.logEvent(scheme)
+    }
+
+    private fun getPointExposureLoggingScheme(): ExposureScheme {
+        return PointScreenExposureScheme.Builder()
             .build()
     }
 
