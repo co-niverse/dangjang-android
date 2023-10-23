@@ -36,7 +36,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                android:text="포인트"
+                android:text="포인트 | 서비스 오픈 이벤트"
                 android:textColor="@color/black"
                 android:textSize="18sp"
                 android:textStyle="bold"
@@ -48,11 +48,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
                 android:background="@drawable/background_white_gradient"
                 android:elevation="8dp"
-                app:layout_constraintTop_toBottomOf="@id/point_title_tv">
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/point_info_tv">
 
 
                 <ImageView
@@ -90,27 +92,36 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="8dp"
                 android:gravity="center"
-                android:text="서비스 오픈 기념 포인트 이벤트를 진행중입니다! \n매일 서비스를 이용해서 포인트를 모은 후 기프티콘을 받아보세요!"
+                android:text="매일 서비스를 이용한 후 기프티콘을 받아보세요!\n*이벤트는 조기 종료될 수 있습니다.*"
                 android:textColor="@color/black"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/coin_cl" />
-
+                app:layout_constraintTop_toBottomOf="@+id/point_title_tv" />
 
             <TextView
-                android:id="@+id/point_info_tv2"
-                android:layout_width="0dp"
+                android:id="@+id/point_manual_tv"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="24dp"
+                android:text="포인트 적립 방법"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@id/coin_cl"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/point_manual_rv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
                 android:layout_marginTop="16dp"
-                android:layout_marginEnd="8dp"
-                android:gravity="center"
-                android:text="1일 1접속 (100), 회원가입 (500), 헬스커넥트 연동 (500) 포인트를 드리고 있어요. 포인트 제공 방법은 더 추가될 예정입니다.\n*이벤트가 조기 종료될 수 있어요*"
-                android:textColor="#676767"
+                android:orientation="vertical"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/point_info_tv" />
+                app:layout_constraintTop_toBottomOf="@+id/point_manual_tv" />
 
             <TextView
                 android:id="@+id/point_gift_title_tv"
@@ -123,7 +134,7 @@
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/point_info_tv2" />
+                app:layout_constraintTop_toBottomOf="@id/point_manual_rv" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/point_gift_rv"
