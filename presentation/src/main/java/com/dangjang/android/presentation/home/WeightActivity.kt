@@ -104,6 +104,11 @@ class WeightActivity : FragmentActivity() {
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        viewModel.shotWeightExposureLogging()
+    }
+
     private fun getAccessToken(): String? {
         val sharedPreferences = getSharedPreferences(TOKEN_SPF_KEY, Context.MODE_PRIVATE)
 
