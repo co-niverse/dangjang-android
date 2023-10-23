@@ -11,6 +11,8 @@ import dagger.hilt.android.AndroidEntryPoint
 class SignupMediFragment : BaseFragment<FragmentSignupMediBinding>(R.layout.fragment_signup_medi) {
 
     private val viewModel : SignupViewModel by activityViewModels()
+    private var startTime: Double = 0.0
+    private var endTime: Double = 0.0
 
     override fun initView() {
         bind {
@@ -19,6 +21,7 @@ class SignupMediFragment : BaseFragment<FragmentSignupMediBinding>(R.layout.frag
     }
     override fun onStart() {
         super.onStart()
+        startTime = System.currentTimeMillis().toDouble()
 
         binding.mediBtn.setOnTouchListener({ v, event -> true })
 
@@ -80,6 +83,12 @@ class SignupMediFragment : BaseFragment<FragmentSignupMediBinding>(R.layout.frag
             parentFragmentManager.popBackStack()
         }
 
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        endTime = System.currentTimeMillis().toDouble()
+        viewModel.shotSignupMediLogging(endTime- startTime)
     }
 
     private fun setMedicineGreen() {
