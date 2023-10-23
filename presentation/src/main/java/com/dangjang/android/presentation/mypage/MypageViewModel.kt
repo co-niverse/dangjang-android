@@ -14,6 +14,8 @@ import com.dangjang.android.domain.constants.AUTO_LOGIN_EDITOR_KEY
 import com.dangjang.android.domain.constants.AUTO_LOGIN_SPF_KEY
 import com.dangjang.android.domain.constants.FCM_TOKEN_KEY
 import com.dangjang.android.domain.constants.TOKEN_SPF_KEY
+import com.dangjang.android.domain.logging.MypageScreenExposureScheme
+import com.dangjang.android.domain.logging.PointScreenExposureScheme
 import com.dangjang.android.domain.model.GetMypageVO
 import com.dangjang.android.domain.model.GetPointVO
 import com.dangjang.android.domain.model.PostPointVO
@@ -21,6 +23,8 @@ import com.dangjang.android.domain.request.PostPointRequest
 import com.dangjang.android.domain.usecase.MypageUseCase
 import com.dangjang.android.domain.usecase.TokenUseCase
 import com.dangjang.android.presentation.login.LoginActivity
+import com.dangjang.android.swm_logging.SWMLogging
+import com.dangjang.android.swm_logging.logging_scheme.ExposureScheme
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -186,6 +190,28 @@ class MypageViewModel @Inject constructor(
         val editor = sp.edit()
         editor.remove(FCM_TOKEN_KEY)
         editor.apply()
+    }
+
+
+    //Logging
+    fun shotMypageExposureLogging() {
+        val scheme = getMypageExposureLoggingScheme()
+        SWMLogging.logEvent(scheme)
+    }
+
+    private fun getMypageExposureLoggingScheme(): ExposureScheme {
+        return MypageScreenExposureScheme.Builder()
+            .build()
+    }
+
+    fun shotPointExposureLogging() {
+        val scheme = getPointExposureLoggingScheme()
+        SWMLogging.logEvent(scheme)
+    }
+
+    private fun getPointExposureLoggingScheme(): ExposureScheme {
+        return PointScreenExposureScheme.Builder()
+            .build()
     }
 
     private fun <T> Flow<T>.handleErrors(): Flow<T> =

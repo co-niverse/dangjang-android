@@ -10,12 +10,22 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.dangjang.android.domain.HttpResponseStatus
 import com.dangjang.android.domain.constants.FCM_TOKEN_KEY
+import com.dangjang.android.domain.logging.SignupActiveScheme
+import com.dangjang.android.domain.logging.SignupAgreeScheme
+import com.dangjang.android.domain.logging.SignupBodyScheme
+import com.dangjang.android.domain.logging.SignupDiagnosisScheme
+import com.dangjang.android.domain.logging.SignupDiseaseScheme
+import com.dangjang.android.domain.logging.SignupGenderBirthScheme
+import com.dangjang.android.domain.logging.SignupMediScheme
+import com.dangjang.android.domain.logging.SignupNicknameScheme
 import com.dangjang.android.domain.model.DuplicateNicknameVO
 import com.dangjang.android.domain.model.AuthVO
 import com.dangjang.android.domain.requestVO.SignupRequestVO
 import com.dangjang.android.domain.usecase.SignupUseCase
 import com.dangjang.android.presentation.R
 import com.dangjang.android.presentation.login.LoginActivity
+import com.dangjang.android.swm_logging.SWMLogging
+import com.dangjang.android.swm_logging.logging_scheme.ExposureScheme
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -184,5 +194,94 @@ class SignupViewModel @Inject constructor(
     private fun getFCMToken(): String? {
         val sharedPreferences = getApplication<Application>().applicationContext.getSharedPreferences(FCM_TOKEN_KEY, Context.MODE_PRIVATE)
         return sharedPreferences.getString(FCM_TOKEN_KEY, null)
+    }
+
+    //Logging
+    fun shotSignupNicknameLogging(stayTime: Double) {
+        val scheme = getSignupNicknameLoggingScheme(stayTime)
+        SWMLogging.logEvent(scheme)
+    }
+
+    private fun getSignupNicknameLoggingScheme(stayTime: Double): ExposureScheme {
+        return SignupNicknameScheme.Builder()
+            .setStayTime(stayTime)
+            .build()
+    }
+
+    fun shotSignupGenderBirthLogging(stayTime: Double) {
+        val scheme = getSignupGenderBirthLoggingScheme(stayTime)
+        SWMLogging.logEvent(scheme)
+    }
+
+    private fun getSignupGenderBirthLoggingScheme(stayTime: Double): ExposureScheme {
+        return SignupGenderBirthScheme.Builder()
+            .setStayTime(stayTime)
+            .build()
+    }
+
+    fun shotSignupBodyLogging(stayTime: Double) {
+        val scheme = getSignupBodyLoggingScheme(stayTime)
+        SWMLogging.logEvent(scheme)
+    }
+
+    private fun getSignupBodyLoggingScheme(stayTime: Double): ExposureScheme {
+        return SignupBodyScheme.Builder()
+            .setStayTime(stayTime)
+            .build()
+    }
+
+    fun shotSignupActiveLogging(stayTime: Double) {
+        val scheme = getSignupActiveLoggingScheme(stayTime)
+        SWMLogging.logEvent(scheme)
+    }
+
+    private fun getSignupActiveLoggingScheme(stayTime: Double): ExposureScheme {
+        return SignupActiveScheme.Builder()
+            .setStayTime(stayTime)
+            .build()
+    }
+
+    fun shotSignupDiagnosisLogging(stayTime: Double) {
+        val scheme = getSignupDiagnosisLoggingScheme(stayTime)
+        SWMLogging.logEvent(scheme)
+    }
+
+    private fun getSignupDiagnosisLoggingScheme(stayTime: Double): ExposureScheme {
+        return SignupDiagnosisScheme.Builder()
+            .setStayTime(stayTime)
+            .build()
+    }
+
+    fun shotSignupMediLogging(stayTime: Double) {
+        val scheme = getSignupMediLoggingScheme(stayTime)
+        SWMLogging.logEvent(scheme)
+    }
+
+    private fun getSignupMediLoggingScheme(stayTime: Double): ExposureScheme {
+        return SignupMediScheme.Builder()
+            .setStayTime(stayTime)
+            .build()
+    }
+
+    fun shotSignupDiseaseLogging(stayTime: Double) {
+        val scheme = getSignupDiseaseLoggingScheme(stayTime)
+        SWMLogging.logEvent(scheme)
+    }
+
+    private fun getSignupDiseaseLoggingScheme(stayTime: Double): ExposureScheme {
+        return SignupDiseaseScheme.Builder()
+            .setStayTime(stayTime)
+            .build()
+    }
+
+    fun shotSignupAgreeLogging(stayTime: Double) {
+        val scheme = getSignupAgreeLoggingScheme(stayTime)
+        SWMLogging.logEvent(scheme)
+    }
+
+    private fun getSignupAgreeLoggingScheme(stayTime: Double): ExposureScheme {
+        return SignupAgreeScheme.Builder()
+            .setStayTime(stayTime)
+            .build()
     }
 }

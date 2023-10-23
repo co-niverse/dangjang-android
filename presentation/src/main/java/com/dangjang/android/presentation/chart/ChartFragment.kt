@@ -120,6 +120,11 @@ class ChartFragment : BaseFragment<FragmentChartBinding>(R.layout.fragment_chart
 
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        viewModel.shotChartExposureLogging()
+    }
+
     private fun initBarChart(barChart: BarChart) {
         barChart.setDrawGridBackground(false)
         barChart.setDrawBarShadow(false)

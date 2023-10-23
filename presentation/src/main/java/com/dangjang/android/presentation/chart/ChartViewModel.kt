@@ -9,10 +9,14 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.dangjang.android.domain.constants.ACCESS_TOKEN_KEY
 import com.dangjang.android.domain.constants.TOKEN_SPF_KEY
+import com.dangjang.android.domain.logging.ChartScreenExposureScheme
+import com.dangjang.android.domain.logging.HomeScreenExposureScheme
 import com.dangjang.android.domain.model.GetChartVO
 import com.dangjang.android.domain.usecase.ChartUseCase
 import com.dangjang.android.domain.usecase.TokenUseCase
 import com.dangjang.android.presentation.login.LoginActivity
+import com.dangjang.android.swm_logging.SWMLogging
+import com.dangjang.android.swm_logging.logging_scheme.ExposureScheme
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.data.Entry
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -223,6 +227,18 @@ class ChartViewModel @Inject constructor(
 
         return sharedPreferences.getString(ACCESS_TOKEN_KEY, null)
     }
+
+    //Logging
+    fun shotChartExposureLogging() {
+        val scheme = getChartExposureLoggingScheme()
+        SWMLogging.logEvent(scheme)
+    }
+
+    private fun getChartExposureLoggingScheme(): ExposureScheme {
+        return ChartScreenExposureScheme.Builder()
+            .build()
+    }
+
 
     private fun <T> Flow<T>.handleErrors(): Flow<T> =
         catch { e ->

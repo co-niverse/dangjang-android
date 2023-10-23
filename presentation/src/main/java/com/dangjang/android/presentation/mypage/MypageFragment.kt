@@ -78,6 +78,10 @@ class MypageFragment : BaseFragment<FragmentMypageBinding>(R.layout.fragment_myp
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        viewModel.shotMypageExposureLogging()
+    }
     private fun goToServiceUrl() {
         val intentUrl = Intent(Intent.ACTION_VIEW, Uri.parse("https://co-niverse.notion.site/a3e0b9b54d0f4b3bba174901297ec918?pvs=4"))
         startActivity(intentUrl)

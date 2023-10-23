@@ -122,6 +122,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
         }
 
         binding.glucoseCl.setOnClickListener {
+            viewModel.shotGlucoseClickLogging()
             Intent(activity, GlucoseActivity::class.java).apply {
                 putExtra("date",date)
                 startActivityForResult(this, 101)
@@ -129,6 +130,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
         }
 
         binding.weightCl.setOnClickListener {
+            viewModel.shotWeightClickLogging()
             Intent(activity, WeightActivity::class.java).apply {
                 putExtra("date",date)
                 startActivityForResult(this, 101)
@@ -136,6 +138,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
         }
 
         binding.exerciseCl.setOnClickListener {
+            viewModel.shotExerciseClickLogging()
             Intent(activity, ExerciseActivity::class.java).apply {
                 putExtra("date",date)
                 startActivityForResult(this, 101)
@@ -164,6 +167,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
             viewModel.shotCalorieClickLogging()
             Toast.makeText(context, "서비스 준비중입니다.", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        viewModel.shotHomeExposureLogging()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
