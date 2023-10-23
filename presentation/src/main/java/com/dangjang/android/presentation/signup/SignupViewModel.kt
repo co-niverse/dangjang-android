@@ -10,6 +10,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.dangjang.android.domain.HttpResponseStatus
 import com.dangjang.android.domain.constants.FCM_TOKEN_KEY
+import com.dangjang.android.domain.logging.SignupBodyScheme
 import com.dangjang.android.domain.logging.SignupGenderBirthScheme
 import com.dangjang.android.domain.logging.SignupNicknameScheme
 import com.dangjang.android.domain.model.DuplicateNicknameVO
@@ -209,6 +210,17 @@ class SignupViewModel @Inject constructor(
 
     private fun getSignupGenderBirthLoggingScheme(stayTime: Double): ExposureScheme {
         return SignupGenderBirthScheme.Builder()
+            .setStayTime(stayTime)
+            .build()
+    }
+
+    fun shotSignupBodyLogging(stayTime: Double) {
+        val scheme = getSignupBodyLoggingScheme(stayTime)
+        SWMLogging.logEvent(scheme)
+    }
+
+    private fun getSignupBodyLoggingScheme(stayTime: Double): ExposureScheme {
+        return SignupBodyScheme.Builder()
             .setStayTime(stayTime)
             .build()
     }
