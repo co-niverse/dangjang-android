@@ -10,12 +10,15 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.dangjang.android.domain.HttpResponseStatus
 import com.dangjang.android.domain.constants.FCM_TOKEN_KEY
+import com.dangjang.android.domain.logging.SignupNicknameScheme
 import com.dangjang.android.domain.model.DuplicateNicknameVO
 import com.dangjang.android.domain.model.AuthVO
 import com.dangjang.android.domain.requestVO.SignupRequestVO
 import com.dangjang.android.domain.usecase.SignupUseCase
 import com.dangjang.android.presentation.R
 import com.dangjang.android.presentation.login.LoginActivity
+import com.dangjang.android.swm_logging.SWMLogging
+import com.dangjang.android.swm_logging.logging_scheme.ExposureScheme
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -184,5 +187,17 @@ class SignupViewModel @Inject constructor(
     private fun getFCMToken(): String? {
         val sharedPreferences = getApplication<Application>().applicationContext.getSharedPreferences(FCM_TOKEN_KEY, Context.MODE_PRIVATE)
         return sharedPreferences.getString(FCM_TOKEN_KEY, null)
+    }
+
+    //Logging
+    fun shotSignupNicknameLogging(stayTime: Double) {
+        val scheme = getSignupNicknameLoggingScheme(stayTime)
+        SWMLogging.logEvent(scheme)
+    }
+
+    private fun getSignupNicknameLoggingScheme(stayTime: Double): ExposureScheme {
+        return SignupNicknameScheme.Builder()
+            .setStayTime(stayTime)
+            .build()
     }
 }
