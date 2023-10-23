@@ -161,6 +161,7 @@ class GlucoseActivity : FragmentActivity() {
         super.onDestroy()
         endTime = System.currentTimeMillis().toDouble()
         viewModel.shotGlucoseStayTimeLogging(endTime- startTime)
+        viewModel.shotGlucoseExposureLogging()
     }
 
     private fun getAccessToken(): String? {
