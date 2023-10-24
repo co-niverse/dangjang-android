@@ -40,10 +40,14 @@ class PointCheckFragment : BaseFragment<FragmentPointCheckBinding>(R.layout.frag
         val type = viewModel.selectedGiftTitle.value
         val price = viewModel.selectedGiftPrice.value
         val phone = viewModel.selectedGiftPhone.value
+        val name = viewModel.selectedGiftName.value
+        val comment = viewModel.selectedGiftComment.value
 
         binding.giftTitleTv.text = type
         binding.giftPointTv.text = price + " 포인트"
         binding.phoneTv.text = formatPhoneNumber(phone)
+        binding.nameTv.text = name
+        binding.commentTv.text = comment
 
         viewModel.setPostPointRequest(type, formatPhoneNumber(phone))
 
