@@ -80,6 +80,9 @@ class HomeViewModel @Inject constructor(
     private val _getHomeFlow = MutableStateFlow(GetHomeVO())
     val getHomeFlow = _getHomeFlow.asStateFlow()
 
+    private val _getDateFlow = MutableStateFlow(getTodayDate())
+    val getDateFlow = _getDateFlow.asStateFlow()
+
     //알람
     private val _getNotificationFlow = MutableStateFlow(GetNotificationVO())
     val getNotificationFlow = _getNotificationFlow.asStateFlow()
@@ -158,9 +161,16 @@ class HomeViewModel @Inject constructor(
             getHomeUseCase.getHome("Bearer $accessToken", date)
                 .onEach {
                     _getHomeFlow.emit(it)
+                    setDate(it.date)
                 }
                 .handleErrors()
                 .collect()
+        }
+    }
+
+    fun setDate(date: String) {
+        _getDateFlow.update {
+            date
         }
     }
 
