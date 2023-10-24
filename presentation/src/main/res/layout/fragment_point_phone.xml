@@ -142,6 +142,7 @@
                     android:ems="10"
                     android:hint="전화번호를 입력해주세요"
                     android:inputType="number"
+                    android:maxLength="11"
                     android:padding="17sp"
                     android:textColorHint="#939393"
                     app:layout_constraintEnd_toEndOf="parent"

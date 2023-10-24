@@ -89,11 +89,12 @@ class PointActivity : FragmentActivity() {
             override fun onItemClick(giftListItem: ProductVO) {
                 viewModel.setSelectedGiftTitle(giftListItem.title)
                 viewModel.setSelectedGiftPrice(giftListItem.price.toString())
-                if (giftListItem.price <= viewModel.getPointFlow.value.balancedPoint) {
-                    setBtnGreen()
-                } else {
-                    Toast.makeText(applicationContext,"포인트가 부족합니다.", Toast.LENGTH_SHORT).show()
-                }
+                setBtnGreen()
+//                if (giftListItem.price <= viewModel.getPointFlow.value.balancedPoint) {
+//                    setBtnGreen()
+//                } else {
+//                    Toast.makeText(applicationContext,"포인트가 부족합니다.", Toast.LENGTH_SHORT).show()
+//                }
             }
         })
         binding.pointGiftRv.adapter = giftListAdapter
