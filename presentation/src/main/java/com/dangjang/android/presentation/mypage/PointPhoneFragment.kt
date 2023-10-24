@@ -14,6 +14,8 @@ import kotlinx.coroutines.flow.collectLatest
 class PointPhoneFragment : BaseFragment<FragmentPointPhoneBinding>(R.layout.fragment_point_phone){
 
     private val viewModel : MypageViewModel by activityViewModels()
+    private var nameFlag = false
+    private var phoneFlag = false
 
     override fun initView() {
         bind {
@@ -46,6 +48,20 @@ class PointPhoneFragment : BaseFragment<FragmentPointPhoneBinding>(R.layout.frag
             parentFragmentManager.popBackStack()
         }
 
+        binding.nameEt.addTextChangedListener(object : android.text.TextWatcher{
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun afterTextChanged(p0: android.text.Editable?) {
+                nameFlag = true
+                setBtnGreen()
+            }
+
+        })
+
         binding.phoneEt.addTextChangedListener(object : android.text.TextWatcher{
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
@@ -54,8 +70,8 @@ class PointPhoneFragment : BaseFragment<FragmentPointPhoneBinding>(R.layout.frag
             }
 
             override fun afterTextChanged(p0: android.text.Editable?) {
+                phoneFlag = true
                 setBtnGreen()
-                binding.nextBtn.setOnTouchListener({ v, event -> false })
             }
 
         })
@@ -63,13 +79,17 @@ class PointPhoneFragment : BaseFragment<FragmentPointPhoneBinding>(R.layout.frag
         binding.nextBtn.setOnClickListener {
             val pointCheckFragment = PointCheckFragment()
             viewModel.setSelectedGiftPhone(binding.phoneEt.text.toString())
-            parentFragmentManager.beginTransaction().replace(R.id.point_cl, pointCheckFragment).addToBackStack(null).commit()
+            viewModel.setSelectedGiftName(binding.nameEt.text.toString())
+            viewModel.setSelectedGiftComment(binding.commentEt.text.toString())
+            parentFragmentManager.beginTransaction().replace(R.id.point_top_cl, pointCheckFragment).addToBackStack(null).commit()
         }
     }
 
     private fun setBtnGreen() {
-        binding.nextBtn.setBackgroundResource(R.drawable.background_green_gradient)
-        binding.nextBtn.setOnTouchListener({ v, event -> false })
+        if (nameFlag && phoneFlag) {
+            binding.nextBtn.setBackgroundResource(R.drawable.background_green_gradient)
+            binding.nextBtn.setOnTouchListener({ v, event -> false })
+        }
     }
 
 }

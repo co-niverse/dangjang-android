@@ -64,6 +64,12 @@ class MypageViewModel @Inject constructor(
     private val _selectedGiftPhone = MutableStateFlow(String())
     val selectedGiftPhone = _selectedGiftPhone.asStateFlow()
 
+    private val _selectedGiftName = MutableStateFlow(String())
+    val selectedGiftName = _selectedGiftName.asStateFlow()
+
+    private val _selectedGiftComment = MutableStateFlow(String())
+    val selectedGiftComment = _selectedGiftComment.asStateFlow()
+
     private val _signoutFlow = MutableStateFlow(false)
     val signoutFlow = _signoutFlow.asStateFlow()
 
@@ -98,9 +104,9 @@ class MypageViewModel @Inject constructor(
         }
     }
 
-    fun setPostPointRequest(type: String, phone: String) {
+    fun setPostPointRequest(type: String, phone: String, name: String, comment: String) {
         _postPointRequest.update {
-            it.copy(type = type, phone = phone)
+            it.copy(type = type, phone = phone, name = name, comment = comment)
         }
     }
 
@@ -119,6 +125,18 @@ class MypageViewModel @Inject constructor(
     fun setSelectedGiftPhone(phone: String) {
         _selectedGiftPhone.update {
             phone
+        }
+    }
+
+    fun setSelectedGiftName(name: String) {
+        _selectedGiftName.update {
+            name
+        }
+    }
+
+    fun setSelectedGiftComment(comment: String) {
+        _selectedGiftComment.update {
+            comment
         }
     }
 

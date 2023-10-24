@@ -3,6 +3,7 @@ package com.dangjang.android.presentation.mypage
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
@@ -17,12 +18,14 @@ import com.dangjang.android.presentation.home.GiftListAdapter
 import com.dangjang.android.presentation.login.LoginActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class PointActivity : FragmentActivity() {
     private lateinit var binding: ActivityPointBinding
     private val viewModel by viewModels<MypageViewModel>()
     private lateinit var giftListAdapter: GiftListAdapter
+    private lateinit var pointManualListAdapter: PointManualListAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,12 +49,20 @@ class PointActivity : FragmentActivity() {
         binding.lifecycleOwner = this
 
         setGiftListAdapter()
+        setPointManualListAdapter()
 
         binding.nextBtn.setOnTouchListener({ v, event -> true })
 
         lifecycleScope.launchWhenStarted {
             viewModel.getPointFlow.collectLatest {
                 giftListAdapter.submitList(it.products)
+            }
+        }
+
+        lifecycleScope.launch {
+            viewModel.getPointFlow.collectLatest {
+                Log.e("point",it.descriptionListToEarnPoint.toString())
+                pointManualListAdapter.submitList(it.descriptionListToEarnPoint)
             }
         }
 
@@ -62,7 +73,7 @@ class PointActivity : FragmentActivity() {
         binding.nextBtn.setOnClickListener {
             binding.coinCl.elevation = 0f
             val pointPhoneFragment = PointPhoneFragment()
-            supportFragmentManager.beginTransaction().replace(R.id.point_cl, pointPhoneFragment).addToBackStack(null).commit()
+            supportFragmentManager.beginTransaction().replace(R.id.point_top_cl, pointPhoneFragment).addToBackStack(null).commit()
         }
     }
 
@@ -86,6 +97,11 @@ class PointActivity : FragmentActivity() {
             }
         })
         binding.pointGiftRv.adapter = giftListAdapter
+    }
+
+    private fun setPointManualListAdapter() {
+        pointManualListAdapter = PointManualListAdapter(viewModel)
+        binding.pointManualRv.adapter = pointManualListAdapter
     }
 
     private fun setBtnGreen() {

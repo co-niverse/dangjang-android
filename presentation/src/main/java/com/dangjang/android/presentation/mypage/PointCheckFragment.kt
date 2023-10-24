@@ -40,12 +40,16 @@ class PointCheckFragment : BaseFragment<FragmentPointCheckBinding>(R.layout.frag
         val type = viewModel.selectedGiftTitle.value
         val price = viewModel.selectedGiftPrice.value
         val phone = viewModel.selectedGiftPhone.value
+        val name = viewModel.selectedGiftName.value
+        val comment = viewModel.selectedGiftComment.value
 
         binding.giftTitleTv.text = type
         binding.giftPointTv.text = price + " 포인트"
         binding.phoneTv.text = formatPhoneNumber(phone)
+        binding.nameTv.text = name
+        binding.commentTv.text = comment
 
-        viewModel.setPostPointRequest(type, formatPhoneNumber(phone))
+        viewModel.setPostPointRequest(type, formatPhoneNumber(phone), name, comment)
 
         binding.backIv.setOnClickListener {
             parentFragmentManager.popBackStack()
@@ -54,7 +58,7 @@ class PointCheckFragment : BaseFragment<FragmentPointCheckBinding>(R.layout.frag
         binding.nextBtn.setOnClickListener {
             getAccessToken()?.let { viewModel.postPoint(it) }
             val pointDoneFragment = PointDoneFragment()
-            parentFragmentManager.beginTransaction().replace(R.id.point_cl, pointDoneFragment).addToBackStack(null).commit()
+            parentFragmentManager.beginTransaction().replace(R.id.point_top_cl, pointDoneFragment).addToBackStack(null).commit()
         }
     }
 
