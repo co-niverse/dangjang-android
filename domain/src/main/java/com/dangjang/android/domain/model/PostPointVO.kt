@@ -4,5 +4,7 @@ data class PostPointVO(
     val phone: String = "",
     val type: String = "",
     val changePoint: Int = 0,
-    val balancedPoint: Int = 0
+    val balancedPoint: Int = 0,
+    val name: String = "",
+    val comment: String = ""
 )
