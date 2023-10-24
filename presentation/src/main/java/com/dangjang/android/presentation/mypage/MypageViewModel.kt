@@ -104,9 +104,9 @@ class MypageViewModel @Inject constructor(
         }
     }
 
-    fun setPostPointRequest(type: String, phone: String) {
+    fun setPostPointRequest(type: String, phone: String, name: String, comment: String) {
         _postPointRequest.update {
-            it.copy(type = type, phone = phone)
+            it.copy(type = type, phone = phone, name = name, comment = comment)
         }
     }
 

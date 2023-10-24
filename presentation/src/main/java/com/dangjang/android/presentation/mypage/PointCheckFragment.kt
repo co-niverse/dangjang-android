@@ -49,7 +49,7 @@ class PointCheckFragment : BaseFragment<FragmentPointCheckBinding>(R.layout.frag
         binding.nameTv.text = name
         binding.commentTv.text = comment
 
-        viewModel.setPostPointRequest(type, formatPhoneNumber(phone))
+        viewModel.setPostPointRequest(type, formatPhoneNumber(phone), name, comment)
 
         binding.backIv.setOnClickListener {
             parentFragmentManager.popBackStack()
