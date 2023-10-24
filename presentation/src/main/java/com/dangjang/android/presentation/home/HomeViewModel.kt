@@ -231,6 +231,9 @@ class HomeViewModel @Inject constructor(
     //체중
     fun getWeight(accessToken: String, date: String) {
         viewModelScope.launch {
+            _getWeightFlow.update {
+                it.copy(createdAt = date)
+            }
             getHomeUseCase.getWeight("Bearer $accessToken", date)
                 .onEach {
                     _getWeightFlow.emit(it)
@@ -309,6 +312,9 @@ class HomeViewModel @Inject constructor(
     //운동
     fun getExercise(accessToken: String, date: String) {
         viewModelScope.launch {
+            _getExerciseFlow.update {
+                it.copy(createdAt = date)
+            }
             getHomeUseCase.getExercise("Bearer $accessToken", date)
                 .onEach {
                     _getExerciseFlow.emit(it)
@@ -462,6 +468,9 @@ class HomeViewModel @Inject constructor(
         accessToken: String, date: String
     ) {
         viewModelScope.launch {
+            _getGlucoseFlow.update {
+                it.copy(createdAt = date)
+            }
             getHomeUseCase.getGlucose("Bearer $accessToken", date)
                 .onEach {
                     _getGlucoseFlow.emit(it)
