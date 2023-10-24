@@ -63,7 +63,7 @@ class PointPhoneFragment : BaseFragment<FragmentPointPhoneBinding>(R.layout.frag
         binding.nextBtn.setOnClickListener {
             val pointCheckFragment = PointCheckFragment()
             viewModel.setSelectedGiftPhone(binding.phoneEt.text.toString())
-            parentFragmentManager.beginTransaction().replace(R.id.point_cl, pointCheckFragment).addToBackStack(null).commit()
+            parentFragmentManager.beginTransaction().replace(R.id.point_top_cl, pointCheckFragment).addToBackStack(null).commit()
         }
     }
 

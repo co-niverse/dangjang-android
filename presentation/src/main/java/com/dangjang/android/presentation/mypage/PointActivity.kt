@@ -73,7 +73,7 @@ class PointActivity : FragmentActivity() {
         binding.nextBtn.setOnClickListener {
             binding.coinCl.elevation = 0f
             val pointPhoneFragment = PointPhoneFragment()
-            supportFragmentManager.beginTransaction().replace(R.id.point_cl, pointPhoneFragment).addToBackStack(null).commit()
+            supportFragmentManager.beginTransaction().replace(R.id.point_top_cl, pointPhoneFragment).addToBackStack(null).commit()
         }
     }
 

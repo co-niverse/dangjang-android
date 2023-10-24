@@ -54,7 +54,7 @@ class PointCheckFragment : BaseFragment<FragmentPointCheckBinding>(R.layout.frag
         binding.nextBtn.setOnClickListener {
             getAccessToken()?.let { viewModel.postPoint(it) }
             val pointDoneFragment = PointDoneFragment()
-            parentFragmentManager.beginTransaction().replace(R.id.point_cl, pointDoneFragment).addToBackStack(null).commit()
+            parentFragmentManager.beginTransaction().replace(R.id.point_top_cl, pointDoneFragment).addToBackStack(null).commit()
         }
     }
 
