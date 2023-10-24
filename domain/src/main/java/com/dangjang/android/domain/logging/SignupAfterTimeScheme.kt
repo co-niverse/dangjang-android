@@ -13,7 +13,7 @@ class SignupAfterTimeScheme(
     init {
         setLoggingScheme(
             eventLogName = "signup_after_time",
-            screenName = "",
+            screenName = "home",
             logVersion = Log_VERSION,
             appVersion = "1.0.2",
             sessionId = UUID.randomUUID().toString(),

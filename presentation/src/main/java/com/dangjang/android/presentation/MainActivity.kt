@@ -2,6 +2,7 @@ package com.dangjang.android.presentation
 
 import android.content.Context
 import android.os.Bundle
+import android.os.Handler
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentActivity
@@ -19,6 +20,7 @@ class MainActivity : FragmentActivity() {
     private var startTime: Double = 0.0
     private var endTime: Double = 0.0
     private val viewModel by viewModels<HomeViewModel>()
+    private var doubleBackToExitPressedOnce = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,14 +36,14 @@ class MainActivity : FragmentActivity() {
         binding.bottomNavView.itemIconTintList = null
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onBackPressed() {
         endTime = System.currentTimeMillis().toDouble()
-
         if (getNewUserSpf() == "newUser") {
             viewModel.shotSignupAfterTimeLogging((endTime - startTime))
             removeNewUserSpf()
         }
+        Handler().postDelayed({ doubleBackToExitPressedOnce = false }, 500)
+        super.onBackPressed()
     }
 
     private fun getNewUserSpf(): String? {
