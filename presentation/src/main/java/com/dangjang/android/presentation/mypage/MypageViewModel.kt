@@ -146,7 +146,7 @@ class MypageViewModel @Inject constructor(
                 .onEach {
                     _postPointFlow.emit(it)
                 }
-                .handleErrors()
+                .handlePointErrors()
                 .collect()
         }
     }
@@ -231,6 +231,30 @@ class MypageViewModel @Inject constructor(
         return PointScreenExposureScheme.Builder()
             .build()
     }
+
+    private fun <T> Flow<T>.handlePointErrors(): Flow<T> =
+        catch { e ->
+            Toast.makeText(
+                getApplication<Application>().applicationContext, "포인트 구매에 실패했습니다. 다시 한번 시도해주세요.",
+                Toast.LENGTH_SHORT
+            ).show()
+            if (e.message.toString() == "401 : 만료된 토큰입니다.") {
+                getTokenUseCase.reissueToken(getAccessToken() ?: "")
+                    .onEach {
+                        _reissueTokenFlow.emit(it)
+                    }
+                    .handleReissueTokenErrors()
+                    .collect()
+                Toast.makeText(
+                    getApplication<Application>().applicationContext, "로그인이 만료되었습니다. 다시 한번 시도해주세요.",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+//            Toast.makeText(
+//                getApplication<Application>().applicationContext, e.message,
+//                Toast.LENGTH_SHORT
+//            ).show()
+        }
 
     private fun <T> Flow<T>.handleErrors(): Flow<T> =
         catch { e ->

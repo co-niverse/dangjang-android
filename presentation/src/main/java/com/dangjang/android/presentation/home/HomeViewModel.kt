@@ -80,6 +80,9 @@ class HomeViewModel @Inject constructor(
     private val _getHomeFlow = MutableStateFlow(GetHomeVO())
     val getHomeFlow = _getHomeFlow.asStateFlow()
 
+    private val _getDateFlow = MutableStateFlow(getTodayDate())
+    val getDateFlow = _getDateFlow.asStateFlow()
+
     //알람
     private val _getNotificationFlow = MutableStateFlow(GetNotificationVO())
     val getNotificationFlow = _getNotificationFlow.asStateFlow()
@@ -158,9 +161,16 @@ class HomeViewModel @Inject constructor(
             getHomeUseCase.getHome("Bearer $accessToken", date)
                 .onEach {
                     _getHomeFlow.emit(it)
+                    setDate(it.date)
                 }
                 .handleErrors()
                 .collect()
+        }
+    }
+
+    fun setDate(date: String) {
+        _getDateFlow.update {
+            date
         }
     }
 
@@ -231,6 +241,9 @@ class HomeViewModel @Inject constructor(
     //체중
     fun getWeight(accessToken: String, date: String) {
         viewModelScope.launch {
+            _getWeightFlow.update {
+                it.copy(createdAt = date)
+            }
             getHomeUseCase.getWeight("Bearer $accessToken", date)
                 .onEach {
                     _getWeightFlow.emit(it)
@@ -309,6 +322,9 @@ class HomeViewModel @Inject constructor(
     //운동
     fun getExercise(accessToken: String, date: String) {
         viewModelScope.launch {
+            _getExerciseFlow.update {
+                it.copy(createdAt = date)
+            }
             getHomeUseCase.getExercise("Bearer $accessToken", date)
                 .onEach {
                     _getExerciseFlow.emit(it)
@@ -462,6 +478,9 @@ class HomeViewModel @Inject constructor(
         accessToken: String, date: String
     ) {
         viewModelScope.launch {
+            _getGlucoseFlow.update {
+                it.copy(createdAt = date)
+            }
             getHomeUseCase.getGlucose("Bearer $accessToken", date)
                 .onEach {
                     _getGlucoseFlow.emit(it)
