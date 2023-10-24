@@ -85,7 +85,7 @@
                 android:layout_marginEnd="24dp"
                 android:text= "@{vm.postPointFlow.type}"
                 android:textColor="@color/black"
-                android:textSize="20sp"
+                android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="@+id/gift_title_tv"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/gift_title_tv" />
@@ -109,7 +109,7 @@
                 android:layout_marginEnd="24dp"
                 addPointUnit="@{vm.postPointFlow.changePoint}"
                 android:textColor="@color/black"
-                android:textSize="20sp"
+                android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="@+id/point_used_title_tv"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/point_used_title_tv" />
@@ -133,7 +133,7 @@
                 android:layout_marginEnd="24dp"
                 addPointUnit="@{vm.postPointFlow.balancedPoint}"
                 android:textColor="@color/black"
-                android:textSize="20sp"
+                android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="@+id/point_left_title_tv"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/point_left_title_tv" />
@@ -157,7 +157,7 @@
                 android:layout_marginEnd="24dp"
                 android:text="@{vm.postPointFlow.name}"
                 android:textColor="@color/black"
-                android:textSize="20sp"
+                android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="@+id/name_title_tv"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/name_title_tv" />
@@ -181,7 +181,7 @@
                 android:layout_marginEnd="24dp"
                 android:text="@{vm.postPointFlow.phone}"
                 android:textColor="@color/black"
-                android:textSize="20sp"
+                android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="@+id/phone_title_tv"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/phone_title_tv"/>
@@ -206,7 +206,8 @@
                 android:layout_marginBottom="24dp"
                 android:text="@{vm.postPointFlow.comment}"
                 android:textColor="@color/black"
-                android:textSize="20sp"
+                android:textSize="16sp"
+                android:gravity="right"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/comment_title_tv"
