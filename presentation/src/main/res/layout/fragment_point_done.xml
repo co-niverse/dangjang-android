@@ -71,7 +71,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
-                android:layout_marginTop="48dp"
+                android:layout_marginTop="24dp"
                 android:text="기프티콘"
                 android:textColor="@color/black"
                 android:textSize="16sp"
@@ -85,7 +85,7 @@
                 android:layout_marginEnd="24dp"
                 android:text= "@{vm.postPointFlow.type}"
                 android:textColor="@color/black"
-                android:textSize="20sp"
+                android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="@+id/gift_title_tv"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/gift_title_tv" />
@@ -109,7 +109,7 @@
                 android:layout_marginEnd="24dp"
                 addPointUnit="@{vm.postPointFlow.changePoint}"
                 android:textColor="@color/black"
-                android:textSize="20sp"
+                android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="@+id/point_used_title_tv"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/point_used_title_tv" />
@@ -133,10 +133,34 @@
                 android:layout_marginEnd="24dp"
                 addPointUnit="@{vm.postPointFlow.balancedPoint}"
                 android:textColor="@color/black"
-                android:textSize="20sp"
+                android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="@+id/point_left_title_tv"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/point_left_title_tv" />
+
+            <TextView
+                android:id="@+id/name_title_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="32dp"
+                android:text="이름"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/point_left_title_tv" />
+
+            <TextView
+                android:id="@+id/name_content_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="24dp"
+                android:text="@{vm.postPointFlow.name}"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="@+id/name_title_tv"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/name_title_tv" />
 
             <TextView
                 android:id="@+id/phone_title_tv"
@@ -144,13 +168,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="32dp"
-                android:layout_marginBottom="48dp"
                 android:text="전화번호"
                 android:textColor="@color/black"
                 android:textSize="16sp"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/point_left_title_tv" />
+                app:layout_constraintTop_toBottomOf="@+id/name_title_tv" />
 
             <TextView
                 android:id="@+id/phone_content_tv"
@@ -159,10 +181,38 @@
                 android:layout_marginEnd="24dp"
                 android:text="@{vm.postPointFlow.phone}"
                 android:textColor="@color/black"
-                android:textSize="20sp"
+                android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="@+id/phone_title_tv"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/phone_title_tv" />
+                app:layout_constraintTop_toTopOf="@+id/phone_title_tv"/>
+
+            <TextView
+                android:id="@+id/comment_title_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="32dp"
+                android:text="서비스 평가 의견"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/phone_title_tv" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginBottom="24dp"
+                android:text="@{vm.postPointFlow.comment}"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:gravity="right"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/comment_title_tv"
+                app:layout_constraintTop_toTopOf="@id/comment_title_tv" />
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -14,6 +14,8 @@ class SignupBodyFragment : BaseFragment<FragmentSignupBodyBinding>(R.layout.frag
     private val viewModel : SignupViewModel by activityViewModels()
     private var height : Int = 0
     private var weight : Int = 0
+    private var startTime: Double = 0.0
+    private var endTime: Double = 0.0
 
     override fun initView() {
         bind {
@@ -22,6 +24,7 @@ class SignupBodyFragment : BaseFragment<FragmentSignupBodyBinding>(R.layout.frag
     }
     override fun onStart() {
         super.onStart()
+        startTime = System.currentTimeMillis().toDouble()
 
         binding.bodyBtn.setOnTouchListener({ v, event -> true })
 
@@ -73,6 +76,12 @@ class SignupBodyFragment : BaseFragment<FragmentSignupBodyBinding>(R.layout.frag
             parentFragmentManager.popBackStack()
         }
 
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        endTime = System.currentTimeMillis().toDouble()
+        viewModel.shotSignupBodyLogging(endTime- startTime)
     }
 
     private fun setBodyGreen() {

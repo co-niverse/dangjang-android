@@ -8,11 +8,13 @@ import com.google.gson.annotations.SerializedName
 
 data class GetPointDto(
     @SerializedName("balancedPoint") val balancedPoint: Int?,
-    @SerializedName("productList") val products: List<ProductDto>?
+    @SerializedName("productList") val products: List<ProductDto>?,
+    @SerializedName("descriptionListToEarnPoint") val descriptionToEarnPoint: List<String>?
 ) {
     fun toDomain() = GetPointVO(
         balancedPoint ?: UNKNOWN_INT,
-        products?.map { it.toDomain() } ?: listOf()
+        products?.map { it.toDomain() } ?: listOf(),
+        descriptionToEarnPoint ?: listOf()
     )
 }
 

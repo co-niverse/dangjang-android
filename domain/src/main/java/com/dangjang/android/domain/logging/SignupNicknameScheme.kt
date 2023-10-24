@@ -7,14 +7,14 @@ import java.util.UUID
 import kotlin.properties.Delegates
 
 
-class GlucoseScreenStayScheme(
+class SignupNicknameScheme(
     stayTime: Double
 ) : ExposureScheme() {
 
     init {
         setLoggingScheme(
-            eventLogName = "bloodsugar_stay_time",
-            screenName = "bloodsugar",
+            eventLogName = "signup_stay_time",
+            screenName = "signupNickname",
             logVersion = Log_VERSION,
             appVersion = APP_VERSION,
             sessionId = UUID.randomUUID().toString(),
@@ -26,24 +26,14 @@ class GlucoseScreenStayScheme(
 
     class Builder {
         private var stayTime by Delegates.notNull<Double>()
-//        private lateinit var age: String
-//        fun setTitleName(titleName: String): Builder {
-//            this.titleName = titleName
-//            return this
-//        }
-
-//        fun setAge(age: String): Builder {
-//            this.age = age
-//            return this
-//        }
 
         fun setStayTime(stayTime: Double): Builder {
             this.stayTime = stayTime
             return this
         }
 
-        fun build(): GlucoseScreenStayScheme {
-            return GlucoseScreenStayScheme(
+        fun build(): SignupNicknameScheme {
+            return SignupNicknameScheme(
                 stayTime
             )
         }

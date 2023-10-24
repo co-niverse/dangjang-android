@@ -14,6 +14,8 @@ import com.dangjang.android.domain.constants.AUTO_LOGIN_EDITOR_KEY
 import com.dangjang.android.domain.constants.AUTO_LOGIN_SPF_KEY
 import com.dangjang.android.domain.constants.FCM_TOKEN_KEY
 import com.dangjang.android.domain.constants.TOKEN_SPF_KEY
+import com.dangjang.android.domain.logging.MypageScreenExposureScheme
+import com.dangjang.android.domain.logging.PointScreenExposureScheme
 import com.dangjang.android.domain.model.GetMypageVO
 import com.dangjang.android.domain.model.GetPointVO
 import com.dangjang.android.domain.model.PostPointVO
@@ -21,6 +23,8 @@ import com.dangjang.android.domain.request.PostPointRequest
 import com.dangjang.android.domain.usecase.MypageUseCase
 import com.dangjang.android.domain.usecase.TokenUseCase
 import com.dangjang.android.presentation.login.LoginActivity
+import com.dangjang.android.swm_logging.SWMLogging
+import com.dangjang.android.swm_logging.logging_scheme.ExposureScheme
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -60,6 +64,12 @@ class MypageViewModel @Inject constructor(
     private val _selectedGiftPhone = MutableStateFlow(String())
     val selectedGiftPhone = _selectedGiftPhone.asStateFlow()
 
+    private val _selectedGiftName = MutableStateFlow(String())
+    val selectedGiftName = _selectedGiftName.asStateFlow()
+
+    private val _selectedGiftComment = MutableStateFlow(String())
+    val selectedGiftComment = _selectedGiftComment.asStateFlow()
+
     private val _signoutFlow = MutableStateFlow(false)
     val signoutFlow = _signoutFlow.asStateFlow()
 
@@ -94,9 +104,9 @@ class MypageViewModel @Inject constructor(
         }
     }
 
-    fun setPostPointRequest(type: String, phone: String) {
+    fun setPostPointRequest(type: String, phone: String, name: String, comment: String) {
         _postPointRequest.update {
-            it.copy(type = type, phone = phone)
+            it.copy(type = type, phone = phone, name = name, comment = comment)
         }
     }
 
@@ -118,13 +128,25 @@ class MypageViewModel @Inject constructor(
         }
     }
 
+    fun setSelectedGiftName(name: String) {
+        _selectedGiftName.update {
+            name
+        }
+    }
+
+    fun setSelectedGiftComment(comment: String) {
+        _selectedGiftComment.update {
+            comment
+        }
+    }
+
     fun postPoint(accessToken: String) {
         viewModelScope.launch {
             getMypageUseCase.postPoint("Bearer $accessToken", postPointRequest.value)
                 .onEach {
                     _postPointFlow.emit(it)
                 }
-                .handleErrors()
+                .handlePointErrors()
                 .collect()
         }
     }
@@ -187,6 +209,52 @@ class MypageViewModel @Inject constructor(
         editor.remove(FCM_TOKEN_KEY)
         editor.apply()
     }
+
+
+    //Logging
+    fun shotMypageExposureLogging() {
+        val scheme = getMypageExposureLoggingScheme()
+        SWMLogging.logEvent(scheme)
+    }
+
+    private fun getMypageExposureLoggingScheme(): ExposureScheme {
+        return MypageScreenExposureScheme.Builder()
+            .build()
+    }
+
+    fun shotPointExposureLogging() {
+        val scheme = getPointExposureLoggingScheme()
+        SWMLogging.logEvent(scheme)
+    }
+
+    private fun getPointExposureLoggingScheme(): ExposureScheme {
+        return PointScreenExposureScheme.Builder()
+            .build()
+    }
+
+    private fun <T> Flow<T>.handlePointErrors(): Flow<T> =
+        catch { e ->
+            Toast.makeText(
+                getApplication<Application>().applicationContext, "포인트 구매에 실패했습니다. 다시 한번 시도해주세요.",
+                Toast.LENGTH_SHORT
+            ).show()
+            if (e.message.toString() == "401 : 만료된 토큰입니다.") {
+                getTokenUseCase.reissueToken(getAccessToken() ?: "")
+                    .onEach {
+                        _reissueTokenFlow.emit(it)
+                    }
+                    .handleReissueTokenErrors()
+                    .collect()
+                Toast.makeText(
+                    getApplication<Application>().applicationContext, "로그인이 만료되었습니다. 다시 한번 시도해주세요.",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+//            Toast.makeText(
+//                getApplication<Application>().applicationContext, e.message,
+//                Toast.LENGTH_SHORT
+//            ).show()
+        }
 
     private fun <T> Flow<T>.handleErrors(): Flow<T> =
         catch { e ->

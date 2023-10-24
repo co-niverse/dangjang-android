@@ -48,24 +48,20 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
         binding.vm = viewModel
         binding.lifecycleOwner = this
 
-        date = if (intentDate == "") {
-            viewModel.getTodayDate()
-        } else {
-            intentDate
-        }
+        date = viewModel.getDateFlow.value
 
-        getAccessToken()?.let { viewModel.getHome(it, date) }
+        getAccessToken()?.let { viewModel.getHome(it, viewModel.getDateFlow.value) }
 
         viewModel.getIntroData()
-//        lifecycleScope.launch {
-//            viewModel.introDataFlow.collectLatest {
-//                if (it.latestVersion != "") {
-//                    if (it.latestVersion != getVersionName()) {
-//                        UpdateBottomSheetFragment().show(parentFragmentManager, "UpdateBottomSheetFragment")
-//                    }
-//                }
-//            }
-//        }
+        lifecycleScope.launch {
+            viewModel.introDataFlow.collectLatest {
+                if (it.latestVersion != "") {
+                    if (it.latestVersion != getVersionName()) {
+                        UpdateBottomSheetFragment().show(parentFragmentManager, "UpdateBottomSheetFragment")
+                    }
+                }
+            }
+        }
 
         binding.weightSeekbar.setOnTouchListener({ v, event -> true })
 
@@ -78,6 +74,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
             val data = DatePickerDialog.OnDateSetListener { view, year, month, day ->
                 getAccessToken()?.let { viewModel.getHome(it, viewModel.getDatePickerDate(year, month, day)) }
                 date = viewModel.getDatePickerDate(year, month, day)
+                viewModel.setDate(viewModel.getDatePickerDate(year, month, day))
             }
             val datePickerDialog = DatePickerDialog(requireContext(),data,cal.get(Calendar.YEAR),cal.get(Calendar.MONTH),cal.get(Calendar.DAY_OF_MONTH))
             datePickerDialog.show()
@@ -122,6 +119,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
         }
 
         binding.glucoseCl.setOnClickListener {
+            viewModel.shotGlucoseClickLogging()
             Intent(activity, GlucoseActivity::class.java).apply {
                 putExtra("date",date)
                 startActivityForResult(this, 101)
@@ -129,6 +127,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
         }
 
         binding.weightCl.setOnClickListener {
+            viewModel.shotWeightClickLogging()
             Intent(activity, WeightActivity::class.java).apply {
                 putExtra("date",date)
                 startActivityForResult(this, 101)
@@ -136,6 +135,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
         }
 
         binding.exerciseCl.setOnClickListener {
+            viewModel.shotExerciseClickLogging()
             Intent(activity, ExerciseActivity::class.java).apply {
                 putExtra("date",date)
                 startActivityForResult(this, 101)
@@ -166,11 +166,23 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        viewModel.shotHomeExposureLogging()
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
             val result = data?.getStringExtra("date")
             intentDate = result.toString()
+            if (intentDate == "") {
+                getAccessToken()?.let { viewModel.getHome(it, viewModel.getTodayDate()) }
+                viewModel.setDate(viewModel.getTodayDate())
+            } else {
+                getAccessToken()?.let { viewModel.getHome(it, intentDate) }
+                viewModel.setDate(intentDate)
+            }
         }
     }
 

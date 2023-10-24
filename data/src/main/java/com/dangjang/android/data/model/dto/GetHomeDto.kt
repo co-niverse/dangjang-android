@@ -7,6 +7,7 @@ import com.dangjang.android.domain.constants.UNKNOWN_STRING
 import com.dangjang.android.domain.model.GetHomeExerciseVO
 import com.dangjang.android.domain.model.GetHomeVO
 import com.dangjang.android.domain.model.GetHomeWeightVO
+import com.dangjang.android.domain.model.UserLogVO
 import com.google.gson.annotations.SerializedName
 
 data class GetHomeDto(
@@ -15,7 +16,8 @@ data class GetHomeDto(
     @SerializedName("bloodSugars") val bloodSugars: List<TodayGuidesDto>?,
     @SerializedName("weight") val weight: GetHomeWeightDto?,
     @SerializedName("exercise") val exercise: GetHomeExerciseDto?,
-    @SerializedName("notification") val notification: Boolean?
+    @SerializedName("notification") val notification: Boolean?,
+    @SerializedName("userLog") val userLog: UserLogDto?
 ) {
     fun toDomain() = GetHomeVO(
         nickname ?: UNKNOWN_STRING,
@@ -23,7 +25,8 @@ data class GetHomeDto(
         bloodSugars?.map { it.toDomain() } ?: listOf(),
         weight?.toDomain() ?: GetHomeWeightVO(),
         exercise?.toDomain() ?: GetHomeExerciseVO(),
-        notification ?: UNKNOWN_BOOLEAN
+        notification ?: UNKNOWN_BOOLEAN,
+        userLog?.toDomain() ?: UserLogVO()
     )
 }
 
@@ -46,5 +49,21 @@ data class GetHomeExerciseDto(
     fun toDomain() = GetHomeExerciseVO(
         calorie ?: UNKNOWN_INT,
         stepCount ?: UNKNOWN_INT
+    )
+}
+
+data class UserLogDto(
+    @SerializedName("gender") val gender: Boolean?,
+    @SerializedName("birthYear") val birthYear: Int?,
+    @SerializedName("diabetic") val diabetic: Boolean?,
+    @SerializedName("diabetesYear") val diabetesYear: Int?,
+    @SerializedName("weightAlert") val weightAlert: String?
+) {
+    fun toDomain() = UserLogVO(
+        gender ?: UNKNOWN_BOOLEAN,
+        birthYear ?: UNKNOWN_INT,
+        diabetic ?: UNKNOWN_BOOLEAN,
+        diabetesYear ?: UNKNOWN_INT,
+        weightAlert ?: UNKNOWN_STRING
     )
 }

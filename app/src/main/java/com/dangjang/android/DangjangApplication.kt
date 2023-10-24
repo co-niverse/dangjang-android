@@ -24,8 +24,7 @@ class DangjangApplication : Application() {
             //appVersion = BuildConfig.VERSION_NAME,
             //osNameAndVersion = "$ANDROID ${android.os.Build.VERSION.SDK_INT}",
             baseUrl = com.dangjang.android.data.BuildConfig.BASE_URL,
-            serverPath = "api/log",
-            token = getAccessToken() ?: ""
+            serverPath = "api/log"
         )
 
         val sharedPreferences = applicationContext.getSharedPreferences(VERSION_SPF_KEY, Context.MODE_PRIVATE)

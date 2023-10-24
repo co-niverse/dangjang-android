@@ -11,6 +11,8 @@ import dagger.hilt.android.AndroidEntryPoint
 class SignupDiseaseFragment : BaseFragment<FragmentSignupDiseaseBinding>(R.layout.fragment_signup_disease) {
 
     private val viewModel : SignupViewModel by activityViewModels()
+    private var startTime: Double = 0.0
+    private var endTime: Double = 0.0
 
     override fun initView() {
         bind {
@@ -19,6 +21,7 @@ class SignupDiseaseFragment : BaseFragment<FragmentSignupDiseaseBinding>(R.layou
     }
     override fun onStart() {
         super.onStart()
+        startTime = System.currentTimeMillis().toDouble()
 
         binding.diseaseBtn.setOnTouchListener({ v, event -> true })
 
@@ -147,6 +150,12 @@ class SignupDiseaseFragment : BaseFragment<FragmentSignupDiseaseBinding>(R.layou
             parentFragmentManager.popBackStack()
         }
 
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        endTime = System.currentTimeMillis().toDouble()
+        viewModel.shotSignupDiseaseLogging(endTime- startTime)
     }
 
     private fun setLowBpGreen() {

@@ -21,6 +21,8 @@ class SignupNicknameFragment :
     BaseFragment<FragmentSignupNicknameBinding>(R.layout.fragment_signup_nickname) {
 
     private val viewModel: SignupViewModel by activityViewModels()
+    private var startTime: Double = 0.0
+    private var endTime: Double = 0.0
 
     override fun initView() {
         bind {
@@ -30,6 +32,7 @@ class SignupNicknameFragment :
 
     override fun onStart() {
         super.onStart()
+        startTime = System.currentTimeMillis().toDouble()
 
         binding.nicknameBtn.setOnTouchListener({ v, event -> true })
 
@@ -93,6 +96,12 @@ class SignupNicknameFragment :
                 .commit()
         }
 
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        endTime = System.currentTimeMillis().toDouble()
+        viewModel.shotSignupNicknameLogging(endTime- startTime)
     }
 
     private fun setBtnGreen() {

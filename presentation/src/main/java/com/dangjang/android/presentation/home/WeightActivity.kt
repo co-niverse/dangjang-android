@@ -33,8 +33,6 @@ class WeightActivity : FragmentActivity() {
 
         binding.lifecycleOwner = this
 
-        viewModel.shotWeightClickLogging()
-
         date = intent.getStringExtra("date").toString()
 
         getAccessToken()?.let { viewModel.getWeight(it, date) }
@@ -104,6 +102,11 @@ class WeightActivity : FragmentActivity() {
         binding.weightInfoIv.setOnClickListener {
             WeightDialogFragment().show(supportFragmentManager, "WeightDialogFragment")
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        viewModel.shotWeightExposureLogging()
     }
 
     private fun getAccessToken(): String? {

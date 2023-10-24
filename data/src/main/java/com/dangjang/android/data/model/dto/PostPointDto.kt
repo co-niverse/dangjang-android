@@ -9,12 +9,16 @@ data class PostPointDto(
     @SerializedName("phone") val phone: String?,
     @SerializedName("type") val type: String?,
     @SerializedName("changePoint") val changePoint: Int?,
-    @SerializedName("balancedPoint") val balancedPoint: Int?
+    @SerializedName("balancedPoint") val balancedPoint: Int?,
+    @SerializedName("name") val name: String?,
+    @SerializedName("comment") val comment: String?
 ) {
     fun toDomain() = PostPointVO(
         phone ?: UNKNOWN_STRING,
         type ?: UNKNOWN_STRING,
         changePoint ?: UNKNOWN_INT,
-        balancedPoint ?: UNKNOWN_INT
+        balancedPoint ?: UNKNOWN_INT,
+        name ?: UNKNOWN_STRING,
+        comment ?: UNKNOWN_STRING
     )
 }

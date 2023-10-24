@@ -15,9 +15,15 @@ import com.dangjang.android.domain.constants.TOKEN_SPF_KEY
 import com.dangjang.android.domain.logging.CalendarClickScheme
 import com.dangjang.android.domain.logging.CalorieScreenClickScheme
 import com.dangjang.android.domain.logging.ExerciseScreenClickScheme
+import com.dangjang.android.domain.logging.ExerciseScreenExposureScheme
 import com.dangjang.android.domain.logging.GlucoseScreenClickScheme
+import com.dangjang.android.domain.logging.GlucoseScreenExposureScheme
 import com.dangjang.android.domain.logging.GlucoseScreenStayScheme
+import com.dangjang.android.domain.logging.HomeScreenExposureScheme
+import com.dangjang.android.domain.logging.MypageScreenExposureScheme
+import com.dangjang.android.domain.logging.SignupAfterTimeScheme
 import com.dangjang.android.domain.logging.WeightScreenClickScheme
+import com.dangjang.android.domain.logging.WeightScreenExposureScheme
 import com.dangjang.android.domain.model.GetGlucoseVO
 import com.dangjang.android.domain.model.GlucoseGuideVO
 import com.dangjang.android.domain.request.AddHealthMetricRequest
@@ -73,6 +79,9 @@ class HomeViewModel @Inject constructor(
     //홈
     private val _getHomeFlow = MutableStateFlow(GetHomeVO())
     val getHomeFlow = _getHomeFlow.asStateFlow()
+
+    private val _getDateFlow = MutableStateFlow(getTodayDate())
+    val getDateFlow = _getDateFlow.asStateFlow()
 
     //알람
     private val _getNotificationFlow = MutableStateFlow(GetNotificationVO())
@@ -152,9 +161,16 @@ class HomeViewModel @Inject constructor(
             getHomeUseCase.getHome("Bearer $accessToken", date)
                 .onEach {
                     _getHomeFlow.emit(it)
+                    setDate(it.date)
                 }
                 .handleErrors()
                 .collect()
+        }
+    }
+
+    fun setDate(date: String) {
+        _getDateFlow.update {
+            date
         }
     }
 
@@ -225,6 +241,9 @@ class HomeViewModel @Inject constructor(
     //체중
     fun getWeight(accessToken: String, date: String) {
         viewModelScope.launch {
+            _getWeightFlow.update {
+                it.copy(createdAt = date)
+            }
             getHomeUseCase.getWeight("Bearer $accessToken", date)
                 .onEach {
                     _getWeightFlow.emit(it)
@@ -303,6 +322,9 @@ class HomeViewModel @Inject constructor(
     //운동
     fun getExercise(accessToken: String, date: String) {
         viewModelScope.launch {
+            _getExerciseFlow.update {
+                it.copy(createdAt = date)
+            }
             getHomeUseCase.getExercise("Bearer $accessToken", date)
                 .onEach {
                     _getExerciseFlow.emit(it)
@@ -456,6 +478,9 @@ class HomeViewModel @Inject constructor(
         accessToken: String, date: String
     ) {
         viewModelScope.launch {
+            _getGlucoseFlow.update {
+                it.copy(createdAt = date)
+            }
             getHomeUseCase.getGlucose("Bearer $accessToken", date)
                 .onEach {
                     _getGlucoseFlow.emit(it)
@@ -607,6 +632,8 @@ class HomeViewModel @Inject constructor(
     private fun getGlucoseClickLoggingScheme(): ClickScheme {
         return GlucoseScreenClickScheme.Builder()
             .setClicked(true)
+            .setBloodSugars(getHomeFlow.value.bloodSugars)
+            .setUserLog(getHomeFlow.value.userLog)
             .build()
     }
 
@@ -618,6 +645,7 @@ class HomeViewModel @Inject constructor(
     private fun getWeightClickLoggingScheme(): ClickScheme {
         return WeightScreenClickScheme.Builder()
             .setClicked(true)
+            .setUserLog(getHomeFlow.value.userLog)
             .build()
     }
 
@@ -629,6 +657,8 @@ class HomeViewModel @Inject constructor(
     private fun getExerciseClickLoggingScheme(): ClickScheme {
         return ExerciseScreenClickScheme.Builder()
             .setClicked(true)
+            .setExercise(getHomeFlow.value.exercise)
+            .setUserLog(getHomeFlow.value.userLog)
             .build()
     }
 
@@ -640,6 +670,7 @@ class HomeViewModel @Inject constructor(
     private fun getCalorieClickLoggingScheme(): ClickScheme {
         return CalorieScreenClickScheme.Builder()
             .setClicked(true)
+            .setUserLog(getHomeFlow.value.userLog)
             .build()
     }
 
@@ -662,6 +693,57 @@ class HomeViewModel @Inject constructor(
     private fun getGlucoseStayTimeLoggingScheme(stayTime: Double): ExposureScheme {
         return GlucoseScreenStayScheme.Builder()
             .setStayTime(stayTime)
+            .build()
+    }
+
+    fun shotSignupAfterTimeLogging(stayTime: Double) {
+        val scheme = getSignupAfterTimeLoggingScheme(stayTime)
+        SWMLogging.logEvent(scheme)
+    }
+
+    private fun getSignupAfterTimeLoggingScheme(stayTime: Double): ExposureScheme {
+        return SignupAfterTimeScheme.Builder()
+            .setStayTime(stayTime)
+            .build()
+    }
+
+    fun shotHomeExposureLogging() {
+        val scheme = getHomeExposureLoggingScheme()
+        SWMLogging.logEvent(scheme)
+    }
+
+    private fun getHomeExposureLoggingScheme(): ExposureScheme {
+        return HomeScreenExposureScheme.Builder()
+            .build()
+    }
+
+    fun shotGlucoseExposureLogging() {
+        val scheme = getGlucoseExposureLoggingScheme()
+        SWMLogging.logEvent(scheme)
+    }
+
+    private fun getGlucoseExposureLoggingScheme(): ExposureScheme {
+        return GlucoseScreenExposureScheme.Builder()
+            .build()
+    }
+
+    fun shotExerciseExposureLogging() {
+        val scheme = getExerciseExposureLoggingScheme()
+        SWMLogging.logEvent(scheme)
+    }
+
+    private fun getExerciseExposureLoggingScheme(): ExposureScheme {
+        return ExerciseScreenExposureScheme.Builder()
+            .build()
+    }
+
+    fun shotWeightExposureLogging() {
+        val scheme = getWeightExposureLoggingScheme()
+        SWMLogging.logEvent(scheme)
+    }
+
+    private fun getWeightExposureLoggingScheme(): ExposureScheme {
+        return WeightScreenExposureScheme.Builder()
             .build()
     }
 
