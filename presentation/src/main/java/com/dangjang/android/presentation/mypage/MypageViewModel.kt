@@ -223,13 +223,14 @@ class MypageViewModel @Inject constructor(
             .build()
     }
 
-    fun shotPointExposureLogging() {
-        val scheme = getPointExposureLoggingScheme()
+    fun shotPointExposureLogging(stayTime: Double) {
+        val scheme = getPointExposureLoggingScheme(stayTime)
         SWMLogging.logEvent(scheme)
     }
 
-    private fun getPointExposureLoggingScheme(): ExposureScheme {
+    private fun getPointExposureLoggingScheme(stayTime: Double): ExposureScheme {
         return PointScreenExposureScheme.Builder()
+            .setStayTime(stayTime)
             .build()
     }
 
