@@ -4,9 +4,8 @@ import com.dangjang.android.domain.constants.APP_VERSION
 import com.dangjang.android.domain.constants.Log_VERSION
 import com.dangjang.android.domain.model.GetHomeExerciseVO
 import com.dangjang.android.domain.model.UserLogVO
+import com.dangjang.android.swm_logging.SWMLogging.getSessionId
 import com.dangjang.android.swm_logging.logging_scheme.ClickScheme
-import java.util.UUID
-import kotlin.properties.Delegates
 
 
 class ExerciseScreenClickScheme(
@@ -20,7 +19,7 @@ class ExerciseScreenClickScheme(
             screenName = "home",
             logVersion = Log_VERSION,
             appVersion = APP_VERSION,
-            sessionId = UUID.randomUUID().toString(),
+            sessionId = getSessionId(),
             logData = mutableMapOf(
                 "exercise" to exercise,
                 "userLog" to userLog

@@ -3,9 +3,8 @@ package com.dangjang.android.domain.logging
 import com.dangjang.android.domain.constants.APP_VERSION
 import com.dangjang.android.domain.constants.Log_VERSION
 import com.dangjang.android.domain.model.UserLogVO
+import com.dangjang.android.swm_logging.SWMLogging.getSessionId
 import com.dangjang.android.swm_logging.logging_scheme.ClickScheme
-import java.util.UUID
-import kotlin.properties.Delegates
 
 
 class CalorieScreenClickScheme(
@@ -18,7 +17,7 @@ class CalorieScreenClickScheme(
             screenName = "home",
             logVersion = Log_VERSION,
             appVersion = APP_VERSION,
-            sessionId = UUID.randomUUID().toString(),
+            sessionId = getSessionId(),
             logData = mutableMapOf(
                 "userLog" to userLog
             )
