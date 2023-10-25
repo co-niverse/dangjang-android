@@ -735,13 +735,14 @@ class HomeViewModel @Inject constructor(
             .build()
     }
 
-    fun shotWeightExposureLogging() {
-        val scheme = getWeightExposureLoggingScheme()
+    fun shotWeightExposureLogging(stayTime: Double) {
+        val scheme = getWeightExposureLoggingScheme(stayTime)
         SWMLogging.logEvent(scheme)
     }
 
-    private fun getWeightExposureLoggingScheme(): ExposureScheme {
+    private fun getWeightExposureLoggingScheme(stayTime: Double): ExposureScheme {
         return WeightScreenExposureScheme.Builder()
+            .setStayTime(stayTime)
             .build()
     }
 
