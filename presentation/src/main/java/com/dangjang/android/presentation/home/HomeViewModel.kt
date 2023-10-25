@@ -702,13 +702,14 @@ class HomeViewModel @Inject constructor(
             .build()
     }
 
-    fun shotHomeExposureLogging() {
-        val scheme = getHomeExposureLoggingScheme()
+    fun shotHomeExposureLogging(stayTime: Double) {
+        val scheme = getHomeExposureLoggingScheme(stayTime)
         SWMLogging.logEvent(scheme)
     }
 
-    private fun getHomeExposureLoggingScheme(): ExposureScheme {
+    private fun getHomeExposureLoggingScheme(stayTime: Double): ExposureScheme {
         return HomeScreenExposureScheme.Builder()
+            .setStayTime(stayTime)
             .build()
     }
 
