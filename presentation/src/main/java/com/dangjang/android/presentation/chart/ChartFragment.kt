@@ -31,6 +31,8 @@ import kotlinx.coroutines.launch
 class ChartFragment : BaseFragment<FragmentChartBinding>(R.layout.fragment_chart) {
 
     private val viewModel by viewModels<ChartViewModel>()
+    private var startTime: Double = 0.0
+    private var endTime: Double = 0.0
 
     override fun initView() {
         bind {
@@ -39,6 +41,8 @@ class ChartFragment : BaseFragment<FragmentChartBinding>(R.layout.fragment_chart
     }
     override fun onStart() {
         super.onStart()
+        startTime = System.currentTimeMillis().toDouble()
+
         binding.lifecycleOwner = this
 
         viewModel.setStartAndEndDate()
@@ -122,7 +126,7 @@ class ChartFragment : BaseFragment<FragmentChartBinding>(R.layout.fragment_chart
 
     override fun onDestroy() {
         super.onDestroy()
-        viewModel.shotChartExposureLogging()
+        viewModel.shotChartExposureLogging(endTime - startTime)
     }
 
     private fun initBarChart(barChart: BarChart) {

@@ -22,6 +22,8 @@ class WeightActivity : FragmentActivity() {
     private lateinit var viewModel: HomeViewModel
     private var originWeight: Int = 0
     private var date = ""
+    private var startTime: Double = 0.0
+    private var endTime: Double = 0.0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -106,7 +108,8 @@ class WeightActivity : FragmentActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        viewModel.shotWeightExposureLogging()
+        endTime = System.currentTimeMillis().toDouble()
+        viewModel.shotWeightExposureLogging(endTime - startTime)
     }
 
     private fun getAccessToken(): String? {

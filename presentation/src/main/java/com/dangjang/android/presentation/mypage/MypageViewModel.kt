@@ -212,23 +212,25 @@ class MypageViewModel @Inject constructor(
 
 
     //Logging
-    fun shotMypageExposureLogging() {
-        val scheme = getMypageExposureLoggingScheme()
+    fun shotMypageExposureLogging(stayTime: Double) {
+        val scheme = getMypageExposureLoggingScheme(stayTime)
         SWMLogging.logEvent(scheme)
     }
 
-    private fun getMypageExposureLoggingScheme(): ExposureScheme {
+    private fun getMypageExposureLoggingScheme(stayTime: Double): ExposureScheme {
         return MypageScreenExposureScheme.Builder()
+            .setStayTime(stayTime)
             .build()
     }
 
-    fun shotPointExposureLogging() {
-        val scheme = getPointExposureLoggingScheme()
+    fun shotPointExposureLogging(stayTime: Double) {
+        val scheme = getPointExposureLoggingScheme(stayTime)
         SWMLogging.logEvent(scheme)
     }
 
-    private fun getPointExposureLoggingScheme(): ExposureScheme {
+    private fun getPointExposureLoggingScheme(stayTime: Double): ExposureScheme {
         return PointScreenExposureScheme.Builder()
+            .setStayTime(stayTime)
             .build()
     }
 

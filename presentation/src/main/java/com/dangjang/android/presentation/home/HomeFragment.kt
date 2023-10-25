@@ -36,6 +36,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
     private lateinit var glucoseGuideAdapter: GlucoseGuideAdapter
     private lateinit var date: String
     private var intentDate = ""
+    private var startTime: Double = 0.0
+    private var endTime: Double = 0.0
 
     override fun initView() {
         bind {
@@ -44,6 +46,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
     }
     override fun onStart() {
         super.onStart()
+
+        startTime = System.currentTimeMillis().toDouble()
 
         binding.vm = viewModel
         binding.lifecycleOwner = this
@@ -168,7 +172,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
 
     override fun onDestroy() {
         super.onDestroy()
-        viewModel.shotHomeExposureLogging()
+        endTime = System.currentTimeMillis().toDouble()
+        viewModel.shotHomeExposureLogging(endTime - startTime)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
