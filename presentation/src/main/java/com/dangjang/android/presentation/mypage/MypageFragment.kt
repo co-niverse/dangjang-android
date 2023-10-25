@@ -20,6 +20,8 @@ import kotlinx.coroutines.flow.collectLatest
 class MypageFragment : BaseFragment<FragmentMypageBinding>(R.layout.fragment_mypage) {
 
     private val viewModel by viewModels<MypageViewModel>()
+    private var startTime: Double = 0.0
+    private var endTime: Double = 0.0
 
     override fun initView() {
         bind {
@@ -28,6 +30,8 @@ class MypageFragment : BaseFragment<FragmentMypageBinding>(R.layout.fragment_myp
     }
     override fun onStart() {
         super.onStart()
+
+        startTime = System.currentTimeMillis().toDouble()
 
         binding.vm = viewModel
         binding.lifecycleOwner = this
@@ -80,7 +84,8 @@ class MypageFragment : BaseFragment<FragmentMypageBinding>(R.layout.fragment_myp
 
     override fun onDestroy() {
         super.onDestroy()
-        viewModel.shotMypageExposureLogging()
+        endTime = System.currentTimeMillis().toDouble()
+        viewModel.shotMypageExposureLogging(endTime - startTime)
     }
     private fun goToServiceUrl() {
         val intentUrl = Intent(Intent.ACTION_VIEW, Uri.parse("https://co-niverse.notion.site/a3e0b9b54d0f4b3bba174901297ec918?pvs=4"))
