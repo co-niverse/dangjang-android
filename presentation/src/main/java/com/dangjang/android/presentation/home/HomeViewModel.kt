@@ -712,13 +712,14 @@ class HomeViewModel @Inject constructor(
             .build()
     }
 
-    fun shotGlucoseExposureLogging() {
-        val scheme = getGlucoseExposureLoggingScheme()
+    fun shotGlucoseExposureLogging(stayTime: Double) {
+        val scheme = getGlucoseExposureLoggingScheme(stayTime)
         SWMLogging.logEvent(scheme)
     }
 
-    private fun getGlucoseExposureLoggingScheme(): ExposureScheme {
+    private fun getGlucoseExposureLoggingScheme(stayTime: Double): ExposureScheme {
         return GlucoseScreenExposureScheme.Builder()
+            .setStayTime(stayTime)
             .build()
     }
 
