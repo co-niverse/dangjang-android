@@ -229,13 +229,14 @@ class ChartViewModel @Inject constructor(
     }
 
     //Logging
-    fun shotChartExposureLogging() {
-        val scheme = getChartExposureLoggingScheme()
+    fun shotChartExposureLogging(stayTime: Double) {
+        val scheme = getChartExposureLoggingScheme(stayTime)
         SWMLogging.logEvent(scheme)
     }
 
-    private fun getChartExposureLoggingScheme(): ExposureScheme {
+    private fun getChartExposureLoggingScheme(stayTime: Double): ExposureScheme {
         return ChartScreenExposureScheme.Builder()
+            .setStayTime(stayTime)
             .build()
     }
 

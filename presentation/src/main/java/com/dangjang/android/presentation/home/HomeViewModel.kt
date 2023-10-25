@@ -631,7 +631,6 @@ class HomeViewModel @Inject constructor(
 
     private fun getGlucoseClickLoggingScheme(): ClickScheme {
         return GlucoseScreenClickScheme.Builder()
-            .setClicked(true)
             .setBloodSugars(getHomeFlow.value.bloodSugars)
             .setUserLog(getHomeFlow.value.userLog)
             .build()
@@ -644,7 +643,6 @@ class HomeViewModel @Inject constructor(
 
     private fun getWeightClickLoggingScheme(): ClickScheme {
         return WeightScreenClickScheme.Builder()
-            .setClicked(true)
             .setUserLog(getHomeFlow.value.userLog)
             .build()
     }
@@ -656,7 +654,6 @@ class HomeViewModel @Inject constructor(
 
     private fun getExerciseClickLoggingScheme(): ClickScheme {
         return ExerciseScreenClickScheme.Builder()
-            .setClicked(true)
             .setExercise(getHomeFlow.value.exercise)
             .setUserLog(getHomeFlow.value.userLog)
             .build()
@@ -669,7 +666,6 @@ class HomeViewModel @Inject constructor(
 
     private fun getCalorieClickLoggingScheme(): ClickScheme {
         return CalorieScreenClickScheme.Builder()
-            .setClicked(true)
             .setUserLog(getHomeFlow.value.userLog)
             .build()
     }
@@ -681,7 +677,6 @@ class HomeViewModel @Inject constructor(
 
     private fun getCalendarClickLoggingScheme(): ClickScheme {
         return CalendarClickScheme.Builder()
-            .setClicked(true)
             .build()
     }
 
@@ -707,43 +702,47 @@ class HomeViewModel @Inject constructor(
             .build()
     }
 
-    fun shotHomeExposureLogging() {
-        val scheme = getHomeExposureLoggingScheme()
+    fun shotHomeExposureLogging(stayTime: Double) {
+        val scheme = getHomeExposureLoggingScheme(stayTime)
         SWMLogging.logEvent(scheme)
     }
 
-    private fun getHomeExposureLoggingScheme(): ExposureScheme {
+    private fun getHomeExposureLoggingScheme(stayTime: Double): ExposureScheme {
         return HomeScreenExposureScheme.Builder()
+            .setStayTime(stayTime)
             .build()
     }
 
-    fun shotGlucoseExposureLogging() {
-        val scheme = getGlucoseExposureLoggingScheme()
+    fun shotGlucoseExposureLogging(stayTime: Double) {
+        val scheme = getGlucoseExposureLoggingScheme(stayTime)
         SWMLogging.logEvent(scheme)
     }
 
-    private fun getGlucoseExposureLoggingScheme(): ExposureScheme {
+    private fun getGlucoseExposureLoggingScheme(stayTime: Double): ExposureScheme {
         return GlucoseScreenExposureScheme.Builder()
+            .setStayTime(stayTime)
             .build()
     }
 
-    fun shotExerciseExposureLogging() {
-        val scheme = getExerciseExposureLoggingScheme()
+    fun shotExerciseExposureLogging(stayTime: Double) {
+        val scheme = getExerciseExposureLoggingScheme(stayTime)
         SWMLogging.logEvent(scheme)
     }
 
-    private fun getExerciseExposureLoggingScheme(): ExposureScheme {
+    private fun getExerciseExposureLoggingScheme(stayTime: Double): ExposureScheme {
         return ExerciseScreenExposureScheme.Builder()
+            .setStayTime(stayTime)
             .build()
     }
 
-    fun shotWeightExposureLogging() {
-        val scheme = getWeightExposureLoggingScheme()
+    fun shotWeightExposureLogging(stayTime: Double) {
+        val scheme = getWeightExposureLoggingScheme(stayTime)
         SWMLogging.logEvent(scheme)
     }
 
-    private fun getWeightExposureLoggingScheme(): ExposureScheme {
+    private fun getWeightExposureLoggingScheme(stayTime: Double): ExposureScheme {
         return WeightScreenExposureScheme.Builder()
+            .setStayTime(stayTime)
             .build()
     }
 

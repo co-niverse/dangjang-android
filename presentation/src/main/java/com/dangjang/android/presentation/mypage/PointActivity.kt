@@ -26,10 +26,14 @@ class PointActivity : FragmentActivity() {
     private val viewModel by viewModels<MypageViewModel>()
     private lateinit var giftListAdapter: GiftListAdapter
     private lateinit var pointManualListAdapter: PointManualListAdapter
+    private var startTime: Double = 0.0
+    private var endTime: Double = 0.0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_point)
+
+        startTime = System.currentTimeMillis().toDouble()
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_point)
         binding.vm = viewModel
@@ -79,7 +83,8 @@ class PointActivity : FragmentActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        viewModel.shotPointExposureLogging()
+        endTime = System.currentTimeMillis().toDouble()
+        viewModel.shotPointExposureLogging(endTime - startTime)
     }
 
     private fun setGiftListAdapter() {
