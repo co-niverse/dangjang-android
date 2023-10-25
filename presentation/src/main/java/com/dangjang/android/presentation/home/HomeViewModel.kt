@@ -631,7 +631,6 @@ class HomeViewModel @Inject constructor(
 
     private fun getGlucoseClickLoggingScheme(): ClickScheme {
         return GlucoseScreenClickScheme.Builder()
-            .setClicked(true)
             .setBloodSugars(getHomeFlow.value.bloodSugars)
             .setUserLog(getHomeFlow.value.userLog)
             .build()
@@ -644,7 +643,6 @@ class HomeViewModel @Inject constructor(
 
     private fun getWeightClickLoggingScheme(): ClickScheme {
         return WeightScreenClickScheme.Builder()
-            .setClicked(true)
             .setUserLog(getHomeFlow.value.userLog)
             .build()
     }
@@ -656,7 +654,6 @@ class HomeViewModel @Inject constructor(
 
     private fun getExerciseClickLoggingScheme(): ClickScheme {
         return ExerciseScreenClickScheme.Builder()
-            .setClicked(true)
             .setExercise(getHomeFlow.value.exercise)
             .setUserLog(getHomeFlow.value.userLog)
             .build()
@@ -669,7 +666,6 @@ class HomeViewModel @Inject constructor(
 
     private fun getCalorieClickLoggingScheme(): ClickScheme {
         return CalorieScreenClickScheme.Builder()
-            .setClicked(true)
             .setUserLog(getHomeFlow.value.userLog)
             .build()
     }
@@ -681,7 +677,6 @@ class HomeViewModel @Inject constructor(
 
     private fun getCalendarClickLoggingScheme(): ClickScheme {
         return CalendarClickScheme.Builder()
-            .setClicked(true)
             .build()
     }
 

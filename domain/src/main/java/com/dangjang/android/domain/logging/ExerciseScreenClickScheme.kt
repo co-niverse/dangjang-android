@@ -10,7 +10,6 @@ import kotlin.properties.Delegates
 
 
 class ExerciseScreenClickScheme(
-    clicked: Boolean,
     exercise: GetHomeExerciseVO,
     userLog: UserLogVO
 ) : ClickScheme() {
@@ -23,7 +22,6 @@ class ExerciseScreenClickScheme(
             appVersion = APP_VERSION,
             sessionId = UUID.randomUUID().toString(),
             logData = mutableMapOf(
-                "clicked" to clicked,
                 "exercise" to exercise,
                 "userLog" to userLog
             )
@@ -31,14 +29,8 @@ class ExerciseScreenClickScheme(
     }
 
     class Builder {
-        private var clicked by Delegates.notNull<Boolean>()
         private lateinit var exercise: GetHomeExerciseVO
         private lateinit var userLog: UserLogVO
-
-        fun setClicked(clicked: Boolean): Builder {
-            this.clicked = clicked
-            return this
-        }
 
         fun setExercise(exercise: GetHomeExerciseVO): Builder {
             this.exercise = exercise
@@ -52,7 +44,6 @@ class ExerciseScreenClickScheme(
 
         fun build(): ExerciseScreenClickScheme {
             return ExerciseScreenClickScheme(
-                clicked,
                 exercise,
                 userLog
             )

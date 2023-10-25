@@ -10,7 +10,6 @@ import kotlin.properties.Delegates
 
 
 class GlucoseScreenClickScheme(
-    clicked: Boolean,
     bloodSugars: List<TodayGuidesVO>,
     userLog: UserLogVO
 ) : ClickScheme() {
@@ -23,7 +22,6 @@ class GlucoseScreenClickScheme(
             appVersion = APP_VERSION,
             sessionId = UUID.randomUUID().toString(),
             logData = mutableMapOf(
-                "clicked" to clicked,
                 "bloodSugars" to bloodSugars,
                 "userLog" to userLog
             )
@@ -31,14 +29,8 @@ class GlucoseScreenClickScheme(
     }
 
     class Builder {
-        private var clicked by Delegates.notNull<Boolean>()
         private lateinit var bloodSugars: List<TodayGuidesVO>
         private lateinit var userLog: UserLogVO
-
-        fun setClicked(clicked: Boolean): Builder {
-            this.clicked = clicked
-            return this
-        }
 
         fun setBloodSugars(bloodSugars: List<TodayGuidesVO>): Builder {
             this.bloodSugars = bloodSugars
@@ -52,7 +44,6 @@ class GlucoseScreenClickScheme(
 
         fun build(): GlucoseScreenClickScheme {
             return GlucoseScreenClickScheme(
-                clicked,
                 bloodSugars,
                 userLog
             )
