@@ -722,13 +722,14 @@ class HomeViewModel @Inject constructor(
             .build()
     }
 
-    fun shotExerciseExposureLogging() {
-        val scheme = getExerciseExposureLoggingScheme()
+    fun shotExerciseExposureLogging(stayTime: Double) {
+        val scheme = getExerciseExposureLoggingScheme(stayTime)
         SWMLogging.logEvent(scheme)
     }
 
-    private fun getExerciseExposureLoggingScheme(): ExposureScheme {
+    private fun getExerciseExposureLoggingScheme(stayTime: Double): ExposureScheme {
         return ExerciseScreenExposureScheme.Builder()
+            .setStayTime(stayTime)
             .build()
     }
 

@@ -26,10 +26,14 @@ class ExerciseActivity : FragmentActivity() {
     private var originStep: Int = 0
     private var date = ""
     private var openBtnFlag = true
+    private var startTime: Double = 0.0
+    private var endTime: Double = 0.0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_exercise)
+
+        startTime = System.currentTimeMillis().toDouble()
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_exercise)
         viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
@@ -155,7 +159,7 @@ class ExerciseActivity : FragmentActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        viewModel.shotExerciseExposureLogging()
+        viewModel.shotExerciseExposureLogging(endTime - startTime)
     }
 
     private fun setExerciseListAdapter() {
