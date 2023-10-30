@@ -2,7 +2,6 @@ package com.dangjang.android
 
 import android.app.Application
 import android.content.Context
-import com.dangjang.android.data.storage.InAppStorageHelperImpl
 import com.dangjang.android.domain.constants.ACCESS_TOKEN_KEY
 import com.dangjang.android.domain.constants.TOKEN_SPF_KEY
 import com.dangjang.android.domain.constants.VERSION_SPF_KEY
@@ -11,6 +10,7 @@ import com.kakao.sdk.common.KakaoSdk
 import com.navercorp.nid.NaverIdLoginSDK
 import com.dangjang.android.swm_logging.SWMLogging
 import dagger.hilt.android.HiltAndroidApp
+import java.util.UUID
 
 @HiltAndroidApp
 class DangjangApplication : Application() {
@@ -24,7 +24,8 @@ class DangjangApplication : Application() {
             //appVersion = BuildConfig.VERSION_NAME,
             //osNameAndVersion = "$ANDROID ${android.os.Build.VERSION.SDK_INT}",
             baseUrl = com.dangjang.android.data.BuildConfig.BASE_URL,
-            serverPath = "api/log"
+            serverPath = "api/log",
+            sessionId = UUID.randomUUID().toString()
         )
 
         val sharedPreferences = applicationContext.getSharedPreferences(VERSION_SPF_KEY, Context.MODE_PRIVATE)

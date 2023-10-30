@@ -25,7 +25,7 @@ object SWMLogging {
     //private lateinit var OSNameAndVersion: String
     private lateinit var baseUrl: String
     private lateinit var serverPath: String
-    private lateinit var sessionId: UUID
+    private lateinit var sessionId: String
     private lateinit var loggingService: LoggingService
     private val observable = PublishSubject.create<SWMLoggingScheme>() // 발행
     private val observer = object : Observer<SWMLoggingScheme> { // 구독
@@ -87,13 +87,14 @@ object SWMLogging {
         //appVersion: String,
         //osNameAndVersion: String,
         baseUrl: String,
-        serverPath: String
+        serverPath: String,
+        sessionId: String
     ) {
         //SWMLogging.appVersion = appVersion
         //OSNameAndVersion = osNameAndVersion
         SWMLogging.baseUrl = baseUrl
         SWMLogging.serverPath = serverPath
-        sessionId = UUID.randomUUID()
+        SWMLogging.sessionId = sessionId
         setLoggingService()
         observable.throttleFirst(500, TimeUnit.MILLISECONDS).subscribe(observer)
     }
@@ -105,4 +106,8 @@ object SWMLogging {
 //    fun getOsNameAndVersion(): String {
 //        return OSNameAndVersion
 //    }
+
+    fun getSessionId(): String {
+        return sessionId
+    }
 }
