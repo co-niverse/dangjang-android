@@ -13,7 +13,7 @@ import retrofit2.http.POST
 
 interface HealthConnectApiService {
     //Intro API
-    @GET("api/intro/prod")
+    @GET("api/version/intro")
     suspend fun getIntroApi(
     ) : Response<BaseResponse<IntroDto>>
 

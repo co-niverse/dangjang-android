@@ -7,7 +7,7 @@ import com.dangjang.android.domain.model.GetNotificationVO
 import com.google.gson.annotations.SerializedName
 
 data class GetNotificationDto(
-    @SerializedName("notificationList") val notificationList: List<NotificationDto>?
+    @SerializedName("notificationResponseList") val notificationList: List<NotificationDto>?
 ) {
     fun toDomain() = GetNotificationVO(
         notificationList?.map { it.toDomain() } ?: listOf()

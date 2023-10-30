@@ -11,6 +11,7 @@ import com.dangjang.android.data.model.dto.PostPatchExerciseDto
 import com.dangjang.android.data.model.dto.PostPatchWeightDto
 import com.dangjang.android.domain.request.AddHealthMetricRequest
 import com.dangjang.android.data.model.response.BaseResponse
+import com.dangjang.android.domain.request.CheckNotificationRequest
 import com.dangjang.android.domain.request.EditHealthMetricRequest
 import com.dangjang.android.domain.request.EditSameHealthMetricRequest
 import retrofit2.Response
@@ -40,7 +41,7 @@ interface HomeApiService {
     @PATCH("/api/notification")
     suspend fun checkNotification(
         @Header("Authorization") accessToken: String,
-        @Body notificationIdList: List<Int>
+        @Body checkNotificationRequest: CheckNotificationRequest
     ): Response<BaseResponse<Nothing>>
 
     //혈당 등록 API
