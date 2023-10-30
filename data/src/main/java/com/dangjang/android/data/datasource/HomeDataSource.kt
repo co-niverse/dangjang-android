@@ -10,6 +10,7 @@ import com.dangjang.android.data.model.dto.PostPatchExerciseDto
 import com.dangjang.android.data.model.dto.PostPatchWeightDto
 import com.dangjang.android.domain.request.AddHealthMetricRequest
 import com.dangjang.android.data.model.response.BaseResponse
+import com.dangjang.android.domain.request.CheckNotificationRequest
 import com.dangjang.android.domain.request.EditHealthMetricRequest
 import com.dangjang.android.domain.request.EditSameHealthMetricRequest
 import javax.inject.Inject
@@ -27,7 +28,7 @@ class HomeDataSource @Inject constructor(
     }
 
     suspend fun checkNotification(accessToken: String, notificationIdList: List<Int>): BaseResponse<Nothing> {
-        return checkResponse(homeApiService.checkNotification(accessToken, notificationIdList))
+        return checkResponse(homeApiService.checkNotification(accessToken, CheckNotificationRequest(notificationIdList)))
     }
 
     suspend fun addHealthMetric(accessToken: String, addHealthMetricRequest: AddHealthMetricRequest): BaseResponse<EditHealthMetricDto> {
