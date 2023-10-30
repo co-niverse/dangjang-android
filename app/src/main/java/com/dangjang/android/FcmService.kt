@@ -12,9 +12,8 @@ import androidx.core.app.NotificationCompat
 import com.dangjang.android.domain.constants.ACCESS_TOKEN_KEY
 import com.dangjang.android.domain.constants.FCM_TOKEN_KEY
 import com.dangjang.android.domain.constants.TOKEN_SPF_KEY
-import com.dangjang.android.domain.usecase.HomeUseCase
 import com.dangjang.android.domain.usecase.TokenUseCase
-import com.dangjang.android.presentation.MainActivity
+import com.dangjang.android.presentation.intro.SplashActivity
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import dagger.hilt.android.AndroidEntryPoint
@@ -57,7 +56,7 @@ class FcmService : FirebaseMessagingService() {
     private fun sendNotification(remoteMessage: RemoteMessage) {
         val uniId: Int = (System.currentTimeMillis() / 7).toInt()
 
-        val intent = Intent(this, MainActivity::class.java)
+        val intent = Intent(this, SplashActivity::class.java)
         for (key in remoteMessage.data.keys) {
             intent.putExtra(key, remoteMessage.data.getValue(key))
         }
