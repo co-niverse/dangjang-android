@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
+import android.os.Build
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
@@ -81,10 +82,8 @@ class SignupViewModel @Inject constructor(
             getSignupUseCase.signup(data)
                 .onEach {
                     _signupFlow.emit(it)
-//                    _startMainActivity.emit(HttpResponseStatus.OK)
-                    if (it.nickname != "") {
-                        postFcmToken()
-                    }
+                    postFcmToken()
+                    _startMainActivity.emit(HttpResponseStatus.OK)
                 }
                 .handleErrors()
                 .collect()
@@ -94,11 +93,8 @@ class SignupViewModel @Inject constructor(
     private fun postFcmToken(
     ) {
         viewModelScope.launch {
-            getTokenUseCase.postFcmToken(getAccessToken() ?: "", PostFcmTokenRequest(getFCMToken() ?: ""))
+            getTokenUseCase.postFcmToken(getAccessToken() ?: "", PostFcmTokenRequest(getFCMToken() ?: "",Build.DEVICE))
                 .onEach {
-                    if (it) {
-                        _startMainActivity.emit(HttpResponseStatus.OK)
-                    }
                 }
                 .handleErrors()
                 .collect()
