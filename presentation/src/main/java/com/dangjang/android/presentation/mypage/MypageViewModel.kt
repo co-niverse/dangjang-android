@@ -19,6 +19,7 @@ import com.dangjang.android.domain.logging.PointScreenExposureScheme
 import com.dangjang.android.domain.model.GetMypageVO
 import com.dangjang.android.domain.model.GetPointVO
 import com.dangjang.android.domain.model.PostPointVO
+import com.dangjang.android.domain.request.LogoutRequest
 import com.dangjang.android.domain.request.PostPointRequest
 import com.dangjang.android.domain.usecase.MypageUseCase
 import com.dangjang.android.domain.usecase.TokenUseCase
@@ -151,9 +152,9 @@ class MypageViewModel @Inject constructor(
         }
     }
 
-    fun logout(accessToken: String, fcmToken: String) {
+    fun logout(accessToken: String, logoutRequest: LogoutRequest) {
         viewModelScope.launch {
-            getMypageUseCase.logout("Bearer $accessToken", fcmToken)
+            getMypageUseCase.logout("Bearer $accessToken", logoutRequest)
                 .onEach {
                     _logoutFlow.emit(it)
                 }
