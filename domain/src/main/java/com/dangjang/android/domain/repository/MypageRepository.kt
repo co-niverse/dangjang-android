@@ -3,6 +3,7 @@ package com.dangjang.android.domain.repository
 import com.dangjang.android.domain.model.GetMypageVO
 import com.dangjang.android.domain.model.GetPointVO
 import com.dangjang.android.domain.model.PostPointVO
+import com.dangjang.android.domain.request.LogoutRequest
 import com.dangjang.android.domain.request.PostPointRequest
 import kotlinx.coroutines.flow.Flow
 
@@ -18,7 +19,7 @@ interface MypageRepository {
     fun postPoint(accessToken: String, postPointRequest: PostPointRequest): Flow<PostPointVO>
 
     //로그아웃
-    fun logout(accessToken: String, fcmToken:String): Flow<Boolean>
+    fun logout(accessToken: String, logoutRequest: LogoutRequest): Flow<Boolean>
 
     //회원탈퇴
     fun signout(accessToken: String): Flow<Boolean>

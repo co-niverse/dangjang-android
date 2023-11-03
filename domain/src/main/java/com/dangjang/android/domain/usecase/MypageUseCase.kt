@@ -4,6 +4,7 @@ import com.dangjang.android.domain.model.GetMypageVO
 import com.dangjang.android.domain.model.GetPointVO
 import com.dangjang.android.domain.model.PostPointVO
 import com.dangjang.android.domain.repository.MypageRepository
+import com.dangjang.android.domain.request.LogoutRequest
 import com.dangjang.android.domain.request.PostPointRequest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -29,9 +30,9 @@ class MypageUseCase @Inject constructor(
             mypageRepository.postPoint(accessToken, postPointRequest)
         }
 
-    suspend fun logout(accessToken: String, fcmToken: String): Flow<Boolean> =
+    suspend fun logout(accessToken: String, logoutRequest: LogoutRequest): Flow<Boolean> =
         withContext(Dispatchers.IO) {
-            mypageRepository.logout(accessToken, fcmToken)
+            mypageRepository.logout(accessToken, logoutRequest)
         }
 
     suspend fun signout(accessToken: String): Flow<Boolean> =

@@ -148,7 +148,7 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             healthConnectUseCase.getIntro()
                 .onEach {
-                    _introDataFlow.emit(it)
+                    _introDataFlow.value = it
                 }
                 .handleErrors()
                 .collect()

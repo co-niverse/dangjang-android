@@ -3,18 +3,22 @@ package com.dangjang.android.presentation.login
 import android.app.Application
 import android.content.ContentValues
 import android.content.Context
+import android.os.Build
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import com.dangjang.android.domain.HttpResponseException
 import com.dangjang.android.domain.HttpResponseStatus
+import com.dangjang.android.domain.constants.ACCESS_TOKEN_KEY
 import com.dangjang.android.domain.constants.FCM_TOKEN_KEY
 import com.dangjang.android.domain.constants.KAKAO
 import com.dangjang.android.domain.constants.NAVER
+import com.dangjang.android.domain.constants.TOKEN_SPF_KEY
 import com.dangjang.android.domain.model.AuthVO
 import com.dangjang.android.domain.model.LoginToSignupVO
+import com.dangjang.android.domain.request.PostFcmTokenRequest
 import com.dangjang.android.domain.usecase.LoginUseCase
+import com.dangjang.android.domain.usecase.TokenUseCase
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
@@ -33,6 +37,7 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val loginUseCase: LoginUseCase,
+    private val tokenUseCase: TokenUseCase,
     application: Application
 ) : AndroidViewModel(application) {
 
@@ -96,9 +101,10 @@ class LoginViewModel @Inject constructor(
 
     private fun getKakaoLoginData(accessToken: String) {
         viewModelScope.launch {
-            loginUseCase.kakoLogin(getFCMToken() ?: "", accessToken)
+            loginUseCase.kakoLogin(accessToken)
                 .onEach {
                     _loginDataFlow.emit(it)
+                    postFcmToken()
                     _signupStartActivity.value = HttpResponseStatus.OK
                 }
                 .handleErrors()
@@ -111,9 +117,10 @@ class LoginViewModel @Inject constructor(
 
     fun getNaverLoginData(accessToken: String) {
         viewModelScope.launch {
-            loginUseCase.naverLogin(getFCMToken() ?: "", accessToken)
+            loginUseCase.naverLogin(accessToken)
                 .onEach {
                     _loginDataFlow.emit(it)
+                    postFcmToken()
                     _signupStartActivity.value = HttpResponseStatus.OK
                 }
                 .handleErrors()
@@ -124,10 +131,27 @@ class LoginViewModel @Inject constructor(
         }
     }
 
+    private fun postFcmToken(
+    ) {
+        viewModelScope.launch {
+            tokenUseCase.postFcmToken(getAccessToken() ?: "", PostFcmTokenRequest(getFCMToken() ?: "", Build.DEVICE))
+                .onEach {
+                }
+                .handleErrors()
+                .collect()
+        }
+    }
+
     private fun getFCMToken(): String? {
         val sharedPreferences = getApplication<Application>().applicationContext.getSharedPreferences(
             FCM_TOKEN_KEY, Context.MODE_PRIVATE)
         return sharedPreferences.getString(FCM_TOKEN_KEY, null)
+    }
+
+    private fun getAccessToken(): String? {
+        val sharedPreferences = getApplication<Application>().applicationContext.getSharedPreferences(
+            TOKEN_SPF_KEY, Context.MODE_PRIVATE)
+        return sharedPreferences.getString(ACCESS_TOKEN_KEY, null)
     }
 
     private fun <T> Flow<T>.handleErrors(): Flow<T> =

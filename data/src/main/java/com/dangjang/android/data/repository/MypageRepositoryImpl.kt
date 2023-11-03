@@ -5,6 +5,7 @@ import com.dangjang.android.domain.model.GetMypageVO
 import com.dangjang.android.domain.model.GetPointVO
 import com.dangjang.android.domain.model.PostPointVO
 import com.dangjang.android.domain.repository.MypageRepository
+import com.dangjang.android.domain.request.LogoutRequest
 import com.dangjang.android.domain.request.PostPointRequest
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -29,8 +30,8 @@ class MypageRepositoryImpl @Inject constructor(
         emit(response.data.toDomain())
     }
 
-    override fun logout(accessToken: String, fcmToken: String): Flow<Boolean> = flow {
-        val response = mypageDataSource.logout(accessToken, fcmToken)
+    override fun logout(accessToken: String, logoutRequest: LogoutRequest): Flow<Boolean> = flow {
+        val response = mypageDataSource.logout(accessToken, logoutRequest)
         emit(response.success)
     }
 

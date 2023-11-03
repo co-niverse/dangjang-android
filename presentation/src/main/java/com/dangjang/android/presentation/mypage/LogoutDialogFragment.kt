@@ -15,6 +15,7 @@ import androidx.lifecycle.lifecycleScope
 import com.dangjang.android.domain.constants.ACCESS_TOKEN_KEY
 import com.dangjang.android.domain.constants.FCM_TOKEN_KEY
 import com.dangjang.android.domain.constants.TOKEN_SPF_KEY
+import com.dangjang.android.domain.request.LogoutRequest
 import com.dangjang.android.presentation.databinding.FragmentLogoutDialogBinding
 import com.dangjang.android.presentation.login.LoginActivity
 import kotlinx.coroutines.flow.collectLatest
@@ -55,7 +56,7 @@ class LogoutDialogFragment : DialogFragment() {
         }
 
         binding.logoutBtn.setOnClickListener {
-            viewModel.logout(getAccessToken() ?: "", getFCMToken() ?: "")
+            viewModel.logout(getAccessToken() ?: "", LogoutRequest(getFCMToken() ?: ""))
             lifecycleScope.launchWhenStarted {
                 viewModel.logoutFlow.collectLatest {
                     if (it) {
@@ -63,7 +64,7 @@ class LogoutDialogFragment : DialogFragment() {
 
                         viewModel.removeAutoLoginProviderSpf()
                         viewModel.removeAccessTokenSpf()
-                        viewModel.removeFcmTokenSpf()
+                        //viewModel.removeFcmTokenSpf()
 
                         val intent = Intent(requireContext(), LoginActivity::class.java)
                         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK

@@ -1,5 +1,6 @@
 package com.dangjang.android.domain.repository
 
+import com.dangjang.android.domain.request.PostFcmTokenRequest
 import kotlinx.coroutines.flow.Flow
 
 interface TokenRepository {
@@ -7,5 +8,5 @@ interface TokenRepository {
     fun reissueToken(accessToken: String): Flow<Boolean>
 
     //FCM 토큰 재발급
-    fun postFcmToken(accessToken: String, fcmToken: String): Flow<Boolean>
+    fun postFcmToken(accessToken: String, postFcmTokenRequest: PostFcmTokenRequest): Flow<Boolean>
 }

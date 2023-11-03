@@ -2,10 +2,12 @@ package com.dangjang.android.presentation.login
 
 import android.app.Activity
 import android.content.ContentValues
+import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
+import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
@@ -14,10 +16,14 @@ import com.dangjang.android.domain.HttpResponseStatus
 import com.dangjang.android.domain.constants.AUTO_LOGIN_EDITOR_KEY
 import com.dangjang.android.domain.constants.AUTO_LOGIN_SPF_KEY
 import com.dangjang.android.domain.constants.HEALTH_CONNECT_TOKEN_KEY
+import com.dangjang.android.domain.constants.VERSION_SPF_KEY
+import com.dangjang.android.domain.constants.VERSION_TOKEN_KEY
 import com.dangjang.android.presentation.MainActivity
 import com.dangjang.android.presentation.R
 import com.dangjang.android.presentation.databinding.ActivityLoginBinding
+import com.dangjang.android.presentation.home.HomeViewModel
 import com.dangjang.android.presentation.intro.HealthConnectActivity
+import com.dangjang.android.presentation.intro.UpdateBottomSheetFragment
 import com.dangjang.android.presentation.signup.SignupActivity
 import com.navercorp.nid.NaverIdLoginSDK
 import com.navercorp.nid.oauth.NidOAuthLogin
@@ -25,11 +31,14 @@ import com.navercorp.nid.oauth.OAuthLoginCallback
 import com.navercorp.nid.profile.NidProfileCallback
 import com.navercorp.nid.profile.data.NidProfileResponse
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class LoginActivity: FragmentActivity() {
     private lateinit var binding: ActivityLoginBinding
     private lateinit var viewModel: LoginViewModel
+    private val homeViewModel by viewModels<HomeViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,6 +46,18 @@ class LoginActivity: FragmentActivity() {
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_login)
         viewModel = ViewModelProvider(this).get(LoginViewModel::class.java)
+
+        homeViewModel.getIntroData()
+
+        lifecycleScope.launch {
+            homeViewModel.introDataFlow.collectLatest {
+                if (it.latestVersion != "") {
+                    if (it.latestVersion != getVersionName()) {
+                        UpdateBottomSheetFragment().show(supportFragmentManager, "UpdateBottomSheetFragment")
+                    }
+                }
+            }
+        }
 
         binding.btnKakaoLogin.setOnClickListener {
             viewModel.kakaoLogin()
@@ -120,5 +141,10 @@ class LoginActivity: FragmentActivity() {
             }
         }
         NaverIdLoginSDK.authenticate(this, oAuthLoginCallback)
+    }
+
+    private fun getVersionName(): String? {
+        val sharedPreferences = applicationContext.getSharedPreferences(VERSION_SPF_KEY, Context.MODE_PRIVATE)
+        return sharedPreferences.getString(VERSION_TOKEN_KEY, null)
     }
 }

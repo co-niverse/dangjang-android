@@ -4,6 +4,7 @@ import com.dangjang.android.data.model.dto.GetMypageDto
 import com.dangjang.android.data.model.dto.GetPointDto
 import com.dangjang.android.data.model.dto.PostPointDto
 import com.dangjang.android.data.model.response.BaseResponse
+import com.dangjang.android.domain.request.LogoutRequest
 import com.dangjang.android.domain.request.PostPointRequest
 import javax.inject.Inject
 
@@ -27,7 +28,7 @@ class MypageDataSource @Inject constructor(
         return checkResponse(mypageApiService.signout(accessToken))
     }
 
-    suspend fun logout(accessToken: String, fcmToken:String): BaseResponse<Nothing> {
-        return checkResponse(mypageApiService.logout(accessToken, fcmToken))
+    suspend fun logout(accessToken: String, logoutRequest: LogoutRequest): BaseResponse<Nothing> {
+        return checkResponse(mypageApiService.logout(accessToken, logoutRequest))
     }
 }
