@@ -97,8 +97,8 @@
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="8dp"
                     android:gravity="center"
-                    android:text="매일 서비스를 이용한 후 기프티콘을 받아보세요!\n*이벤트는 조기 종료될 수 있습니다.*"
-                    android:textColor="@color/black"
+                    android:text="이벤트는 11/9에 종료됩니다.\n11/9까지 포인트를 열심히 모아서 기프티콘 구매를 완료해주세요!"
+                    android:textColor="#FF0000"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/point_title_tv" />
