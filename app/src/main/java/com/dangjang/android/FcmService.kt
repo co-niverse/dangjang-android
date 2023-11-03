@@ -38,7 +38,7 @@ class FcmService : FirebaseMessagingService() {
         Log.e(TAG, "성공적으로 토큰을 저장함 $token")
 
         runBlocking {
-            tokenUsecase.postFcmToken(getAccessToken() ?: "", PostFcmTokenRequest(token, "DEVICE_ID"))
+            tokenUsecase.postFcmToken(getAccessToken() ?: "", PostFcmTokenRequest(token, Build.MODEL))
         }
     }
 
