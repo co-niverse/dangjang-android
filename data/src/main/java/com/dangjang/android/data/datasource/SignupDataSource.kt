@@ -15,9 +15,8 @@ class SignupDataSource @Inject constructor(
     }
 
     suspend fun signup(
-        fcmToken: String,
         data: SignupRequest
     ): BaseResponse<AuthDto> {
-        return checkResponse(signupApiService.signup(fcmToken, data))
+        return checkResponse(signupApiService.signup(data))
     }
 }

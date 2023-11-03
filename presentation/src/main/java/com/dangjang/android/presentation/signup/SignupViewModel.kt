@@ -73,7 +73,7 @@ class SignupViewModel @Inject constructor(
         data: SignupRequestVO
     ) {
         viewModelScope.launch {
-            getSignupUseCase.signup(getFCMToken() ?: "", data)
+            getSignupUseCase.signup(data)
                 .onEach {
                     _signupFlow.emit(it)
                     _startMainActivity.emit(HttpResponseStatus.OK)
