@@ -9,7 +9,9 @@ import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.dangjang.android.domain.HttpResponseStatus
+import com.dangjang.android.domain.constants.ACCESS_TOKEN_KEY
 import com.dangjang.android.domain.constants.FCM_TOKEN_KEY
+import com.dangjang.android.domain.constants.TOKEN_SPF_KEY
 import com.dangjang.android.domain.logging.SignupActiveScheme
 import com.dangjang.android.domain.logging.SignupAgreeScheme
 import com.dangjang.android.domain.logging.SignupBodyScheme
@@ -20,8 +22,10 @@ import com.dangjang.android.domain.logging.SignupMediScheme
 import com.dangjang.android.domain.logging.SignupNicknameScheme
 import com.dangjang.android.domain.model.DuplicateNicknameVO
 import com.dangjang.android.domain.model.AuthVO
+import com.dangjang.android.domain.request.PostFcmTokenRequest
 import com.dangjang.android.domain.requestVO.SignupRequestVO
 import com.dangjang.android.domain.usecase.SignupUseCase
+import com.dangjang.android.domain.usecase.TokenUseCase
 import com.dangjang.android.presentation.R
 import com.dangjang.android.presentation.login.LoginActivity
 import com.dangjang.android.swm_logging.SWMLogging
@@ -40,6 +44,7 @@ import javax.inject.Inject
 @HiltViewModel
 class SignupViewModel @Inject constructor(
     private val getSignupUseCase: SignupUseCase,
+    private val getTokenUseCase: TokenUseCase,
     application: Application
 ) : AndroidViewModel(application) {
 
@@ -76,7 +81,24 @@ class SignupViewModel @Inject constructor(
             getSignupUseCase.signup(data)
                 .onEach {
                     _signupFlow.emit(it)
-                    _startMainActivity.emit(HttpResponseStatus.OK)
+//                    _startMainActivity.emit(HttpResponseStatus.OK)
+                    if (it.nickname != "") {
+                        postFcmToken()
+                    }
+                }
+                .handleErrors()
+                .collect()
+        }
+    }
+
+    private fun postFcmToken(
+    ) {
+        viewModelScope.launch {
+            getTokenUseCase.postFcmToken(getAccessToken() ?: "", PostFcmTokenRequest(getFCMToken() ?: ""))
+                .onEach {
+                    if (it) {
+                        _startMainActivity.emit(HttpResponseStatus.OK)
+                    }
                 }
                 .handleErrors()
                 .collect()
@@ -191,11 +213,6 @@ class SignupViewModel @Inject constructor(
         return R.drawable.background_green_gradient
     }
 
-    private fun getFCMToken(): String? {
-        val sharedPreferences = getApplication<Application>().applicationContext.getSharedPreferences(FCM_TOKEN_KEY, Context.MODE_PRIVATE)
-        return sharedPreferences.getString(FCM_TOKEN_KEY, null)
-    }
-
     //Logging
     fun shotSignupNicknameLogging(stayTime: Double) {
         val scheme = getSignupNicknameLoggingScheme(stayTime)
@@ -284,4 +301,18 @@ class SignupViewModel @Inject constructor(
             .setStayTime(stayTime)
             .build()
     }
+
+    private fun getAccessToken(): String? {
+        val sharedPreferences = getApplication<Application>().applicationContext.getSharedPreferences(
+            TOKEN_SPF_KEY, Context.MODE_PRIVATE)
+
+        return sharedPreferences.getString(ACCESS_TOKEN_KEY, null)
+    }
+
+    private fun getFCMToken(): String? {
+        val sharedPreferences = getApplication<Application>().applicationContext.getSharedPreferences(
+            FCM_TOKEN_KEY, Context.MODE_PRIVATE)
+        return sharedPreferences.getString(FCM_TOKEN_KEY, null)
+    }
+
 }
