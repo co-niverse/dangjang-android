@@ -1,7 +1,10 @@
 package com.dangjang.android.data.datasource
 
+import com.dangjang.android.data.model.request.SignupRequest
 import com.dangjang.android.data.model.response.BaseResponse
+import com.dangjang.android.domain.request.PostFcmTokenRequest
 import retrofit2.Response
+import retrofit2.http.Body
 import retrofit2.http.Header
 import retrofit2.http.POST
 
@@ -16,7 +19,7 @@ interface TokenApiService {
     @POST("/api/user/fcmToken")
     suspend fun postFcmToken(
         @Header("Authorization") accessToken: String,
-        @Header("FcmToken") fcmToken: String
+        @Body postFcmTokenRequest: PostFcmTokenRequest
     ) : Response<BaseResponse<Nothing>>
 
 }
