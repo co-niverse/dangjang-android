@@ -56,16 +56,16 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
 
         getAccessToken()?.let { viewModel.getHome(it, viewModel.getDateFlow.value) }
 
-        viewModel.getIntroData()
-        lifecycleScope.launch {
-            viewModel.introDataFlow.collectLatest {
-                if (it.latestVersion != "") {
-                    if (it.latestVersion != getVersionName()) {
-                        UpdateBottomSheetFragment().show(parentFragmentManager, "UpdateBottomSheetFragment")
-                    }
-                }
-            }
-        }
+//        viewModel.getIntroData()
+//        lifecycleScope.launch {
+//            viewModel.introDataFlow.collectLatest {
+//                if (it.latestVersion != "") {
+//                    if (it.latestVersion != getVersionName()) {
+//                        UpdateBottomSheetFragment().show(parentFragmentManager, "UpdateBottomSheetFragment")
+//                    }
+//                }
+//            }
+//        }
 
         binding.weightSeekbar.setOnTouchListener({ v, event -> true })
 
