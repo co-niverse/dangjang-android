@@ -96,7 +96,7 @@ class LoginViewModel @Inject constructor(
 
     private fun getKakaoLoginData(accessToken: String) {
         viewModelScope.launch {
-            loginUseCase.kakoLogin(getFCMToken() ?: "", accessToken)
+            loginUseCase.kakoLogin(accessToken)
                 .onEach {
                     _loginDataFlow.emit(it)
                     _signupStartActivity.value = HttpResponseStatus.OK
@@ -111,7 +111,7 @@ class LoginViewModel @Inject constructor(
 
     fun getNaverLoginData(accessToken: String) {
         viewModelScope.launch {
-            loginUseCase.naverLogin(getFCMToken() ?: "", accessToken)
+            loginUseCase.naverLogin(accessToken)
                 .onEach {
                     _loginDataFlow.emit(it)
                     _signupStartActivity.value = HttpResponseStatus.OK
