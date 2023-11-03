@@ -6,6 +6,7 @@ import com.dangjang.android.data.model.dto.GetPointDto
 import com.dangjang.android.data.model.dto.PostPointDto
 import com.dangjang.android.data.model.response.BaseResponse
 import com.dangjang.android.domain.request.AddHealthMetricRequest
+import com.dangjang.android.domain.request.LogoutRequest
 import com.dangjang.android.domain.request.PostPointRequest
 import retrofit2.Response
 import retrofit2.http.Body
@@ -39,7 +40,7 @@ interface MypageApiService {
     @POST("api/auth/logout")
     suspend fun logout(
         @Header("Authorization") accessToken: String,
-        @Header("FcmToken") fcmToken: String
+        @Body logoutRequest: LogoutRequest
     ) : Response<BaseResponse<Nothing>>
 
     //회원탈퇴

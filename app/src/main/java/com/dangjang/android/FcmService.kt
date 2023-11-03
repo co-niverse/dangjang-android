@@ -12,6 +12,7 @@ import androidx.core.app.NotificationCompat
 import com.dangjang.android.domain.constants.ACCESS_TOKEN_KEY
 import com.dangjang.android.domain.constants.FCM_TOKEN_KEY
 import com.dangjang.android.domain.constants.TOKEN_SPF_KEY
+import com.dangjang.android.domain.request.PostFcmTokenRequest
 import com.dangjang.android.domain.usecase.TokenUseCase
 import com.dangjang.android.presentation.intro.SplashActivity
 import com.google.firebase.messaging.FirebaseMessagingService
@@ -36,9 +37,8 @@ class FcmService : FirebaseMessagingService() {
         editor.commit()
         Log.e(TAG, "성공적으로 토큰을 저장함 $token")
 
-        // TODO : 서버로 토큰 전송
         runBlocking {
-            tokenUsecase.postFcmToken(getAccessToken() ?: "", token)
+            tokenUsecase.postFcmToken(getAccessToken() ?: "", PostFcmTokenRequest(token, Build.DEVICE))
         }
     }
 

@@ -12,14 +12,12 @@ interface LoginApiService {
     //kakao Login API
     @POST("/api/auth/kakao")
     suspend fun kakaoLogin(
-        @Header("FcmToken") fcmToken: String,
         @Body accessToken: LoginRequest
     ) : Response<BaseResponse<AuthDto>>
 
     //naver Login API
     @POST("/api/auth/naver")
     suspend fun naverLogin(
-        @Header("FcmToken") fcmToken: String,
         @Body accessToken: LoginRequest
     ) : Response<BaseResponse<AuthDto>>
 }

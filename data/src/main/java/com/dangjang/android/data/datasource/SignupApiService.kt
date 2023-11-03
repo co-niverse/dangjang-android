@@ -22,7 +22,6 @@ interface SignupApiService {
     //Signup API
     @POST("api/signup")
     suspend fun signup(
-        @Header("FcmToken") fcmToken: String,
         @Body data: SignupRequest
     ) : Response<BaseResponse<AuthDto>>
 }
