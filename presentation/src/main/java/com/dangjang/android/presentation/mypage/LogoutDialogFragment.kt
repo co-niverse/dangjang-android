@@ -64,7 +64,7 @@ class LogoutDialogFragment : DialogFragment() {
 
                         viewModel.removeAutoLoginProviderSpf()
                         viewModel.removeAccessTokenSpf()
-                        viewModel.removeFcmTokenSpf()
+                        //viewModel.removeFcmTokenSpf()
 
                         val intent = Intent(requireContext(), LoginActivity::class.java)
                         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
