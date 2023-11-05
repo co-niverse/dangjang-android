@@ -122,5 +122,14 @@ class HomeUseCase @Inject constructor(
         withContext(Dispatchers.IO) {
             homeRepository.editExercise(accessToken, editSameHealthMetricRequest)
         }
-    
+
+    suspend fun deleteHealthMetric(
+        accessToken: String,
+        date: String,
+        type: String
+    ): Flow<Boolean> =
+        withContext(Dispatchers.IO) {
+            homeRepository.deleteHealthMetric(accessToken, date, type)
+        }
+
 }

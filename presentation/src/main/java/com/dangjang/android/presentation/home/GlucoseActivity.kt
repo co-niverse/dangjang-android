@@ -23,6 +23,7 @@ import com.dangjang.android.presentation.databinding.ActivityGlucoseBinding
 import com.dangjang.android.presentation.login.LoginActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class GlucoseActivity : FragmentActivity() {
@@ -51,6 +52,18 @@ class GlucoseActivity : FragmentActivity() {
 
         getAccessToken()?.let {
                 accessToken -> viewModel.getGlucose(accessToken, date)
+        }
+
+        //TODO : 혈당 삭제 시 activity 새로고침 -> 수정 필요
+        lifecycleScope.launch {
+            viewModel.deleteGlucoseFlow.collectLatest {
+                if (it) {
+                    finish()
+                    overridePendingTransition(0,0)
+                    startActivity(intent)
+                    overridePendingTransition(0,0)
+                }
+            }
         }
 
         lifecycleScope.launchWhenStarted {

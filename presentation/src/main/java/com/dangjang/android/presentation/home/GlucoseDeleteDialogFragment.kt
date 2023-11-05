@@ -63,13 +63,7 @@ class GlucoseDeleteDialogFragment : DialogFragment(
         }
 
         binding.deleteBtn.setOnClickListener {
-            //TODO : 삭제하기 API 호출
-            Log.e("삭제하기","삭제하기 API 호출")
-//            viewModel.setEditGlucoseCreatedAt(date)
-//            viewModel.setEditGlucoseNewType(newType)
-//            viewModel.setEditGlucoseType(time)
-//            viewModel.setEditGlucoseValue(getGlucose())
-//            getAccessToken()?.let { viewModel.editGlucose(it) }
+            viewModel.deleteGlucose(getAccessToken() ?: "", date, time)
             dismiss()
         }
     }
