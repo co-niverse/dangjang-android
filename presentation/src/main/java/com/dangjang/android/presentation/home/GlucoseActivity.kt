@@ -93,10 +93,11 @@ class GlucoseActivity : FragmentActivity() {
             viewModel.setCreatedAt(date)
             viewModel.setUnit(binding.glucoseAddEt.text.toString())
 
-            getAccessToken()?.let {
-                    accessToken -> viewModel.addHealthMetric(accessToken)
+            if (binding.glucoseAddEt.text.toString() != "") {
+                getAccessToken()?.let {
+                        accessToken -> viewModel.addHealthMetric(accessToken)
+                }
             }
-
             binding.glucoseAddCl.visibility = View.GONE
         }
 
