@@ -117,7 +117,7 @@ class GlucoseActivity : FragmentActivity() {
 
         glucoseListAdapter.setMyItemClickListener(object :
             GlucoseListAdapter.MyItemClickListener {
-            override fun onItemClick(glucoseList: GlucoseListVO) {
+            override fun onEditBtnClick(glucoseList: GlucoseListVO) {
                 var glucoseEditDialogFragment = GlucoseEditDialogFragment()
                 var bundle = Bundle()
                 bundle.putString("time", glucoseList.time)
@@ -126,7 +126,18 @@ class GlucoseActivity : FragmentActivity() {
                 glucoseEditDialogFragment.arguments = bundle
 
                 glucoseEditDialogFragment.show(supportFragmentManager, "GlucoseEditDialogFragment")
-            }})
+            }
+
+            override fun onDeleteBtnClick(glucoseList: GlucoseListVO) {
+                var glucoseDeleteDialogFragment = GlucoseDeleteDialogFragment()
+                var bundle = Bundle()
+                bundle.putString("time", glucoseList.time)
+                bundle.putString("date", date)
+                glucoseDeleteDialogFragment.arguments = bundle
+
+                glucoseDeleteDialogFragment.show(supportFragmentManager, "GlucoseDeleteDialogFragment")
+            }
+        })
         binding.glucoseRv.adapter = glucoseListAdapter
     }
 
