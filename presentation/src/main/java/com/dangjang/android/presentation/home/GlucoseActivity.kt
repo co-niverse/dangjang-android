@@ -17,6 +17,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.dangjang.android.domain.constants.ACCESS_TOKEN_KEY
 import com.dangjang.android.domain.constants.TOKEN_SPF_KEY
+import com.dangjang.android.domain.model.GlucoseGuideVO
 import com.dangjang.android.domain.model.GlucoseListVO
 import com.dangjang.android.presentation.R
 import com.dangjang.android.presentation.databinding.ActivityGlucoseBinding
@@ -196,6 +197,12 @@ class GlucoseActivity : FragmentActivity() {
 
     private fun setGlucoseGuideListAdapter() {
         glucoseGuideAdapter = GlucoseGuideAdapter(viewModel)
+        glucoseGuideAdapter.setMyItemClickListener(
+            object : GlucoseGuideAdapter.MyItemClickListener {
+                override fun onItemClick(glucoseGuideList: GlucoseGuideVO) {
+                }
+            }
+        )
         binding.glucoseGuideRv.adapter = glucoseGuideAdapter
     }
 }
