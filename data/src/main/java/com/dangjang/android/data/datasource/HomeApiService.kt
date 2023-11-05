@@ -16,6 +16,7 @@ import com.dangjang.android.domain.request.EditHealthMetricRequest
 import com.dangjang.android.domain.request.EditSameHealthMetricRequest
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.PATCH
@@ -113,4 +114,12 @@ interface HomeApiService {
         @Header("Authorization") accessToken: String,
         @Body editSameHealthMetricRequest: EditSameHealthMetricRequest
     ) : Response<BaseResponse<PostPatchExerciseDto>>
+
+    //건강지표 삭제 API
+    @DELETE("/api/health-metric")
+    suspend fun deleteHealthMetric(
+        @Header("Authorization") accessToken: String,
+        @Query("date") date: String,
+        @Query("type") type: String
+    ) : Response<BaseResponse<Nothing>>
 }

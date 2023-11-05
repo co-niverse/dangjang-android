@@ -52,4 +52,6 @@ interface HomeRepository {
 
     //운동 수정
     fun editExercise(accessToken: String, editSameHealthMetricRequest: EditSameHealthMetricRequest): Flow<PostPatchExerciseVO>
+
+    fun deleteHealthMetric(accessToken: String, date: String, type: String): Flow<Boolean>
 }

@@ -197,8 +197,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
         glucoseGuideAdapter.setMyItemClickListener(object :
             GlucoseGuideAdapter.MyItemClickListener {
             override fun onItemClick(glucoseGuideList: GlucoseGuideVO) {
+                viewModel.shotGlucoseClickLogging()
                 Intent(activity, GlucoseActivity::class.java).apply {
-                    startActivity(this)
+                    putExtra("date",date)
+                    startActivityForResult(this, 101)
                 }
             }
 

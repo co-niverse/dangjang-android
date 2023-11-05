@@ -1,5 +1,6 @@
 package com.dangjang.android.data.repository
 
+import android.util.Log
 import com.dangjang.android.data.datasource.HomeDataSource
 import com.dangjang.android.domain.model.GetGlucoseVO
 import com.dangjang.android.domain.model.EditHealthMetricVO
@@ -94,4 +95,10 @@ class HomeRepositoryImpl @Inject constructor(
         val response = homeDataSource.editExercise(accessToken, editSameHealthMetricRequest)
         emit(response.data.toDomain())
     }
+
+    override fun deleteHealthMetric(accessToken: String, date: String, type: String): Flow<Boolean> = flow {
+        val response = homeDataSource.deleteHealthMetric(accessToken, date, type)
+        emit(response.success)
+    }
+
 }

@@ -9,7 +9,7 @@ import java.util.Date
 @BindingAdapter("dateToString")
 fun dateToString(view: TextView, date: String?) {
     if (date != null) {
-        if (date.isNotEmpty()) {
+        if (date.isNotEmpty() && date.length == 10) {
             view.text = date.substring(5, 7) + "월 " + date.substring(8, 10) + "일"
         }
     } else {
