@@ -14,7 +14,8 @@ class GlucoseListAdapter(
 ) : ListAdapter<GlucoseListVO, RecyclerView.ViewHolder>(diffUtil){
 
     interface MyItemClickListener {
-        fun onItemClick(glucoseList: GlucoseListVO)
+        fun onEditBtnClick(glucoseList: GlucoseListVO)
+        fun onDeleteBtnClick(glucoseList: GlucoseListVO)
     }
 
     private lateinit var mItemClickListener: MyItemClickListener
@@ -39,7 +40,10 @@ class GlucoseListAdapter(
             holder.setFeedbackContentVisibility()
         }
         holder.binding.glucoseEditBtn.setOnClickListener {
-            mItemClickListener.onItemClick(getItem(position))
+            mItemClickListener.onEditBtnClick(getItem(position))
+        }
+        holder.binding.glucoseDeleteBtn.setOnClickListener {
+            mItemClickListener.onDeleteBtnClick(getItem(position))
         }
     }
 
@@ -52,12 +56,12 @@ class GlucoseListAdapter(
             if (isExpanded) {
                 binding.glucoseFeedbackTitleTv.visibility = View.VISIBLE
                 binding.glucoseFeedbackContentTv.visibility = View.VISIBLE
-                binding.glucoseEditBtn.visibility = View.VISIBLE
+                binding.glucoseBtnLl.visibility = View.VISIBLE
                 binding.glucoseListUpIv.setImageDrawable(itemView.context.getDrawable(com.dangjang.android.presentation.R.drawable.ic_arrow_up_gray))
             } else {
                 binding.glucoseFeedbackTitleTv.visibility = View.GONE
                 binding.glucoseFeedbackContentTv.visibility = View.GONE
-                binding.glucoseEditBtn.visibility = View.GONE
+                binding.glucoseBtnLl.visibility = View.GONE
                 binding.glucoseListUpIv.setImageDrawable(itemView.context.getDrawable(com.dangjang.android.presentation.R.drawable.ic_arrow_down_green)) }
         }
 

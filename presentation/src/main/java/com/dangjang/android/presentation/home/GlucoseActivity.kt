@@ -17,12 +17,14 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.dangjang.android.domain.constants.ACCESS_TOKEN_KEY
 import com.dangjang.android.domain.constants.TOKEN_SPF_KEY
+import com.dangjang.android.domain.model.GlucoseGuideVO
 import com.dangjang.android.domain.model.GlucoseListVO
 import com.dangjang.android.presentation.R
 import com.dangjang.android.presentation.databinding.ActivityGlucoseBinding
 import com.dangjang.android.presentation.login.LoginActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class GlucoseActivity : FragmentActivity() {
@@ -53,6 +55,18 @@ class GlucoseActivity : FragmentActivity() {
                 accessToken -> viewModel.getGlucose(accessToken, date)
         }
 
+        //TODO : 혈당 삭제 시 activity 새로고침 -> 수정 필요
+        lifecycleScope.launch {
+            viewModel.deleteGlucoseFlow.collectLatest {
+                if (it) {
+                    finish()
+                    overridePendingTransition(0,0)
+                    startActivity(intent)
+                    overridePendingTransition(0,0)
+                }
+            }
+        }
+
         lifecycleScope.launchWhenStarted {
             viewModel.goToLoginActivityFlow.collectLatest {
                 if (it) {
@@ -79,10 +93,11 @@ class GlucoseActivity : FragmentActivity() {
             viewModel.setCreatedAt(date)
             viewModel.setUnit(binding.glucoseAddEt.text.toString())
 
-            getAccessToken()?.let {
-                    accessToken -> viewModel.addHealthMetric(accessToken)
+            if (binding.glucoseAddEt.text.toString() != "") {
+                getAccessToken()?.let {
+                        accessToken -> viewModel.addHealthMetric(accessToken)
+                }
             }
-
             binding.glucoseAddCl.visibility = View.GONE
         }
 
@@ -117,7 +132,7 @@ class GlucoseActivity : FragmentActivity() {
 
         glucoseListAdapter.setMyItemClickListener(object :
             GlucoseListAdapter.MyItemClickListener {
-            override fun onItemClick(glucoseList: GlucoseListVO) {
+            override fun onEditBtnClick(glucoseList: GlucoseListVO) {
                 var glucoseEditDialogFragment = GlucoseEditDialogFragment()
                 var bundle = Bundle()
                 bundle.putString("time", glucoseList.time)
@@ -126,7 +141,18 @@ class GlucoseActivity : FragmentActivity() {
                 glucoseEditDialogFragment.arguments = bundle
 
                 glucoseEditDialogFragment.show(supportFragmentManager, "GlucoseEditDialogFragment")
-            }})
+            }
+
+            override fun onDeleteBtnClick(glucoseList: GlucoseListVO) {
+                var glucoseDeleteDialogFragment = GlucoseDeleteDialogFragment()
+                var bundle = Bundle()
+                bundle.putString("time", glucoseList.time)
+                bundle.putString("date", date)
+                glucoseDeleteDialogFragment.arguments = bundle
+
+                glucoseDeleteDialogFragment.show(supportFragmentManager, "GlucoseDeleteDialogFragment")
+            }
+        })
         binding.glucoseRv.adapter = glucoseListAdapter
     }
 
@@ -172,6 +198,12 @@ class GlucoseActivity : FragmentActivity() {
 
     private fun setGlucoseGuideListAdapter() {
         glucoseGuideAdapter = GlucoseGuideAdapter(viewModel)
+        glucoseGuideAdapter.setMyItemClickListener(
+            object : GlucoseGuideAdapter.MyItemClickListener {
+                override fun onItemClick(glucoseGuideList: GlucoseGuideVO) {
+                }
+            }
+        )
         binding.glucoseGuideRv.adapter = glucoseGuideAdapter
     }
 }

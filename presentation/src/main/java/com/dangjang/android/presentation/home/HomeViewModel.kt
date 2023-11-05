@@ -111,6 +111,9 @@ class HomeViewModel @Inject constructor(
     private val _getGlucoseFlow = MutableStateFlow(GetGlucoseVO())
     val getGlucoseFlow = _getGlucoseFlow.asStateFlow()
 
+    private val _deleteGlucoseFlow = MutableStateFlow(false)
+    val deleteGlucoseFlow = _deleteGlucoseFlow.asStateFlow()
+
     //체중
     private val _getWeightFlow = MutableStateFlow(GetWeightVO())
     val getWeightFlow = _getWeightFlow.asStateFlow()
@@ -523,6 +526,17 @@ class HomeViewModel @Inject constructor(
         }
     }
 
+    fun deleteGlucose(accessToken: String, date: String, type: String) {
+        viewModelScope.launch {
+            getHomeUseCase.deleteHealthMetric("Bearer $accessToken", date, type)
+                .onEach {
+                }
+                .handleGlucoseDelete()
+                .collect{
+                }
+        }
+    }
+
     private fun getExerciseList(): MutableList<ExerciseListVO> {
         var exerciseList = mutableListOf<ExerciseListVO>()
 
@@ -763,6 +777,13 @@ class HomeViewModel @Inject constructor(
                 .collect()
         }
     }
+
+    private fun <T> Flow<T>.handleGlucoseDelete(): Flow<T> =
+        catch { e ->
+            if (e.message == null) {
+                _deleteGlucoseFlow.emit(true)
+            }
+        }
 
     private fun <T> Flow<T>.handleErrors(): Flow<T> =
         catch { e ->
