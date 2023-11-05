@@ -32,4 +32,4 @@ const val SEEKBAR_NORMAL_END = 50
 
 //Logging
 const val Log_VERSION = 2
-const val APP_VERSION = "1.0.9"
+const val APP_VERSION = "1.0.10"
