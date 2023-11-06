@@ -155,12 +155,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
         val sp: SharedPreferences = requireContext().getSharedPreferences(AUTO_LOGIN_SPF_KEY, AppCompatActivity.MODE_PRIVATE)
         val healthConnect = sp.getString(HEALTH_CONNECT_TOKEN_KEY, "null")
 
-        if (healthConnect == "false") {
+        //TODO : 헬스커넥트 연동한 사람한테는 버튼 숨기기
+//        if (healthConnect == "false") {
             binding.autoInputBtn.visibility = View.VISIBLE
             binding.autoInputBtn.setOnClickListener {
                 HealthConnectBottomSheetFragment().show(parentFragmentManager, "HealthConnectBottomSheetFragment")
             }
-        }
+ //       }
 
         setGlucoseGuideListAdapter()
 
