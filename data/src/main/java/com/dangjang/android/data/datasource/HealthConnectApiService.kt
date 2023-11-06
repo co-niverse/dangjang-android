@@ -1,5 +1,6 @@
 package com.dangjang.android.data.datasource
 
+import com.dangjang.android.data.model.dto.GetLastDateDto
 import com.dangjang.android.data.model.dto.IntroDto
 import com.dangjang.android.domain.request.PostHealthConnectRequest
 import com.dangjang.android.data.model.response.BaseResponse
@@ -30,4 +31,10 @@ interface HealthConnectApiService {
         @Header("Authorization") accessToken: String,
         @Body patchHealthConnectRequest: PatchHealthConnectRequest
     ): Response<BaseResponse<Nothing>>
+
+    //건강지표 마지막 생성일 조회 API
+    @GET("api/health-metric/last-date")
+    suspend fun getHealthMetricLastDate(
+        @Header("Authorization") accessToken: String
+    ): Response<BaseResponse<GetLastDateDto>>
 }
