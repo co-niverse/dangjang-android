@@ -1,6 +1,7 @@
 package com.dangjang.android.data.repository
 
 import com.dangjang.android.data.datasource.HealthConnectDataSource
+import com.dangjang.android.domain.model.GetLastDateVO
 import com.dangjang.android.domain.request.PostHealthConnectRequest
 import com.dangjang.android.domain.model.IntroVO
 import com.dangjang.android.domain.repository.HealthConnectRepository
@@ -25,5 +26,10 @@ class HealthConnectRepositoryImpl @Inject constructor(
     override suspend fun patchHealthConnectInterlock(accessToken: String, patchHealthConnectRequest: PatchHealthConnectRequest): Flow<Boolean> = flow {
         val response = healthConnectDataSource.patchHealthConnectInterlock(accessToken, patchHealthConnectRequest)
         emit(response.success)
+    }
+
+    override suspend fun getHealthMetricLastDate(accessToken: String): Flow<GetLastDateVO> = flow {
+        val response = healthConnectDataSource.getHealthMetricLastDate(accessToken)
+        emit(response.data.toDomain())
     }
 }
