@@ -46,6 +46,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
 import java.time.Duration
 import java.time.Instant
 import java.time.ZoneId
@@ -53,6 +54,7 @@ import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeParseException
 import java.time.temporal.ChronoUnit
+import java.util.Locale
 import javax.inject.Inject
 import kotlin.math.roundToInt
 
@@ -69,7 +71,7 @@ class HealthConnectViewModel @Inject constructor(
     private val _healthMetricLastDate = MutableStateFlow(GetLastDateVO())
     val healthMetricLastDate = _healthMetricLastDate.asStateFlow()
 
-    private val _patchHealthConnectInterlockFlow = MutableStateFlow(false)
+    private val _patchHealthConnectInterlockFlow = MutableStateFlow("none")
     val patchHealthConnectInterlockFlow = _patchHealthConnectInterlockFlow.asStateFlow()
 
     private val _healthConnectFlow = MutableStateFlow(HealthConnectVO())
@@ -205,6 +207,7 @@ class HealthConnectViewModel @Inject constructor(
             _checkHealthConnectInterlock.update { "true" }
         } else {
             Log.e("GRANT-ERROR","체중 권한이 허용되지 않았습니다.")
+            _checkHealthConnectInterlock.update { "false" }
         }
     }
 
@@ -215,6 +218,7 @@ class HealthConnectViewModel @Inject constructor(
             _checkHealthConnectInterlock.update { "true" }
         } else {
             Log.e("GRANT-ERROR","혈당 권한이 허용되지 않았습니다.")
+            _checkHealthConnectInterlock.update { "false" }
         }
     }
 
@@ -225,6 +229,7 @@ class HealthConnectViewModel @Inject constructor(
             _checkHealthConnectInterlock.update { "true" }
         } else {
             Log.e("GRANT-ERROR","걸음수 권한이 허용되지 않았습니다.")
+            _checkHealthConnectInterlock.update { "false" }
         }
     }
 
@@ -235,6 +240,7 @@ class HealthConnectViewModel @Inject constructor(
             _checkHealthConnectInterlock.update { "true" }
         } else {
             Log.e("GRANT-ERROR","운동 권한이 허용되지 않았습니다.")
+            _checkHealthConnectInterlock.update { "false" }
         }
     }
 
@@ -476,7 +482,9 @@ class HealthConnectViewModel @Inject constructor(
         viewModelScope.launch {
             healthConnectUseCase.patchHealthConnectInterlock(accessToken, patchHealthConnectRequest)
                 .onEach {
-                    _patchHealthConnectInterlockFlow.emit(it)
+                    if (it) {
+                        _patchHealthConnectInterlockFlow.emit(checkHealthConnectInterlock.value)
+                    }
                 }
                 .handleErrors()
                 .collect()
@@ -528,12 +536,10 @@ class HealthConnectViewModel @Inject constructor(
     }
 
     private fun getStartTime(): Instant? {
-        // TODO : Intro API에서 내려주는 최근 로그인 시간으로 처리 (Ex. introDataFlow.value.time)
-        // null일 때는 첫 연동이니까 오늘 시작 시간으로 처리
         if (healthMetricLastDate.value.date == "") {
             return getTodayStartTime()
         } else {
-            return convertDateTimeStirngToInstant(healthMetricLastDate.value.date)
+            return convertDateStirngToInstant(healthMetricLastDate.value.date)
         }
     }
 
@@ -546,6 +552,17 @@ class HealthConnectViewModel @Inject constructor(
         } catch (e: DateTimeParseException) {
             e.printStackTrace()
             null
+        }
+    }
+
+    private fun convertDateStirngToInstant(dateString: String): Instant? {
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.KOREA)
+        try {
+            val date = dateFormat.parse(dateString)
+            return date?.toInstant()
+        } catch (e: Exception) {
+            e.printStackTrace()
+            return null
         }
     }
 
