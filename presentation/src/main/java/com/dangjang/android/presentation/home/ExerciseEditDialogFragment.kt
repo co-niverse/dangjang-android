@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.SpinnerAdapter
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
@@ -78,15 +79,23 @@ class ExerciseEditDialogFragment : DialogFragment() {
         }
         binding.exerciseEditSaveBtn.setOnClickListener {
             if (originExerciseHour == "0" && originExerciseMinute == "0") {
-                viewModel.setExerciseTypeAndCreatedAt(exerciseName, date)
-                viewModel.setExerciseUnit(getExerciseTime(exerciseHour, exerciseMinute))
-                getAccessToken()?.let { viewModel.addExercise(it) }
-                dismiss()
+                if (!(exerciseHour =="0" && exerciseMinute == "0")) {
+                    viewModel.setExerciseTypeAndCreatedAt(exerciseName, date)
+                    viewModel.setExerciseUnit(getExerciseTime(exerciseHour, exerciseMinute))
+                    getAccessToken()?.let { viewModel.addExercise(it) }
+                    dismiss()
+                } else {
+                    Toast.makeText(requireContext(), "0시간 0분은 입력이 불가능합니다.", Toast.LENGTH_SHORT).show()
+                }
             } else {
-                viewModel.setEditExerciseTypeAndCreatedAt(exerciseName, date)
-                viewModel.setEditExerciseUnit(getExerciseTime(exerciseHour, exerciseMinute))
-                getAccessToken()?.let { viewModel.editExercise(it) }
-                dismiss()
+                if (!(exerciseHour =="0" && exerciseMinute == "0")) {
+                    viewModel.setEditExerciseTypeAndCreatedAt(exerciseName, date)
+                    viewModel.setEditExerciseUnit(getExerciseTime(exerciseHour, exerciseMinute))
+                    getAccessToken()?.let { viewModel.editExercise(it) }
+                    dismiss()
+                } else {
+                    Toast.makeText(requireContext(), "0시간 0분은 입력이 불가능합니다.", Toast.LENGTH_SHORT).show()
+                }
             }
         }
     }

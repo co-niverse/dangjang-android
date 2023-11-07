@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
@@ -68,6 +69,10 @@ class WeightActivity : FragmentActivity() {
         binding.weightEditBtn.setOnClickListener {
             originWeight = binding.weightTv.text.toString().toInt()
 
+            if (originWeight == 0) {
+                binding.weightEt.setText("")
+            }
+
             binding.weightEditView.visibility = View.VISIBLE
             binding.weightTv.visibility = View.GONE
             binding.weightEt.visibility = View.VISIBLE
@@ -85,11 +90,19 @@ class WeightActivity : FragmentActivity() {
             binding.weightOkBtn.visibility = View.GONE
 
             if (originWeight == 0) {
-                viewModel.setWeightUnit(binding.weightEt.text.toString())
-                getAccessToken()?.let { viewModel.addWeight(it, date) }
+                if (binding.weightEt.text.toString() != "0" && binding.weightEt.text.toString() != "") {
+                    viewModel.setWeightUnit(binding.weightEt.text.toString())
+                    getAccessToken()?.let { viewModel.addWeight(it, date) }
+                } else {
+                    Toast.makeText(applicationContext, "0kg는 입력할 수 없습니다.", Toast.LENGTH_SHORT).show()
+                }
             } else {
-                viewModel.setEditWeightUnit(binding.weightEt.text.toString())
-                getAccessToken()?.let {  viewModel.editWeight(it, date) }
+                if (binding.weightEt.text.toString() != "0" && binding.weightEt.text.toString() != "") {
+                    viewModel.setEditWeightUnit(binding.weightEt.text.toString())
+                    getAccessToken()?.let {  viewModel.editWeight(it, date) }
+                } else {
+                    Toast.makeText(applicationContext, "0kg는 입력할 수 없습니다.", Toast.LENGTH_SHORT).show()
+                }
             }
 
         }

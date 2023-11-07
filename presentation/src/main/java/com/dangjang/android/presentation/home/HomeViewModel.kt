@@ -402,8 +402,8 @@ class HomeViewModel @Inject constructor(
     fun getMinuteSpinnerList(): ArrayList<String> {
         val minuteList = arrayListOf<String>()
 
-        for (i in 0..59) {
-            minuteList.add(i.toString())
+        for (i in 0..11) {
+            minuteList.add((i*5).toString())
         }
 
         return minuteList

@@ -5,6 +5,7 @@ import android.content.Intent
 import android.opengl.Visibility
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
@@ -112,6 +113,12 @@ class ExerciseActivity : FragmentActivity() {
         }
 
         binding.stepEditBtn.setOnClickListener {
+            originStep = binding.stepTv.text.toString().toInt()
+
+            if (originStep == 0) {
+                binding.stepEt.setText("")
+            }
+
             binding.stepEditView.visibility = View.VISIBLE
             binding.stepTv.visibility = View.GONE
             binding.stepEt.visibility = View.VISIBLE
@@ -128,16 +135,22 @@ class ExerciseActivity : FragmentActivity() {
             binding.stepEditBtn.visibility = View.VISIBLE
             binding.stepOkBtn.visibility = View.GONE
 
-            originStep = binding.stepTv.text.toString().toInt()
-
             if (originStep == 0) {
-                viewModel.setExerciseTypeAndCreatedAt("걸음수", date)
-                viewModel.setExerciseUnit(binding.stepEt.text.toString())
-                getAccessToken()?.let { viewModel.addExercise(it) }
+                if (binding.stepEt.text.toString() != "0" && binding.stepEt.text.toString() != "") {
+                    viewModel.setExerciseTypeAndCreatedAt("걸음수", date)
+                    viewModel.setExerciseUnit(binding.stepEt.text.toString())
+                    getAccessToken()?.let { viewModel.addExercise(it) }
+                } else {
+                    Toast.makeText(applicationContext, "0보는 입력할 수 없습니다.", Toast.LENGTH_SHORT).show()
+                }
             } else {
-                viewModel.setEditExerciseTypeAndCreatedAt("걸음수", date)
-                viewModel.setEditExerciseUnit(binding.stepEt.text.toString())
-                getAccessToken()?.let { viewModel.editExercise(it) }
+                if (binding.stepEt.text.toString() != "0" && binding.stepEt.text.toString() != "") {
+                    viewModel.setEditExerciseTypeAndCreatedAt("걸음수", date)
+                    viewModel.setEditExerciseUnit(binding.stepEt.text.toString())
+                    getAccessToken()?.let { viewModel.editExercise(it) }
+                } else {
+                    Toast.makeText(applicationContext, "0보는 입력할 수 없습니다.", Toast.LENGTH_SHORT).show()
+                }
             }
 
         }

@@ -13,8 +13,8 @@ android {
         //applicationId "com.dangjang.android.presentation"
         minSdk 26
         targetSdk 33
-        versionCode 11
-        versionName "1.0.10"
+        versionCode 12
+        versionName "1.2.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
