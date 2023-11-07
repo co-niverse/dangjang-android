@@ -14,7 +14,9 @@ import kotlinx.coroutines.flow.collectLatest
 @AndroidEntryPoint
 class DeviceSettingFragment : BaseFragment<FragmentDeviceSettingBinding>(R.layout.fragment_device_setting) {
 
-        private val viewModel : MypageViewModel by activityViewModels()
+    private val viewModel : MypageViewModel by activityViewModels()
+    private var startTime: Double = 0.0
+    private var endTime: Double = 0.0
 
         override fun initView() {
             bind {
@@ -25,6 +27,8 @@ class DeviceSettingFragment : BaseFragment<FragmentDeviceSettingBinding>(R.layou
 
     override fun onStart() {
         super.onStart()
+
+        startTime = System.currentTimeMillis().toDouble()
 
         lifecycleScope.launchWhenStarted {
             viewModel.goToLoginActivityFlow.collectLatest {
@@ -47,6 +51,12 @@ class DeviceSettingFragment : BaseFragment<FragmentDeviceSettingBinding>(R.layou
         binding.deviceSettingGoHealthConnectBtn.setOnClickListener {
             clickHealthConnectUrl()
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        endTime = System.currentTimeMillis().toDouble()
+        viewModel.shotHealthConnectManualStayLogging(endTime - startTime)
     }
 
     private fun clickHealthConnectUrl() {

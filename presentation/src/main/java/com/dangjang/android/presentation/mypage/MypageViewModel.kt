@@ -2,7 +2,6 @@ package com.dangjang.android.presentation.mypage
 
 import android.app.Application
 import android.content.Context
-import android.content.Intent
 import android.content.SharedPreferences
 import android.util.Log
 import android.widget.Toast
@@ -14,6 +13,7 @@ import com.dangjang.android.domain.constants.AUTO_LOGIN_EDITOR_KEY
 import com.dangjang.android.domain.constants.AUTO_LOGIN_SPF_KEY
 import com.dangjang.android.domain.constants.FCM_TOKEN_KEY
 import com.dangjang.android.domain.constants.TOKEN_SPF_KEY
+import com.dangjang.android.domain.logging.HealthConnectManualStayScheme
 import com.dangjang.android.domain.logging.MypageScreenExposureScheme
 import com.dangjang.android.domain.logging.PointScreenExposureScheme
 import com.dangjang.android.domain.model.GetMypageVO
@@ -23,7 +23,6 @@ import com.dangjang.android.domain.request.LogoutRequest
 import com.dangjang.android.domain.request.PostPointRequest
 import com.dangjang.android.domain.usecase.MypageUseCase
 import com.dangjang.android.domain.usecase.TokenUseCase
-import com.dangjang.android.presentation.login.LoginActivity
 import com.dangjang.android.swm_logging.SWMLogging
 import com.dangjang.android.swm_logging.logging_scheme.ExposureScheme
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -213,6 +212,38 @@ class MypageViewModel @Inject constructor(
 
 
     //Logging
+    private val _healthConnectManualJoined = MutableStateFlow(false)
+    val healthConnectManualJoined = _healthConnectManualJoined.asStateFlow()
+
+    private val _healthConnectManualScrolled = MutableStateFlow(false)
+    val healthConnectManualScrolled = _healthConnectManualScrolled.asStateFlow()
+
+    fun setHealthConnectManualJoined(joined: Boolean) {
+        _healthConnectManualJoined.update {
+            joined
+        }
+    }
+
+    fun setHealthConnectManualScrolled(scrolled: Boolean) {
+        Log.e("스크롤","스크롤 끝까지 내림")
+        _healthConnectManualScrolled.update {
+            scrolled
+        }
+    }
+
+    fun shotHealthConnectManualStayLogging(stayTime: Double) {
+        val scheme = getHealthConnectManualStayScheme(stayTime)
+        SWMLogging.logEvent(scheme)
+    }
+
+    private fun getHealthConnectManualStayScheme(stayTime: Double): ExposureScheme {
+        return HealthConnectManualStayScheme.Builder()
+            .setStayTime(stayTime)
+            .setJoined(healthConnectManualJoined.value)
+            .setScrolled(healthConnectManualScrolled.value)
+            .build()
+    }
+
     fun shotMypageExposureLogging(stayTime: Double) {
         val scheme = getMypageExposureLoggingScheme(stayTime)
         SWMLogging.logEvent(scheme)
