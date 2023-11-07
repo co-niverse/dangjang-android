@@ -10,15 +10,12 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
 import com.dangjang.android.domain.constants.ACCESS_TOKEN_KEY
 import com.dangjang.android.domain.constants.HEALTH_CONNECT_INSTALLED
-import com.dangjang.android.domain.constants.HEALTH_CONNECT_NOT_INSTALLED
-import com.dangjang.android.domain.constants.KAKAO
-import com.dangjang.android.domain.constants.NAVER
 import com.dangjang.android.domain.constants.TOKEN_SPF_KEY
 import com.dangjang.android.domain.request.HealthConnectRequest
 import com.dangjang.android.presentation.MainActivity
 import com.dangjang.android.presentation.R
-import com.dangjang.android.presentation.login.LoginActivity
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.zip
 import kotlinx.coroutines.launch
 
@@ -32,15 +29,22 @@ class HealthConnectActivity : FragmentActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_healthconnect)
 
-//        viewModel.checkAvailability()
-
+        viewModel.checkAvailability()
+        viewModel.getHealthMetricLastDate(getAccessToken() ?: "")
 //        val healthConnectAvailability = viewModel.getHealtConnectSpf()
-        val healthConnectAvailability = "false" // 테스트 용
+        viewModel.checkHealthConnectInterlock()
 
-        if (healthConnectAvailability == "true") {
+//        if (healthConnectAvailability == "true") {
             if (viewModel.healthConnectFlow.value.isAvaiable == HEALTH_CONNECT_INSTALLED) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    viewModel.getAllHealthConnectData()
+                    lifecycleScope.launch {
+                        viewModel.healthMetricLastDate.collectLatest {
+                            if (it.date != "") {
+                                Log.e("healthMetricLastDate", it.date)
+                                viewModel.getAllHealthConnectData()
+                            }
+                        }
+                    }
 
                     //TODO : view model로 이동
                     lifecycleScope.launch {
@@ -112,11 +116,19 @@ class HealthConnectActivity : FragmentActivity() {
                 }
             }
 
-        } else if (healthConnectAvailability == "false") {
+//        } else if (healthConnectAvailability == "false") {
+        else {
             goToMainActivity()
         }
 
-//        viewModel.checkHealthConnectInterlock()
+        lifecycleScope.launch {
+            viewModel.patchHealthConnectInterlockFlow.collectLatest {
+                Log.e("patchHealthConnectInterlockFlow", it)
+                if (it == "false") {
+                    goToMainActivity()
+                }
+            }
+        }
 
     }
 

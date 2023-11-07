@@ -1,6 +1,7 @@
 package com.dangjang.android.domain.usecase
 
 import android.util.Log
+import com.dangjang.android.domain.model.GetLastDateVO
 import com.dangjang.android.domain.model.IntroVO
 import com.dangjang.android.domain.repository.HealthConnectRepository
 import com.dangjang.android.domain.request.HealthConnectRequest
@@ -34,5 +35,10 @@ class HealthConnectUseCase @Inject constructor(
     suspend fun patchHealthConnectInterlock(accessToken: String, patchHealthConnectRequest: PatchHealthConnectRequest): Flow<Boolean> =
         withContext(Dispatchers.IO) {
             healthConnectRepository.patchHealthConnectInterlock("Bearer $accessToken", patchHealthConnectRequest)
+        }
+
+    suspend fun getHealthMetricLastDate(accessToken: String): Flow<GetLastDateVO> =
+        withContext(Dispatchers.IO) {
+            healthConnectRepository.getHealthMetricLastDate("Bearer $accessToken")
         }
 }

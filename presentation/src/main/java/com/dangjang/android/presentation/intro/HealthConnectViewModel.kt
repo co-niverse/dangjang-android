@@ -27,6 +27,7 @@ import com.dangjang.android.domain.constants.AUTO_LOGIN_SPF_KEY
 import com.dangjang.android.domain.constants.HEALTH_CONNECT_INSTALLED
 import com.dangjang.android.domain.constants.HEALTH_CONNECT_TOKEN_KEY
 import com.dangjang.android.domain.constants.TOKEN_SPF_KEY
+import com.dangjang.android.domain.model.GetLastDateVO
 import com.dangjang.android.domain.model.HealthConnectVO
 import com.dangjang.android.domain.model.IntroVO
 import com.dangjang.android.domain.request.HealthConnectRequest
@@ -45,6 +46,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
 import java.time.Duration
 import java.time.Instant
 import java.time.ZoneId
@@ -52,6 +54,7 @@ import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeParseException
 import java.time.temporal.ChronoUnit
+import java.util.Locale
 import javax.inject.Inject
 import kotlin.math.roundToInt
 
@@ -65,7 +68,10 @@ class HealthConnectViewModel @Inject constructor(
     private val _introDataFlow = MutableStateFlow(IntroVO())
     val introDataFlow = _introDataFlow.asStateFlow()
 
-    private val _patchHealthConnectInterlockFlow = MutableStateFlow(false)
+    private val _healthMetricLastDate = MutableStateFlow(GetLastDateVO())
+    val healthMetricLastDate = _healthMetricLastDate.asStateFlow()
+
+    private val _patchHealthConnectInterlockFlow = MutableStateFlow("none")
     val patchHealthConnectInterlockFlow = _patchHealthConnectInterlockFlow.asStateFlow()
 
     private val _healthConnectFlow = MutableStateFlow(HealthConnectVO())
@@ -125,6 +131,18 @@ class HealthConnectViewModel @Inject constructor(
 
     private val _reissueTokenFlow = MutableStateFlow(false)
     val reissueTokenFlow = _reissueTokenFlow.asStateFlow()
+
+    fun getHealthMetricLastDate(accessToken: String) {
+        viewModelScope.launch {
+            healthConnectUseCase.getHealthMetricLastDate(accessToken)
+                .onEach {
+                    _healthMetricLastDate.emit(it)
+                    Log.e("최근 로그인 날짜",it.date)
+                }
+                .handleErrors()
+                .collect()
+        }
+    }
 
     fun checkAvailability() {
         //설치여부 확인
@@ -189,6 +207,7 @@ class HealthConnectViewModel @Inject constructor(
             _checkHealthConnectInterlock.update { "true" }
         } else {
             Log.e("GRANT-ERROR","체중 권한이 허용되지 않았습니다.")
+            _checkHealthConnectInterlock.update { "false" }
         }
     }
 
@@ -199,6 +218,7 @@ class HealthConnectViewModel @Inject constructor(
             _checkHealthConnectInterlock.update { "true" }
         } else {
             Log.e("GRANT-ERROR","혈당 권한이 허용되지 않았습니다.")
+            _checkHealthConnectInterlock.update { "false" }
         }
     }
 
@@ -209,6 +229,7 @@ class HealthConnectViewModel @Inject constructor(
             _checkHealthConnectInterlock.update { "true" }
         } else {
             Log.e("GRANT-ERROR","걸음수 권한이 허용되지 않았습니다.")
+            _checkHealthConnectInterlock.update { "false" }
         }
     }
 
@@ -219,6 +240,7 @@ class HealthConnectViewModel @Inject constructor(
             _checkHealthConnectInterlock.update { "true" }
         } else {
             Log.e("GRANT-ERROR","운동 권한이 허용되지 않았습니다.")
+            _checkHealthConnectInterlock.update { "false" }
         }
     }
 
@@ -231,7 +253,7 @@ class HealthConnectViewModel @Inject constructor(
     private suspend fun readWeight() {
         val hcWeightTestList = mutableListOf<HealthConnectRequest>()
         //TODO : 로그인 시작 시간 처리 후 getTodayStartTime() -> getStartTime() 함수로 대치
-        weightList = readWeightRecord(getTodayStartTime(), getNowTime())
+        weightList = readWeightRecord(getStartTime() ?: getTodayStartTime(), getNowTime())
         for (weightRecord in weightList) {
             Log.e("HC-Weight",weightRecord.weight.toString())
             hcWeightTestList.apply {
@@ -267,7 +289,7 @@ class HealthConnectViewModel @Inject constructor(
     private suspend fun readBloodGlucose() {
         Log.e("readBloodGlucose","readBloodGlucose 실행 첫번째 줄")
         val hcGlucoseTestList = mutableListOf<HealthConnectRequest>()
-        bloodGlucoseList = readBloodGlucoseRecord(getTodayStartTime(), getNowTime())
+        bloodGlucoseList = readBloodGlucoseRecord(getStartTime() ?: getTodayStartTime(), getNowTime())
         for (bloodGlucoseRecord in bloodGlucoseList) {
             val bgTime = changeInstantToKST(bloodGlucoseRecord.time)
             val mealType = MEAL_TYPE_INT_TO_STRING_MAP.get(bloodGlucoseRecord.mealType)
@@ -339,7 +361,7 @@ class HealthConnectViewModel @Inject constructor(
     @RequiresApi(Build.VERSION_CODES.O)
     private suspend fun readSteps() {
         val hcStepsTestList = mutableListOf<HealthConnectRequest>()
-        stepList = readStepsRecord(getTodayStartTime(), getNowTime())
+        stepList = readStepsRecord(getStartTime() ?: getTodayStartTime(), getNowTime())
         for (stepsRecord in stepList) {
             Log.e("HC-Steps",stepsRecord.count.toString()+"보")
             hcStepsTestList.apply {
@@ -372,7 +394,7 @@ class HealthConnectViewModel @Inject constructor(
     @RequiresApi(Build.VERSION_CODES.O)
     private suspend fun readExerciseSession() {
         val hcExerciseTestList = mutableListOf<HealthConnectRequest>()
-        exerciseList = readExerciseSessionRecord(getTodayStartTime(),getNowTime())
+        exerciseList = readExerciseSessionRecord(getStartTime() ?: getTodayStartTime(),getNowTime())
         for (exerciseRecord in exerciseList) {
             var exerciseName = ExerciseSessionRecord.EXERCISE_TYPE_INT_TO_STRING_MAP.get(exerciseRecord.exerciseType)
             val exerciseStartTime = changeInstantToKST(exerciseRecord.startTime)
@@ -460,7 +482,9 @@ class HealthConnectViewModel @Inject constructor(
         viewModelScope.launch {
             healthConnectUseCase.patchHealthConnectInterlock(accessToken, patchHealthConnectRequest)
                 .onEach {
-                    _patchHealthConnectInterlockFlow.emit(it)
+                    if (it) {
+                        _patchHealthConnectInterlockFlow.emit(checkHealthConnectInterlock.value)
+                    }
                 }
                 .handleErrors()
                 .collect()
@@ -511,15 +535,13 @@ class HealthConnectViewModel @Inject constructor(
         return koreaTime.toInstant()
     }
 
-//    private fun getStartTime(): Instant? {
-//        // TODO : Intro API에서 내려주는 최근 로그인 시간으로 처리 (Ex. introDataFlow.value.time)
-//        // null일 때는 첫 연동이니까 오늘 시작 시간으로 처리
-//        if (introDataFlow.value.time == null) {
-//            return getTodayStartTime()
-//        } else {
-//            return return convertDateTimeStirngToInstant("")
-//        }
-//    }
+    private fun getStartTime(): Instant? {
+        if (healthMetricLastDate.value.date == "") {
+            return getTodayStartTime()
+        } else {
+            return convertDateStirngToInstant(healthMetricLastDate.value.date)
+        }
+    }
 
     private fun convertDateTimeStirngToInstant(dateTimeString: String): Instant? {
         val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")
@@ -530,6 +552,17 @@ class HealthConnectViewModel @Inject constructor(
         } catch (e: DateTimeParseException) {
             e.printStackTrace()
             null
+        }
+    }
+
+    private fun convertDateStirngToInstant(dateString: String): Instant? {
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.KOREA)
+        try {
+            val date = dateFormat.parse(dateString)
+            return date?.toInstant()
+        } catch (e: Exception) {
+            e.printStackTrace()
+            return null
         }
     }
 
