@@ -51,6 +51,14 @@ class DeviceSettingFragment : BaseFragment<FragmentDeviceSettingBinding>(R.layou
         binding.deviceSettingGoHealthConnectBtn.setOnClickListener {
             clickHealthConnectUrl()
         }
+
+        binding.deviceSettingSv.viewTreeObserver.addOnScrollChangedListener {
+            val scrollY = binding.deviceSettingSv.scrollY
+
+            if (scrollY + binding.deviceSettingSv.height >= binding.deviceSettingSv.getChildAt(0).height) {
+                viewModel.setHealthConnectManualScrolled(true)
+            }
+        }
     }
 
     override fun onDestroy() {
