@@ -7,6 +7,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.dangjang.android.common_ui.BaseFragment
 import com.dangjang.android.domain.constants.ACCESS_TOKEN_KEY
+import com.dangjang.android.domain.constants.PLAY_STORE_URL
 import com.dangjang.android.domain.constants.TOKEN_SPF_KEY
 import com.dangjang.android.domain.constants.VERSION_SPF_KEY
 import com.dangjang.android.domain.constants.VERSION_TOKEN_KEY
@@ -80,6 +81,19 @@ class MypageFragment : BaseFragment<FragmentMypageBinding>(R.layout.fragment_myp
         binding.privateTv.setOnClickListener {
             goToPrivateUrl()
         }
+        binding.serviceCommentIv.setOnClickListener {
+            goToServiceCommentUrl()
+        }
+        binding.serviceCommentTv.setOnClickListener {
+            goToServiceCommentUrl()
+        }
+        binding.playstoreCommentIv.setOnClickListener {
+            goToPlayStoreUrl()
+        }
+        binding.playstoreCommentTv.setOnClickListener {
+            goToPlayStoreUrl()
+        }
+
     }
 
     override fun onDestroy() {
@@ -94,6 +108,16 @@ class MypageFragment : BaseFragment<FragmentMypageBinding>(R.layout.fragment_myp
 
     private fun goToPrivateUrl() {
         val intentUrl = Intent(Intent.ACTION_VIEW, Uri.parse("https://co-niverse.notion.site/cb58f28f2c6e465ea5c596871baaca78?pvs=4"))
+        startActivity(intentUrl)
+    }
+
+    private fun goToServiceCommentUrl() {
+        val intentUrl = Intent(Intent.ACTION_VIEW, Uri.parse("https://forms.gle/uAatLSwaytsZ13fZ6"))
+        startActivity(intentUrl)
+    }
+
+    private fun goToPlayStoreUrl() {
+        val intentUrl = Intent(Intent.ACTION_VIEW, Uri.parse(PLAY_STORE_URL))
         startActivity(intentUrl)
     }
 

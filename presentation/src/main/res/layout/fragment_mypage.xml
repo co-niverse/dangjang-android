@@ -14,7 +14,8 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="#FAFAFA">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -134,28 +135,50 @@
                 app:layout_constraintTop_toTopOf="@+id/device_iv" />
 
             <ImageView
-                android:id="@+id/alarm_iv"
+                android:id="@+id/service_comment_iv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="36dp"
-                android:visibility="gone"
-                android:src="@drawable/ic_mypage_alarm"
+                android:src="@drawable/ic_mypage_service"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/device_iv" />
 
             <TextView
+                android:id="@+id/service_comment_tv"
                 android:layout_width="300dp"
                 android:layout_height="30dp"
                 android:layout_marginStart="10dp"
                 android:gravity="center_vertical"
-                android:text="푸시 알림"
-                android:visibility="gone"
+                android:text="서비스 평가 의견 남기기"
                 android:textColor="@color/black"
                 android:textSize="16sp"
-                app:layout_constraintBottom_toBottomOf="@+id/alarm_iv"
-                app:layout_constraintStart_toEndOf="@+id/alarm_iv"
-                app:layout_constraintTop_toTopOf="@+id/alarm_iv" />
+                app:layout_constraintBottom_toBottomOf="@+id/service_comment_iv"
+                app:layout_constraintStart_toEndOf="@+id/service_comment_iv"
+                app:layout_constraintTop_toTopOf="@+id/service_comment_iv" />
+
+            <ImageView
+                android:id="@+id/playstore_comment_iv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="36dp"
+                android:src="@drawable/ic_mypage_device"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/service_comment_iv" />
+
+            <TextView
+                android:id="@+id/playstore_comment_tv"
+                android:layout_width="300dp"
+                android:layout_height="30dp"
+                android:layout_marginStart="10dp"
+                android:gravity="center_vertical"
+                android:text="구글 플레이 평점 남기기"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="@+id/playstore_comment_iv"
+                app:layout_constraintStart_toEndOf="@+id/playstore_comment_iv"
+                app:layout_constraintTop_toTopOf="@+id/playstore_comment_iv" />
 
             <ImageView
                 android:id="@+id/service_iv"
@@ -165,7 +188,7 @@
                 android:layout_marginTop="36dp"
                 android:src="@drawable/ic_mypage_service"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/alarm_iv" />
+                app:layout_constraintTop_toBottomOf="@+id/playstore_comment_iv" />
 
             <TextView
                 android:id="@+id/service_tv"
