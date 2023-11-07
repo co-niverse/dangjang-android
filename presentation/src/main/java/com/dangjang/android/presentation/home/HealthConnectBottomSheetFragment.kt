@@ -7,11 +7,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import com.dangjang.android.presentation.databinding.FragmentHealthconnectBottomSheetBinding
 import com.dangjang.android.presentation.mypage.DeviceActivity
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class HealthConnectBottomSheetFragment: BottomSheetDialogFragment() {
+
+    private val viewModel by activityViewModels<HomeViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,10 +40,12 @@ class HealthConnectBottomSheetFragment: BottomSheetDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.dismissBtn.setOnClickListener {
+            viewModel.shotHealthConnectJoinClickLogging(false)
             dismiss()
         }
 
         binding.goToHealthConnectFragmentButton.setOnClickListener {
+            viewModel.shotHealthConnectJoinClickLogging(true)
             dismiss()
             Intent(context, DeviceActivity::class.java).apply {
                 startActivity(this)

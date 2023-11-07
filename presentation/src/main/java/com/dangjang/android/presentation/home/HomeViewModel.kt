@@ -19,6 +19,7 @@ import com.dangjang.android.domain.logging.ExerciseScreenExposureScheme
 import com.dangjang.android.domain.logging.GlucoseScreenClickScheme
 import com.dangjang.android.domain.logging.GlucoseScreenExposureScheme
 import com.dangjang.android.domain.logging.GlucoseScreenStayScheme
+import com.dangjang.android.domain.logging.HealthConnectJoinClickScheme
 import com.dangjang.android.domain.logging.HomeScreenExposureScheme
 import com.dangjang.android.domain.logging.MypageScreenExposureScheme
 import com.dangjang.android.domain.logging.SignupAfterTimeScheme
@@ -637,6 +638,16 @@ class HomeViewModel @Inject constructor(
     }
 
     //Logging
+    fun shotHealthConnectJoinClickLogging(clicked: Boolean) {
+        val scheme = getHealthConnectJoinClickLoggingScheme(clicked)
+        SWMLogging.logEvent(scheme)
+    }
+
+    private fun getHealthConnectJoinClickLoggingScheme(clicked: Boolean): ClickScheme {
+        return HealthConnectJoinClickScheme.Builder()
+            .setClicked(clicked)
+            .build()
+    }
 
     fun shotGlucoseClickLogging() {
         val scheme = getGlucoseClickLoggingScheme()
