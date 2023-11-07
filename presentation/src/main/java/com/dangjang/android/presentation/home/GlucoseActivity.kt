@@ -99,6 +99,7 @@ class GlucoseActivity : FragmentActivity() {
                 }
             }
             binding.glucoseAddCl.visibility = View.GONE
+            binding.glucoseAddEt.text.clear()
         }
 
         binding.glucoseAddBtn.setOnClickListener {
@@ -107,6 +108,7 @@ class GlucoseActivity : FragmentActivity() {
 
         binding.glucoseAddCloseIv.setOnClickListener {
             binding.glucoseAddCl.visibility = View.GONE
+            binding.glucoseAddEt.text.clear()
         }
 
         binding.glucoseInfoIv.setOnClickListener {
