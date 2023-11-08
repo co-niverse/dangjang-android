@@ -2,7 +2,6 @@ package com.dangjang.android.data.datasource
 
 import com.dangjang.android.data.model.response.BaseResponse
 import com.dangjang.android.data.sdui.SduiSignupDto
-import com.dangjang.android.domain.sdui.SduiCommonVO
 import javax.inject.Inject
 
 class SduiDataSource @Inject constructor(

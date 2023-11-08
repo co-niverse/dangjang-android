@@ -5,6 +5,7 @@ import com.dangjang.android.data.repository.HomeRepositoryImpl
 import com.dangjang.android.data.repository.HealthConnectRepositoryImpl
 import com.dangjang.android.data.repository.LoginRepositoryImpl
 import com.dangjang.android.data.repository.MypageRepositoryImpl
+import com.dangjang.android.data.repository.SduiRepositoryImpl
 import com.dangjang.android.data.repository.SignupRepositoryImpl
 import com.dangjang.android.data.repository.TokenRepositoryImpl
 import com.dangjang.android.domain.repository.ChartRepository
@@ -12,6 +13,7 @@ import com.dangjang.android.domain.repository.HomeRepository
 import com.dangjang.android.domain.repository.HealthConnectRepository
 import com.dangjang.android.domain.repository.LoginRepository
 import com.dangjang.android.domain.repository.MypageRepository
+import com.dangjang.android.domain.repository.SduiRepository
 import com.dangjang.android.domain.repository.SignupRepository
 import com.dangjang.android.domain.repository.TokenRepository
 import dagger.Binds
@@ -57,4 +59,9 @@ interface RepositoryModule {
     fun bindsTokenRepository(
         tokenRepositoryImpl: TokenRepositoryImpl
     ) : TokenRepository
+
+    @Binds
+    fun bindsSduiRepository(
+        sduiRepositoryImpl: SduiRepositoryImpl
+    ) : SduiRepository
 }

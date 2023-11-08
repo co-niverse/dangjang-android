@@ -1,7 +1,6 @@
 package com.dangjang.android.domain.usecase
 
 import com.dangjang.android.domain.repository.SduiRepository
-import com.dangjang.android.domain.sdui.SduiCommonVO
 import com.dangjang.android.domain.sdui.SduiSignupVO
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
