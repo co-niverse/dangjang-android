@@ -2,7 +2,6 @@ package com.dangjang.android.data.repository
 
 import com.dangjang.android.data.datasource.SduiDataSource
 import com.dangjang.android.domain.repository.SduiRepository
-import com.dangjang.android.domain.sdui.SduiCommonVO
 import com.dangjang.android.domain.sdui.SduiSignupVO
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
