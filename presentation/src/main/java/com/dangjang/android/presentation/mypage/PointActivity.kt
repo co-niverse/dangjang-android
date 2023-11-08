@@ -55,7 +55,7 @@ class PointActivity : FragmentActivity() {
         setGiftListAdapter()
         setPointManualListAdapter()
 
-        binding.nextBtn.setOnTouchListener({ v, event -> true })
+        setBtnGray()
 
         lifecycleScope.launchWhenStarted {
             viewModel.getPointFlow.collectLatest {
@@ -97,6 +97,7 @@ class PointActivity : FragmentActivity() {
                 if (giftListItem.price <= viewModel.getPointFlow.value.balancedPoint) {
                     setBtnGreen()
                 } else {
+                    setBtnGray()
                     Toast.makeText(applicationContext,"포인트가 부족합니다.", Toast.LENGTH_SHORT).show()
                 }
             }
@@ -112,6 +113,11 @@ class PointActivity : FragmentActivity() {
     private fun setBtnGreen() {
         binding.nextBtn.setBackgroundResource(R.drawable.background_green_gradient)
         binding.nextBtn.setOnTouchListener({ v, event -> false })
+    }
+
+    private fun setBtnGray() {
+        binding.nextBtn.setBackgroundResource(R.drawable.background_round_darkgray)
+        binding.nextBtn.setOnTouchListener({ v, event -> true })
     }
 
     private fun getAccessToken(): String? {
