@@ -2,11 +2,9 @@ package com.dangjang.android.presentation.signup
 
 import android.app.Application
 import android.content.Context
-import android.content.Intent
 import android.graphics.Color
 import android.os.Build
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.dangjang.android.domain.HttpResponseStatus
@@ -25,10 +23,11 @@ import com.dangjang.android.domain.model.DuplicateNicknameVO
 import com.dangjang.android.domain.model.AuthVO
 import com.dangjang.android.domain.request.PostFcmTokenRequest
 import com.dangjang.android.domain.requestVO.SignupRequestVO
+import com.dangjang.android.domain.sdui.SduiSignupVO
+import com.dangjang.android.domain.usecase.SduiUseCase
 import com.dangjang.android.domain.usecase.SignupUseCase
 import com.dangjang.android.domain.usecase.TokenUseCase
 import com.dangjang.android.presentation.R
-import com.dangjang.android.presentation.login.LoginActivity
 import com.dangjang.android.swm_logging.SWMLogging
 import com.dangjang.android.swm_logging.logging_scheme.ExposureScheme
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -46,6 +45,7 @@ import javax.inject.Inject
 class SignupViewModel @Inject constructor(
     private val getSignupUseCase: SignupUseCase,
     private val getTokenUseCase: TokenUseCase,
+    private val getSduiUseCase: SduiUseCase,
     application: Application
 ) : AndroidViewModel(application) {
 
@@ -63,6 +63,9 @@ class SignupViewModel @Inject constructor(
 
     private val _goToLoginActivity = MutableStateFlow(false)
     val goToLoginActivity = _goToLoginActivity.asStateFlow()
+
+    private val _sduiSignup = MutableStateFlow(SduiSignupVO())
+    val sduiSignup = _sduiSignup.asStateFlow()
 
     fun getDuplicateNickname(nickname: String) {
         viewModelScope.launch {
@@ -207,6 +210,18 @@ class SignupViewModel @Inject constructor(
 
     fun setGreenBtnBackgroundResource(): Int {
         return R.drawable.background_green_gradient
+    }
+
+    //Server Driven UI
+    fun getSduiSignup() {
+        viewModelScope.launch {
+            getSduiUseCase.getSduiSignup()
+                .onEach {
+                    _sduiSignup.emit(it)
+                }
+                .handleErrors()
+                .collect()
+        }
     }
 
     //Logging

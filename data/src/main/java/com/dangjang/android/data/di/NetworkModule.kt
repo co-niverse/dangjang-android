@@ -7,6 +7,7 @@ import com.dangjang.android.data.datasource.HomeApiService
 import com.dangjang.android.data.datasource.HealthConnectApiService
 import com.dangjang.android.data.datasource.LoginApiService
 import com.dangjang.android.data.datasource.MypageApiService
+import com.dangjang.android.data.datasource.SduiApiService
 import com.dangjang.android.data.datasource.SignupApiService
 import com.dangjang.android.data.datasource.TokenApiService
 import com.dangjang.android.data.interceptor.NetworkInterceptor
@@ -95,5 +96,11 @@ object NetworkModule {
     @Singleton
     fun provideTokenApiService(retrofit: Retrofit): TokenApiService {
         return retrofit.create(TokenApiService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideSduiApiService(retrofit: Retrofit): SduiApiService {
+        return retrofit.create(SduiApiService::class.java)
     }
 }

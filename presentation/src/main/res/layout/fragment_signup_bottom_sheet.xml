@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="vm"
+            type="com.dangjang.android.presentation.signup.SignupViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/background_white_gradient">
+
+        <TextView
+            android:id="@+id/signup_text_tv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="44dp"
+            android:layout_marginEnd="16dp"
+            android:gravity="center"
+            android:text="@{vm.sduiSignup.text}"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/signup_exit_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            android:text="정말 나가시겠어요?"
+            android:textColor="#3A433E"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/signup_text_tv" />
+
+        <LinearLayout
+            android:id="@+id/signout_btn_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/signup_exit_tv">
+
+            <Button
+                android:id="@+id/exit_btn"
+                android:layout_width="0dp"
+                android:layout_height="52dp"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/background_round_gray"
+                android:text="나가기"
+                android:textColor="#818181"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/dismiss_btn"
+                android:layout_width="0dp"
+                android:layout_height="52dp"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/background_green_gradient"
+                android:text="계속 하기"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
