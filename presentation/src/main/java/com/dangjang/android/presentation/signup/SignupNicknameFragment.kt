@@ -1,10 +1,12 @@
 package com.dangjang.android.presentation.signup
 
+import android.content.Context
 import android.graphics.Color
 import android.text.Editable
 import android.text.InputFilter
 import android.text.TextWatcher
 import android.util.Log
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import com.dangjang.android.common_ui.BaseFragment
@@ -23,6 +25,7 @@ class SignupNicknameFragment :
     private val viewModel: SignupViewModel by activityViewModels()
     private var startTime: Double = 0.0
     private var endTime: Double = 0.0
+    private lateinit var callback: OnBackPressedCallback
 
     override fun initView() {
         bind {
@@ -96,6 +99,16 @@ class SignupNicknameFragment :
                 .commit()
         }
 
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                SignupBottomSheetFragment().show(parentFragmentManager, "SignupBottomSheetFragment")
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
     }
 
     override fun onDestroyView() {
