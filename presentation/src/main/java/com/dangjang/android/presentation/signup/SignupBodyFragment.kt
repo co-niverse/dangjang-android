@@ -43,7 +43,9 @@ class SignupBodyFragment : BaseFragment<FragmentSignupBodyBinding>(R.layout.frag
                 if (heightFlag && weightFlag) {
                     setBodyGreen()
                 }
-                height = p0.toString().toInt()
+                if (p0.toString() != "") {
+                    height = p0.toString().toInt()
+                }
             }
 
         })
@@ -60,7 +62,9 @@ class SignupBodyFragment : BaseFragment<FragmentSignupBodyBinding>(R.layout.frag
                 if (heightFlag && weightFlag) {
                     setBodyGreen()
                 }
-                weight = p0.toString().toInt()
+                if (p0.toString() != "") {
+                    weight = p0.toString().toInt()
+                }
             }
 
         })
