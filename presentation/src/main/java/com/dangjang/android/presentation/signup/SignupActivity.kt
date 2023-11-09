@@ -19,8 +19,8 @@ class SignupActivity: FragmentActivity() {
         val provider = intent.getStringExtra("provider")
         val accessToken = intent.getStringExtra("accessToken")
 
-        viewModel.setProvider("provider!!")
-        viewModel.setAccessToken("accessToken!!")
+        viewModel.setProvider(provider!!)
+        viewModel.setAccessToken(accessToken!!)
 
         val signupNicknameFragment = SignupNicknameFragment()
         supportFragmentManager.beginTransaction().add(R.id.fragment_signup_view, signupNicknameFragment).commit()
