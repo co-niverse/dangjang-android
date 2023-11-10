@@ -242,6 +242,7 @@
                     android:layout_marginBottom="16dp"
                     android:background="@null"
                     android:max="70"
+                    android:clickable="true"
                     android:progressDrawable="@drawable/background_weight_bar"
                     android:splitTrack="false"
                     android:thumb="@drawable/ic_thumb"
