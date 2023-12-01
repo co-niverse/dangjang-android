@@ -616,6 +616,12 @@ class HealthConnectViewModel @Inject constructor(
                     Toast.LENGTH_SHORT
                 ).show()
             }
+            if (e.message.toString() == "400 : 이미 존재하는 가이드입니다.") {
+                _postHealthConnectFlow.emit(true)
+            }
+            if (e.message.toString() == "404 : 해당 건강지표를 찾을 수 없습니다.") {
+                _postHealthConnectFlow.emit(true)
+            }
 //            Toast.makeText(
 //                getApplication<Application>().applicationContext, e.message,
 //                Toast.LENGTH_SHORT
