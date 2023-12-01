@@ -13,7 +13,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/point_top_cl"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="#FAFAFA">
 
         <ScrollView
             android:layout_width="match_parent"
@@ -22,8 +23,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/point_cl"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="#FAFAFA">
+                android:layout_height="match_parent">
 
                 <ImageView
                     android:id="@+id/back_iv"
@@ -99,6 +99,7 @@
                     android:gravity="center"
                     android:text="이벤트는 11/9에 종료됩니다.\n11/9까지 포인트를 열심히 모아서 기프티콘 구매를 완료해주세요!"
                     android:textColor="#FF0000"
+                    android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/point_title_tv" />
