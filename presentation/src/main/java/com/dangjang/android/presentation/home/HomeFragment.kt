@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.util.Log
 import android.view.View
+import android.widget.SeekBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
@@ -67,7 +68,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
 //            }
 //        }
 
-        binding.weightSeekbar.setOnTouchListener({ v, event -> true })
+        binding.weightSeekbar.isEnabled = false
 
         binding.calendarIv.setOnClickListener {
             viewModel.shotCalendarClickLogging()

@@ -141,9 +141,6 @@ class ChartFragment : BaseFragment<FragmentChartBinding>(R.layout.fragment_chart
         barChart.setTouchEnabled(false)
         barChart.legend.isEnabled = false
 
-        barChart.animateY(1000)
-        barChart.animateX(1000)
-
         val xAxis: XAxis = barChart.xAxis
         xAxis.position = XAxis.XAxisPosition.BOTTOM
         xAxis.granularity = 1f
