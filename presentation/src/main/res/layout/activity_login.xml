@@ -23,6 +23,22 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="16dp"
+            android:gravity="center"
+            android:text="혹시 로그인이 안되시나요?\n서비스 점검으로 인해 1-2주 정도 안될 수 있어요.\n\n점검이 끝나면 업데이트 팝업창을 제공드릴 예정이니,\n로그인이 안된다면 업데이트 이후 이용해주세요 :D"
+            android:padding="10dp"
+            android:textColor="@color/black"
+            android:background="@drawable/background_round_green"
+            app:layout_constraintBottom_toTopOf="@+id/btn_kakao_login"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
         <Button
             android:id="@+id/btn_naver_login"
             android:layout_width="wrap_content"
