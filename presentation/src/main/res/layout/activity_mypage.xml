@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="com.dangjang.android.presentation.mypage.MypageViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/point_top_cl"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#FAFAFA">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/point_cl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/back_iv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="21dp"
+                    android:src="@drawable/ic_back"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/point_title_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:text="내 정보 수정"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/back_iv" />
+
+
+                <ImageView
+                    android:id="@+id/edit_iv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="60dp"
+                    android:src="@drawable/ic_mypage_logout"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/point_title_tv" />
+
+                <TextView
+                    android:id="@+id/edit_tv"
+                    android:layout_width="300dp"
+                    android:layout_height="30dp"
+                    android:layout_marginStart="10dp"
+                    android:gravity="center_vertical"
+                    android:text="닉네임, 성별, 생년월일 수정"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/edit_iv"
+                    app:layout_constraintStart_toEndOf="@+id/edit_iv"
+                    app:layout_constraintTop_toTopOf="@+id/edit_iv" />
+
+                <ImageView
+                    android:id="@+id/device_iv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="36dp"
+                    android:src="@drawable/ic_mypage_device"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/edit_iv" />
+
+                <TextView
+                    android:id="@+id/device_tv"
+                    android:layout_width="300dp"
+                    android:layout_height="30dp"
+                    android:layout_marginStart="10dp"
+                    android:gravity="center_vertical"
+                    android:text="키, 하루 활동량 수정"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/device_iv"
+                    app:layout_constraintStart_toEndOf="@+id/device_iv"
+                    app:layout_constraintTop_toTopOf="@+id/device_iv" />
+
+                <ImageView
+                    android:id="@+id/service_comment_iv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="36dp"
+                    android:src="@drawable/ic_mypage_service"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/device_iv" />
+
+                <TextView
+                    android:id="@+id/service_comment_tv"
+                    android:layout_width="300dp"
+                    android:layout_height="30dp"
+                    android:layout_marginStart="10dp"
+                    android:gravity="center_vertical"
+                    android:text="당뇨 진단 여부 수정"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/service_comment_iv"
+                    app:layout_constraintStart_toEndOf="@+id/service_comment_iv"
+                    app:layout_constraintTop_toTopOf="@+id/service_comment_iv" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

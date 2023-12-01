@@ -112,14 +112,37 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <ImageView
-                android:id="@+id/device_iv"
+                android:id="@+id/edit_iv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="60dp"
-                android:src="@drawable/ic_mypage_device"
+                android:src="@drawable/ic_mypage_logout"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/coin_cl" />
+
+            <TextView
+                android:id="@+id/edit_tv"
+                android:layout_width="300dp"
+                android:layout_height="30dp"
+                android:layout_marginStart="10dp"
+                android:gravity="center_vertical"
+                android:text="내 정보 수정하기"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="@+id/edit_iv"
+                app:layout_constraintStart_toEndOf="@+id/edit_iv"
+                app:layout_constraintTop_toTopOf="@+id/edit_iv" />
+
+            <ImageView
+                android:id="@+id/device_iv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="36dp"
+                android:src="@drawable/ic_mypage_device"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/edit_iv" />
 
             <TextView
                 android:id="@+id/device_tv"
